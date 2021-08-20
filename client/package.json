@@ -9,14 +9,25 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@apollo/client": "^3.4.8",
+    "formik": "^2.2.9",
+    "graphql": "^15.5.1",
     "next": "11.1.0",
+    "next-apollo": "^5.0.6",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "react-icons": "^4.2.0",
+    "yup": "^0.32.9"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^2.1.1",
+    "@graphql-codegen/typescript": "^2.1.0",
+    "@graphql-codegen/typescript-operations": "^2.1.0",
+    "@graphql-codegen/typescript-react-apollo": "^3.1.0",
     "@types/react": "17.0.19",
     "eslint": "7.32.0",
     "eslint-config-next": "11.1.0",
+    "sass": "^1.38.0",
     "typescript": "4.3.5"
   }
 }
