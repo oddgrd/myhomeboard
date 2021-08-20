@@ -1,7 +1,7 @@
 import { Session, SessionData } from 'express-session';
 import { Redis } from 'ioredis';
 import { User } from '../entities/User';
-import { InputType, Field, ObjectType } from 'type-graphql';
+import { InputType, Field, ObjectType, Int } from 'type-graphql';
 
 export type MyContext = {
   req: Request & {
@@ -21,6 +21,18 @@ export class UsernamePasswordInput {
 
   @Field()
   password: string;
+}
+
+@InputType()
+export class CreateProblemInput {
+  @Field()
+  title: string;
+
+  @Field()
+  rules: string;
+
+  @Field(() => Int)
+  grade: number;
 }
 
 @ObjectType()

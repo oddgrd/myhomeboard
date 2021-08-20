@@ -20,8 +20,8 @@ export class Problem extends BaseEntity {
   title!: string;
 
   @Field()
-  @Column({ unique: true })
-  creatorId!: string;
+  @Column()
+  creatorId!: number;
 
   @Field()
   @Column()

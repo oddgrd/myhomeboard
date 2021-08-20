@@ -14,6 +14,7 @@ import Redis from 'ioredis';
 import session from 'express-session';
 import connectRedis from 'connect-redis';
 import { UserResolver } from './resolvers/userResolver';
+import { ProblemResolver } from './resolvers/problemResolver';
 
 const main = async () => {
   const connection = await createConnection({
@@ -52,7 +53,7 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [TestResolver, UserResolver],
+      resolvers: [TestResolver, UserResolver, ProblemResolver],
       validate: false
     }),
     context: ({ req, res }) => ({

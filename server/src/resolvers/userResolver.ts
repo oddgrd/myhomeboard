@@ -5,6 +5,7 @@ import { MyContext, UsernamePasswordInput, UserResponse } from './types';
 import argon2 from 'argon2';
 @Resolver()
 export class UserResolver {
+  // Register user
   @Mutation(() => UserResponse)
   async register(
     @Arg('options') options: UsernamePasswordInput,
@@ -34,6 +35,7 @@ export class UserResolver {
     return { user: newUser };
   }
 
+  // Get user by ID
   @Query(() => User, { nullable: true })
   async getUserById(
     @Arg('id', () => Int) id: number
@@ -41,6 +43,7 @@ export class UserResolver {
     return User.findOne(id);
   }
 
+  // Get all users
   @Query(() => [User], { nullable: true })
   async getUsers(): Promise<User[] | null> {
     const users = await User.find();
