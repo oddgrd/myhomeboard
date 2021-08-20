@@ -1,15 +1,17 @@
 import { User } from '../entities/User';
 import { validateRegister } from '../utils/validateRegister';
 import { Arg, Ctx, Int, Mutation, Query, Resolver } from 'type-graphql';
-import { MyContext, UsernamePasswordInput, UserResponse } from './types';
+import { Context } from '../types/context';
+import { UsernamePasswordInput, UserResponse } from '../types/userTypes';
 import argon2 from 'argon2';
+
 @Resolver()
 export class UserResolver {
   // Register user
   @Mutation(() => UserResponse)
   async register(
     @Arg('options') options: UsernamePasswordInput,
-    @Ctx() { req }: MyContext
+    @Ctx() { req }: Context
   ): Promise<UserResponse> {
     const errors = validateRegister(options);
     if (errors) {

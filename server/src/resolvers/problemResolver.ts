@@ -8,8 +8,9 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
-import { CreateProblemInput, MyContext } from './types';
+import { CreateProblemInput } from '../types/problemTypes';
 import { Problem } from '../entities/Problem';
+import { Context } from '../types/context';
 
 @Resolver()
 export class ProblemResolver {
@@ -18,11 +19,17 @@ export class ProblemResolver {
   @UseMiddleware(isAuth)
   async createProblem(
     @Arg('options') options: CreateProblemInput,
-    @Ctx() { req }: MyContext
+    @Ctx() { req }: Context
   ): Promise<Problem> {
     const creatorId = req.session.userId;
-    const { title, rules, grade } = options;
-    return Problem.create({ title, rules, grade: [grade], creatorId }).save();
+    const { title, rules, grade, coordinates } = options;
+    return Problem.create({
+      title,
+      rules,
+      grade: [grade],
+      coordinates,
+      creatorId
+    }).save();
   }
 
   // Delete problem by id and creatorId
@@ -30,7 +37,7 @@ export class ProblemResolver {
   @UseMiddleware(isAuth)
   async deleteProblem(
     @Arg('id', () => Int) id: number,
-    @Ctx() { req }: MyContext
+    @Ctx() { req }: Context
   ): Promise<boolean> {
     const problem = await Problem.findOne(id);
     if (!problem) {

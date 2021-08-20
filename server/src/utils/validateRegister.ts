@@ -1,4 +1,4 @@
-import { UsernamePasswordInput } from '../resolvers/types';
+import { UsernamePasswordInput } from '../types/userTypes';
 
 export const validateRegister = (options: UsernamePasswordInput) => {
   // Weak email validation, also validated on client

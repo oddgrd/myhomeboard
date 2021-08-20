@@ -1,3 +1,4 @@
+import { Coordinates } from '../types/problemTypes';
 import { Field, Int, ObjectType } from 'type-graphql';
 import {
   BaseEntity,
@@ -17,19 +18,27 @@ export class Problem extends BaseEntity {
 
   @Field()
   @Column()
-  title!: string;
+  creatorId!: number;
 
   @Field()
   @Column()
-  creatorId!: number;
+  title!: string;
 
   @Field()
   @Column()
   rules!: string;
 
+  @Field(() => Coordinates)
+  @Column({ type: 'jsonb' })
+  coordinates!: Coordinates;
+
   @Field(() => [Int])
   @Column({ type: 'int', array: true })
-  grade: number[];
+  grade!: number[];
+
+  @Field(() => [Int], { nullable: true })
+  @Column({ type: 'int', array: true, nullable: true })
+  rating: number[];
 
   // @Field(() => Int, { nullable: true })
   // sendStatus: number | null;
