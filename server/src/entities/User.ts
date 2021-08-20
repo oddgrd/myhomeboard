@@ -13,11 +13,11 @@ import {
 export class User extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
-  id!: number;
+  id!: number; // change to uuid in prod?
 
   @Field()
   @Column()
-  name!: string;
+  username!: string;
 
   @Field()
   @Column({ unique: true })
@@ -26,7 +26,7 @@ export class User extends BaseEntity {
   @Column()
   password!: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ nullable: true })
   avatar: string;
 

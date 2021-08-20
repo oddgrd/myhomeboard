@@ -1,4 +1,4 @@
-import { Field, ObjectType } from 'type-graphql';
+import { Field, Int, ObjectType } from 'type-graphql';
 import {
   BaseEntity,
   Column,
@@ -27,9 +27,9 @@ export class Problem extends BaseEntity {
   @Column()
   rules!: string;
 
-  @Field()
-  @Column()
-  grade: number;
+  @Field(() => [Int])
+  @Column({ type: 'int', array: true })
+  grade: number[];
 
   // @Field(() => Int, { nullable: true })
   // sendStatus: number | null;
@@ -37,6 +37,11 @@ export class Problem extends BaseEntity {
   // @Field()
   // @ManyToOne(() => User, (user) => user.problems)
   // creator: User;
+
+  // @Field()
+  // @OneToOne(() => Board)
+  // @JoinColumn()
+  // board: Board;
 
   @Field(() => String)
   @CreateDateColumn()
