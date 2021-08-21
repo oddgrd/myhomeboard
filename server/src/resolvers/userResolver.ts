@@ -37,6 +37,44 @@ export class UserResolver {
     return { user: newUser };
   }
 
+  // Login user
+  @Mutation(() => UserResponse)
+  async login(
+    @Arg('usernameOrEmail') usernameOrEmail: string,
+    @Arg('password') password: string,
+    @Ctx() { req }: Context
+  ): Promise<UserResponse> {
+    const user = await User.findOne(
+      usernameOrEmail.includes('@')
+        ? { where: { email: usernameOrEmail } }
+        : { where: { username: usernameOrEmail } }
+    );
+    if (!user) {
+      return {
+        errors: [
+          { field: 'usernameOrEmail', message: 'Invalid username/email' }
+        ]
+      };
+    }
+    const valid = await argon2.verify(user.password, password);
+    if (!valid) {
+      return {
+        errors: [{ field: 'password', message: 'Invalid Login' }]
+      };
+    }
+
+    // Persist user in express session
+    req.session.userId = user.id;
+    return { user };
+  }
+
+  // Confirm logged in
+  @Query(() => User, { nullable: true })
+  async me(@Ctx() { req }: Context) {
+    if (!req.session.userId) return null;
+    return await User.findOne(req.session.userId);
+  }
+
   // Get user by ID
   @Query(() => User, { nullable: true })
   async getUserById(
