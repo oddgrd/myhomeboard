@@ -2,6 +2,7 @@ import Link from 'next/link';
 import styles from '../styles/Header.module.scss';
 import Image from 'next/image';
 import { FaPlus, FaSignOutAlt } from 'react-icons/fa';
+import logo from '../public/Logo-klatreapp.svg';
 
 export const Header = () => {
   return (
@@ -10,13 +11,8 @@ export const Header = () => {
         <div>
           <Link href='/'>
             <a className={styles.logo}>
-              <Image
-                src='/Logo-klatreapp.svg'
-                alt='Covegg19 Logo'
-                width={42}
-                height={42}
-              />
-              <strong>Covegg19</strong>
+              <Image src={logo} alt='Covegg19 Logo' width={42} height={42} />
+              <strong>myHomeBoard</strong>
             </a>
           </Link>
         </div>

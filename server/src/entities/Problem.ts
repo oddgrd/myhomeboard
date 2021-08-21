@@ -12,11 +12,11 @@ import {
 @ObjectType()
 @Entity()
 export class Problem extends BaseEntity {
-  @Field()
+  @Field(() => Int)
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Field()
+  @Field(() => Int)
   @Column()
   creatorId!: number;
 
