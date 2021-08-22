@@ -21,7 +21,7 @@ export type Coordinates = {
   color: Scalars['String'];
 };
 
-export type Coords = {
+export type CoordinatesInput = {
   x: Scalars['Int'];
   y: Scalars['Int'];
   color: Scalars['String'];
@@ -31,25 +31,14 @@ export type CreateProblemInput = {
   title: Scalars['String'];
   rules: Scalars['String'];
   grade: Scalars['Int'];
-  coordinates: Coords;
-};
-
-export type FieldError = {
-  __typename?: 'FieldError';
-  field: Scalars['String'];
-  message: Scalars['String'];
+  coordinates: CoordinatesInput;
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
-  register: UserResponse;
+  logout: Scalars['Boolean'];
   createProblem: Problem;
   deleteProblem: Scalars['Boolean'];
-};
-
-
-export type MutationRegisterArgs = {
-  options: UsernamePasswordInput;
 };
 
 
@@ -59,13 +48,13 @@ export type MutationCreateProblemArgs = {
 
 
 export type MutationDeleteProblemArgs = {
-  id: Scalars['Int'];
+  id: Scalars['String'];
 };
 
 export type Problem = {
   __typename?: 'Problem';
-  id: Scalars['Int'];
-  creatorId: Scalars['Int'];
+  id: Scalars['String'];
+  creatorId: Scalars['String'];
   title: Scalars['String'];
   rules: Scalars['String'];
   coordinates: Coordinates;
@@ -87,47 +76,71 @@ export type Query = {
 
 
 export type QueryGetUserByIdArgs = {
-  id: Scalars['Int'];
+  id: Scalars['String'];
 };
 
 
 export type QueryGetProblemArgs = {
-  id: Scalars['Int'];
+  id: Scalars['String'];
 };
 
 export type User = {
   __typename?: 'User';
-  id: Scalars['Int'];
-  username: Scalars['String'];
+  id: Scalars['String'];
+  name: Scalars['String'];
   email: Scalars['String'];
   avatar?: Maybe<Scalars['String']>;
+  googleId: Scalars['String'];
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
 };
 
-export type UserResponse = {
-  __typename?: 'UserResponse';
-  errors?: Maybe<Array<FieldError>>;
-  user?: Maybe<User>;
-};
+export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
-export type UsernamePasswordInput = {
-  email: Scalars['String'];
-  username: Scalars['String'];
-  password: Scalars['String'];
-};
+
+export type LogoutMutation = { __typename?: 'Mutation', logout: boolean };
 
 export type GetProblemsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetProblemsQuery = { __typename?: 'Query', getProblems?: Maybe<Array<{ __typename?: 'Problem', id: number, creatorId: number, title: string, rules: string, grade: Array<number>, rating?: Maybe<Array<number>>, createdAt: string, updatedAt: string, coordinates: { __typename?: 'Coordinates', x: number, y: number, color: string } }>> };
+export type GetProblemsQuery = { __typename?: 'Query', getProblems?: Maybe<Array<{ __typename?: 'Problem', id: string, creatorId: string, title: string, rules: string, grade: Array<number>, rating?: Maybe<Array<number>>, createdAt: string, updatedAt: string, coordinates: { __typename?: 'Coordinates', x: number, y: number, color: string } }>> };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me?: Maybe<{ __typename?: 'User', id: number, username: string, email: string, avatar?: Maybe<string>, createdAt: string, updatedAt: string }> };
+export type MeQuery = { __typename?: 'Query', me?: Maybe<{ __typename?: 'User', id: string, name: string, email: string, avatar?: Maybe<string>, createdAt: string, updatedAt: string }> };
 
 
+export const LogoutDocument = gql`
+    mutation Logout {
+  logout
+}
+    `;
+export type LogoutMutationFn = Apollo.MutationFunction<LogoutMutation, LogoutMutationVariables>;
+
+/**
+ * __useLogoutMutation__
+ *
+ * To run a mutation, you first call `useLogoutMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLogoutMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [logoutMutation, { data, loading, error }] = useLogoutMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<LogoutMutation, LogoutMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument, options);
+      }
+export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
+export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
+export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
 export const GetProblemsDocument = gql`
     query GetProblems {
   getProblems {
@@ -178,7 +191,7 @@ export const MeDocument = gql`
     query Me {
   me {
     id
-    username
+    name
     email
     avatar
     createdAt

@@ -1,0 +1,71 @@
+.form {
+  max-width: 100%;
+  margin: auto;
+  color: var(--theme-page-text);
+
+  h1 {
+    color: var(--theme-color);
+  }
+  label {
+    color: var(--theme-color);
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  input[type='text'],
+  input[type='email'],
+  input[type='password'] {
+    display: block;
+    width: 100%;
+    height: 40px;
+    padding: 5px;
+    font-size: 18px;
+    background: var(--theme-page-foreground);
+    color: var(--theme-page-text-foreground);
+    border: 1px solid var(--theme-page-foreground);
+    border-radius: 2px;
+    &:focus {
+      border: 1px solid var(--theme-color);
+      border-radius: 2px;
+      outline: none;
+      &::placeholder {
+        color: transparent;
+      }
+    }
+  }
+
+  input[type='submit'] {
+    width: 100%;
+    font-size: 18px;
+  }
+  textarea {
+    width: 100%;
+    height: 300px;
+    font-size: 18px;
+    resize: none;
+    padding: 5px;
+    background: var(--theme-page-foreground);
+    color: var(--theme-page-text-foreground);
+    border: 1px solid var(--theme-page-foreground);
+    border-radius: 2px;
+    &:focus {
+      border: 1px solid var(--theme-color);
+      border-radius: 2px;
+      outline: none;
+      &::placeholder {
+        color: transparent;
+      }
+    }
+  }
+}
+.textInput {
+  margin-bottom: 20px;
+}
+
+@media (max-width: 700px) {
+  .form {
+    textarea {
+      height: 200px;
+    }
+  }
+}

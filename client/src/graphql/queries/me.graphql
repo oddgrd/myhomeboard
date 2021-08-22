@@ -1,7 +1,7 @@
 query Me {
   me {
     id
-    username
+    name
     email
     avatar
     createdAt

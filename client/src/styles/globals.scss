@@ -1,11 +1,26 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+:root {
+  --theme-color: #00ddff;
+  --theme-page-background: #161923;
+  --theme-page-foreground: #313649;
+  --theme-page-links: #3696ca;
+  --theme-page-text: #bcbdd0;
+  --theme-page-text-foreground: #c3c4d6;
+  --theme-page-text-secondary: #737480;
+  --theme-box-shadow: none;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
 html,
 body {
-  padding: 0;
-  margin: 0;
   font-family: 'Poppins', sans-serif;
   line-height: 1.8;
+  background: var(--theme-page-background);
 }
 
 a {
@@ -13,8 +28,9 @@ a {
   text-decoration: none;
 }
 
-* {
-  box-sizing: border-box;
+canvas {
+  width: 360px;
+  height: 478px;
 }
 
 @media (max-width: 700px) {
