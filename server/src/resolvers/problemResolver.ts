@@ -20,7 +20,7 @@ export class ProblemResolver {
     @Arg('options') options: CreateProblemInput,
     @Ctx() { req }: Context
   ): Promise<Problem> {
-    const creatorId = req.session.userId;
+    const creatorId = req.session.passport?.user;
     const { title, rules, grade, coordinates } = options;
     return Problem.create({
       title,
@@ -42,7 +42,7 @@ export class ProblemResolver {
     if (!problem) {
       return false;
     }
-    if (problem.creatorId !== req.session.userId) {
+    if (problem.creatorId !== req.session.passport?.user) {
       throw new Error('not authorized');
     }
     await Problem.delete(id);

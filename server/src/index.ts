@@ -15,6 +15,9 @@ import session from 'express-session';
 import connectRedis from 'connect-redis';
 import { UserResolver } from './resolvers/userResolver';
 import { ProblemResolver } from './resolvers/problemResolver';
+import { Strategy } from 'passport-google-oauth20';
+import passport from 'passport';
+import authRoutes from './routes/api/auth';
 
 const main = async () => {
   const connection = await createConnection({
@@ -61,6 +64,50 @@ const main = async () => {
     })
   });
 
+  passport.use(
+    new Strategy(
+      {
+        clientID: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        callbackURL: `http://localhost:4000/api/auth/google/callback`
+      },
+      async (_accessToken, _refreshToken, profile: any, done) => {
+        const user = await User.findOne({ where: { googleId: profile.id } });
+        if (user) {
+          await User.update(
+            { id: user.id },
+            {
+              name: profile.displayName,
+              avatar: profile._json.picture
+            }
+          );
+          done(null, user);
+        } else {
+          try {
+            const newUser = await User.create({
+              name: profile.displayName,
+              email: profile._json.email,
+              avatar: profile._json.picture,
+              googleId: profile.id
+            }).save();
+            done(null, newUser);
+          } catch (error) {
+            done(error);
+          }
+        }
+      }
+    )
+  );
+  passport.serializeUser(function (user: any, done) {
+    done(null, user.id);
+  });
+  passport.deserializeUser((id: string, done) => {
+    console.log('id:', id);
+    User.findOne(id).then((user) => {
+      done(null, user);
+    });
+  });
+
   app.use(
     session({
       name: 'c19',
@@ -76,12 +123,16 @@ const main = async () => {
       }
     })
   );
+
   await apolloServer.start();
   apolloServer.applyMiddleware({ app, cors: false });
 
-  app.get('/', (_req, res) => {
-    res.send('Hello World!');
-  });
+  app.use(passport.initialize());
+  app.use(passport.session());
+
+  // Google oauth routes
+  app.use('/api/auth', authRoutes);
+
   app.listen(4000, () => {
     console.log('App listening on port 4000');
   });

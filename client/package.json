@@ -17,6 +17,7 @@
     "next-apollo": "^5.0.6",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "react-google-button": "^0.7.2",
     "react-icons": "^4.2.0",
     "yup": "^0.32.9"
   },

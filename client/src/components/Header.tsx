@@ -2,7 +2,7 @@ import Link from 'next/link';
 import styles from '../styles/Header.module.scss';
 import Image from 'next/image';
 import { FaPlus, FaSignOutAlt } from 'react-icons/fa';
-import logo from '../public/Logo-klatreapp.svg';
+import logo from '../../public/Logo-klatreapp.svg';
 
 export const Header = () => {
   return (

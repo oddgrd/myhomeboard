@@ -17,14 +17,11 @@ export class User extends BaseEntity {
 
   @Field()
   @Column()
-  username!: string;
+  name!: string;
 
   @Field()
   @Column({ unique: true })
   email!: string;
-
-  @Column()
-  password!: string;
 
   @Field({ nullable: true })
   @Column({ nullable: true })
@@ -32,6 +29,10 @@ export class User extends BaseEntity {
 
   // @OneToMany(() => Problem, (problem) => problem.creator)
   // problems: Problem[];
+
+  @Field()
+  @Column()
+  googleId!: string;
 
   @Field(() => String)
   @CreateDateColumn()
