@@ -18,11 +18,9 @@ import { ProblemResolver } from './resolvers/problemResolver';
 
 const main = async () => {
   const connection = await createConnection({
-    applicationName: 'covegg19_v2',
+    applicationName: 'myhomeboard',
     type: 'postgres',
-    database: 'covegg19_1',
-    username: 'postgres',
-    password: 'postgres',
+    url: process.env.DATABASE_URL,
     entities: [User, Problem, Board],
     migrations: [path.join(__dirname, './migrations/*')],
     logging: true,

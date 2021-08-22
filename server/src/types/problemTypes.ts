@@ -14,7 +14,7 @@ export class Coordinates {
 
 // ObjectType cant be used as input
 @InputType()
-export class Coords {
+export class CoordinatesInput {
   @Field(() => Int)
   x: number;
 
@@ -36,6 +36,6 @@ export class CreateProblemInput {
   @Field(() => Int)
   grade: number;
 
-  @Field(() => Coords)
-  coordinates: Coords;
+  @Field(() => CoordinatesInput)
+  coordinates: CoordinatesInput;
 }

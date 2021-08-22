@@ -12,13 +12,13 @@ import {
 @ObjectType()
 @Entity()
 export class Problem extends BaseEntity {
-  @Field(() => Int)
-  @PrimaryGeneratedColumn()
-  id!: number;
+  @Field()
+  @PrimaryGeneratedColumn('uuid')
+  id!: string;
 
-  @Field(() => Int)
+  @Field()
   @Column()
-  creatorId!: number;
+  creatorId!: string;
 
   @Field()
   @Column()

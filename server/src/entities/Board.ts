@@ -12,15 +12,15 @@ import {
 @Entity()
 export class Board extends BaseEntity {
   @Field()
-  @PrimaryGeneratedColumn()
-  id!: number;
+  @PrimaryGeneratedColumn('uuid')
+  id!: string;
 
   @Field()
   @Column()
   title!: string;
 
   @Field()
-  @Column({ unique: true })
+  @Column()
   creatorId!: string;
 
   @Field()

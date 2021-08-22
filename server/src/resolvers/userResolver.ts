@@ -33,6 +33,7 @@ export class UserResolver {
       password: hashedPassword
     }).save();
 
+    // Persist user in express session
     req.session.userId = newUser.id;
     return { user: newUser };
   }
@@ -77,9 +78,7 @@ export class UserResolver {
 
   // Get user by ID
   @Query(() => User, { nullable: true })
-  async getUserById(
-    @Arg('id', () => Int) id: number
-  ): Promise<User | undefined> {
+  async getUserById(@Arg('id') id: string): Promise<User | undefined> {
     return User.findOne(id);
   }
 

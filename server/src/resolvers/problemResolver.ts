@@ -2,7 +2,6 @@ import { isAuth } from '../middleware/isAuth';
 import {
   Arg,
   Ctx,
-  Int,
   Mutation,
   Query,
   Resolver,
@@ -36,7 +35,7 @@ export class ProblemResolver {
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
   async deleteProblem(
-    @Arg('id', () => Int) id: number,
+    @Arg('id') id: string,
     @Ctx() { req }: Context
   ): Promise<boolean> {
     const problem = await Problem.findOne(id);
@@ -60,7 +59,7 @@ export class ProblemResolver {
 
   // Get problem by ID
   @Query(() => Problem, { nullable: true })
-  async getProblem(@Arg('id', () => Int) id: number): Promise<Problem | null> {
+  async getProblem(@Arg('id') id: string): Promise<Problem | null> {
     const problem = await Problem.findOne(id);
     if (!problem) {
       return null;
