@@ -1,6 +1,6 @@
 import { User } from '../entities/User';
 // import { validateRegister } from '../utils/validateRegister';
-import { Arg, Ctx, Query, Resolver } from 'type-graphql';
+import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 import { Context } from '../types/context';
 // import { UsernamePasswordInput, UserResponse } from '../types/userTypes';
 // import argon2 from 'argon2';
@@ -72,7 +72,11 @@ export class UserResolver {
   // Confirm logged in
   @Query(() => User, { nullable: true })
   async me(@Ctx() { req }: Context): Promise<User | null> {
-    if (!req.session.passport?.user) return null;
+    if (!req.session.passport?.user) {
+      console.log('no passport?:', req.session);
+      return null;
+    }
+    console.log('passport?:', req.session);
     const user = await User.findOne(req.session.passport.user);
     if (!user) return null;
     return user;
@@ -92,5 +96,21 @@ export class UserResolver {
     const users = await User.find();
     if (!users) return null;
     return users;
+  }
+
+  // Log out
+  @Mutation(() => Boolean)
+  async logout(@Ctx() { req, res }: Context) {
+    return new Promise((resolve) =>
+      req.session.destroy((error) => {
+        if (error) {
+          console.log(error);
+          resolve(false);
+          return;
+        }
+        res.clearCookie('mhb');
+        resolve(true);
+      })
+    );
   }
 }
