@@ -1,5 +1,5 @@
 .form {
-  max-width: 100%;
+  width: 345px;
   margin: auto;
   color: var(--theme-page-text);
 
@@ -9,7 +9,7 @@
   label {
     color: var(--theme-color);
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
   }
 
   input[type='text'],
@@ -67,5 +67,6 @@
     textarea {
       height: 200px;
     }
+    width: 90%;
   }
 }

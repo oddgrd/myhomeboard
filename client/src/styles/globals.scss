@@ -21,16 +21,12 @@ body {
   font-family: 'Poppins', sans-serif;
   line-height: 1.8;
   background: var(--theme-page-background);
+  color: var(--theme-page-text);
 }
 
 a {
   color: inherit;
   text-decoration: none;
-}
-
-canvas {
-  width: 360px;
-  height: 478px;
 }
 
 @media (max-width: 700px) {
