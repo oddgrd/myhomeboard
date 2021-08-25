@@ -1,7 +1,5 @@
 .header {
   width: 100%;
-  background: var(--theme-page-background);
-  color: var(--theme-page-text);
   height: 60px;
 }
 
@@ -14,9 +12,9 @@
   justify-content: space-between;
   align-items: center;
   a {
-    color: var(--theme-page-text);
+    color: var(--theme-color);
     &:hover {
-      color: var(--theme-page-text);
+      color: var(--theme-links);
     }
   }
   ul {
@@ -24,6 +22,7 @@
     align-items: center;
     justify-content: center;
     list-style: none;
+    gap: 1rem;
   }
 }
 .logo {
@@ -31,6 +30,10 @@
   justify-content: center;
   align-items: center;
   font-size: 28px;
+  strong {
+    color: #00ddff;
+    margin-left: 0.3rem;
+  }
 }
 .switch {
   display: flex;
@@ -42,5 +45,13 @@
   }
   .container {
     padding: 0 15px;
+  }
+  .header {
+    height: 70px;
+  }
+  .logo {
+    img {
+      width: 52px;
+    }
   }
 }

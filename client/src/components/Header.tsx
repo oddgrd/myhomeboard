@@ -26,7 +26,7 @@ export const Header = () => {
       <>
         <li>
           <Link href='/create-problem'>
-            <a className='btn-secondary btn-icon'>
+            <a className='btn btn-link btn-icon'>
               <FaPlus />
               <span className={styles.hide}>Create Problem</span>
             </a>
@@ -35,13 +35,13 @@ export const Header = () => {
 
         <li>
           <button
-            className='btn-secondary btn-icon'
+            className='btn btn-link btn-icon'
             onClick={async () => await logout()}
           >
             <FaSignOutAlt /> <span className={styles.hide}>Logout</span>
           </button>
         </li>
-        <li>{data.me?.name} </li>
+        {/* <li>{data.me?.name} </li> */}
       </>
     );
   }
@@ -53,7 +53,7 @@ export const Header = () => {
           <Link href='/'>
             <a className={styles.logo}>
               <Image src={logo} alt='Covegg19 Logo' width={42} height={42} />
-              <strong>myHomeBoard</strong>
+              <strong className={styles.hide}>myHomeBoard</strong>
             </a>
           </Link>
         </div>

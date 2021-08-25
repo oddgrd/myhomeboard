@@ -1,10 +1,12 @@
 .form {
-  width: 345px;
+  width: 324px;
+  height: 478px;
   margin: auto;
-  color: var(--theme-page-text);
-
+  color: var(--theme-text);
   h1 {
     color: var(--theme-color);
+    margin-bottom: 1rem;
+    text-align: center;
   }
   label {
     color: var(--theme-color);
@@ -20,9 +22,9 @@
     height: 40px;
     padding: 5px;
     font-size: 18px;
-    background: var(--theme-page-foreground);
-    color: var(--theme-page-text-foreground);
-    border: 1px solid var(--theme-page-foreground);
+    background: var(--theme-foreground);
+    color: var(--theme-text-foreground);
+    border: 1px solid var(--theme-foreground);
     border-radius: 2px;
     &:focus {
       border: 1px solid var(--theme-color);
@@ -37,6 +39,7 @@
   input[type='submit'] {
     width: 100%;
     font-size: 18px;
+    margin-top: 83px;
   }
   textarea {
     width: 100%;
@@ -44,9 +47,9 @@
     font-size: 18px;
     resize: none;
     padding: 5px;
-    background: var(--theme-page-foreground);
-    color: var(--theme-page-text-foreground);
-    border: 1px solid var(--theme-page-foreground);
+    background: var(--theme-foreground);
+    color: var(--theme-text-foreground);
+    border: 1px solid var(--theme-foreground);
     border-radius: 2px;
     &:focus {
       border: 1px solid var(--theme-color);
@@ -59,14 +62,19 @@
   }
 }
 .textInput {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
+}
+.selectContainer {
+  display: flex;
+  gap: 10px;
+  width: 100%;
 }
 
 @media (max-width: 700px) {
   .form {
+    margin-top: 3.2rem;
     textarea {
       height: 200px;
     }
-    width: 90%;
   }
 }

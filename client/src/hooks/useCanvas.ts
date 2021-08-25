@@ -8,7 +8,7 @@ export interface Coords {
 
 export const useCanvas = () => {
   const canvas = useRef<HTMLCanvasElement>();
-  const coordsRef = useRef<Array<Coords>>([]);
+  const coordsRef = useRef<Coords[]>([]);
   const [currentColor, setCurrentColor] = useState('#00FF00');
   const lineWidth = 2.2;
   const selectedColor = useRef('#00FF00');
@@ -26,6 +26,7 @@ export const useCanvas = () => {
 
     [lastX.current, lastY.current] = [event.offsetX, event.offsetY];
   }, []);
+
   const draw = useCallback(
     (e: any) => {
       if (!ctx.current) return;
@@ -49,7 +50,7 @@ export const useCanvas = () => {
     const ratio = Math.ceil(window.devicePixelRatio) || 1;
     if (canvas && canvas.current && ctx && ctx.current) {
       canvas.current.addEventListener('click', draw);
-      canvas.current.width = 360 * ratio;
+      canvas.current.width = 350 * ratio;
       canvas.current.height = 478 * ratio;
       canvas.current.style.width = `${350}px`;
       canvas.current.style.height = `${478}px`;
@@ -57,11 +58,12 @@ export const useCanvas = () => {
       ctx.current.setTransform(ratio, 0, 0, ratio, 0, 0);
     }
   }, [draw]);
+
   const initViewer = useCallback(() => {
     ctx.current = canvas?.current?.getContext('2d');
     const ratio = Math.ceil(window.devicePixelRatio) || 1;
     if (canvas && canvas.current && ctx && ctx.current) {
-      canvas.current.width = 360 * ratio;
+      canvas.current.width = 350 * ratio;
       canvas.current.height = 478 * ratio;
       canvas.current.style.width = `${350}px`;
       canvas.current.style.height = `${478}px`;
@@ -101,10 +103,11 @@ export const useCanvas = () => {
       ctx.current.stroke();
     });
   }, []);
+
   return [
     {
       canvas,
-      currentColor,
+      selectedColor,
       coords: coordsRef
     },
     {

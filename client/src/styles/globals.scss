@@ -1,12 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
 :root {
   --theme-color: #00ddff;
-  --theme-page-background: #161923;
-  --theme-page-foreground: #313649;
-  --theme-page-links: #3696ca;
-  --theme-page-text: #bcbdd0;
-  --theme-page-text-foreground: #c3c4d6;
-  --theme-page-text-secondary: #737480;
+  --theme-background: #161923;
+  --theme-foreground: #313649;
+  --theme-foreground-hover: #3e445e;
+  --theme-links: #287097;
+  --theme-text: #bcbdd0;
+  --theme-text-foreground: #c3c4d6;
+  --theme-text-secondary: #737480;
   --theme-box-shadow: none;
 }
 
@@ -20,13 +22,50 @@ html,
 body {
   font-family: 'Poppins', sans-serif;
   line-height: 1.8;
-  background: var(--theme-page-background);
-  color: var(--theme-page-text);
+  background: var(--theme-background);
+  color: var(--theme-text);
 }
 
 a {
   color: inherit;
   text-decoration: none;
+}
+.canvas {
+  cursor: pointer;
+}
+.btn {
+  display: flex;
+  align-items: center;
+  background: none;
+  color: var(--theme-color);
+  padding: 12px;
+  cursor: pointer;
+  border: 1px solid var(--theme-color);
+  border-radius: 2px;
+  font-size: 18px;
+
+  &:hover {
+    opacity: 0.9;
+  }
+  &:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+  &.btn-link {
+    border: none;
+  }
+  &.btn-icon {
+    svg {
+      margin-right: 5px;
+    }
+  }
+  &.btn-undo {
+    box-shadow: inset 0px 0px 0px 2px #00ddff;
+    border: none;
+    border-radius: 50%;
+    width: 41.5px;
+    height: 41.5px;
+  }
 }
 
 @media (max-width: 700px) {
