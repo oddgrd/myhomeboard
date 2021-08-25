@@ -49,7 +49,7 @@ const selectStyle: StylesConfig<Option, IsMulti> = {
 export const SelectField = ({ label, options, ...props }: Props) => {
   const [field, meta, helpers] = useField(props);
   const { setValue } = helpers;
-  const { width, height } = useWindowDimensions();
+  const { height } = useWindowDimensions();
   return (
     <div className={styles.textInput}>
       <label htmlFor={props.name}>{label}</label>

@@ -73,6 +73,12 @@
 @media (max-width: 700px) {
   .form {
     margin-top: 3.2rem;
+    height: auto;
+    input[type='submit'] {
+      width: 100%;
+      font-size: 18px;
+      margin-top: 10px;
+    }
     textarea {
       height: 200px;
     }

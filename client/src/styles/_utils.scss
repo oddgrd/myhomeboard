@@ -1,0 +1,36 @@
+.btn {
+  display: flex;
+  align-items: center;
+  background: none;
+  color: var(--theme-color);
+  padding: 12px;
+  cursor: pointer;
+  border: 1px solid var(--theme-color);
+  border-radius: 2px;
+  font-size: 18px;
+
+  &:hover {
+    opacity: 0.9;
+  }
+  &:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+  &.btn-link {
+    border: none;
+  }
+  &.btn-icon {
+    svg {
+      margin-right: 5px;
+    }
+  }
+  &.btn-undo {
+    box-shadow: inset 0px 0px 0px 2px #00ddff;
+    border: none;
+    border-radius: 50%;
+    width: 41.5px;
+    height: 41.5px;
+  }
+}
+@media (max-width: 700px) {
+}

@@ -1,5 +1,6 @@
 import GoogleButton from 'react-google-button';
 import { Layout } from '../components/Layout';
+import styles from '../styles/Login.module.scss';
 
 const Login = () => {
   const handleLogin = () => {
@@ -8,7 +9,11 @@ const Login = () => {
 
   return (
     <Layout title='Login'>
-      <GoogleButton onClick={handleLogin} />
+      <div className={styles.login}>
+        <h1>Register or Sign In</h1>
+        <GoogleButton onClick={handleLogin} />
+        <i>*Only preapproved google accounts are currently able to register</i>
+      </div>
     </Layout>
   );
 };
