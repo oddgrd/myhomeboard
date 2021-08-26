@@ -48,7 +48,7 @@ export class Problem extends BaseEntity {
   @ManyToOne(() => User, (user) => user.problems)
   creator: User;
 
-  @Field(() => [Ascent], { nullable: true })
+  @Field(() => [Ascent])
   @OneToMany(() => Ascent, (ascent) => ascent.problem)
   ascents: Ascent[];
 

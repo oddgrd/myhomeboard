@@ -39,3 +39,21 @@ export class CreateProblemInput {
   @Field(() => CoordinatesInput)
   coordinates: CoordinatesInput;
 }
+
+@InputType()
+export class AddAscentInput {
+  @Field()
+  problemId!: string;
+
+  @Field(() => Int)
+  grade!: number;
+
+  @Field(() => Int)
+  rating!: number;
+
+  @Field(() => Int)
+  attempts!: number;
+
+  @Field({ nullable: true })
+  comment: string;
+}
