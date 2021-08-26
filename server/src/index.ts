@@ -18,13 +18,14 @@ import { ProblemResolver } from './resolvers/problemResolver';
 import { Strategy } from 'passport-google-oauth20';
 import passport from 'passport';
 import authRoutes from './routes/api/auth';
+import { Ascent } from './entities/Ascent';
 
 const main = async () => {
   const connection = await createConnection({
     applicationName: 'myhomeboard',
     type: 'postgres',
     url: process.env.DATABASE_URL,
-    entities: [User, Problem, Board],
+    entities: [User, Problem, Board, Ascent],
     migrations: [path.join(__dirname, './migrations/*')],
     logging: true,
     synchronize: true
@@ -110,7 +111,7 @@ const main = async () => {
 
   app.use(
     session({
-      name: 'c19',
+      name: 'mhb',
       secret: process.env.SESSION_SECRET,
       resave: false,
       saveUninitialized: false,

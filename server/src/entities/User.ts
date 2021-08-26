@@ -4,9 +4,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm';
+import { Ascent } from './Ascent';
+import { Problem } from './Problem';
 
 @ObjectType()
 @Entity()
@@ -27,12 +30,15 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   avatar: string;
 
-  // @OneToMany(() => Problem, (problem) => problem.creator)
-  // problems: Problem[];
-
   @Field()
   @Column()
   googleId!: string;
+
+  @OneToMany(() => Problem, (problem) => problem.creator)
+  problems: Problem[];
+
+  @OneToMany(() => Ascent, (ascent) => ascent.user)
+  ascents: Ascent[];
 
   @Field(() => String)
   @CreateDateColumn()

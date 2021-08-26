@@ -5,9 +5,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm';
+import { User } from './User';
+import { Ascent } from './Ascent';
 
 @ObjectType()
 @Entity()
@@ -17,7 +21,7 @@ export class Problem extends BaseEntity {
   id!: string;
 
   @Field()
-  @Column()
+  @Column({ type: 'uuid' })
   creatorId!: string;
 
   @Field()
@@ -40,12 +44,16 @@ export class Problem extends BaseEntity {
   @Column({ type: 'int', array: true, nullable: true })
   rating: number[];
 
+  @Field()
+  @ManyToOne(() => User, (user) => user.problems)
+  creator: User;
+
+  @Field(() => [Ascent], { nullable: true })
+  @OneToMany(() => Ascent, (ascent) => ascent.problem)
+  ascents: Ascent[];
+
   // @Field(() => Int, { nullable: true })
   // sendStatus: number | null;
-
-  // @Field()
-  // @ManyToOne(() => User, (user) => user.problems)
-  // creator: User;
 
   // @Field()
   // @OneToOne(() => Board)

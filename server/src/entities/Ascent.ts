@@ -1,0 +1,63 @@
+import { Field, Int, ObjectType } from 'type-graphql';
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn
+} from 'typeorm';
+import { Problem } from './Problem';
+import { User } from './User';
+
+@ObjectType()
+@Entity()
+export class Ascent extends BaseEntity {
+  @Field()
+  @PrimaryColumn({ type: 'uuid' })
+  userId!: string;
+
+  @Field()
+  @PrimaryColumn({ type: 'uuid' })
+  postId!: string;
+
+  @Field(() => Int)
+  @Column()
+  attempts!: number;
+
+  @Field(() => Int)
+  @Column({ type: 'int' })
+  grade!: number;
+
+  @Field(() => Int)
+  @Column({ type: 'int' })
+  rating!: number;
+
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
+  comment: string;
+
+  @Field(() => Problem)
+  @ManyToOne(() => Problem, (problem) => problem.ascents)
+  problem: Problem;
+
+  @Field(() => User)
+  @ManyToOne(() => User, (user) => user.ascents)
+  user: User;
+
+  // @Field()
+  // @OneToOne(() => Board)
+  // @JoinColumn()
+  // board: Board;
+
+  @Field(() => String)
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @Field(() => String)
+  @UpdateDateColumn()
+  updatedAt: Date;
+}
