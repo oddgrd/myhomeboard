@@ -1,14 +1,17 @@
 .login {
   display: flex;
+  margin: auto;
   flex-direction: column;
   align-items: center;
   text-align: center;
+  width: 300px;
   h1 {
     margin-top: 2rem;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
     color: var(--theme-color);
   }
   i {
     margin-top: 0.3rem;
+    font-size: 15px;
   }
 }

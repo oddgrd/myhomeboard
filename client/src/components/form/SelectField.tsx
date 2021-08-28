@@ -5,7 +5,7 @@ import useWindowDimensions from '../../hooks/useWindowDimensions';
 
 type Option = {
   label: string;
-  value: string;
+  value: number;
 };
 type IsMulti = false;
 

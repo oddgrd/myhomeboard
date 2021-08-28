@@ -1,0 +1,17 @@
+mutation CreateProblem($createProblemOptions: CreateProblemInput!) {
+  createProblem(options: $createProblemOptions) {
+    id
+    creatorId
+    title
+    rules
+    grade
+    rating
+    createdAt
+    updatedAt
+    coordinates {
+      x
+      y
+      color
+    }
+  }
+}
