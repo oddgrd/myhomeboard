@@ -38,9 +38,9 @@ export class Ascent extends BaseEntity {
   @Column({ type: 'int' })
   rating!: number;
 
-  @Field(() => String, { nullable: true })
-  @Column({ nullable: true })
-  comment: string;
+  @Field(() => String)
+  @Column()
+  comment!: string;
 
   @Field(() => Problem)
   @ManyToOne(() => Problem, (problem) => problem.ascents)

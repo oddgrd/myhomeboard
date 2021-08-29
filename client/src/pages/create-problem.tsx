@@ -1,25 +1,26 @@
 import { Layout } from '../components/Layout';
 import styles from '../styles/CreateProblem.module.scss';
-import { FaPencilAlt } from 'react-icons/fa';
+import { Toolbar } from '../components/Toolbar';
 import { Canvas } from '../components/Canvas';
 import { useCanvas } from '../hooks/useCanvas';
 import { useEffect } from 'react';
 import { ProblemForm } from '../components/form/ProblemForm';
+import { useCreateProblemMutation } from '../generated/graphql';
 
 const CreateProblem = () => {
-  const [{ canvas, coords }, { init, handleColor, undo }] = useCanvas();
+  const [{ canvas, coords, selectedColor }, { init, handleColor, undo }] =
+    useCanvas();
+
+  const toolbarProps = { handleColor, undo };
 
   useEffect(() => {
     if (!init) return;
     init();
   }, [init]);
-  const array = ['1', '2', '#'];
+  //"https://res.cloudinary.com/dqyhbqh0x/image/upload/c_scale,h_717,q_100,w_540/v1628264532/covegg19-0_1_0_ziflc1.jpg"
   return (
     <Layout title='Create Problem'>
       <div className={styles.createProblem}>
-        <h1>
-          <FaPencilAlt /> Create Problem
-        </h1>
         <div className={styles.editor}>
           <div
             className={styles.board}
@@ -28,9 +29,9 @@ const CreateProblem = () => {
             }}
           >
             <Canvas canvasRef={canvas} />
+            <Toolbar {...toolbarProps} />
           </div>
-
-          <ProblemForm />
+          <ProblemForm coords={coords?.current} />
         </div>
       </div>
     </Layout>
