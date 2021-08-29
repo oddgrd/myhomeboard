@@ -1,0 +1,12 @@
+mutation CreateBoardLayout(
+  $file: Upload!
+  $title: String!
+  $description: String!
+) {
+  createBoardLayout(file: $file, title: $title, description: $description) {
+    title
+    description
+    url
+    creatorId
+  }
+}

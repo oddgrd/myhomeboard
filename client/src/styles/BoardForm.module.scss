@@ -1,5 +1,5 @@
 .boardForm {
-  width: 324px;
+  width: 500px;
   height: 478px;
   margin: auto;
   color: var(--theme-text);
@@ -14,14 +14,13 @@
     margin-bottom: 4px;
   }
 
-  input[type='text'],
-  input[type='email'],
-  input[type='password'] {
+  input[type='text'] {
     display: block;
     width: 100%;
     height: 40px;
     padding: 5px;
     font-size: 18px;
+    margin-bottom: 1rem;
     background: var(--theme-foreground);
     color: var(--theme-text-foreground);
     border: 1px solid var(--theme-foreground);
@@ -35,16 +34,11 @@
       }
     }
   }
-
-  input[type='submit'] {
-    width: 100%;
-    font-size: 18px;
-    margin-top: 83px;
-  }
   textarea {
     width: 100%;
     height: 100px;
     font-size: 18px;
+    margin-bottom: 1rem;
     resize: none;
     padding: 5px;
     background: var(--theme-foreground);
@@ -61,20 +55,21 @@
     }
   }
 }
-.textInput {
-  margin-bottom: 15px;
-}
-.selectContainer {
-  display: flex;
-  gap: 10px;
-  width: 100%;
-}
+
 .dropZone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
   margin: 1rem 0;
   border: 2px dashed var(--theme-color);
   padding: 1rem;
-  text-align: center;
   cursor: pointer;
+  min-height: 100px;
 }
 @media (max-width: 700px) {
+  .boardForm {
+    width: 324px;
+    height: 478px;
+  }
 }

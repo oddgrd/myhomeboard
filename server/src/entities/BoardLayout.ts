@@ -10,7 +10,7 @@ import {
 
 @ObjectType()
 @Entity()
-export class Board extends BaseEntity {
+export class BoardLayout extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn('uuid')
   id!: string;

@@ -1,14 +1,14 @@
 import { Layout } from '../components/Layout';
 import styles from '../styles/CreateProblem.module.scss';
-import { BoardForm } from '../components/form/BoardForm';
+import { BoardLayoutForm } from '../components/form/BoardLayoutForm';
 
-const CreateBoard = () => {
+const CreateBoardLayout = () => {
   return (
     <Layout title='Create Board'>
       <div className={styles.createProblem}>
-        <BoardForm />
+        <BoardLayoutForm />
       </div>
     </Layout>
   );
 };
-export default CreateBoard;
+export default CreateBoardLayout;

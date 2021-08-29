@@ -1,36 +1,36 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useCreateBoardMutation } from '../../generated/graphql';
+import { useCreateBoardLayoutMutation } from '../../generated/graphql';
 import { useDropzone } from 'react-dropzone';
 import styles from '../../styles/BoardForm.module.scss';
-export const BoardForm = () => {
-  const [boardData, setBoardData] = useState({
+export const BoardLayoutForm = () => {
+  const [layoutData, setLayoutData] = useState({
     title: '',
     description: '',
     file: null
   });
-  const [createBoard] = useCreateBoardMutation();
+  const [createBoardLayout] = useCreateBoardLayoutMutation();
 
   const onDrop = useCallback(
     (acceptedFiles) => {
-      setBoardData({ ...boardData, file: acceptedFiles[0] });
+      setLayoutData({ ...layoutData, file: acceptedFiles[0] });
     },
-    [boardData]
+    [layoutData]
   );
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   const handleFile = (e: any) => {
-    setBoardData({ ...boardData, file: e.target.files[0] });
+    setLayoutData({ ...layoutData, file: e.target.files[0] });
   };
   const handleChange = (e: any) =>
-    setBoardData({ ...boardData, [e.target.name]: e.target.value });
+    setLayoutData({ ...layoutData, [e.target.name]: e.target.value });
   const handleClick = async (e: any) => {
     e.preventDefault();
-    console.log(boardData);
-    const { errors } = await createBoard({
+    console.log(layoutData);
+    const { errors } = await createBoardLayout({
       variables: {
-        title: boardData.title,
-        description: boardData.description,
-        file: boardData.file
+        title: layoutData.title,
+        description: layoutData.description,
+        file: layoutData.file
       }
     });
     if (errors) console.log(errors);
@@ -38,7 +38,7 @@ export const BoardForm = () => {
 
   return (
     <div className={styles.boardForm}>
-      <h1>Add New Board</h1>
+      <h1>Add New Layout</h1>
 
       <label htmlFor='title'>
         {' '}
@@ -46,7 +46,7 @@ export const BoardForm = () => {
         <input
           type='text'
           name='title'
-          placeholder='Board title'
+          placeholder='Layout title'
           onChange={handleChange}
           required
         />
@@ -56,7 +56,7 @@ export const BoardForm = () => {
         Description
         <textarea
           name='description'
-          placeholder='Board description'
+          placeholder='Brief description of layout changes'
           onChange={handleChange}
           maxLength={150}
           required
@@ -67,8 +67,8 @@ export const BoardForm = () => {
         <input {...getInputProps()} />
         {isDragActive ? (
           <p>Drop the file here ...</p>
-        ) : boardData.file ? (
-          <p>{(boardData.file as any).name}</p>
+        ) : layoutData.file ? (
+          <p>{(layoutData.file as any).name}</p>
         ) : (
           <p>Drag {"'n'"} drop your file here, or click to select file</p>
         )}
@@ -77,7 +77,7 @@ export const BoardForm = () => {
         onClick={handleClick}
         className='btn btn-submit'
         value='Add Board'
-        disabled={!boardData.file}
+        disabled={!layoutData.file}
       >
         Save Board
       </button>

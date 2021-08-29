@@ -3,10 +3,10 @@ import 'dotenv-safe/config';
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
-import { BoardResolver } from './resolvers/boardResolver';
+import { BoardLayoutResolver } from './resolvers/boardLayoutResolver';
 import cors from 'cors';
 import { createConnection } from 'typeorm';
-import { Board } from './entities/Board';
+import { BoardLayout } from './entities/BoardLayout';
 import { Problem } from './entities/Problem';
 import { User } from './entities/User';
 import path from 'path';
@@ -26,7 +26,7 @@ const main = async () => {
     applicationName: 'myhomeboard',
     type: 'postgres',
     url: process.env.DATABASE_URL,
-    entities: [User, Problem, Board, Ascent],
+    entities: [User, Problem, BoardLayout, Ascent],
     migrations: [path.join(__dirname, './migrations/*')],
     logging: true,
     synchronize: true
@@ -57,7 +57,7 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [UserResolver, ProblemResolver, BoardResolver],
+      resolvers: [UserResolver, ProblemResolver, BoardLayoutResolver],
       validate: false
     }),
     context: ({ req, res }) => ({
