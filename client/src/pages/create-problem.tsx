@@ -5,7 +5,6 @@ import { Canvas } from '../components/Canvas';
 import { useCanvas } from '../hooks/useCanvas';
 import { useEffect } from 'react';
 import { ProblemForm } from '../components/form/ProblemForm';
-import { useCreateProblemMutation } from '../generated/graphql';
 
 const CreateProblem = () => {
   const [{ canvas, coords, selectedColor }, { init, handleColor, undo }] =

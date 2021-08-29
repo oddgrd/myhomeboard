@@ -36,8 +36,8 @@ export class CreateProblemInput {
   @Field(() => Int)
   grade: number;
 
-  @Field(() => CoordinatesInput)
-  coordinates: CoordinatesInput;
+  @Field(() => [CoordinatesInput])
+  coordinates: CoordinatesInput[];
 }
 
 @InputType()

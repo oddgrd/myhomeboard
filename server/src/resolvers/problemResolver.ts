@@ -27,19 +27,19 @@ export class ProblemResolver {
     return Problem.create({
       title,
       rules,
-      grade: [grade],
+      grade,
       coordinates,
       creatorId
     }).save();
   }
 
   // Create ascent and add to problem
-  @Mutation(() => Ascent, { nullable: true })
+  @Mutation(() => Problem, { nullable: true })
   @UseMiddleware(isAuth)
   async addAscent(
     @Arg('options') options: AddAscentInput,
     @Ctx() { req }: Context
-  ): Promise<Ascent | null> {
+  ): Promise<Problem | null> {
     const userId = req.session.passport?.user;
     const { rating, grade, attempts, comment, problemId } = options;
 
@@ -48,21 +48,22 @@ export class ProblemResolver {
     if (!problem) {
       return null;
     }
-
-    const oldAscent = await Ascent.findOne({ where: { problemId, userId } });
-    if (oldAscent) {
+    const alreadyAscended = await Ascent.findOne({
+      where: { problemId, userId }
+    });
+    if (alreadyAscended) {
       return null;
     }
-    const ascent = await Ascent.create({
-      userId,
-      problemId,
-      grade,
-      attempts,
-      rating,
-      comment
-    }).save();
 
-    return ascent;
+    await await getConnection().query(
+      `
+        INSERT INTO ascent ("userId", "problemId", grade, attempts, rating, comment)
+        VALUES ($1, $2, $3, $4, $5, $6)
+      `,
+      [userId, problemId, grade, attempts, rating, comment]
+    );
+
+    return problem;
   }
 
   @Query(() => [Ascent], { nullable: true })
@@ -93,7 +94,7 @@ export class ProblemResolver {
   // Get all problems
   @Query(() => [Problem], { nullable: true })
   async getProblems(): Promise<Problem[] | null> {
-    const problems = await Problem.find({ relations: ['ascents', 'creator'] });
+    const problems = await Problem.find({ relations: ['creator'] });
     if (!problems) return null;
     return problems;
   }
@@ -101,10 +102,6 @@ export class ProblemResolver {
   // Get problem by ID
   @Query(() => Problem, { nullable: true })
   async getProblem(@Arg('id') id: string): Promise<Problem | null> {
-    // const problem = await Problem.findOne({
-    //   where: { id: id },
-    //   relations: ['creator', 'ascents']
-    // });
     const problem = await getConnection()
       .createQueryBuilder(Problem, 'problem')
       .leftJoinAndSelect('problem.ascents', 'ascent')

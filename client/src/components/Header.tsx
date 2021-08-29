@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import styles from '../styles/Header.module.scss';
 import Image from 'next/image';
-import { FaPlus, FaSignOutAlt, FaSignInAlt } from 'react-icons/fa';
+import { FaPlus, FaSignOutAlt, FaSignInAlt, FaSearch } from 'react-icons/fa';
 import logo from '../../public/Logo-klatreapp.svg';
 import { useLogoutMutation, useMeQuery } from '../generated/graphql';
 
@@ -24,6 +24,14 @@ export const Header = () => {
   } else {
     body = (
       <>
+        <li>
+          <Link href='/problems'>
+            <a className='btn btn-link btn-icon'>
+              <FaSearch />
+              <span className={styles.hide}>Browse Problems</span>
+            </a>
+          </Link>
+        </li>
         <li>
           <Link href='/create-problem'>
             <a className='btn btn-link btn-icon'>

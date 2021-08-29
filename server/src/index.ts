@@ -31,6 +31,7 @@ const main = async () => {
     logging: true,
     synchronize: true
   });
+  // await connection.runMigrations();
   const app = express();
 
   const devWhitelist = [

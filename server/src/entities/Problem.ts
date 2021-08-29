@@ -32,17 +32,17 @@ export class Problem extends BaseEntity {
   @Column()
   rules!: string;
 
-  @Field(() => Coordinates)
+  @Field(() => [Coordinates])
   @Column({ type: 'jsonb' })
-  coordinates!: Coordinates;
+  coordinates!: [Coordinates];
 
-  @Field(() => [Int])
-  @Column({ type: 'int', array: true })
-  grade!: number[];
+  @Field(() => Int)
+  @Column({ type: 'int' })
+  grade!: number;
 
-  @Field(() => [Int], { nullable: true })
-  @Column({ type: 'int', array: true, nullable: true })
-  rating: number[];
+  @Field(() => Int, { nullable: true })
+  @Column({ type: 'int', nullable: true })
+  rating: number;
 
   @Field()
   @ManyToOne(() => User, (user) => user.problems)
