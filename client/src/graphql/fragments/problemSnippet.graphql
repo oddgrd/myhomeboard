@@ -1,0 +1,13 @@
+fragment ProblemSnippet on Problem {
+  id
+  title
+  grade
+  rating
+  creatorId
+  createdAt
+  updatedAt
+  creator {
+    id
+    name
+  }
+}

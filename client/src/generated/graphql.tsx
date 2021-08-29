@@ -108,8 +108,8 @@ export type Problem = {
   title: Scalars['String'];
   rules: Scalars['String'];
   coordinates: Array<Coordinates>;
-  grade: Array<Scalars['Int']>;
-  rating?: Maybe<Array<Scalars['Int']>>;
+  grade: Scalars['Int'];
+  rating?: Maybe<Scalars['Int']>;
   creator: User;
   ascents: Array<Ascent>;
   createdAt: Scalars['String'];
@@ -150,6 +150,8 @@ export type User = {
   updatedAt: Scalars['String'];
 };
 
+export type ProblemSnippetFragment = { __typename?: 'Problem', id: string, title: string, grade: number, rating?: Maybe<number>, creatorId: string, createdAt: string, updatedAt: string, creator: { __typename?: 'User', id: string, name: string } };
+
 export type CreateBoardLayoutMutationVariables = Exact<{
   file: Scalars['Upload'];
   title: Scalars['String'];
@@ -164,7 +166,7 @@ export type CreateProblemMutationVariables = Exact<{
 }>;
 
 
-export type CreateProblemMutation = { __typename?: 'Mutation', createProblem: { __typename?: 'Problem', id: string, creatorId: string, title: string, rules: string, grade: Array<number>, rating?: Maybe<Array<number>>, createdAt: string, updatedAt: string, coordinates: Array<{ __typename?: 'Coordinates', x: number, y: number, color: string }> } };
+export type CreateProblemMutation = { __typename?: 'Mutation', createProblem: { __typename?: 'Problem', id: string, creatorId: string, title: string, rules: string, grade: number, rating?: Maybe<number>, createdAt: string, updatedAt: string, coordinates: Array<{ __typename?: 'Coordinates', x: number, y: number, color: string }> } };
 
 export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -174,14 +176,28 @@ export type LogoutMutation = { __typename?: 'Mutation', logout: boolean };
 export type GetProblemsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetProblemsQuery = { __typename?: 'Query', getProblems?: Maybe<Array<{ __typename?: 'Problem', id: string, creatorId: string, title: string, rules: string, grade: Array<number>, rating?: Maybe<Array<number>>, createdAt: string, updatedAt: string, coordinates: Array<{ __typename?: 'Coordinates', x: number, y: number, color: string }> }>> };
+export type GetProblemsQuery = { __typename?: 'Query', getProblems?: Maybe<Array<{ __typename?: 'Problem', id: string, title: string, grade: number, rating?: Maybe<number>, creatorId: string, createdAt: string, updatedAt: string, creator: { __typename?: 'User', id: string, name: string } }>> };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type MeQuery = { __typename?: 'Query', me?: Maybe<{ __typename?: 'User', id: string, name: string, email: string, avatar?: Maybe<string>, createdAt: string, updatedAt: string }> };
 
-
+export const ProblemSnippetFragmentDoc = gql`
+    fragment ProblemSnippet on Problem {
+  id
+  title
+  grade
+  rating
+  creatorId
+  createdAt
+  updatedAt
+  creator {
+    id
+    name
+  }
+}
+    `;
 export const CreateBoardLayoutDocument = gql`
     mutation CreateBoardLayout($file: Upload!, $title: String!, $description: String!) {
   createBoardLayout(file: $file, title: $title, description: $description) {
@@ -298,22 +314,10 @@ export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, L
 export const GetProblemsDocument = gql`
     query GetProblems {
   getProblems {
-    id
-    creatorId
-    title
-    rules
-    grade
-    rating
-    coordinates {
-      x
-      y
-      color
-    }
-    createdAt
-    updatedAt
+    ...ProblemSnippet
   }
 }
-    `;
+    ${ProblemSnippetFragmentDoc}`;
 
 /**
  * __useGetProblemsQuery__

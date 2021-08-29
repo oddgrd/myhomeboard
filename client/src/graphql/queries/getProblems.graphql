@@ -1,17 +1,5 @@
 query GetProblems {
   getProblems {
-    id
-    creatorId
-    title
-    rules
-    grade
-    rating
-    coordinates {
-      x
-      y
-      color
-    }
-    createdAt
-    updatedAt
+    ...ProblemSnippet
   }
 }
