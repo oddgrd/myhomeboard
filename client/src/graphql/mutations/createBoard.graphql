@@ -1,0 +1,8 @@
+mutation CreateBoard($file: Upload!, $title: String!, $description: String!) {
+  createBoard(file: $file, title: $title, description: $description) {
+    title
+    description
+    url
+    creatorId
+  }
+}

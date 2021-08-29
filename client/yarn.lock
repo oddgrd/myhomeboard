@@ -2,6 +2,24 @@
 # yarn lockfile v1
 
 
+"@apollo/client@^3.1.3":
+  version "3.4.10"
+  resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.4.10.tgz#cee9ed75b1bb7f391c55d79300ecf87096e59792"
+  integrity sha512-b+8TT3jBM2BtEJi+V2FuLpvoYDZCY3baNYrgAgEyw4fjnuBCSRPY7qVjqriZAwMaGiTLtyVifGhmdeICQs4Eow==
+  dependencies:
+    "@graphql-typed-document-node/core" "^3.0.0"
+    "@wry/context" "^0.6.0"
+    "@wry/equality" "^0.5.0"
+    "@wry/trie" "^0.3.0"
+    graphql-tag "^2.12.3"
+    hoist-non-react-statics "^3.3.2"
+    optimism "^0.16.1"
+    prop-types "^15.7.2"
+    symbol-observable "^4.0.0"
+    ts-invariant "^0.9.0"
+    tslib "^2.3.0"
+    zen-observable-ts "^1.1.0"
+
 "@apollo/client@^3.4.8":
   version "3.4.8"
   resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.4.8.tgz#66d06dc1784d07d46731b3bda546046f8c280b74"
@@ -1080,6 +1098,20 @@
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-1.1.2.tgz#ccb91445360179a04e7fe6aff78c00ffc1eeaf82"
   integrity sha512-RbzJvlNzmRq5c3O09UipeuXno4tA1FE6ikOjxZK0tuxVv3412l64l5t1W5pj4+rJq9vpkm/kwiR07aZXnsKPxw==
 
+"@types/apollo-upload-client@^14.1.0":
+  version "14.1.0"
+  resolved "https://registry.yarnpkg.com/@types/apollo-upload-client/-/apollo-upload-client-14.1.0.tgz#21a57d7e3f29ff946ba51a53b3d7da46ddd21fbc"
+  integrity sha512-ZLvcEqu+l9qKGdrIpASt/A2WY1ghAC9L3qaoegkiBOccjxvQmWN9liZzVFiuHTuWseWpVbMklqbs/z+KEjll9Q==
+  dependencies:
+    "@apollo/client" "^3.1.3"
+    "@types/extract-files" "*"
+    graphql "^15.3.0"
+
+"@types/extract-files@*":
+  version "8.1.1"
+  resolved "https://registry.yarnpkg.com/@types/extract-files/-/extract-files-8.1.1.tgz#11b67e795ad2c8b483431e8d4f190db2fd22944b"
+  integrity sha512-dMJJqBqyhsfJKuK7p7HyyNmki7qj1AlwhUKWx6KrU7i1K2T2SPsUsSUTWFmr/sEM1q8rfR8j5IyUmYrDbrhfjQ==
+
 "@types/js-yaml@^4.0.0":
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/@types/js-yaml/-/js-yaml-4.0.3.tgz#9f33cd6fbf0d5ec575dc8c8fc69c7fec1b4eb200"
@@ -1345,6 +1377,13 @@ anymatch@~3.1.1, anymatch@~3.1.2:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
 
+apollo-upload-client@^16.0.0:
+  version "16.0.0"
+  resolved "https://registry.yarnpkg.com/apollo-upload-client/-/apollo-upload-client-16.0.0.tgz#704c9bc21e12bd4687172876eb927cf756b2e524"
+  integrity sha512-aLhYucyA0T8aBEQ5g+p13qnR9RUyL8xqb8FSZ7e/Kw2KUOsotLUlFluLobqaE7JSUFwc6sKfXIcwB7y4yEjbZg==
+  dependencies:
+    extract-files "^11.0.0"
+
 arg@^4.1.0:
   version "4.1.3"
   resolved "https://registry.yarnpkg.com/arg/-/arg-4.1.3.tgz#269fc7ad5b8e42cb63c896d5666017261c144089"
@@ -1457,6 +1496,11 @@ asynckit@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
   integrity sha1-x57Zf380y48robyXkLzDZkdLS3k=
+
+attr-accept@^2.2.1:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/attr-accept/-/attr-accept-2.2.2.tgz#646613809660110749e92f2c10833b70968d929b"
+  integrity sha512-7prDjvt9HmqiZ0cl5CRjtS84sEyhsHP2coDkaZKRKVfCDo9s7iw7ChVmar78Gu9pC4SoR/28wFu/G5JJhTnqEg==
 
 auto-bind@~4.0.0:
   version "4.0.0"
@@ -2714,7 +2758,7 @@ external-editor@^3.0.3:
     iconv-lite "^0.4.24"
     tmp "^0.0.33"
 
-extract-files@11.0.0:
+extract-files@11.0.0, extract-files@^11.0.0:
   version "11.0.0"
   resolved "https://registry.yarnpkg.com/extract-files/-/extract-files-11.0.0.tgz#b72d428712f787eef1f5193aff8ab5351ca8469a"
   integrity sha512-FuoE1qtbJ4bBVvv94CC7s0oTnKUGvQs+Rjf1L2SJFfS+HTVVjhPFtehPdQ0JiGPqVNfSSZvL5yzHHQq2Z4WNhQ==
@@ -2810,6 +2854,13 @@ file-entry-cache@^6.0.1:
   integrity sha512-7Gps/XWymbLk2QLYK4NzpMOrYjMhdIxXuIvy2QBsLE6ljuodKvdkWs/cpyJJ3CVIVpH0Oi1Hvg1ovbMzLdFBBg==
   dependencies:
     flat-cache "^3.0.4"
+
+file-selector@^0.2.2:
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/file-selector/-/file-selector-0.2.4.tgz#7b98286f9dbb9925f420130ea5ed0a69238d4d80"
+  integrity sha512-ZDsQNbrv6qRi1YTDOEWzf5J2KjZ9KMI1Q2SGeTkCJmNNW25Jg4TW4UMcmoqcg4WrAyKRcpBXdbWRxkfrOzVRbA==
+  dependencies:
+    tslib "^2.0.3"
 
 fill-range@^7.0.1:
   version "7.0.1"
@@ -3059,7 +3110,7 @@ graphql-ws@^5.0.0:
   resolved "https://registry.yarnpkg.com/graphql-ws/-/graphql-ws-5.3.0.tgz#345f73686b639735f1f4ef0b9ea28e17c7f6a745"
   integrity sha512-53MbSTOmgx5i6hf3DHVD5PrXix1drDmt2ja8MW7NG+aTpKGzkXVLyNcyNpxme4SK8jVtIV6ZIHkiwirqN0efpw==
 
-graphql@^15.5.1:
+graphql@^15.3.0, graphql@^15.5.1:
   version "15.5.1"
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-15.5.1.tgz#f2f84415d8985e7b84731e7f3536f8bb9d383aad"
   integrity sha512-FeTRX67T3LoE3LWAxxOlW2K3Bz+rMYAC18rRguK4wgXaTZMiJwSUwDmPFo3UadAKbzirKIg5Qy+sNJXbpPRnQw==
@@ -4792,6 +4843,15 @@ react-dom@17.0.2:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     scheduler "^0.20.2"
+
+react-dropzone@^11.3.4:
+  version "11.3.4"
+  resolved "https://registry.yarnpkg.com/react-dropzone/-/react-dropzone-11.3.4.tgz#aeb098df5c4491e165042c9f0b5e2e7185484740"
+  integrity sha512-B1nzNRZ4F1cnrfEC0T6KXeBN1mCPinu4JCoTrp7NjB+442KSPxqfDrw41QIA2kAwlYs1+wj/0BTedeM5hc2+xw==
+  dependencies:
+    attr-accept "^2.2.1"
+    file-selector "^0.2.2"
+    prop-types "^15.7.2"
 
 react-fast-compare@^2.0.1:
   version "2.0.4"
