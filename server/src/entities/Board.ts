@@ -21,18 +21,15 @@ export class Board extends BaseEntity {
 
   @Field()
   @Column()
+  description!: string;
+
+  @Field()
+  @Column()
+  url!: string;
+
+  @Field()
+  @Column()
   creatorId!: string;
-
-  @Field()
-  @Column()
-  rules!: string;
-
-  @Field()
-  @Column()
-  grade: number;
-
-  // @Field(() => Int, { nullable: true })
-  // sendStatus: number | null;
 
   // @Field()
   // @ManyToOne(() => User, (user) => user.problems)

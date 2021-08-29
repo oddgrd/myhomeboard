@@ -3,7 +3,7 @@ import 'dotenv-safe/config';
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
-import { TestResolver } from './resolvers/testResolver';
+import { BoardResolver } from './resolvers/boardResolver';
 import cors from 'cors';
 import { createConnection } from 'typeorm';
 import { Board } from './entities/Board';
@@ -19,6 +19,7 @@ import { Strategy } from 'passport-google-oauth20';
 import passport from 'passport';
 import authRoutes from './routes/api/auth';
 import { Ascent } from './entities/Ascent';
+import { graphqlUploadExpress } from 'graphql-upload';
 
 const main = async () => {
   const connection = await createConnection({
@@ -49,13 +50,14 @@ const main = async () => {
       credentials: true
     })
   );
+  app.use(graphqlUploadExpress());
 
   const RedisStore = connectRedis(session);
   const redis = new Redis();
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [TestResolver, UserResolver, ProblemResolver],
+      resolvers: [UserResolver, ProblemResolver, BoardResolver],
       validate: false
     }),
     context: ({ req, res }) => ({
@@ -126,6 +128,7 @@ const main = async () => {
   );
 
   await apolloServer.start();
+
   apolloServer.applyMiddleware({ app, cors: false });
 
   app.use(passport.initialize());

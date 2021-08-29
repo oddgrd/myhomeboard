@@ -5,6 +5,7 @@ import styles from '../../styles/BoardForm.module.scss';
 export const BoardForm = () => {
   const [boardData, setBoardData] = useState({
     title: '',
+    description: '',
     file: null
   });
   const [createBoard] = useCreateBoardMutation();
@@ -26,7 +27,11 @@ export const BoardForm = () => {
     e.preventDefault();
     console.log(boardData);
     const { errors } = await createBoard({
-      variables: { title: boardData.title, file: boardData.file }
+      variables: {
+        title: boardData.title,
+        description: boardData.description,
+        file: boardData.file
+      }
     });
     if (errors) console.log(errors);
   };
