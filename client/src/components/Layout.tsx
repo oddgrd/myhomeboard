@@ -9,7 +9,7 @@ interface Props {
   children: React.ReactNode;
 }
 export const Layout = ({
-  title = 'Covegg19',
+  title = 'myHomeBoard',
   keywords = 'Home Climbing Board App',
   description = 'Manage problems on your home climbing board',
   children
