@@ -1,0 +1,63 @@
+.problem {
+  width: 100%;
+  h2 {
+    color: var(--theme-color);
+  }
+}
+.desktopTitle {
+  display: block;
+}
+.mobileTitle {
+  text-align: center;
+  display: none;
+}
+.viewer {
+  display: flex;
+  margin: auto;
+  width: 80%;
+  gap: 2rem;
+  padding: 0 10px;
+}
+.board {
+  width: 350px;
+  height: 478px;
+  position: relative;
+  z-index: 2;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.ascents {
+  margin-top: 1rem;
+  h3 {
+    color: var(--theme-color);
+    width: 80%;
+    margin: auto;
+    padding-left: 10px;
+  }
+}
+@media (max-width: 700px) {
+  .desktopTitle {
+    display: none;
+  }
+  .mobileTitle {
+    display: block;
+  }
+  .viewer {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.5rem;
+  }
+  .board {
+    margin-top: 0;
+    align-self: center;
+  }
+  .ascents {
+    margin-top: 1rem;
+    h3 {
+      width: 348px;
+      margin: auto;
+      border-bottom: 1px solid var(--theme-border-transparent);
+    }
+  }
+}
