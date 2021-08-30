@@ -1,7 +1,7 @@
 /* Custom Radio Buttons - https://www.w3schools.com/howto/howto_css_custom_checkbox.asp */
 
 .radioGroup {
-  margin-top: 0.5rem;
+  margin-top: 1rem;
   display: flex;
   justify-content: space-evenly;
 }
@@ -10,7 +10,7 @@
 .radioContainer {
   display: block;
   position: relative;
-  padding-left: 35px;
+  padding-left: 56px;
   margin-bottom: 12px;
   cursor: pointer;
   font-size: 22px;
@@ -72,9 +72,6 @@
 }
 
 @media (max-width: 700px) {
-  .radioGroup {
-    margin-top: 0.2rem;
-  }
   .radioContainer:hover input ~ .radio {
     box-shadow: none;
   }

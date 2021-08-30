@@ -1,0 +1,19 @@
+.container {
+  width: 350px;
+  height: 478px;
+  position: relative;
+}
+
+.canvas {
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+}
+
+.img {
+  position: absolute;
+  top: 0;
+  right: 0;
+}

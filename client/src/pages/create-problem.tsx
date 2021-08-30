@@ -21,12 +21,7 @@ const CreateProblem = () => {
     <Layout title='Create Problem'>
       <div className={styles.createProblem}>
         <div className={styles.editor}>
-          <div
-            className={styles.board}
-            style={{
-              backgroundImage: `url("https://res.cloudinary.com/dqyhbqh0x/image/upload/c_scale,h_478,q_100,w_360/v1628264532/covegg19-0_1_0_ziflc1.jpg")`
-            }}
-          >
+          <div className={styles.board}>
             <Canvas canvasRef={canvas} />
             <Toolbar {...toolbarProps} />
           </div>
