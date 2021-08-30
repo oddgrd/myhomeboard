@@ -1,0 +1,33 @@
+query GetProblem($id: String!) {
+  getProblem(id: $id) {
+    id
+    title
+    grade
+    rating
+    rules
+    creatorId
+    creator {
+      id
+      name
+    }
+    ascents {
+      userId
+      attempts
+      grade
+      rating
+      comment
+      createdAt
+      user {
+        name
+        avatar
+      }
+    }
+    coordinates {
+      x
+      y
+      color
+    }
+    createdAt
+    updatedAt
+  }
+}

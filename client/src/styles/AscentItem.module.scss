@@ -1,0 +1,24 @@
+.ascentItem {
+  padding: 8px 2px;
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr;
+}
+.name {
+  font-weight: 500;
+  font-size: 17.5px;
+}
+.avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.gradeAndRating {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  flex-direction: column;
+  font-size: 17px;
+  padding: 0 10px;
+}
+@media (max-width: 700px) {
+}
