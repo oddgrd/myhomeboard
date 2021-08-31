@@ -101,6 +101,12 @@ export type MutationDeleteProblemArgs = {
   id: Scalars['String'];
 };
 
+export type PaginatedProblems = {
+  __typename?: 'PaginatedProblems';
+  problems: Array<Problem>;
+  hasMore: Scalars['Boolean'];
+};
+
 export type Problem = {
   __typename?: 'Problem';
   id: Scalars['String'];
@@ -123,13 +129,19 @@ export type Query = {
   getUserById?: Maybe<User>;
   getUsers?: Maybe<Array<User>>;
   getAscents?: Maybe<Array<Ascent>>;
-  getProblems?: Maybe<Array<Problem>>;
+  getProblems: PaginatedProblems;
   getProblem?: Maybe<Problem>;
 };
 
 
 export type QueryGetUserByIdArgs = {
   id: Scalars['String'];
+};
+
+
+export type QueryGetProblemsArgs = {
+  cursor?: Maybe<Scalars['String']>;
+  limit: Scalars['Int'];
 };
 
 
@@ -180,10 +192,13 @@ export type GetProblemQueryVariables = Exact<{
 
 export type GetProblemQuery = { __typename?: 'Query', getProblem?: Maybe<{ __typename?: 'Problem', id: string, title: string, grade: number, rating?: Maybe<number>, rules: string, creatorId: string, createdAt: string, updatedAt: string, creator: { __typename?: 'User', id: string, name: string }, ascents: Array<{ __typename?: 'Ascent', userId: string, attempts: number, grade: number, rating: number, comment: string, createdAt: string, user: { __typename?: 'User', name: string, avatar?: Maybe<string> } }>, coordinates: Array<{ __typename?: 'Coordinates', x: number, y: number, color: string }> }> };
 
-export type GetProblemsQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetProblemsQueryVariables = Exact<{
+  limit: Scalars['Int'];
+  cursor?: Maybe<Scalars['String']>;
+}>;
 
 
-export type GetProblemsQuery = { __typename?: 'Query', getProblems?: Maybe<Array<{ __typename?: 'Problem', id: string, title: string, grade: number, rating?: Maybe<number>, creatorId: string, createdAt: string, updatedAt: string, creator: { __typename?: 'User', id: string, name: string } }>> };
+export type GetProblemsQuery = { __typename?: 'Query', getProblems: { __typename?: 'PaginatedProblems', hasMore: boolean, problems: Array<{ __typename?: 'Problem', id: string, title: string, grade: number, rating?: Maybe<number>, creatorId: string, createdAt: string, updatedAt: string, creator: { __typename?: 'User', id: string, name: string } }> } };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -382,9 +397,12 @@ export type GetProblemQueryHookResult = ReturnType<typeof useGetProblemQuery>;
 export type GetProblemLazyQueryHookResult = ReturnType<typeof useGetProblemLazyQuery>;
 export type GetProblemQueryResult = Apollo.QueryResult<GetProblemQuery, GetProblemQueryVariables>;
 export const GetProblemsDocument = gql`
-    query GetProblems {
-  getProblems {
-    ...ProblemSnippet
+    query GetProblems($limit: Int!, $cursor: String) {
+  getProblems(limit: $limit, cursor: $cursor) {
+    hasMore
+    problems {
+      ...ProblemSnippet
+    }
   }
 }
     ${ProblemSnippetFragmentDoc}`;
@@ -401,10 +419,12 @@ export const GetProblemsDocument = gql`
  * @example
  * const { data, loading, error } = useGetProblemsQuery({
  *   variables: {
+ *      limit: // value for 'limit'
+ *      cursor: // value for 'cursor'
  *   },
  * });
  */
-export function useGetProblemsQuery(baseOptions?: Apollo.QueryHookOptions<GetProblemsQuery, GetProblemsQueryVariables>) {
+export function useGetProblemsQuery(baseOptions: Apollo.QueryHookOptions<GetProblemsQuery, GetProblemsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetProblemsQuery, GetProblemsQueryVariables>(GetProblemsDocument, options);
       }

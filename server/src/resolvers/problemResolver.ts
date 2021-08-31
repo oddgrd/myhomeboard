@@ -2,16 +2,24 @@ import { isAuth } from '../middleware/isAuth';
 import {
   Arg,
   Ctx,
+  FieldResolver,
+  Int,
   Mutation,
   Query,
   Resolver,
+  Root,
   UseMiddleware
 } from 'type-graphql';
-import { AddAscentInput, CreateProblemInput } from '../types/problemTypes';
+import {
+  AddAscentInput,
+  CreateProblemInput,
+  PaginatedProblems
+} from '../types/problemTypes';
 import { Problem } from '../entities/Problem';
 import { Context } from '../types/context';
 import { Ascent } from '../entities/Ascent';
 import { getConnection } from 'typeorm';
+import { User } from '../entities/User';
 
 @Resolver(Problem)
 export class ProblemResolver {
@@ -91,12 +99,42 @@ export class ProblemResolver {
     return true;
   }
 
-  // Get all problems
-  @Query(() => [Problem], { nullable: true })
-  async getProblems(): Promise<Problem[] | null> {
-    const problems = await Problem.find({ relations: ['creator'] });
-    if (!problems) return null;
-    return problems;
+  // Field resolver for creator field on Problem
+  @FieldResolver(() => User)
+  creator(@Root() problem: Problem, @Ctx() { userLoader }: Context) {
+    return userLoader.load(problem.creatorId);
+  }
+
+  // Get all problems with cursor pagination
+  @Query(() => PaginatedProblems)
+  async getProblems(
+    @Arg('limit', () => Int!) limit: number,
+    @Arg('cursor', () => String, { nullable: true }) cursor: string | null
+  ): Promise<PaginatedProblems> {
+    // If there are more posts left than limit, set hasMore boolean to true
+    const realLimit = Math.min(50, limit); // max limit 50
+    const realLimitPlusOne = realLimit + 1;
+
+    const replacements: any[] = [realLimitPlusOne];
+
+    if (cursor) {
+      replacements.push(new Date(parseInt(cursor)));
+    }
+    const problems = await getConnection().query(
+      `
+      SELECT p.*
+      FROM problem p
+      ${cursor ? `WHERE p."createdAt" < $2` : ''}
+      ORDER BY p."createdAt" DESC
+      LIMIT $1
+    `,
+      replacements
+    );
+
+    return {
+      problems: problems.slice(0, realLimit),
+      hasMore: problems.length === realLimitPlusOne
+    };
   }
 
   // Get problem by ID
@@ -105,6 +143,8 @@ export class ProblemResolver {
     const problem = await getConnection()
       .createQueryBuilder(Problem, 'problem')
       .leftJoinAndSelect('problem.ascents', 'ascent')
+      .leftJoinAndSelect('ascent.user', 'u user')
+      .leftJoinAndSelect('problem.creator', 'user')
       .where('problem.id = :id', { id })
       .getOne();
 
