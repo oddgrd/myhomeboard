@@ -5,6 +5,7 @@ import { Canvas } from '../components/Canvas';
 import { useCanvas } from '../hooks/useCanvas';
 import { useEffect } from 'react';
 import { ProblemForm } from '../components/form/ProblemForm';
+import withApollo from '../utils/withApollo';
 
 const CreateProblem = () => {
   const [{ canvas, coords, selectedColor }, { init, handleColor, undo }] =
@@ -31,4 +32,4 @@ const CreateProblem = () => {
     </Layout>
   );
 };
-export default CreateProblem;
+export default withApollo({ ssr: false })(CreateProblem);

@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import { Layout } from '../components/Layout';
-import { useGetProblemsQuery } from '../generated/graphql';
+import withApollo from '../utils/withApollo';
 
 const Home: NextPage = () => {
   return (
@@ -10,4 +10,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default withApollo({ ssr: false })(Home);

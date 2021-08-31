@@ -1,6 +1,7 @@
 import GoogleButton from 'react-google-button';
 import { Layout } from '../components/Layout';
 import styles from '../styles/Login.module.scss';
+import withApollo from '../utils/withApollo';
 
 const Login = () => {
   const handleLogin = () => {
@@ -18,4 +19,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default withApollo({ ssr: false })(Login);

@@ -1,6 +1,7 @@
 import { Layout } from '../components/Layout';
 import styles from '../styles/CreateProblem.module.scss';
 import { BoardLayoutForm } from '../components/form/BoardLayoutForm';
+import withApollo from '../utils/withApollo';
 
 const CreateBoardLayout = () => {
   return (
@@ -11,4 +12,4 @@ const CreateBoardLayout = () => {
     </Layout>
   );
 };
-export default CreateBoardLayout;
+export default withApollo({ ssr: false })(CreateBoardLayout);
