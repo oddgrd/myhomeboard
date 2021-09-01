@@ -4,10 +4,19 @@ import Image from 'next/image';
 import { FaPlus, FaSignOutAlt, FaSignInAlt, FaSearch } from 'react-icons/fa';
 import logo from '../../public/Logo-klatreapp.svg';
 import { useLogoutMutation, useMeQuery } from '../generated/graphql';
+import { isServer } from '../utils/isServer';
+import { useApolloClient } from '@apollo/client';
 
 export const Header = () => {
-  const { data, loading } = useMeQuery();
+  const { data, loading } = useMeQuery({
+    skip: isServer()
+  });
   const [logout] = useLogoutMutation();
+  const apolloClient = useApolloClient();
+  const handleLogout = async () => {
+    await logout();
+    await apolloClient.resetStore();
+  };
   let body = null;
   if (loading) {
   } else if (!data?.me) {
@@ -42,10 +51,7 @@ export const Header = () => {
         </li>
 
         <li>
-          <button
-            className='btn btn-link btn-icon'
-            onClick={async () => await logout()}
-          >
+          <button className='btn btn-link btn-icon' onClick={handleLogout}>
             <FaSignOutAlt /> <span className={styles.hide}>Logout</span>
           </button>
         </li>

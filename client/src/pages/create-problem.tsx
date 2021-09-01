@@ -6,13 +6,12 @@ import { useCanvas } from '../hooks/useCanvas';
 import { useEffect } from 'react';
 import { ProblemForm } from '../components/form/ProblemForm';
 import withApollo from '../utils/withApollo';
+import { useIsAuth } from '../hooks/useIsAuth';
 
 const CreateProblem = () => {
-  const [{ canvas, coords, selectedColor }, { init, handleColor, undo }] =
-    useCanvas();
-
+  const [{ canvas, coords }, { init, handleColor, undo }] = useCanvas();
   const toolbarProps = { handleColor, undo };
-
+  useIsAuth();
   useEffect(() => {
     if (!init) return;
     init();

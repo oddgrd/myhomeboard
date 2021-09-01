@@ -9,6 +9,8 @@ import {
 } from '../../generated/graphql';
 import { grades } from '../../utils/ratingsAndGrades';
 import { useState } from 'react';
+import { useRouter } from 'next/router';
+
 interface Props {
   coords: CoordinatesInput[] | undefined;
 }
@@ -22,6 +24,8 @@ interface Values {
 export const ProblemForm = ({ coords }: Props) => {
   const [validCoords, setValidCoords] = useState(true);
   const [createProblem] = useCreateProblemMutation();
+  const router = useRouter();
+
   return (
     <Formik
       initialValues={
@@ -56,14 +60,16 @@ export const ProblemForm = ({ coords }: Props) => {
         const { errors } = await createProblem({
           variables: { createProblemOptions: values },
           update: (cache) => {
-            cache.evict({ fieldName: 'posts' });
+            cache.evict({ fieldName: 'getProblems' });
           }
         });
         setSubmitting(false);
         if (errors) {
           console.log(errors);
         }
-        console.log({ ...values, coordinates: coords });
+        if (!errors) {
+          router.push('/problems');
+        }
       }}
     >
       {({ isSubmitting }) => (
