@@ -9,28 +9,27 @@ import {
 import { isAuth } from '../middleware/isAuth';
 import { Context } from 'src/types/context';
 import { uploadImage } from '../utils/uploadImage';
-import { BoardLayout } from '../entities/BoardLayout';
+import { Layout } from '../entities/Layout';
 import { FileUpload, GraphQLUpload } from 'graphql-upload';
 
 @Resolver()
-export class BoardLayoutResolver {
+export class LayoutResolver {
   @Query(() => String)
   hello() {
     return 'Hello World';
   }
 
-  @Mutation(() => BoardLayout)
+  @Mutation(() => Layout)
   @UseMiddleware(isAuth)
-  async createBoardLayout(
+  async createLayout(
     @Arg('file', () => GraphQLUpload) file: FileUpload,
     @Arg('title') title: string,
     @Arg('description') description: string,
     @Ctx() { req }: Context
-  ): Promise<BoardLayout> {
+  ): Promise<Layout> {
     const creatorId = req.session.passport?.user;
     const result = await uploadImage(file);
-    console.log(result);
-    const board = await BoardLayout.create({
+    const board = await Layout.create({
       title,
       description,
       creatorId,

@@ -3,10 +3,10 @@ import 'dotenv-safe/config';
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
-import { BoardLayoutResolver } from './resolvers/boardLayoutResolver';
+import { LayoutResolver } from './resolvers/layoutResolver';
 import cors from 'cors';
 import { createConnection } from 'typeorm';
-import { BoardLayout } from './entities/BoardLayout';
+import { Layout } from './entities/Layout';
 import { Problem } from './entities/Problem';
 import { User } from './entities/User';
 import path from 'path';
@@ -20,13 +20,14 @@ import passport from 'passport';
 import authRoutes from './routes/api/auth';
 import { Ascent } from './entities/Ascent';
 import { graphqlUploadExpress } from 'graphql-upload';
+import { createUserLoader } from './utils/createUserLoader';
 
 const main = async () => {
   const connection = await createConnection({
     applicationName: 'myhomeboard',
     type: 'postgres',
     url: process.env.DATABASE_URL,
-    entities: [User, Problem, BoardLayout, Ascent],
+    entities: [User, Problem, Layout, Ascent],
     migrations: [path.join(__dirname, './migrations/*')],
     logging: true,
     synchronize: true
@@ -58,13 +59,14 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [UserResolver, ProblemResolver, BoardLayoutResolver],
+      resolvers: [UserResolver, ProblemResolver, LayoutResolver],
       validate: false
     }),
     context: ({ req, res }) => ({
       req,
       res,
-      redis
+      redis,
+      userLoader: createUserLoader()
     })
   });
 

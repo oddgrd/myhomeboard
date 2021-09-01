@@ -1,14 +1,14 @@
-import { useCallback, useEffect, useState } from 'react';
-import { useCreateBoardLayoutMutation } from '../../generated/graphql';
+import { useCallback, useState } from 'react';
+import { useCreateLayoutMutation } from '../../generated/graphql';
 import { useDropzone } from 'react-dropzone';
 import styles from '../../styles/BoardForm.module.scss';
-export const BoardLayoutForm = () => {
+export const LayoutForm = () => {
+  const [createLayout] = useCreateLayoutMutation();
   const [layoutData, setLayoutData] = useState({
     title: '',
     description: '',
     file: null
   });
-  const [createBoardLayout] = useCreateBoardLayoutMutation();
 
   const onDrop = useCallback(
     (acceptedFiles) => {
@@ -18,15 +18,11 @@ export const BoardLayoutForm = () => {
   );
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
-  const handleFile = (e: any) => {
-    setLayoutData({ ...layoutData, file: e.target.files[0] });
-  };
   const handleChange = (e: any) =>
     setLayoutData({ ...layoutData, [e.target.name]: e.target.value });
   const handleClick = async (e: any) => {
     e.preventDefault();
-    console.log(layoutData);
-    const { errors } = await createBoardLayout({
+    const { errors } = await createLayout({
       variables: {
         title: layoutData.title,
         description: layoutData.description,
@@ -46,7 +42,7 @@ export const BoardLayoutForm = () => {
         <input
           type='text'
           name='title'
-          placeholder='Layout title'
+          placeholder='E.g. "Fall 2021 v1"'
           onChange={handleChange}
           required
         />

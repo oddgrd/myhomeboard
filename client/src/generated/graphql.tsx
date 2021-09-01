@@ -39,17 +39,6 @@ export type Ascent = {
   updatedAt: Scalars['String'];
 };
 
-export type BoardLayout = {
-  __typename?: 'BoardLayout';
-  id: Scalars['String'];
-  title: Scalars['String'];
-  description: Scalars['String'];
-  url: Scalars['String'];
-  creatorId: Scalars['String'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
-};
-
 export type Coordinates = {
   __typename?: 'Coordinates';
   x: Scalars['Int'];
@@ -70,9 +59,20 @@ export type CreateProblemInput = {
   coordinates: Array<CoordinatesInput>;
 };
 
+export type Layout = {
+  __typename?: 'Layout';
+  id: Scalars['String'];
+  title: Scalars['String'];
+  description: Scalars['String'];
+  url: Scalars['String'];
+  creatorId: Scalars['String'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
-  createBoardLayout: BoardLayout;
+  createLayout: Layout;
   logout: Scalars['Boolean'];
   createProblem: Problem;
   addAscent?: Maybe<Problem>;
@@ -80,7 +80,7 @@ export type Mutation = {
 };
 
 
-export type MutationCreateBoardLayoutArgs = {
+export type MutationCreateLayoutArgs = {
   description: Scalars['String'];
   title: Scalars['String'];
   file: Scalars['Upload'];
@@ -164,14 +164,14 @@ export type User = {
 
 export type ProblemSnippetFragment = { __typename?: 'Problem', id: string, title: string, grade: number, rating?: Maybe<number>, creatorId: string, createdAt: string, updatedAt: string, creator: { __typename?: 'User', id: string, name: string } };
 
-export type CreateBoardLayoutMutationVariables = Exact<{
+export type CreateLayoutMutationVariables = Exact<{
   file: Scalars['Upload'];
   title: Scalars['String'];
   description: Scalars['String'];
 }>;
 
 
-export type CreateBoardLayoutMutation = { __typename?: 'Mutation', createBoardLayout: { __typename?: 'BoardLayout', title: string, description: string, url: string, creatorId: string } };
+export type CreateLayoutMutation = { __typename?: 'Mutation', createLayout: { __typename?: 'Layout', title: string, description: string, url: string, creatorId: string } };
 
 export type CreateProblemMutationVariables = Exact<{
   createProblemOptions: CreateProblemInput;
@@ -220,9 +220,9 @@ export const ProblemSnippetFragmentDoc = gql`
   }
 }
     `;
-export const CreateBoardLayoutDocument = gql`
-    mutation CreateBoardLayout($file: Upload!, $title: String!, $description: String!) {
-  createBoardLayout(file: $file, title: $title, description: $description) {
+export const CreateLayoutDocument = gql`
+    mutation CreateLayout($file: Upload!, $title: String!, $description: String!) {
+  createLayout(file: $file, title: $title, description: $description) {
     title
     description
     url
@@ -230,20 +230,20 @@ export const CreateBoardLayoutDocument = gql`
   }
 }
     `;
-export type CreateBoardLayoutMutationFn = Apollo.MutationFunction<CreateBoardLayoutMutation, CreateBoardLayoutMutationVariables>;
+export type CreateLayoutMutationFn = Apollo.MutationFunction<CreateLayoutMutation, CreateLayoutMutationVariables>;
 
 /**
- * __useCreateBoardLayoutMutation__
+ * __useCreateLayoutMutation__
  *
- * To run a mutation, you first call `useCreateBoardLayoutMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateBoardLayoutMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useCreateLayoutMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateLayoutMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [createBoardLayoutMutation, { data, loading, error }] = useCreateBoardLayoutMutation({
+ * const [createLayoutMutation, { data, loading, error }] = useCreateLayoutMutation({
  *   variables: {
  *      file: // value for 'file'
  *      title: // value for 'title'
@@ -251,13 +251,13 @@ export type CreateBoardLayoutMutationFn = Apollo.MutationFunction<CreateBoardLay
  *   },
  * });
  */
-export function useCreateBoardLayoutMutation(baseOptions?: Apollo.MutationHookOptions<CreateBoardLayoutMutation, CreateBoardLayoutMutationVariables>) {
+export function useCreateLayoutMutation(baseOptions?: Apollo.MutationHookOptions<CreateLayoutMutation, CreateLayoutMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateBoardLayoutMutation, CreateBoardLayoutMutationVariables>(CreateBoardLayoutDocument, options);
+        return Apollo.useMutation<CreateLayoutMutation, CreateLayoutMutationVariables>(CreateLayoutDocument, options);
       }
-export type CreateBoardLayoutMutationHookResult = ReturnType<typeof useCreateBoardLayoutMutation>;
-export type CreateBoardLayoutMutationResult = Apollo.MutationResult<CreateBoardLayoutMutation>;
-export type CreateBoardLayoutMutationOptions = Apollo.BaseMutationOptions<CreateBoardLayoutMutation, CreateBoardLayoutMutationVariables>;
+export type CreateLayoutMutationHookResult = ReturnType<typeof useCreateLayoutMutation>;
+export type CreateLayoutMutationResult = Apollo.MutationResult<CreateLayoutMutation>;
+export type CreateLayoutMutationOptions = Apollo.BaseMutationOptions<CreateLayoutMutation, CreateLayoutMutationVariables>;
 export const CreateProblemDocument = gql`
     mutation CreateProblem($createProblemOptions: CreateProblemInput!) {
   createProblem(options: $createProblemOptions) {

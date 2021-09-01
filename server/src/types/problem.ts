@@ -1,3 +1,4 @@
+import { Problem } from '../entities/Problem';
 import { InputType, Field, Int, ObjectType } from 'type-graphql';
 
 @ObjectType()
@@ -56,4 +57,13 @@ export class AddAscentInput {
 
   @Field({ nullable: true })
   comment: string;
+}
+
+@ObjectType()
+export class PaginatedProblems {
+  @Field(() => [Problem])
+  problems: Problem[];
+
+  @Field()
+  hasMore: boolean;
 }
