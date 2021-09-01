@@ -2,6 +2,7 @@ import { ProblemSnippetFragment } from '../generated/graphql';
 import Link from 'next/link';
 import styles from '../styles/ProblemItem.module.scss';
 import { grades, ratings } from '../utils/ratingsAndGrades';
+import { StarRating } from '../utils/StarRating';
 interface Props {
   problem: ProblemSnippetFragment;
 }
@@ -20,7 +21,11 @@ export const ProblemItem = ({ problem }: Props) => {
             <div className={styles.gradeAndRating}>
               <p>{grades[grade].label}</p>
               <p>
-                {rating || rating === 0 ? ratings[rating].label : 'Project'}
+                {rating || rating === 0 ? (
+                  <StarRating rating={rating} />
+                ) : (
+                  'Project'
+                )}
               </p>
             </div>
           </div>

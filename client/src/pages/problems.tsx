@@ -30,7 +30,7 @@ const Problems = () => {
         // Cursor pagination
         data && data.getProblems.hasMore ? (
           <button
-            className='btn'
+            className={'btn btn-fetchMore'}
             onClick={() => {
               fetchMore({
                 variables: {
