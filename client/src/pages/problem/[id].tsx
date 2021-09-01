@@ -1,5 +1,4 @@
 import { Layout } from '../../components/Layout';
-import { FaPencilAlt } from 'react-icons/fa';
 import { Canvas } from '../../components/Canvas';
 import { AscentItem } from '../../components/AscentItem';
 import { useCanvas } from '../../hooks/useCanvas';
@@ -9,6 +8,7 @@ import { useRouter } from 'next/router';
 import { useGetProblemQuery } from '../../generated/graphql';
 import Link from 'next/link';
 import { grades, ratings } from '../../utils/ratingsAndGrades';
+import withApollo from '../../utils/withApollo';
 
 const Problem = () => {
   const router = useRouter();
@@ -74,4 +74,4 @@ const Problem = () => {
     </Layout>
   );
 };
-export default Problem;
+export default withApollo({ ssr: false })(Problem);
