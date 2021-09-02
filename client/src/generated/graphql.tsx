@@ -26,7 +26,6 @@ export type AddAscentInput = {
 
 export type Ascent = {
   __typename?: 'Ascent';
-  id: Scalars['String'];
   userId: Scalars['String'];
   problemId: Scalars['String'];
   attempts: Scalars['Int'];
@@ -75,8 +74,9 @@ export type Mutation = {
   createLayout: Layout;
   logout: Scalars['Boolean'];
   createProblem: Problem;
-  addAscent?: Maybe<Problem>;
+  updateProblem: Scalars['Boolean'];
   deleteProblem: Scalars['Boolean'];
+  addAscent: Scalars['Boolean'];
 };
 
 
@@ -92,13 +92,18 @@ export type MutationCreateProblemArgs = {
 };
 
 
-export type MutationAddAscentArgs = {
-  options: AddAscentInput;
+export type MutationUpdateProblemArgs = {
+  options: UpdateProblemInput;
 };
 
 
 export type MutationDeleteProblemArgs = {
   id: Scalars['String'];
+};
+
+
+export type MutationAddAscentArgs = {
+  options: AddAscentInput;
 };
 
 export type PaginatedProblems = {
@@ -117,7 +122,7 @@ export type Problem = {
   grade: Scalars['Int'];
   rating?: Maybe<Scalars['Int']>;
   creator: User;
-  ascents: Array<Ascent>;
+  ascents?: Maybe<Array<Ascent>>;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
 };
@@ -128,9 +133,9 @@ export type Query = {
   me?: Maybe<User>;
   getUserById?: Maybe<User>;
   getUsers?: Maybe<Array<User>>;
-  getAscents?: Maybe<Array<Ascent>>;
   getProblems: PaginatedProblems;
   getProblem?: Maybe<Problem>;
+  getAscents?: Maybe<Array<Ascent>>;
 };
 
 
@@ -149,6 +154,13 @@ export type QueryGetProblemArgs = {
   id: Scalars['String'];
 };
 
+export type UpdateProblemInput = {
+  problemId: Scalars['String'];
+  title: Scalars['String'];
+  rules: Scalars['String'];
+  grade: Scalars['Int'];
+};
+
 
 export type User = {
   __typename?: 'User';
@@ -157,12 +169,20 @@ export type User = {
   email: Scalars['String'];
   avatar?: Maybe<Scalars['String']>;
   googleId: Scalars['String'];
-  problems: Array<Problem>;
+  problems?: Maybe<Array<Problem>>;
+  ascents?: Maybe<Array<Ascent>>;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
 };
 
 export type ProblemSnippetFragment = { __typename?: 'Problem', id: string, title: string, grade: number, rating?: Maybe<number>, creatorId: string, createdAt: string, updatedAt: string, creator: { __typename?: 'User', id: string, name: string } };
+
+export type AddAscentMutationVariables = Exact<{
+  options: AddAscentInput;
+}>;
+
+
+export type AddAscentMutation = { __typename?: 'Mutation', addAscent: boolean };
 
 export type CreateLayoutMutationVariables = Exact<{
   file: Scalars['Upload'];
@@ -192,12 +212,19 @@ export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
 export type LogoutMutation = { __typename?: 'Mutation', logout: boolean };
 
+export type UpdateProblemMutationVariables = Exact<{
+  options: UpdateProblemInput;
+}>;
+
+
+export type UpdateProblemMutation = { __typename?: 'Mutation', updateProblem: boolean };
+
 export type GetProblemQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type GetProblemQuery = { __typename?: 'Query', getProblem?: Maybe<{ __typename?: 'Problem', id: string, title: string, grade: number, rating?: Maybe<number>, rules: string, creatorId: string, createdAt: string, updatedAt: string, creator: { __typename?: 'User', id: string, name: string }, ascents: Array<{ __typename?: 'Ascent', userId: string, attempts: number, grade: number, rating: number, comment: string, createdAt: string, user: { __typename?: 'User', name: string, avatar?: Maybe<string> } }>, coordinates: Array<{ __typename?: 'Coordinates', x: number, y: number, color: string }> }> };
+export type GetProblemQuery = { __typename?: 'Query', getProblem?: Maybe<{ __typename?: 'Problem', id: string, title: string, grade: number, rating?: Maybe<number>, rules: string, creatorId: string, createdAt: string, updatedAt: string, creator: { __typename?: 'User', id: string, name: string }, ascents?: Maybe<Array<{ __typename?: 'Ascent', userId: string, attempts: number, grade: number, rating: number, comment: string, createdAt: string, user: { __typename?: 'User', name: string, avatar?: Maybe<string> } }>>, coordinates: Array<{ __typename?: 'Coordinates', x: number, y: number, color: string }> }> };
 
 export type GetProblemsQueryVariables = Exact<{
   limit: Scalars['Int'];
@@ -227,6 +254,37 @@ export const ProblemSnippetFragmentDoc = gql`
   }
 }
     `;
+export const AddAscentDocument = gql`
+    mutation AddAscent($options: AddAscentInput!) {
+  addAscent(options: $options)
+}
+    `;
+export type AddAscentMutationFn = Apollo.MutationFunction<AddAscentMutation, AddAscentMutationVariables>;
+
+/**
+ * __useAddAscentMutation__
+ *
+ * To run a mutation, you first call `useAddAscentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddAscentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addAscentMutation, { data, loading, error }] = useAddAscentMutation({
+ *   variables: {
+ *      options: // value for 'options'
+ *   },
+ * });
+ */
+export function useAddAscentMutation(baseOptions?: Apollo.MutationHookOptions<AddAscentMutation, AddAscentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddAscentMutation, AddAscentMutationVariables>(AddAscentDocument, options);
+      }
+export type AddAscentMutationHookResult = ReturnType<typeof useAddAscentMutation>;
+export type AddAscentMutationResult = Apollo.MutationResult<AddAscentMutation>;
+export type AddAscentMutationOptions = Apollo.BaseMutationOptions<AddAscentMutation, AddAscentMutationVariables>;
 export const CreateLayoutDocument = gql`
     mutation CreateLayout($file: Upload!, $title: String!, $description: String!) {
   createLayout(file: $file, title: $title, description: $description) {
@@ -371,6 +429,37 @@ export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<Logou
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
+export const UpdateProblemDocument = gql`
+    mutation UpdateProblem($options: UpdateProblemInput!) {
+  updateProblem(options: $options)
+}
+    `;
+export type UpdateProblemMutationFn = Apollo.MutationFunction<UpdateProblemMutation, UpdateProblemMutationVariables>;
+
+/**
+ * __useUpdateProblemMutation__
+ *
+ * To run a mutation, you first call `useUpdateProblemMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateProblemMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateProblemMutation, { data, loading, error }] = useUpdateProblemMutation({
+ *   variables: {
+ *      options: // value for 'options'
+ *   },
+ * });
+ */
+export function useUpdateProblemMutation(baseOptions?: Apollo.MutationHookOptions<UpdateProblemMutation, UpdateProblemMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateProblemMutation, UpdateProblemMutationVariables>(UpdateProblemDocument, options);
+      }
+export type UpdateProblemMutationHookResult = ReturnType<typeof useUpdateProblemMutation>;
+export type UpdateProblemMutationResult = Apollo.MutationResult<UpdateProblemMutation>;
+export type UpdateProblemMutationOptions = Apollo.BaseMutationOptions<UpdateProblemMutation, UpdateProblemMutationVariables>;
 export const GetProblemDocument = gql`
     query GetProblem($id: String!) {
   getProblem(id: $id) {

@@ -1,0 +1,3 @@
+mutation AddAscent($options: AddAscentInput!) {
+  addAscent(options: $options)
+}
