@@ -13,8 +13,9 @@ import {
 import {
   AddAscentInput,
   CreateProblemInput,
-  PaginatedProblems
-} from '../types/problemTypes';
+  PaginatedProblems,
+  UpdateProblemInput
+} from '../types/problem';
 import { Problem } from '../entities/Problem';
 import { Context } from '../types/context';
 import { Ascent } from '../entities/Ascent';
@@ -41,44 +42,27 @@ export class ProblemResolver {
     }).save();
   }
 
-  // Create ascent and add to problem
-  @Mutation(() => Problem, { nullable: true })
+  // Update problem info
+  @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
-  async addAscent(
-    @Arg('options') options: AddAscentInput,
+  async updateProblem(
+    @Arg('options') options: UpdateProblemInput,
     @Ctx() { req }: Context
-  ): Promise<Problem | null> {
-    const userId = req.session.passport?.user;
-    const { rating, grade, attempts, comment, problemId } = options;
+  ): Promise<boolean> {
+    const { title, rules, grade, problemId } = options;
 
-    const problem = await Problem.findOne(problemId);
+    const result = await getConnection()
+      .createQueryBuilder()
+      .update(Problem)
+      .set({ title, rules, grade })
+      .where('id = :id and "creatorId" = :creatorId', {
+        id: problemId,
+        creatorId: req.session.passport?.user
+      })
+      .execute();
 
-    if (!problem) {
-      return null;
-    }
-    const alreadyAscended = await Ascent.findOne({
-      where: { problemId, userId }
-    });
-    if (alreadyAscended) {
-      return null;
-    }
-
-    await await getConnection().query(
-      `
-        INSERT INTO ascent ("userId", "problemId", grade, attempts, rating, comment)
-        VALUES ($1, $2, $3, $4, $5, $6)
-      `,
-      [userId, problemId, grade, attempts, rating, comment]
-    );
-
-    return problem;
-  }
-
-  @Query(() => [Ascent], { nullable: true })
-  async getAscents() {
-    const ascents = await Ascent.find({ relations: ['user', 'problem'] });
-    if (!ascents) return null;
-    return ascents;
+    if (!result) return false;
+    return true;
   }
 
   // Delete problem by id and creatorId
@@ -88,14 +72,18 @@ export class ProblemResolver {
     @Arg('id') id: string,
     @Ctx() { req }: Context
   ): Promise<boolean> {
-    const problem = await Problem.findOne(id);
-    if (!problem) {
-      return false;
-    }
-    if (problem.creatorId !== req.session.passport?.user) {
-      throw new Error('not authorized');
-    }
-    await Problem.delete(id);
+    const result = await getConnection()
+      .createQueryBuilder()
+      .delete()
+      .from(Problem)
+      .where('id = :id', { id })
+      .andWhere('"creatorId" = :currentUser', {
+        currentUser: req.session.passport?.user
+      })
+      .execute();
+
+    if (result.affected === 0) return false;
+
     return true;
   }
 
@@ -152,5 +140,39 @@ export class ProblemResolver {
       return null;
     }
     return problem;
+  }
+
+  // Create ascent and add to problem
+  @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
+  async addAscent(
+    @Arg('options') options: AddAscentInput,
+    @Ctx() { req }: Context
+  ): Promise<Boolean> {
+    const userId = req.session.passport?.user;
+    const { rating, grade, attempts, comment, problemId } = options;
+
+    try {
+      await getConnection().query(
+        `
+          INSERT INTO ascent ("userId", "problemId", grade, attempts, rating, comment)
+          VALUES ($1, $2, $3, $4, $5, $6)
+        `,
+        [userId, problemId, grade, attempts, rating, comment]
+      );
+    } catch (error) {
+      // Catch duplicate ascent error
+      console.log('message: ', error.message);
+      return false;
+    }
+
+    return true;
+  }
+
+  @Query(() => [Ascent], { nullable: true })
+  async getAscents() {
+    const ascents = await Ascent.find({ relations: ['user', 'problem'] });
+    if (!ascents) return null;
+    return ascents;
   }
 }

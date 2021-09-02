@@ -34,9 +34,11 @@ export class User extends BaseEntity {
   @Column()
   googleId!: string;
 
+  @Field(() => [Problem], { nullable: true })
   @OneToMany(() => Problem, (problem) => problem.creator)
   problems: Problem[];
 
+  @Field(() => [Ascent], { nullable: true })
   @OneToMany(() => Ascent, (ascent) => ascent.user)
   ascents: Ascent[];
 

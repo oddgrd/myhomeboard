@@ -5,7 +5,7 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
   UpdateDateColumn
 } from 'typeorm';
 import { Problem } from './Problem';
@@ -15,15 +15,11 @@ import { User } from './User';
 @Entity()
 export class Ascent extends BaseEntity {
   @Field()
-  @PrimaryGeneratedColumn('uuid') //todo: remove?
-  id!: string;
-
-  @Field()
-  @Column({ type: 'uuid' }) //todo: primarykey?
+  @PrimaryColumn({ type: 'uuid' })
   userId!: string;
 
   @Field()
-  @Column({ type: 'uuid' }) //todo: primarykey?
+  @PrimaryColumn({ type: 'uuid' })
   problemId!: string;
 
   @Field(() => Int)

@@ -42,6 +42,21 @@ export class CreateProblemInput {
 }
 
 @InputType()
+export class UpdateProblemInput {
+  @Field()
+  problemId: string;
+
+  @Field()
+  title: string;
+
+  @Field()
+  rules: string;
+
+  @Field(() => Int)
+  grade: number;
+}
+
+@InputType()
 export class AddAscentInput {
   @Field()
   problemId!: string;

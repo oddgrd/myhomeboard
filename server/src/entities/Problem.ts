@@ -1,4 +1,4 @@
-import { Coordinates } from '../types/problemTypes';
+import { Coordinates } from '../types/problem';
 import { Field, Int, ObjectType } from 'type-graphql';
 import {
   BaseEntity,
@@ -48,7 +48,7 @@ export class Problem extends BaseEntity {
   @ManyToOne(() => User, (user) => user.problems)
   creator: User;
 
-  @Field(() => [Ascent])
+  @Field(() => [Ascent], { nullable: true })
   @OneToMany(() => Ascent, (ascent) => ascent.problem)
   ascents: Ascent[];
 
