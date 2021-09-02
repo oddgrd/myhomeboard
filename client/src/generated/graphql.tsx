@@ -180,6 +180,13 @@ export type CreateProblemMutationVariables = Exact<{
 
 export type CreateProblemMutation = { __typename?: 'Mutation', createProblem: { __typename?: 'Problem', id: string, creatorId: string, title: string, rules: string, grade: number, rating?: Maybe<number>, createdAt: string, updatedAt: string, coordinates: Array<{ __typename?: 'Coordinates', x: number, y: number, color: string }> } };
 
+export type DeleteProblemMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteProblemMutation = { __typename?: 'Mutation', deleteProblem: boolean };
+
 export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -303,6 +310,37 @@ export function useCreateProblemMutation(baseOptions?: Apollo.MutationHookOption
 export type CreateProblemMutationHookResult = ReturnType<typeof useCreateProblemMutation>;
 export type CreateProblemMutationResult = Apollo.MutationResult<CreateProblemMutation>;
 export type CreateProblemMutationOptions = Apollo.BaseMutationOptions<CreateProblemMutation, CreateProblemMutationVariables>;
+export const DeleteProblemDocument = gql`
+    mutation DeleteProblem($id: String!) {
+  deleteProblem(id: $id)
+}
+    `;
+export type DeleteProblemMutationFn = Apollo.MutationFunction<DeleteProblemMutation, DeleteProblemMutationVariables>;
+
+/**
+ * __useDeleteProblemMutation__
+ *
+ * To run a mutation, you first call `useDeleteProblemMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteProblemMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteProblemMutation, { data, loading, error }] = useDeleteProblemMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteProblemMutation(baseOptions?: Apollo.MutationHookOptions<DeleteProblemMutation, DeleteProblemMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteProblemMutation, DeleteProblemMutationVariables>(DeleteProblemDocument, options);
+      }
+export type DeleteProblemMutationHookResult = ReturnType<typeof useDeleteProblemMutation>;
+export type DeleteProblemMutationResult = Apollo.MutationResult<DeleteProblemMutation>;
+export type DeleteProblemMutationOptions = Apollo.BaseMutationOptions<DeleteProblemMutation, DeleteProblemMutationVariables>;
 export const LogoutDocument = gql`
     mutation Logout {
   logout

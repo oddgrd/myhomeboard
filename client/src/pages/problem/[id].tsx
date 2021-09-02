@@ -5,16 +5,19 @@ import { useCanvas } from '../../hooks/useCanvas';
 import { useEffect } from 'react';
 import styles from '../../styles/Problem.module.scss';
 import { useRouter } from 'next/router';
-import { useGetProblemQuery } from '../../generated/graphql';
+import { useGetProblemQuery, useMeQuery } from '../../generated/graphql';
 import Link from 'next/link';
-import { grades, ratings } from '../../utils/ratingsAndGrades';
+import { grades } from '../../utils/ratingsAndGrades';
 import withApollo from '../../utils/withApollo';
+import { StarRating } from '../../utils/StarRating';
+import { EditDeleteProblemButtons } from '../../components/EditDeletePostButtons';
 
 const Problem = () => {
+  const [{ canvas }, { initViewer, loadFromCoords }] = useCanvas();
   const router = useRouter();
   const problemId = typeof router.query.id === 'string' ? router.query.id : '';
 
-  const [{ canvas }, { initViewer, loadFromCoords }] = useCanvas();
+  const { data: meData } = useMeQuery();
   const { data, loading, error } = useGetProblemQuery({
     variables: {
       id: problemId
@@ -55,12 +58,22 @@ const Problem = () => {
           <div className={styles.board}>
             <Canvas canvasRef={canvas} />
           </div>
-          <div>
+          <div className={styles.info}>
             <h2 className={styles.desktopTitle}>{title}</h2>
+            <p>Grade: {grades[grade].label}</p>
+            <p>
+              Rating:{' '}
+              {rating || rating === 0 ? (
+                <StarRating rating={rating} />
+              ) : (
+                'Project'
+              )}
+            </p>
             <p>Rules: {rules}</p>
-            <p>{grades[grade].label}</p>
-            <p>{rating || rating === 0 ? ratings[rating].label : 'Project'}</p>
             <p>Set by: {creator.name}</p>
+            {creator.id === meData?.me?.id ? (
+              <EditDeleteProblemButtons id={problemId} />
+            ) : null}
           </div>
         </div>
         <div className={styles.ascents}>
@@ -74,4 +87,4 @@ const Problem = () => {
     </Layout>
   );
 };
-export default withApollo({ ssr: false })(Problem);
+export default withApollo({ ssr: true })(Problem);

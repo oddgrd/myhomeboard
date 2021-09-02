@@ -1,0 +1,3 @@
+mutation UpdateProblem($options: UpdateProblemInput!) {
+  updateProblem(options: $options)
+}

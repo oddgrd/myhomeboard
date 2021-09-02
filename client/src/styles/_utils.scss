@@ -19,6 +19,9 @@
   }
   &.btn-link {
     border: none;
+    &:hover {
+      color: white;
+    }
   }
   &.btn-icon {
     svg {
@@ -35,6 +38,18 @@
   &.btn-submit {
     width: 100%;
   }
+  &.btn-fetchMore {
+    width: 25%;
+    margin-top: 0.8rem;
+    margin-left: 5px;
+  }
 }
 @media (max-width: 700px) {
+  .btn {
+    &.btn-fetchMore {
+      width: 97%;
+      margin: auto;
+      margin-top: 1.3rem;
+    }
+  }
 }
