@@ -24,6 +24,26 @@ import { User } from '../entities/User';
 
 @Resolver(Problem)
 export class ProblemResolver {
+  // Field resolver for creator field
+  @FieldResolver(() => User)
+  creator(@Root() problem: Problem, @Ctx() { userLoader }: Context) {
+    return userLoader.load(problem.creatorId);
+  }
+
+  // Field resolver for sendStatus field
+  @FieldResolver(() => Boolean, { nullable: true })
+  async sendStatus(
+    @Root() problem: Problem,
+    @Ctx() { req, ascentLoader }: Context
+  ) {
+    if (!req.session.passport?.user) return false;
+    const ascent = await ascentLoader.load({
+      problemId: problem.id,
+      userId: req.session.passport?.user
+    });
+    return ascent ? true : false;
+  }
+
   // Create new problem
   @Mutation(() => Problem)
   @UseMiddleware(isAuth)
@@ -85,12 +105,6 @@ export class ProblemResolver {
     if (result.affected === 0) return false;
 
     return true;
-  }
-
-  // Field resolver for creator field on Problem
-  @FieldResolver(() => User)
-  creator(@Root() problem: Problem, @Ctx() { userLoader }: Context) {
-    return userLoader.load(problem.creatorId);
   }
 
   // Get all problems with cursor pagination

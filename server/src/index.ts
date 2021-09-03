@@ -21,6 +21,7 @@ import authRoutes from './routes/api/auth';
 import { Ascent } from './entities/Ascent';
 import { graphqlUploadExpress } from 'graphql-upload';
 import { createUserLoader } from './utils/createUserLoader';
+import { createAscentLoader } from './utils/createAscentLoader';
 
 const main = async () => {
   const connection = await createConnection({
@@ -66,7 +67,8 @@ const main = async () => {
       req,
       res,
       redis,
-      userLoader: createUserLoader()
+      userLoader: createUserLoader(),
+      ascentLoader: createAscentLoader()
     })
   });
 

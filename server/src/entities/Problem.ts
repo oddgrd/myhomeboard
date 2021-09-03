@@ -52,8 +52,8 @@ export class Problem extends BaseEntity {
   @OneToMany(() => Ascent, (ascent) => ascent.problem)
   ascents: Ascent[];
 
-  // @Field(() => Int, { nullable: true })
-  // sendStatus: number | null;
+  @Field(() => Boolean, { nullable: true })
+  sendStatus: boolean;
 
   // @Field()
   // @OneToOne(() => Board)

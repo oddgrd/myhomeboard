@@ -129,6 +129,7 @@ export type Problem = {
   rating?: Maybe<Scalars['Int']>;
   creator: User;
   ascents?: Maybe<Array<Ascent>>;
+  sendStatus?: Maybe<Scalars['Boolean']>;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
 };
@@ -181,7 +182,7 @@ export type User = {
   updatedAt: Scalars['String'];
 };
 
-export type ProblemSnippetFragment = { __typename?: 'Problem', id: string, title: string, grade: number, rating?: Maybe<number>, creatorId: string, createdAt: string, updatedAt: string, creator: { __typename?: 'User', id: string, name: string } };
+export type ProblemSnippetFragment = { __typename?: 'Problem', id: string, title: string, grade: number, rating?: Maybe<number>, creatorId: string, sendStatus?: Maybe<boolean>, createdAt: string, updatedAt: string, creator: { __typename?: 'User', id: string, name: string } };
 
 export type AddAscentMutationVariables = Exact<{
   options: AddAscentInput;
@@ -245,7 +246,7 @@ export type GetProblemsQueryVariables = Exact<{
 }>;
 
 
-export type GetProblemsQuery = { __typename?: 'Query', getProblems: { __typename?: 'PaginatedProblems', hasMore: boolean, problems: Array<{ __typename?: 'Problem', id: string, title: string, grade: number, rating?: Maybe<number>, creatorId: string, createdAt: string, updatedAt: string, creator: { __typename?: 'User', id: string, name: string } }> } };
+export type GetProblemsQuery = { __typename?: 'Query', getProblems: { __typename?: 'PaginatedProblems', hasMore: boolean, problems: Array<{ __typename?: 'Problem', id: string, title: string, grade: number, rating?: Maybe<number>, creatorId: string, sendStatus?: Maybe<boolean>, createdAt: string, updatedAt: string, creator: { __typename?: 'User', id: string, name: string } }> } };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -259,6 +260,7 @@ export const ProblemSnippetFragmentDoc = gql`
   grade
   rating
   creatorId
+  sendStatus
   createdAt
   updatedAt
   creator {
