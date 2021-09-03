@@ -142,7 +142,7 @@ export class ProblemResolver {
     return problem;
   }
 
-  // Create ascent and add to problem
+  // Add ascent
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
   async addAscent(
@@ -165,6 +165,29 @@ export class ProblemResolver {
       console.log('message: ', error.message);
       return false;
     }
+
+    return true;
+  }
+
+  // Delete ascent by id and creatorId
+  @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
+  async deleteAscent(
+    @Arg('problemId') problemId: string,
+    @Ctx() { req }: Context
+  ): Promise<boolean> {
+    const userId = req.session.passport?.user;
+    const result = await getConnection()
+      .createQueryBuilder()
+      .delete()
+      .from(Ascent)
+      .where('"userId" = :userId', { userId })
+      .andWhere('"problemId" = :problemId', {
+        problemId
+      })
+      .execute();
+
+    if (result.affected === 0) return false;
 
     return true;
   }

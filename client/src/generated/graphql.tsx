@@ -77,6 +77,7 @@ export type Mutation = {
   updateProblem: Scalars['Boolean'];
   deleteProblem: Scalars['Boolean'];
   addAscent: Scalars['Boolean'];
+  deleteAscent: Scalars['Boolean'];
 };
 
 
@@ -104,6 +105,11 @@ export type MutationDeleteProblemArgs = {
 
 export type MutationAddAscentArgs = {
   options: AddAscentInput;
+};
+
+
+export type MutationDeleteAscentArgs = {
+  problemId: Scalars['String'];
 };
 
 export type PaginatedProblems = {
@@ -199,6 +205,13 @@ export type CreateProblemMutationVariables = Exact<{
 
 
 export type CreateProblemMutation = { __typename?: 'Mutation', createProblem: { __typename?: 'Problem', id: string, creatorId: string, title: string, rules: string, grade: number, rating?: Maybe<number>, createdAt: string, updatedAt: string, coordinates: Array<{ __typename?: 'Coordinates', x: number, y: number, color: string }> } };
+
+export type DeleteAscentMutationVariables = Exact<{
+  problemId: Scalars['String'];
+}>;
+
+
+export type DeleteAscentMutation = { __typename?: 'Mutation', deleteAscent: boolean };
 
 export type DeleteProblemMutationVariables = Exact<{
   id: Scalars['String'];
@@ -368,6 +381,37 @@ export function useCreateProblemMutation(baseOptions?: Apollo.MutationHookOption
 export type CreateProblemMutationHookResult = ReturnType<typeof useCreateProblemMutation>;
 export type CreateProblemMutationResult = Apollo.MutationResult<CreateProblemMutation>;
 export type CreateProblemMutationOptions = Apollo.BaseMutationOptions<CreateProblemMutation, CreateProblemMutationVariables>;
+export const DeleteAscentDocument = gql`
+    mutation DeleteAscent($problemId: String!) {
+  deleteAscent(problemId: $problemId)
+}
+    `;
+export type DeleteAscentMutationFn = Apollo.MutationFunction<DeleteAscentMutation, DeleteAscentMutationVariables>;
+
+/**
+ * __useDeleteAscentMutation__
+ *
+ * To run a mutation, you first call `useDeleteAscentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteAscentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteAscentMutation, { data, loading, error }] = useDeleteAscentMutation({
+ *   variables: {
+ *      problemId: // value for 'problemId'
+ *   },
+ * });
+ */
+export function useDeleteAscentMutation(baseOptions?: Apollo.MutationHookOptions<DeleteAscentMutation, DeleteAscentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteAscentMutation, DeleteAscentMutationVariables>(DeleteAscentDocument, options);
+      }
+export type DeleteAscentMutationHookResult = ReturnType<typeof useDeleteAscentMutation>;
+export type DeleteAscentMutationResult = Apollo.MutationResult<DeleteAscentMutation>;
+export type DeleteAscentMutationOptions = Apollo.BaseMutationOptions<DeleteAscentMutation, DeleteAscentMutationVariables>;
 export const DeleteProblemDocument = gql`
     mutation DeleteProblem($id: String!) {
   deleteProblem(id: $id)

@@ -1,0 +1,3 @@
+mutation DeleteAscent($problemId: String!) {
+  deleteAscent(problemId: $problemId)
+}
