@@ -2,7 +2,8 @@ fragment ProblemSnippet on Problem {
   id
   title
   grade
-  rating
+  consensusGrade
+  consensusRating
   creatorId
   createdAt
   updatedAt

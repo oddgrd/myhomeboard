@@ -2,6 +2,7 @@ import { Maybe } from '../generated/graphql';
 import styles from '../styles/AscentItem.module.scss';
 import { grades, ratings } from '../utils/ratingsAndGrades';
 import Image from 'next/image';
+import { StarRating } from '../utils/StarRating';
 
 interface Props {
   ascent: {
@@ -38,7 +39,7 @@ export const AscentItem = ({ ascent }: Props) => {
       </div>
       <div className={styles.gradeAndRating}>
         <p>{grades[grade].label}</p>
-        <p>{rating || rating === 0 ? ratings[rating].label : 'Project'}</p>
+        {<StarRating rating={rating} />}
       </div>
     </div>
   );

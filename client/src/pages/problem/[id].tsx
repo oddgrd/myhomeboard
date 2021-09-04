@@ -49,7 +49,15 @@ const Problem = () => {
       </Layout>
     );
   }
-  const { title, rules, grade, rating, ascents, creator } = data.getProblem;
+  const {
+    title,
+    rules,
+    grade,
+    consensusRating,
+    consensusGrade,
+    ascents,
+    creator
+  } = data.getProblem;
   return (
     <Layout title='Problem'>
       <div className={styles.problem}>
@@ -60,14 +68,16 @@ const Problem = () => {
           </div>
           <div className={styles.info}>
             <h2 className={styles.desktopTitle}>{title}</h2>
-            <p>Grade: {grades[grade].label}</p>
+
+            <p>
+              Grade:{' '}
+              {consensusGrade
+                ? grades[consensusGrade].label
+                : grades[grade].label}
+            </p>
             <p>
               Rating:{' '}
-              {rating || rating === 0 ? (
-                <StarRating rating={rating} />
-              ) : (
-                'Project'
-              )}
+              {consensusRating && <StarRating rating={consensusRating} />}
             </p>
             <p>Rules: {rules}</p>
             <p>Set by: {creator.name}</p>

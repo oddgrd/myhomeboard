@@ -3,7 +3,8 @@ query GetProblem($id: String!) {
     id
     title
     grade
-    rating
+    consensusGrade
+    consensusRating
     rules
     creatorId
     creator {

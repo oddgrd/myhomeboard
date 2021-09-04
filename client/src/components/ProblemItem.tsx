@@ -16,7 +16,15 @@ export const ProblemItem = ({ problem }: Props) => {
   const { data, loading } = useMeQuery({
     skip: isServer()
   });
-  const { title, grade, rating, id, creator, ascents } = problem;
+  const {
+    title,
+    grade,
+    consensusRating,
+    consensusGrade,
+    id,
+    creator,
+    ascents
+  } = problem;
   const userIds = ascents?.map((ascent) => ascent.userId);
 
   useEffect(() => {
@@ -31,16 +39,20 @@ export const ProblemItem = ({ problem }: Props) => {
       <Link href={`/problem/${id}`}>
         <a>
           <div className={styles.problemItem}>
-            <div>
+            <div className={styles.titleDiv}>
               <p className={styles.title}>{title}</p>
               <p>by {creator.name}</p>
             </div>
             <div className={styles.gradeAndRating}>
               {sendStatus && <FaCheck color='#00ddff' />}
-              <p>{grades[grade].label}</p>
               <p>
-                {rating || rating === 0 ? (
-                  <StarRating rating={rating} />
+                {consensusGrade
+                  ? grades[consensusGrade].label
+                  : grades[grade].label}
+              </p>
+              <p>
+                {consensusRating || consensusRating === 0 ? (
+                  <StarRating rating={consensusRating} />
                 ) : (
                   'Project'
                 )}
