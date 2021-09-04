@@ -4,13 +4,10 @@ import Image from 'next/image';
 import { FaPlus, FaSignOutAlt, FaSignInAlt, FaSearch } from 'react-icons/fa';
 import logo from '../../public/Logo-klatreapp.svg';
 import { useLogoutMutation, useMeQuery } from '../generated/graphql';
-import { isServer } from '../utils/isServer';
 import { useApolloClient } from '@apollo/client';
 
 export const Header = () => {
-  const { data, loading } = useMeQuery({
-    skip: isServer()
-  });
+  const { data, loading } = useMeQuery();
   const [logout] = useLogoutMutation();
   const apolloClient = useApolloClient();
   const handleLogout = async () => {
@@ -21,18 +18,20 @@ export const Header = () => {
   if (loading) {
   } else if (!data?.me) {
     body = (
-      <li>
-        <Link href='/login'>
-          <a className='btn-secondary btn-icon'>
-            <FaSignInAlt />
-            <span className={styles.hide}>Login</span>
-          </a>
-        </Link>
-      </li>
+      <ul>
+        <li>
+          <Link href='/login'>
+            <a className='btn-secondary btn-icon'>
+              <FaSignInAlt />
+              <span className={styles.hide}>Login</span>
+            </a>
+          </Link>
+        </li>
+      </ul>
     );
   } else {
     body = (
-      <>
+      <ul>
         <li>
           <Link href='/problems'>
             <a className='btn btn-link btn-icon'>
@@ -56,7 +55,7 @@ export const Header = () => {
           </button>
         </li>
         {/* <li>{data.me?.name} </li> */}
-      </>
+      </ul>
     );
   }
 
@@ -71,9 +70,7 @@ export const Header = () => {
             </a>
           </Link>
         </div>
-        <nav>
-          <ul>{body}</ul>
-        </nav>
+        <nav>{body}</nav>
       </div>
     </header>
   );
