@@ -30,16 +30,27 @@ export class ProblemResolver {
     return userLoader.load(problem.creatorId);
   }
 
-  // // Field resolver for consensusGrade
-  // @FieldResolver(() => Int!, { nullable: true })
-  // consensusGrade(@Root() problem: Problem, @Ctx() {}: Context) {
-  //   if (!problem.ascents || problem.ascents.length === 0) return null;
-  //   const suggestedGrades = problem.ascents.map((ascent) => ascent.grade);
-  //   const averageGrade = suggestedGrades.reduce(
-  //     (val: number, acc: number) => acc + val
-  //   );
-  //   return Math.round(averageGrade / suggestedGrades.length);
-  // }
+  // Field resolver for consensusGrade
+  @FieldResolver(() => Int!, { nullable: true })
+  consensusGrade(@Root() problem: Problem, @Ctx() {}: Context) {
+    if (!problem.ascents || problem.ascents.length === 0) return null;
+    const suggestedGrades = problem.ascents.map((ascent) => ascent.grade);
+    const averageGrade = suggestedGrades.reduce(
+      (val: number, acc: number) => acc + val
+    );
+    return Math.round(averageGrade / suggestedGrades.length);
+  }
+
+  // Field resolver for consensusRating
+  @FieldResolver(() => Int!, { nullable: true })
+  consensusRating(@Root() problem: Problem, @Ctx() {}: Context) {
+    if (!problem.ascents || problem.ascents.length === 0) return null;
+    const suggestedRatings = problem.ascents.map((ascent) => ascent.rating);
+    const averageRating = suggestedRatings.reduce(
+      (val: number, acc: number) => acc + val
+    );
+    return Math.round(averageRating / suggestedRatings.length);
+  }
 
   // // Field resolver for ascents
   // @FieldResolver(() => [Ascent], { nullable: true })
