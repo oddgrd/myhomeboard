@@ -6,7 +6,7 @@ import withApollo from '../utils/withApollo';
 
 const Problems = () => {
   const { data, loading, error, fetchMore, variables } = useGetProblemsQuery({
-    variables: { limit: 25, cursor: null },
+    variables: { limit: 20, cursor: null },
     notifyOnNetworkStatusChange: true
   });
   if (!loading && !data) {

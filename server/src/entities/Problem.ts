@@ -8,6 +8,7 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  RelationId,
   UpdateDateColumn
 } from 'typeorm';
 import { User } from './User';
@@ -48,12 +49,12 @@ export class Problem extends BaseEntity {
   @ManyToOne(() => User, (user) => user.problems)
   creator: User;
 
-  @Field(() => [Ascent], { nullable: true })
+  @Field(() => [Ascent])
   @OneToMany(() => Ascent, (ascent) => ascent.problem)
   ascents: Ascent[];
 
-  @Field(() => Boolean, { nullable: true })
-  sendStatus: boolean;
+  @Field(() => Ascent, { nullable: true })
+  sendStatus: Ascent | null;
 
   // @Field()
   // @OneToOne(() => Board)

@@ -30,19 +30,28 @@ export class ProblemResolver {
     return userLoader.load(problem.creatorId);
   }
 
-  // Field resolver for sendStatus field
-  @FieldResolver(() => Boolean, { nullable: true })
-  async sendStatus(
-    @Root() problem: Problem,
-    @Ctx() { req, ascentLoader }: Context
-  ) {
-    if (!req.session.passport?.user) return false;
-    const ascent = await ascentLoader.load({
-      problemId: problem.id,
-      userId: req.session.passport?.user
-    });
-    return ascent ? true : false;
-  }
+  // // Field resolver for consensusGrade
+  // @FieldResolver(() => Int!, { nullable: true })
+  // consensusGrade(@Root() problem: Problem, @Ctx() {}: Context) {
+  //   if (!problem.ascents || problem.ascents.length === 0) return null;
+  //   const suggestedGrades = problem.ascents.map((ascent) => ascent.grade);
+  //   const averageGrade = suggestedGrades.reduce(
+  //     (val: number, acc: number) => acc + val
+  //   );
+  //   return Math.round(averageGrade / suggestedGrades.length);
+  // }
+
+  // // Field resolver for ascents
+  // @FieldResolver(() => [Ascent], { nullable: true })
+  // async ascents(@Root() problem: Problem, @Ctx() {}: Context) {
+  //   const ids = problem.ascentIds;
+  //   console.log(ids);
+  //   // const ascent = await ascentLoader.load({
+  //   //   problemId: problem.id,
+  //   //   userId: req.session.passport?.user
+  //   // });
+  //   return null;
+  // }
 
   // Create new problem
   @Mutation(() => Problem)
@@ -117,22 +126,18 @@ export class ProblemResolver {
     const realLimit = Math.min(50, limit); // max limit 50
     const realLimitPlusOne = realLimit + 1;
 
-    const replacements: any[] = [realLimitPlusOne];
+    const qb = getConnection()
+      .createQueryBuilder(Problem, 'problem')
+      .leftJoinAndSelect('problem.ascents', 'ascent')
+      .orderBy('problem.createdAt', 'DESC');
 
     if (cursor) {
-      replacements.push(new Date(parseInt(cursor)));
+      qb.where('problem."createdAt" < :cursor', {
+        cursor: new Date(+cursor)
+      });
     }
-    const problems = await getConnection().query(
-      `
-      SELECT p.*
-      FROM problem p
-      ${cursor ? `WHERE p."createdAt" < $2` : ''}
-      ORDER BY p."createdAt" DESC
-      LIMIT $1
-    `,
-      replacements
-    );
-
+    qb.take(realLimitPlusOne);
+    const problems = await qb.getMany();
     return {
       problems: problems.slice(0, realLimit),
       hasMore: problems.length === realLimitPlusOne

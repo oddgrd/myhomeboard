@@ -1,16 +1,31 @@
-import { ProblemSnippetFragment } from '../generated/graphql';
+import { ProblemSnippetFragment, useMeQuery } from '../generated/graphql';
 import Link from 'next/link';
 import styles from '../styles/ProblemItem.module.scss';
 import { grades, ratings } from '../utils/ratingsAndGrades';
 import { StarRating } from '../utils/StarRating';
 import { FaCheck } from 'react-icons/fa';
+import { useEffect, useState } from 'react';
+import { isServer } from '../utils/isServer';
 
 interface Props {
   problem: ProblemSnippetFragment;
 }
 
 export const ProblemItem = ({ problem }: Props) => {
-  const { title, grade, rating, id, creator, sendStatus } = problem;
+  const [sendStatus, setSendStatus] = useState(false);
+  const { data, loading } = useMeQuery({
+    skip: isServer()
+  });
+  const { title, grade, rating, id, creator, ascents } = problem;
+  const userIds = ascents?.map((ascent) => ascent.userId);
+
+  useEffect(() => {
+    if (!userIds || !data?.me) return;
+    if (userIds.includes(data.me.id)) {
+      setSendStatus(true);
+    }
+  }, []);
+
   return (
     <>
       <Link href={`/problem/${id}`}>

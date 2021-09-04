@@ -4,11 +4,15 @@ fragment ProblemSnippet on Problem {
   grade
   rating
   creatorId
-  sendStatus
   createdAt
   updatedAt
   creator {
     id
     name
+  }
+  ascents {
+    grade
+    rating
+    userId
   }
 }
