@@ -13,6 +13,7 @@ interface Props {
   label: string;
   name: string;
   options: Option[];
+  width: number;
 }
 
 const selectStyle: StylesConfig<Option, IsMulti> = {
@@ -27,7 +28,7 @@ const selectStyle: StylesConfig<Option, IsMulti> = {
     ...provided,
     color: 'white',
     background: '#313649',
-    width: 157,
+    width: state.selectProps.width,
     height: 50,
     border: 'none',
     borderRadius: '2px',
@@ -67,6 +68,7 @@ export const SelectField = ({ label, options, ...props }: Props) => {
         menuPlacement='auto'
         maxMenuHeight={height > 740 ? 250 : 205}
         placeholder='?'
+        width={props.width}
       />
 
       {meta.touched && meta.error ? (

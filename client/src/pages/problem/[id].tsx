@@ -2,7 +2,7 @@ import { Layout } from '../../components/Layout';
 import { Canvas } from '../../components/Canvas';
 import { AscentItem } from '../../components/AscentItem';
 import { useCanvas } from '../../hooks/useCanvas';
-import { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from '../../styles/Problem.module.scss';
 import { useRouter } from 'next/router';
 import { useGetProblemQuery, useMeQuery } from '../../generated/graphql';
@@ -11,9 +11,12 @@ import { grades } from '../../utils/ratingsAndGrades';
 import withApollo from '../../utils/withApollo';
 import { StarRating } from '../../utils/StarRating';
 import { EditDeleteProblemButtons } from '../../components/EditDeletePostButtons';
+import { AscentForm } from '../../components/form/AscentForm';
+import Modal from '../../components/Modal';
 
 const Problem = () => {
   const [{ canvas }, { initViewer, loadFromCoords }] = useCanvas();
+  const [showModal, setShowModal] = useState(false);
   const router = useRouter();
   const problemId = typeof router.query.id === 'string' ? router.query.id : '';
 
@@ -50,6 +53,7 @@ const Problem = () => {
     );
   }
   const {
+    id,
     title,
     rules,
     grade,
@@ -86,6 +90,15 @@ const Problem = () => {
             ) : null}
           </div>
         </div>
+        <button className='btn' onClick={() => setShowModal(true)}>
+          Tick
+        </button>
+        {showModal && (
+          <Modal onClose={() => setShowModal(false)}>
+            <AscentForm id={id} />
+          </Modal>
+        )}
+
         <div className={styles.ascents}>
           {ascents.length > 0 && <h3>Ascents:</h3>}
           {ascents &&

@@ -21,7 +21,7 @@ export type AddAscentInput = {
   grade: Scalars['Int'];
   rating: Scalars['Int'];
   attempts: Scalars['Int'];
-  comment?: Maybe<Scalars['String']>;
+  comment: Scalars['String'];
 };
 
 export type Ascent = {
