@@ -8,9 +8,7 @@
   display: block;
 }
 .mobileTitle {
-  text-align: center;
   display: none;
-  margin-bottom: 0.4rem;
 }
 .viewer {
   display: flex;
@@ -32,7 +30,15 @@
 .buttons {
   margin-top: 0.5rem;
   display: flex;
+  justify-content: space-evenly;
   gap: 0.5rem;
+  height: 3.8rem;
+  button {
+    width: 100%;
+  }
+  a {
+    width: 100%;
+  }
 }
 .info {
   p {
@@ -49,13 +55,18 @@
     padding-left: 10px;
   }
 }
-
 @media (max-width: 700px) {
   .desktopTitle {
     display: none;
   }
   .mobileTitle {
-    display: block;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    gap: 3px;
+  }
+  .grade {
   }
   .viewer {
     flex-direction: column;

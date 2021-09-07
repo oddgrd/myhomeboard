@@ -24,9 +24,11 @@
     }
   }
   &.btn-icon {
-    svg {
-      margin-right: 5px;
+    border: none;
+    &:hover {
+      color: white;
     }
+    padding: 12px 8px;
   }
   &.btn-undo {
     box-shadow: inset 0px 0px 0px 2px #00ddff;
@@ -42,6 +44,13 @@
     width: 25%;
     margin-top: 0.8rem;
     margin-left: 5px;
+  }
+}
+.flex {
+  display: flex;
+  &.flex-center {
+    justify-content: center;
+    align-items: center;
   }
 }
 @media (max-width: 700px) {

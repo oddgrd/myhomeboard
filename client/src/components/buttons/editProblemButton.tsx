@@ -13,7 +13,7 @@ export const EditProblemButton = ({ id }: Props) => {
   return (
     <Link href={`#`}>
       <a className='btn'>
-        <FaEdit />
+        <FaEdit size={22} />
       </a>
     </Link>
   );

@@ -81,8 +81,14 @@ a {
   text-decoration: none;
 }
 
+.hide-desktop {
+  display: none;
+}
 @media (max-width: 700px) {
   .hide {
     display: none;
+  }
+  .hide-desktop {
+    display: block;
   }
 }

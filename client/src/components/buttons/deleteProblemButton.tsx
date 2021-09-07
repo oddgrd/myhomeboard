@@ -12,8 +12,7 @@ export const DeleteProblemButton = ({ id }: Props) => {
   return (
     <button
       className='btn'
-      title='Delete Post'
-      aria-label='Delete Post'
+      aria-label='Delete Problem'
       onClick={async () => {
         await deleteProblem({
           variables: { id },
@@ -24,7 +23,7 @@ export const DeleteProblemButton = ({ id }: Props) => {
         router.push('/problems');
       }}
     >
-      <FaTrash />
+      <FaTrash size={22} />
     </button>
   );
 };
