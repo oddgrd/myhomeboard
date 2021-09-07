@@ -7,12 +7,14 @@ import styles from '../../styles/Problem.module.scss';
 import { useRouter } from 'next/router';
 import { useGetProblemQuery, useMeQuery } from '../../generated/graphql';
 import Link from 'next/link';
-import { grades } from '../../utils/ratingsAndGrades';
+import { grades } from '../../utils/selectOptions';
 import withApollo from '../../utils/withApollo';
 import { StarRating } from '../../utils/StarRating';
-import { EditDeleteProblemButtons } from '../../components/EditDeletePostButtons';
 import { AscentForm } from '../../components/form/AscentForm';
 import Modal from '../../components/Modal';
+import { FaCheck } from 'react-icons/fa';
+import { DeleteProblemButton } from '../../components/buttons/deleteProblemButton';
+import { EditProblemButton } from '../../components/buttons/editProblemButton';
 
 const Problem = () => {
   const [{ canvas }, { initViewer, loadFromCoords }] = useCanvas();
@@ -26,7 +28,9 @@ const Problem = () => {
       id: problemId
     }
   });
-
+  const hasSent = data?.getProblem?.ascents.filter(
+    (ascent) => ascent.userId === meData?.me?.id
+  ).length;
   useEffect(() => {
     if (!initViewer) return;
     initViewer();
@@ -35,7 +39,7 @@ const Problem = () => {
   }, [data?.getProblem, initViewer, loadFromCoords]);
 
   if (loading) {
-    return <Layout>...loading</Layout>;
+    return null;
   }
 
   if (error) {
@@ -75,27 +79,38 @@ const Problem = () => {
 
             <p>
               Grade:{' '}
-              {consensusGrade
+              {typeof consensusGrade === 'number'
                 ? grades[consensusGrade].label
                 : grades[grade].label}
             </p>
             <p>
               Rating:{' '}
-              {consensusRating && <StarRating rating={consensusRating} />}
+              {typeof consensusRating === 'number' ? (
+                <StarRating rating={consensusRating} />
+              ) : (
+                'Project'
+              )}
             </p>
             <p>Rules: {rules}</p>
             <p>Set by: {creator.name}</p>
-            {creator.id === meData?.me?.id ? (
-              <EditDeleteProblemButtons id={problemId} />
-            ) : null}
+            <div className={styles.buttons}>
+              {creator.id === meData?.me?.id ? (
+                <>
+                  <DeleteProblemButton id={problemId} />
+                  <EditProblemButton id={problemId} />
+                </>
+              ) : null}
+              {!hasSent && (
+                <button className='btn' onClick={() => setShowModal(true)}>
+                  <FaCheck />
+                </button>
+              )}
+            </div>
           </div>
         </div>
-        <button className='btn' onClick={() => setShowModal(true)}>
-          Tick
-        </button>
         {showModal && (
           <Modal onClose={() => setShowModal(false)}>
-            <AscentForm id={id} />
+            <AscentForm id={id} onClose={() => setShowModal(false)} />
           </Modal>
         )}
 

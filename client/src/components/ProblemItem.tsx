@@ -1,7 +1,7 @@
 import { ProblemSnippetFragment, useMeQuery } from '../generated/graphql';
 import Link from 'next/link';
 import styles from '../styles/ProblemItem.module.scss';
-import { grades, ratings } from '../utils/ratingsAndGrades';
+import { grades } from '../utils/selectOptions';
 import { StarRating } from '../utils/StarRating';
 import { FaCheck } from 'react-icons/fa';
 import { useEffect, useState } from 'react';

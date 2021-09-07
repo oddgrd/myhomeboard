@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import { FaTimes } from 'react-icons/fa';
 import styles from '../styles/Modal.module.scss';
@@ -6,14 +6,12 @@ import styles from '../styles/Modal.module.scss';
 interface Props {
   onClose: () => void;
   children: React.ReactNode;
-  title?: string;
 }
-export default function Modal({ onClose, children, title }: Props) {
+export default function Modal({ onClose, children }: Props) {
   const [isBrowser, setIsBrowser] = useState(false);
   const modalWrapperRef = useRef<HTMLDivElement>(null);
 
   const backDropHandler = (e: any) => {
-    console.log('still goin');
     if (!modalWrapperRef?.current?.contains(e.target)) {
       onClose();
     }
@@ -25,8 +23,8 @@ export default function Modal({ onClose, children, title }: Props) {
 
   useEffect(() => {
     setIsBrowser(true);
-    document.addEventListener('click', backDropHandler);
-    return () => document.removeEventListener('click', backDropHandler);
+    document.addEventListener('click', backDropHandler, true);
+    return () => document.removeEventListener('click', backDropHandler, true);
   }, []);
 
   const modalContent = (
@@ -35,10 +33,9 @@ export default function Modal({ onClose, children, title }: Props) {
         <div className={styles.modal}>
           <div className={styles.header}>
             <a href='#' onClick={handleCloseClick}>
-              <FaTimes />
+              <FaTimes size={35} />
             </a>
           </div>
-          {title && <div>{title}</div>}
           <div className={styles.body}>{children}</div>
         </div>
       </div>

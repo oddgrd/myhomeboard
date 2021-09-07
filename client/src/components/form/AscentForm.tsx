@@ -1,15 +1,16 @@
-import styles from '../../styles/Form.module.scss';
+import styles from '../../styles/AscentForm.module.scss';
 import * as Yup from 'yup';
 import { Formik, FormikHelpers, Form } from 'formik';
-import { Inputfield } from './Inputfield';
 import { SelectField } from './SelectField';
 import { useAddAscentMutation } from '../../generated/graphql';
-import { attempts, grades, ratings } from '../../utils/ratingsAndGrades';
-import { useRouter } from 'next/router';
+import { attempts, grades, ratings } from '../../utils/selectOptions';
 import { Textarea } from './Textarea';
+import { useState } from 'react';
+import { FaCheck } from 'react-icons/fa';
 
 interface Props {
   id: string;
+  onClose: () => void;
 }
 interface Values {
   problemId: string;
@@ -19,9 +20,9 @@ interface Values {
   comment: string;
 }
 
-export const AscentForm = ({ id }: Props) => {
+export const AscentForm = ({ id, onClose }: Props) => {
+  const [success, setSuccess] = useState(false);
   const [addAscent] = useAddAscentMutation();
-  const router = useRouter();
 
   return (
     <Formik
@@ -43,7 +44,7 @@ export const AscentForm = ({ id }: Props) => {
         const { errors } = await addAscent({
           variables: { options: values },
           update: (cache) => {
-            cache.evict({ fieldName: 'getProblems' });
+            cache.evict({ fieldName: 'getProblem' });
           }
         });
         setSubmitting(false);
@@ -51,43 +52,52 @@ export const AscentForm = ({ id }: Props) => {
           console.log(errors);
         }
         if (!errors) {
-          router.push('/problems');
+          setSuccess(true);
+          setTimeout(() => {
+            onClose();
+          }, 1300);
         }
       }}
     >
-      {({ isSubmitting }) => (
+      {(props) => (
         <div className={styles.form}>
-          <Form>
-            <h1 className='hide'>Add Ascent</h1>
-            <div className={styles.selectContainer}>
+          {!success ? (
+            <Form>
+              <h1>Add Ascent</h1>
+              <div className={styles.selectContainer}>
+                <SelectField
+                  name='grade'
+                  options={grades}
+                  label='Grade *'
+                  width={157}
+                />
+                <SelectField
+                  name='rating'
+                  options={ratings}
+                  label='Rating *'
+                  width={157}
+                />
+              </div>
               <SelectField
-                name='grade'
-                options={grades}
-                label='Grade'
-                width={157}
+                name='attempts'
+                options={attempts}
+                label='Attempts *'
+                width={324}
               />
-              <SelectField
-                name='rating'
-                options={ratings}
-                label='Rating'
-                width={157}
-              />
-            </div>
-            <SelectField
-              name='attempts'
-              options={attempts}
-              label='Attempts'
-              width={324}
-            />
-            <Textarea name='comment' label='Comment' placeholder='Optional' />
+              <Textarea name='comment' label='Comment' placeholder='Optional' />
 
-            <input
-              type='submit'
-              className='btn'
-              disabled={isSubmitting}
-              value='Save Ascent'
-            />
-          </Form>
+              <input
+                type='submit'
+                className='btn'
+                value='Save Ascent'
+                disabled={!props.isValid}
+              />
+            </Form>
+          ) : (
+            <div className={styles.success}>
+              <FaCheck size={170} />
+            </div>
+          )}
         </div>
       )}
     </Formik>

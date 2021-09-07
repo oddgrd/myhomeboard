@@ -7,11 +7,59 @@
   --theme-foreground: #313649;
   --theme-foreground-hover: #3e445e;
   --theme-links: #287097;
-  --theme-text: #bcbdd0;
+  --theme-text: #dedeeb;
   --theme-border-transparent: rgba(188, 189, 208, 0.6);
   --theme-text-foreground: #c3c4d6;
   --theme-text-secondary: #737480;
   --theme-box-shadow: none;
+
+  --fade-up: fadeUp 0.25s ease-in-out;
+  --fade-up-slow: fadeUp 0.8s ease-in-out;
+  --fade-down: fadeDown 0.25s ease-in-out;
+  --fade-in: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-1rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.2;
+  }
+  40% {
+    opacity: 0.4;
+  }
+  60% {
+    opacity: 0.6;
+  }
+  80% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 * {

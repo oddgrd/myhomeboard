@@ -1,19 +1,26 @@
 .wrapper {
-  width: 500px;
+  width: 460px;
   height: 600px;
-  z-index: 100;
+  z-index: 3;
 }
 .modal {
   background: var(--theme-background);
   height: 100%;
   width: 100%;
-  border-radius: 15px;
-  padding: 20px;
+  border-radius: 10px;
+  padding: 10px;
+  animation: var(--fade-up);
 }
 .header {
   display: flex;
   justify-content: flex-end;
-  font-size: 25px;
+
+  a {
+    display: flex;
+    color: var(--theme-color);
+    align-items: center;
+    padding: 5px;
+  }
 }
 
 .body {
@@ -22,6 +29,7 @@
 
 .overlay {
   position: absolute;
+  z-index: 3;
   top: 0;
   left: 0;
   width: 100%;
@@ -29,12 +37,22 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
 @media (max-width: 700px) {
   .wrapper {
     width: 350px;
-    height: 478px;
+    height: 600px;
+    z-index: 3;
+  }
+  .overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.7);
   }
 }

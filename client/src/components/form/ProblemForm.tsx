@@ -7,7 +7,7 @@ import {
   CoordinatesInput,
   useCreateProblemMutation
 } from '../../generated/graphql';
-import { grades } from '../../utils/ratingsAndGrades';
+import { grades } from '../../utils/selectOptions';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 
@@ -39,11 +39,11 @@ export const ProblemForm = ({ coords }: Props) => {
       validationSchema={Yup.object({
         title: Yup.string()
           .min(2, 'Must be 2 characters or more')
-          .max(250, 'Must be shorter than 250 characters')
+          .max(60, 'Must be shorter than 60 characters')
           .required('Required'),
         rules: Yup.string()
-          .min(3, 'Must be 3 characters or more')
-          .max(50, 'Must be shorter than 1000 characters')
+          .min(2, 'Must be 2 characters or more')
+          .max(80, 'Must be shorter than 80 characters')
           .required('Required'),
         grade: Yup.number().required('Required')
       })}
@@ -84,8 +84,12 @@ export const ProblemForm = ({ coords }: Props) => {
             />
             <Inputfield name='rules' type='text' label='Rules' />
             <div className={styles.selectContainer}>
-              <SelectField name='grade' options={grades} label='Grade' />
-              {/* <SelectField name='rating' options={ratings} label='Rating' /> */}
+              <SelectField
+                name='grade'
+                options={grades}
+                label='Grade'
+                width={324}
+              />
             </div>
 
             <input
