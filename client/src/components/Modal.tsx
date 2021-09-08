@@ -32,7 +32,7 @@ export default function Modal({ onClose, children }: Props) {
       <div className={styles.wrapper} ref={modalWrapperRef}>
         <div className={styles.modal}>
           <div className={styles.header}>
-            <a href='#' onClick={handleCloseClick}>
+            <a href='#' onClick={handleCloseClick} aria-label='Close Modal'>
               <FaTimes size={35} />
             </a>
           </div>

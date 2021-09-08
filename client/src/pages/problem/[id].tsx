@@ -5,7 +5,11 @@ import { useCanvas } from '../../hooks/useCanvas';
 import React, { useEffect, useState } from 'react';
 import styles from '../../styles/Problem.module.scss';
 import { useRouter } from 'next/router';
-import { useGetProblemQuery, useMeQuery } from '../../generated/graphql';
+import {
+  useAddAscentMutation,
+  useGetProblemQuery,
+  useMeQuery
+} from '../../generated/graphql';
 import Link from 'next/link';
 import { grades } from '../../utils/selectOptions';
 import withApollo from '../../utils/withApollo';
@@ -20,15 +24,18 @@ const Problem = () => {
   const [{ canvas }, { initViewer, loadFromCoords }] = useCanvas();
   const [showModal, setShowModal] = useState(false);
   const [showInfoModal, setShowInfoModal] = useState(false);
+
   const router = useRouter();
   const problemId = typeof router.query.id === 'string' ? router.query.id : '';
 
+  const [addAscent] = useAddAscentMutation();
   const { data: meData } = useMeQuery();
   const { data, loading, error } = useGetProblemQuery({
     variables: {
       id: problemId
     }
   });
+
   useEffect(() => {
     if (!initViewer) return;
     initViewer();
@@ -54,6 +61,7 @@ const Problem = () => {
       </Layout>
     );
   }
+
   const {
     id,
     title,
@@ -66,6 +74,7 @@ const Problem = () => {
     sendStatus,
     createdAt
   } = data.getProblem;
+
   const info = (
     <>
       <p>
@@ -94,6 +103,7 @@ const Problem = () => {
       </p>
     </>
   );
+
   return (
     <Layout title='Problem'>
       <div className={styles.problem}>
@@ -162,7 +172,11 @@ const Problem = () => {
         </div>
         {showModal && (
           <Modal onClose={() => setShowModal(false)}>
-            <AscentForm id={id} onClose={() => setShowModal(false)} />
+            <AscentForm
+              id={id}
+              onClose={() => setShowModal(false)}
+              mutation={addAscent}
+            />
           </Modal>
         )}
         {showInfoModal && (
@@ -187,4 +201,5 @@ const Problem = () => {
     </Layout>
   );
 };
+
 export default withApollo({ ssr: true })(Problem);

@@ -19,7 +19,7 @@ export const DeleteAscentButton = ({ id }: Props) => {
   };
   return (
     <button className='btn' aria-label='Delete Ascent' onClick={handleDelete}>
-      <FaTimes />
+      <FaTimes size={22} />
     </button>
   );
 };

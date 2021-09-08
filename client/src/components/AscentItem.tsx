@@ -1,12 +1,13 @@
-import { Maybe } from '../generated/graphql';
+import { Maybe, useEditAscentMutation } from '../generated/graphql';
 import styles from '../styles/AscentItem.module.scss';
 import { grades, attempts } from '../utils/selectOptions';
 import Image from 'next/image';
 import { StarRating } from '../utils/StarRating';
 import { DeleteAscentButton } from './buttons/deleteAscentButton';
-import { EditProblemButton } from './buttons/editProblemButton';
+import { AscentForm } from './form/AscentForm';
 import { useState } from 'react';
-import { FaEllipsisV } from 'react-icons/fa';
+import { FaEdit, FaEllipsisV } from 'react-icons/fa';
+import Modal from './Modal';
 
 interface Props {
   ascent: {
@@ -28,8 +29,26 @@ interface Props {
 }
 
 export const AscentItem = ({ ascent, problemId, currentUserId }: Props) => {
+  const [showModal, setShowModal] = useState(false);
   const [showOptions, toggleShowOptions] = useState(false);
-  const { grade, rating, user, attempts: attemptsCount, userId } = ascent;
+  const [editAscent] = useEditAscentMutation();
+
+  const {
+    grade,
+    rating,
+    user,
+    attempts: attemptsCount,
+    userId,
+    comment
+  } = ascent;
+  const editProps = {
+    grade,
+    rating,
+    attempts: attemptsCount,
+    problemId,
+    comment
+  };
+
   return (
     <div className={styles.ascentItem}>
       <div className={styles.avatar}>
@@ -66,8 +85,20 @@ export const AscentItem = ({ ascent, problemId, currentUserId }: Props) => {
       {currentUserId === userId && showOptions && (
         <div className={styles.options}>
           <DeleteAscentButton id={problemId} />
-          <EditProblemButton id={'123'} />
+          <button className='btn' onClick={() => setShowModal(true)}>
+            <FaEdit size={22} />
+          </button>
         </div>
+      )}
+      {showModal && (
+        <Modal onClose={() => setShowModal(false)}>
+          <AscentForm
+            onClose={() => setShowModal(false)}
+            editProps={editProps}
+            mutation={editAscent}
+            id={problemId}
+          />
+        </Modal>
       )}
     </div>
   );

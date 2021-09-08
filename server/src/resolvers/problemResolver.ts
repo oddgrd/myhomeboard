@@ -101,7 +101,7 @@ export class ProblemResolver {
       })
       .execute();
 
-    if (!result) return false;
+    if (result.affected === 0) return false;
     return true;
   }
 
@@ -196,6 +196,29 @@ export class ProblemResolver {
       return false;
     }
 
+    return true;
+  }
+
+  // Edit ascent
+  @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
+  async editAscent(
+    @Arg('options') options: AddAscentInput,
+    @Ctx() { req }: Context
+  ): Promise<Boolean> {
+    const userId = req.session.passport?.user;
+    const { rating, grade, attempts, comment, problemId } = options;
+
+    const result = await getConnection()
+      .createQueryBuilder()
+      .update(Ascent)
+      .set({ rating, grade, attempts, comment })
+      .where('"problemId" = :id and "userId" = :userId', {
+        id: problemId,
+        userId
+      })
+      .execute();
+    if (result.affected === 0) return false;
     return true;
   }
 

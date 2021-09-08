@@ -20,7 +20,7 @@ export const Header = () => {
   const [logout] = useLogoutMutation();
   const apolloClient = useApolloClient();
   const router = useRouter();
-  console.log(router.pathname);
+
   const handleLogout = async () => {
     await logout();
     await apolloClient.resetStore();

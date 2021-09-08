@@ -2,7 +2,10 @@ import styles from '../../styles/AscentForm.module.scss';
 import * as Yup from 'yup';
 import { Formik, FormikHelpers, Form } from 'formik';
 import { SelectField } from './SelectField';
-import { useAddAscentMutation } from '../../generated/graphql';
+import {
+  AddAscentMutationFn,
+  EditAscentMutationFn
+} from '../../generated/graphql';
 import { attempts, grades, ratings } from '../../utils/selectOptions';
 import { Textarea } from './Textarea';
 import { useState } from 'react';
@@ -11,6 +14,8 @@ import { FaCheck } from 'react-icons/fa';
 interface Props {
   id: string;
   onClose: () => void;
+  mutation: AddAscentMutationFn | EditAscentMutationFn;
+  editProps?: Values;
 }
 interface Values {
   problemId: string;
@@ -20,17 +25,18 @@ interface Values {
   comment: string;
 }
 
-export const AscentForm = ({ id, onClose }: Props) => {
+export const AscentForm = ({ id, onClose, mutation, editProps }: Props) => {
   const [success, setSuccess] = useState(false);
-  const [addAscent] = useAddAscentMutation();
 
   return (
     <Formik
       initialValues={
-        {
-          problemId: id,
-          comment: ''
-        } as Values
+        editProps
+          ? editProps
+          : ({
+              problemId: id,
+              comment: ''
+            } as Values)
       }
       validationSchema={Yup.object({
         grade: Yup.number().required('Required'),
@@ -41,7 +47,7 @@ export const AscentForm = ({ id, onClose }: Props) => {
         values: Values,
         { setSubmitting }: FormikHelpers<Values>
       ) => {
-        const { errors } = await addAscent({
+        const { errors } = await mutation({
           variables: { options: values },
           update: (cache) => {
             cache.evict({ fieldName: 'getProblem' });
@@ -63,7 +69,7 @@ export const AscentForm = ({ id, onClose }: Props) => {
         <div className={styles.form}>
           {!success ? (
             <Form>
-              <h1>Add Ascent</h1>
+              <h1>{!editProps ? 'Add' : 'Edit'} Ascent</h1>
               <div className={styles.selectContainer}>
                 <SelectField
                   name='grade'

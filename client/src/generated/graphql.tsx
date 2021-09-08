@@ -77,6 +77,7 @@ export type Mutation = {
   updateProblem: Scalars['Boolean'];
   deleteProblem: Scalars['Boolean'];
   addAscent: Scalars['Boolean'];
+  editAscent: Scalars['Boolean'];
   deleteAscent: Scalars['Boolean'];
 };
 
@@ -104,6 +105,11 @@ export type MutationDeleteProblemArgs = {
 
 
 export type MutationAddAscentArgs = {
+  options: AddAscentInput;
+};
+
+
+export type MutationEditAscentArgs = {
   options: AddAscentInput;
 };
 
@@ -222,6 +228,13 @@ export type DeleteProblemMutationVariables = Exact<{
 
 
 export type DeleteProblemMutation = { __typename?: 'Mutation', deleteProblem: boolean };
+
+export type EditAscentMutationVariables = Exact<{
+  options: AddAscentInput;
+}>;
+
+
+export type EditAscentMutation = { __typename?: 'Mutation', editAscent: boolean };
 
 export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -453,6 +466,37 @@ export function useDeleteProblemMutation(baseOptions?: Apollo.MutationHookOption
 export type DeleteProblemMutationHookResult = ReturnType<typeof useDeleteProblemMutation>;
 export type DeleteProblemMutationResult = Apollo.MutationResult<DeleteProblemMutation>;
 export type DeleteProblemMutationOptions = Apollo.BaseMutationOptions<DeleteProblemMutation, DeleteProblemMutationVariables>;
+export const EditAscentDocument = gql`
+    mutation EditAscent($options: AddAscentInput!) {
+  editAscent(options: $options)
+}
+    `;
+export type EditAscentMutationFn = Apollo.MutationFunction<EditAscentMutation, EditAscentMutationVariables>;
+
+/**
+ * __useEditAscentMutation__
+ *
+ * To run a mutation, you first call `useEditAscentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditAscentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editAscentMutation, { data, loading, error }] = useEditAscentMutation({
+ *   variables: {
+ *      options: // value for 'options'
+ *   },
+ * });
+ */
+export function useEditAscentMutation(baseOptions?: Apollo.MutationHookOptions<EditAscentMutation, EditAscentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<EditAscentMutation, EditAscentMutationVariables>(EditAscentDocument, options);
+      }
+export type EditAscentMutationHookResult = ReturnType<typeof useEditAscentMutation>;
+export type EditAscentMutationResult = Apollo.MutationResult<EditAscentMutation>;
+export type EditAscentMutationOptions = Apollo.BaseMutationOptions<EditAscentMutation, EditAscentMutationVariables>;
 export const LogoutDocument = gql`
     mutation Logout {
   logout
