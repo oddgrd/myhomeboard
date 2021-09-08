@@ -12,7 +12,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 
 interface Props {
-  coords: CoordinatesInput[] | undefined;
+  coords?: CoordinatesInput[];
 }
 interface Values {
   title: string;
@@ -58,7 +58,7 @@ export const ProblemForm = ({ coords }: Props) => {
           setValidCoords(true);
         }
         const { errors } = await createProblem({
-          variables: { createProblemOptions: values },
+          variables: { options: values },
           update: (cache) => {
             cache.evict({ fieldName: 'getProblems' });
           }
