@@ -42,7 +42,7 @@ export class CreateProblemInput {
 }
 
 @InputType()
-export class UpdateProblemInput {
+export class EditProblemInput {
   @Field()
   problemId: string;
 
