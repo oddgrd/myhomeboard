@@ -13,12 +13,12 @@ import {
 import Link from 'next/link';
 import { grades } from '../../utils/selectOptions';
 import withApollo from '../../utils/withApollo';
-import { StarRating } from '../../utils/StarRating';
 import { AscentForm } from '../../components/form/AscentForm';
 import Modal from '../../components/Modal';
 import { FaCheck, FaInfo } from 'react-icons/fa';
 import { DeleteProblemButton } from '../../components/buttons/deleteProblemButton';
 import { EditProblemButton } from '../../components/buttons/editProblemButton';
+import { ProblemInfo } from '../../components/ProblemInfo';
 
 const Problem = () => {
   const [{ canvas }, { initViewer, loadFromCoords }] = useCanvas();
@@ -74,36 +74,14 @@ const Problem = () => {
     sendStatus,
     createdAt
   } = data.getProblem;
-
-  const info = (
-    <>
-      <p>
-        Grade:{' '}
-        {typeof consensusGrade === 'number'
-          ? grades[consensusGrade].label
-          : grades[grade].label}
-      </p>
-      <p>
-        Rating:{' '}
-        {typeof consensusRating === 'number' ? (
-          <StarRating rating={consensusRating} />
-        ) : (
-          'Project'
-        )}
-      </p>
-      <p>Rules: {rules}</p>
-      <p>Set by: {creator.name}</p>
-      <p>
-        {new Date(+createdAt).toLocaleString('en-GB', {
-          weekday: 'long',
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric'
-        })}
-      </p>
-    </>
-  );
-
+  const infoProps = {
+    rules,
+    grade,
+    consensusGrade,
+    consensusRating,
+    name: creator.name,
+    createdAt
+  };
   return (
     <Layout title='Problem'>
       <div className={styles.problem}>
@@ -123,30 +101,7 @@ const Problem = () => {
           <div className={styles.info}>
             <h2 className={styles.desktopTitle}>{title}</h2>
             <div className='hide'>
-              <p>
-                Grade:{' '}
-                {typeof consensusGrade === 'number'
-                  ? grades[consensusGrade].label
-                  : grades[grade].label}
-              </p>
-              <p>
-                Rating:{' '}
-                {typeof consensusRating === 'number' ? (
-                  <StarRating rating={consensusRating} />
-                ) : (
-                  'Project'
-                )}
-              </p>
-              <p>Rules: {rules}</p>
-              <p>Set by: {creator.name}</p>
-              <p>
-                {new Date(+createdAt).toLocaleString('en-GB', {
-                  weekday: 'long',
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric'
-                })}
-              </p>
+              <ProblemInfo {...infoProps} />
             </div>
 
             <div className={styles.buttons}>
@@ -180,7 +135,9 @@ const Problem = () => {
           </Modal>
         )}
         {showInfoModal && (
-          <Modal onClose={() => setShowInfoModal(false)}>{info}</Modal>
+          <Modal onClose={() => setShowInfoModal(false)}>
+            <ProblemInfo {...infoProps} />
+          </Modal>
         )}
 
         <div className={styles.ascents}>

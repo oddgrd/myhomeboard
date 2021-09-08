@@ -2,7 +2,7 @@ import { Maybe, useEditAscentMutation } from '../generated/graphql';
 import styles from '../styles/AscentItem.module.scss';
 import { grades, attempts } from '../utils/selectOptions';
 import Image from 'next/image';
-import { StarRating } from '../utils/StarRating';
+import { StarRating } from './StarRating';
 import { DeleteAscentButton } from './buttons/deleteAscentButton';
 import { AscentForm } from './form/AscentForm';
 import { useState } from 'react';
