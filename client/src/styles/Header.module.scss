@@ -11,6 +11,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+
   a {
     color: var(--theme-color);
     &:hover {
@@ -30,6 +31,7 @@
   justify-content: center;
   align-items: center;
   font-size: 28px;
+
   strong {
     color: #00ddff;
     margin-left: 0.3rem;

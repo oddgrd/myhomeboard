@@ -7,19 +7,18 @@ interface Props {
 
 export const DeleteAscentButton = ({ id }: Props) => {
   const [deleteAscent] = useDeleteAscentMutation();
+  const handleDelete = async () => {
+    if (window.confirm('Are you sure? Deletion is permanent.')) {
+      await deleteAscent({
+        variables: { problemId: id },
+        update: (cache) => {
+          cache.evict({ id: 'Problem:' + id });
+        }
+      });
+    }
+  };
   return (
-    <button
-      className='btn'
-      aria-label='Delete Ascent'
-      onClick={async () => {
-        await deleteAscent({
-          variables: { problemId: id },
-          update: (cache) => {
-            cache.evict({ id: 'Problem:' + id });
-          }
-        });
-      }}
-    >
+    <button className='btn' aria-label='Delete Ascent' onClick={handleDelete}>
       <FaTimes />
     </button>
   );

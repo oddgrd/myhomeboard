@@ -1,23 +1,35 @@
 import Link from 'next/link';
 import styles from '../styles/Header.module.scss';
 import Image from 'next/image';
-import { FaPlus, FaSignOutAlt, FaSignInAlt, FaSearch } from 'react-icons/fa';
+import {
+  FaPlus,
+  FaSignOutAlt,
+  FaSignInAlt,
+  FaSearch,
+  FaLongArrowAltLeft
+} from 'react-icons/fa';
 import logo from '../../public/Logo-klatreapp.svg';
 import { useLogoutMutation, useMeQuery } from '../generated/graphql';
 import { useApolloClient } from '@apollo/client';
+import { useRouter } from 'next/router';
+import useWindowDimensions from '../hooks/useWindowDimensions';
 
 export const Header = () => {
+  const { width } = useWindowDimensions();
   const { data, loading } = useMeQuery();
   const [logout] = useLogoutMutation();
   const apolloClient = useApolloClient();
+  const router = useRouter();
+  console.log(router.pathname);
   const handleLogout = async () => {
     await logout();
     await apolloClient.resetStore();
   };
-  let body = null;
+
+  let nav = null;
   if (loading) {
   } else if (!data?.me) {
-    body = (
+    nav = (
       <ul>
         <li>
           <Link href='/login'>
@@ -30,7 +42,7 @@ export const Header = () => {
       </ul>
     );
   } else {
-    body = (
+    nav = (
       <ul>
         <li>
           <Link href='/problems'>
@@ -54,23 +66,36 @@ export const Header = () => {
             <FaSignOutAlt /> <span className={styles.hide}>Logout</span>
           </button>
         </li>
-        {/* <li>{data.me?.name} </li> */}
       </ul>
     );
   }
-
+  let head = null;
+  if (router.pathname === '/problem/[id]' && width < 700) {
+    head = (
+      <button
+        className='btn btn-icon btn-animation'
+        onClick={() => {
+          router.back();
+        }}
+      >
+        <FaLongArrowAltLeft size={46} />
+      </button>
+    );
+  } else {
+    head = (
+      <Link href='/'>
+        <a className={styles.logo}>
+          <Image src={logo} alt='Covegg19 Logo' width={42} height={42} />
+          <strong className={styles.hide}>myHomeBoard</strong>
+        </a>
+      </Link>
+    );
+  }
   return (
     <header className={styles.header}>
       <div className={styles.container}>
-        <div>
-          <Link href='/'>
-            <a className={styles.logo}>
-              <Image src={logo} alt='Covegg19 Logo' width={42} height={42} />
-              <strong className={styles.hide}>myHomeBoard</strong>
-            </a>
-          </Link>
-        </div>
-        <nav>{body}</nav>
+        <div>{head}</div>
+        <nav>{nav}</nav>
       </div>
     </header>
   );

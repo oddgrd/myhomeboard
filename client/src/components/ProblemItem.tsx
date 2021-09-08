@@ -4,18 +4,12 @@ import styles from '../styles/ProblemItem.module.scss';
 import { grades } from '../utils/selectOptions';
 import { StarRating } from '../utils/StarRating';
 import { FaCheck } from 'react-icons/fa';
-import { useEffect, useState } from 'react';
-import { isServer } from '../utils/isServer';
 
 interface Props {
   problem: ProblemSnippetFragment;
 }
 
 export const ProblemItem = ({ problem }: Props) => {
-  const [sendStatus, setSendStatus] = useState(false);
-  const { data, loading } = useMeQuery({
-    skip: isServer()
-  });
   const {
     title,
     grade,
@@ -23,16 +17,8 @@ export const ProblemItem = ({ problem }: Props) => {
     consensusGrade,
     id,
     creator,
-    ascents
+    sendStatus
   } = problem;
-  const userIds = ascents?.map((ascent) => ascent.userId);
-
-  useEffect(() => {
-    if (!userIds || !data?.me) return;
-    if (userIds.includes(data.me.id)) {
-      setSendStatus(true);
-    }
-  }, []);
 
   return (
     <>

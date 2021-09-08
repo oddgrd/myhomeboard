@@ -5,6 +5,7 @@ fragment ProblemSnippet on Problem {
   consensusGrade
   consensusRating
   creatorId
+  sendStatus
   createdAt
   updatedAt
   creator {

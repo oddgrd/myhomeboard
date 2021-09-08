@@ -70,8 +70,8 @@ export class AddAscentInput {
   @Field(() => Int)
   attempts!: number;
 
-  @Field({ nullable: true })
-  comment: string;
+  @Field()
+  comment!: string;
 }
 
 @ObjectType()

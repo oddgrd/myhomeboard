@@ -32,7 +32,7 @@ export class ProblemResolver {
 
   // Field resolver for consensusGrade
   @FieldResolver(() => Int!, { nullable: true })
-  consensusGrade(@Root() problem: Problem, @Ctx() {}: Context) {
+  consensusGrade(@Root() problem: Problem) {
     if (!problem.ascents || problem.ascents.length === 0) return null;
     const suggestedGrades = problem.ascents.map((ascent) => ascent.grade);
     const averageGrade = suggestedGrades.reduce(
@@ -43,7 +43,7 @@ export class ProblemResolver {
 
   // Field resolver for consensusRating
   @FieldResolver(() => Int!, { nullable: true })
-  consensusRating(@Root() problem: Problem, @Ctx() {}: Context) {
+  consensusRating(@Root() problem: Problem) {
     if (!problem.ascents || problem.ascents.length === 0) return null;
     const suggestedRatings = problem.ascents.map((ascent) => ascent.rating);
     const averageRating = suggestedRatings.reduce(
@@ -52,17 +52,17 @@ export class ProblemResolver {
     return Math.round(averageRating / suggestedRatings.length);
   }
 
-  // // Field resolver for ascents
-  // @FieldResolver(() => [Ascent], { nullable: true })
-  // async ascents(@Root() problem: Problem, @Ctx() {}: Context) {
-  //   const ids = problem.ascentIds;
-  //   console.log(ids);
-  //   // const ascent = await ascentLoader.load({
-  //   //   problemId: problem.id,
-  //   //   userId: req.session.passport?.user
-  //   // });
-  //   return null;
-  // }
+  // Field resolver for sendStatus
+  @FieldResolver(() => Boolean, { nullable: true })
+  sendStatus(@Root() problem: Problem, @Ctx() { req }: Context) {
+    if (!problem.ascents || problem.ascents.length === 0) return false;
+    const userId = req.session.passport?.user;
+    const hasSent = problem.ascents.filter(
+      (ascent) => ascent.userId === userId
+    );
+    if (hasSent.length === 0) return false;
+    return true;
+  }
 
   // Create new problem
   @Mutation(() => Problem)

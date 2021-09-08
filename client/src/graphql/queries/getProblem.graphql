@@ -7,6 +7,7 @@ query GetProblem($id: String!) {
     consensusRating
     rules
     creatorId
+    sendStatus
     creator {
       id
       name

@@ -45,6 +45,9 @@
     margin-top: 0.8rem;
     margin-left: 5px;
   }
+  &.btn-animation {
+    animation: var(--fade-right-to-left);
+  }
 }
 .flex {
   display: flex;

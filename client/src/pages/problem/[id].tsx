@@ -29,9 +29,6 @@ const Problem = () => {
       id: problemId
     }
   });
-  const hasSent = data?.getProblem?.ascents.filter(
-    (ascent) => ascent.userId === meData?.me?.id
-  ).length;
   useEffect(() => {
     if (!initViewer) return;
     initViewer();
@@ -66,6 +63,7 @@ const Problem = () => {
     consensusGrade,
     ascents,
     creator,
+    sendStatus,
     createdAt
   } = data.getProblem;
   const info = (
@@ -148,7 +146,7 @@ const Problem = () => {
                   <EditProblemButton id={problemId} />
                 </>
               ) : null}
-              {!hasSent && (
+              {!sendStatus && (
                 <button className='btn' onClick={() => setShowModal(true)}>
                   <FaCheck size={22} />
                 </button>

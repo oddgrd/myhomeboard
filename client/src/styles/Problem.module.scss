@@ -16,7 +16,6 @@
   width: 80%;
   gap: 2rem;
   padding: 0 10px;
-  border-right: 1px solid var(--theme-border-transparent);
 }
 .board {
   width: 350px;
@@ -65,8 +64,6 @@
     align-items: center;
     padding: 0.5rem 1rem;
     gap: 3px;
-  }
-  .grade {
   }
   .viewer {
     flex-direction: column;
