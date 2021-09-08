@@ -14,7 +14,7 @@ import {
   AddAscentInput,
   CreateProblemInput,
   PaginatedProblems,
-  UpdateProblemInput
+  EditProblemInput
 } from '../types/problem';
 import { Problem } from '../entities/Problem';
 import { Context } from '../types/context';
@@ -85,8 +85,8 @@ export class ProblemResolver {
   // Update problem info
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
-  async updateProblem(
-    @Arg('options') options: UpdateProblemInput,
+  async editProblem(
+    @Arg('options') options: EditProblemInput,
     @Ctx() { req }: Context
   ): Promise<boolean> {
     const { title, rules, grade, problemId } = options;
@@ -112,17 +112,23 @@ export class ProblemResolver {
     @Arg('id') id: string,
     @Ctx() { req }: Context
   ): Promise<boolean> {
-    const result = await getConnection()
-      .createQueryBuilder()
-      .delete()
-      .from(Problem)
-      .where('id = :id', { id })
-      .andWhere('"creatorId" = :currentUser', {
-        currentUser: req.session.passport?.user
-      })
-      .execute();
-
-    if (result.affected === 0) return false;
+    // Delete the problem's ascents before deleting problem
+    await getConnection().transaction(async (tm) => {
+      await tm.query(
+        `
+        DELETE FROM ascent
+        WHERE "problemId" = $1
+      `,
+        [id]
+      );
+      await tm.query(
+        `
+        DELETE FROM problem
+        where id = $1 and "creatorId" = $2
+      `,
+        [id, req.session.passport?.user]
+      );
+    });
 
     return true;
   }
