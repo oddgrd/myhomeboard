@@ -58,6 +58,13 @@ export type CreateProblemInput = {
   coordinates: Array<CoordinatesInput>;
 };
 
+export type EditProblemInput = {
+  problemId: Scalars['String'];
+  title: Scalars['String'];
+  rules: Scalars['String'];
+  grade: Scalars['Int'];
+};
+
 export type Layout = {
   __typename?: 'Layout';
   id: Scalars['String'];
@@ -74,7 +81,7 @@ export type Mutation = {
   createLayout: Layout;
   logout: Scalars['Boolean'];
   createProblem: Problem;
-  updateProblem: Scalars['Boolean'];
+  editProblem: Scalars['Boolean'];
   deleteProblem: Scalars['Boolean'];
   addAscent: Scalars['Boolean'];
   editAscent: Scalars['Boolean'];
@@ -94,8 +101,8 @@ export type MutationCreateProblemArgs = {
 };
 
 
-export type MutationUpdateProblemArgs = {
-  options: UpdateProblemInput;
+export type MutationEditProblemArgs = {
+  options: EditProblemInput;
 };
 
 
@@ -169,13 +176,6 @@ export type QueryGetProblemArgs = {
   id: Scalars['String'];
 };
 
-export type UpdateProblemInput = {
-  problemId: Scalars['String'];
-  title: Scalars['String'];
-  rules: Scalars['String'];
-  grade: Scalars['Int'];
-};
-
 
 export type User = {
   __typename?: 'User';
@@ -209,7 +209,7 @@ export type CreateLayoutMutationVariables = Exact<{
 export type CreateLayoutMutation = { __typename?: 'Mutation', createLayout: { __typename?: 'Layout', title: string, description: string, url: string, creatorId: string } };
 
 export type CreateProblemMutationVariables = Exact<{
-  createProblemOptions: CreateProblemInput;
+  options: CreateProblemInput;
 }>;
 
 
@@ -241,12 +241,12 @@ export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
 export type LogoutMutation = { __typename?: 'Mutation', logout: boolean };
 
-export type UpdateProblemMutationVariables = Exact<{
-  options: UpdateProblemInput;
+export type EditProblemMutationVariables = Exact<{
+  options: EditProblemInput;
 }>;
 
 
-export type UpdateProblemMutation = { __typename?: 'Mutation', updateProblem: boolean };
+export type EditProblemMutation = { __typename?: 'Mutation', editProblem: boolean };
 
 export type GetProblemQueryVariables = Exact<{
   id: Scalars['String'];
@@ -360,8 +360,8 @@ export type CreateLayoutMutationHookResult = ReturnType<typeof useCreateLayoutMu
 export type CreateLayoutMutationResult = Apollo.MutationResult<CreateLayoutMutation>;
 export type CreateLayoutMutationOptions = Apollo.BaseMutationOptions<CreateLayoutMutation, CreateLayoutMutationVariables>;
 export const CreateProblemDocument = gql`
-    mutation CreateProblem($createProblemOptions: CreateProblemInput!) {
-  createProblem(options: $createProblemOptions) {
+    mutation CreateProblem($options: CreateProblemInput!) {
+  createProblem(options: $options) {
     id
     creatorId
     title
@@ -393,7 +393,7 @@ export type CreateProblemMutationFn = Apollo.MutationFunction<CreateProblemMutat
  * @example
  * const [createProblemMutation, { data, loading, error }] = useCreateProblemMutation({
  *   variables: {
- *      createProblemOptions: // value for 'createProblemOptions'
+ *      options: // value for 'options'
  *   },
  * });
  */
@@ -527,37 +527,37 @@ export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<Logou
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
-export const UpdateProblemDocument = gql`
-    mutation UpdateProblem($options: UpdateProblemInput!) {
-  updateProblem(options: $options)
+export const EditProblemDocument = gql`
+    mutation EditProblem($options: EditProblemInput!) {
+  editProblem(options: $options)
 }
     `;
-export type UpdateProblemMutationFn = Apollo.MutationFunction<UpdateProblemMutation, UpdateProblemMutationVariables>;
+export type EditProblemMutationFn = Apollo.MutationFunction<EditProblemMutation, EditProblemMutationVariables>;
 
 /**
- * __useUpdateProblemMutation__
+ * __useEditProblemMutation__
  *
- * To run a mutation, you first call `useUpdateProblemMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateProblemMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useEditProblemMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditProblemMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [updateProblemMutation, { data, loading, error }] = useUpdateProblemMutation({
+ * const [editProblemMutation, { data, loading, error }] = useEditProblemMutation({
  *   variables: {
  *      options: // value for 'options'
  *   },
  * });
  */
-export function useUpdateProblemMutation(baseOptions?: Apollo.MutationHookOptions<UpdateProblemMutation, UpdateProblemMutationVariables>) {
+export function useEditProblemMutation(baseOptions?: Apollo.MutationHookOptions<EditProblemMutation, EditProblemMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateProblemMutation, UpdateProblemMutationVariables>(UpdateProblemDocument, options);
+        return Apollo.useMutation<EditProblemMutation, EditProblemMutationVariables>(EditProblemDocument, options);
       }
-export type UpdateProblemMutationHookResult = ReturnType<typeof useUpdateProblemMutation>;
-export type UpdateProblemMutationResult = Apollo.MutationResult<UpdateProblemMutation>;
-export type UpdateProblemMutationOptions = Apollo.BaseMutationOptions<UpdateProblemMutation, UpdateProblemMutationVariables>;
+export type EditProblemMutationHookResult = ReturnType<typeof useEditProblemMutation>;
+export type EditProblemMutationResult = Apollo.MutationResult<EditProblemMutation>;
+export type EditProblemMutationOptions = Apollo.BaseMutationOptions<EditProblemMutation, EditProblemMutationVariables>;
 export const GetProblemDocument = gql`
     query GetProblem($id: String!) {
   getProblem(id: $id) {

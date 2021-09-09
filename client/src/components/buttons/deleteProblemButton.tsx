@@ -11,7 +11,11 @@ export const DeleteProblemButton = ({ id }: Props) => {
   const router = useRouter();
 
   const handleDelete = async () => {
-    if (window.confirm('Are you sure? Deletion is permanent.')) {
+    if (
+      window.confirm(
+        'Are you sure? Problem and ascents will be deleted permanently.'
+      )
+    ) {
       await deleteProblem({
         variables: { id },
         update: (cache) => {

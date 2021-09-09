@@ -1,5 +1,5 @@
-mutation CreateProblem($createProblemOptions: CreateProblemInput!) {
-  createProblem(options: $createProblemOptions) {
+mutation CreateProblem($options: CreateProblemInput!) {
+  createProblem(options: $options) {
     id
     creatorId
     title

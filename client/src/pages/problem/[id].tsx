@@ -14,15 +14,16 @@ import Link from 'next/link';
 import { grades } from '../../utils/selectOptions';
 import withApollo from '../../utils/withApollo';
 import { AscentForm } from '../../components/form/AscentForm';
+import { EditProblemForm } from '../../components/form/EditProblemForm';
 import Modal from '../../components/Modal';
-import { FaCheck, FaInfo } from 'react-icons/fa';
+import { FaCheck, FaEdit, FaInfo } from 'react-icons/fa';
 import { DeleteProblemButton } from '../../components/buttons/deleteProblemButton';
-import { EditProblemButton } from '../../components/buttons/editProblemButton';
 import { ProblemInfo } from '../../components/ProblemInfo';
 
 const Problem = () => {
   const [{ canvas }, { initViewer, loadFromCoords }] = useCanvas();
-  const [showModal, setShowModal] = useState(false);
+  const [showEditProblemModal, setShowEditProblemModal] = useState(false);
+  const [showAscentModal, setShowAscentModal] = useState(false);
   const [showInfoModal, setShowInfoModal] = useState(false);
 
   const router = useRouter();
@@ -82,8 +83,14 @@ const Problem = () => {
     name: creator.name,
     createdAt
   };
+  const editProblemProps = {
+    rules,
+    grade,
+    title,
+    id
+  };
   return (
-    <Layout title='Problem'>
+    <Layout title={title}>
       <div className={styles.problem}>
         <div className={styles.mobileTitle}>
           <h2>{title}</h2>
@@ -108,11 +115,19 @@ const Problem = () => {
               {creator.id === meData?.me?.id ? (
                 <>
                   <DeleteProblemButton id={problemId} />
-                  <EditProblemButton id={problemId} />
+                  <button
+                    className='btn'
+                    onClick={() => setShowEditProblemModal(true)}
+                  >
+                    <FaEdit size={22} />
+                  </button>
                 </>
               ) : null}
               {!sendStatus && (
-                <button className='btn' onClick={() => setShowModal(true)}>
+                <button
+                  className='btn'
+                  onClick={() => setShowAscentModal(true)}
+                >
                   <FaCheck size={22} />
                 </button>
               )}
@@ -125,11 +140,19 @@ const Problem = () => {
             </div>
           </div>
         </div>
-        {showModal && (
-          <Modal onClose={() => setShowModal(false)}>
+        {showEditProblemModal && (
+          <Modal onClose={() => setShowEditProblemModal(false)}>
+            <EditProblemForm
+              onClose={() => setShowEditProblemModal(false)}
+              {...editProblemProps}
+            />
+          </Modal>
+        )}
+        {showAscentModal && (
+          <Modal onClose={() => setShowAscentModal(false)}>
             <AscentForm
               id={id}
-              onClose={() => setShowModal(false)}
+              onClose={() => setShowAscentModal(false)}
               mutation={addAscent}
             />
           </Modal>
