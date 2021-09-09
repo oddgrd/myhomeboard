@@ -113,22 +113,30 @@ export class ProblemResolver {
     @Ctx() { req }: Context
   ): Promise<boolean> {
     // Delete the problem's ascents before deleting problem
-    await getConnection().transaction(async (tm) => {
-      await tm.query(
-        `
-        DELETE FROM ascent
-        WHERE "problemId" = $1
-      `,
-        [id]
-      );
-      await tm.query(
-        `
-        DELETE FROM problem
-        WHERE id = $1 AND "creatorId" = $2
-      `,
-        [id, req.session.passport?.user]
-      );
-    });
+    try {
+      await getConnection().transaction(async (em) => {
+        await em.query(
+          `
+            DELETE FROM ascent
+            WHERE "problemId" = $1;
+          `,
+          [id]
+        );
+        const problem = await em.query(
+          `
+            DELETE FROM problem
+            WHERE id = $1 AND "creatorId" = $2
+            RETURNING *;
+          `,
+          [id, req.session.passport?.user]
+        );
+        if (problem[1] === 0)
+          throw new Error('Problem not found or current user is not creator');
+      });
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
 
     return true;
   }
@@ -197,7 +205,7 @@ export class ProblemResolver {
         [userId, problemId, grade, attempts, rating, comment]
       );
     } catch (error) {
-      // Catch duplicate ascent error
+      // Catch duplicate ascent error (duplicate composite primary key)
       console.log('message: ', error.message);
       return false;
     }
