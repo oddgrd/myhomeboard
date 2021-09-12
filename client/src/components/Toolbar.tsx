@@ -1,5 +1,5 @@
-import styles from '../styles/Toolbar.module.scss';
 import { FaUndo } from 'react-icons/fa';
+import styles from '../styles/Toolbar.module.scss';
 
 interface Props {
   handleColor: ((color: string) => void) | undefined;

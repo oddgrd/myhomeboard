@@ -20,7 +20,7 @@ const Problems = () => {
             <div>loading...</div>
           ) : (
             data!.getProblems.problems.map((problem, idx) =>
-              // Invalidating post in cache makes it null
+              // Invalidating problem in cache makes it null
               !problem ? null : <ProblemItem key={idx} problem={problem} />
             )
           )}

@@ -1,13 +1,12 @@
-import styles from '../../styles/AscentForm.module.scss';
-import * as Yup from 'yup';
-import { Formik, FormikHelpers, Form } from 'formik';
-import { Inputfield } from './Inputfield';
-import { SelectField } from './SelectField';
-import { useEditProblemMutation } from '../../generated/graphql';
-import { grades } from '../../utils/selectOptions';
-import { useRouter } from 'next/router';
+import { Form, Formik, FormikHelpers } from 'formik';
 import { useState } from 'react';
 import { FaCheck } from 'react-icons/fa';
+import * as Yup from 'yup';
+import { useEditProblemMutation } from '../../generated/graphql';
+import styles from '../../styles/AscentForm.module.scss';
+import { grades } from '../../utils/selectOptions';
+import { Inputfield } from './Inputfield';
+import { SelectField } from './SelectField';
 
 interface Props {
   id: string;

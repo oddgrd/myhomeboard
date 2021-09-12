@@ -1,24 +1,24 @@
-import { Layout } from '../../components/Layout';
-import { Canvas } from '../../components/Canvas';
-import { AscentItem } from '../../components/AscentItem';
-import { useCanvas } from '../../hooks/useCanvas';
-import React, { useEffect, useState } from 'react';
-import styles from '../../styles/Problem.module.scss';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+import { FaCheck, FaEdit, FaInfo } from 'react-icons/fa';
+import { AscentItem } from '../../components/AscentItem';
+import { DeleteProblemButton } from '../../components/buttons/deleteProblemButton';
+import { Canvas } from '../../components/Canvas';
+import { AscentForm } from '../../components/form/AscentForm';
+import { EditProblemForm } from '../../components/form/EditProblemForm';
+import { Layout } from '../../components/Layout';
+import Modal from '../../components/Modal';
+import { ProblemInfo } from '../../components/ProblemInfo';
 import {
   useAddAscentMutation,
   useGetProblemQuery,
   useMeQuery
 } from '../../generated/graphql';
-import Link from 'next/link';
+import { useCanvas } from '../../hooks/useCanvas';
+import styles from '../../styles/Problem.module.scss';
 import { grades } from '../../utils/selectOptions';
 import withApollo from '../../utils/withApollo';
-import { AscentForm } from '../../components/form/AscentForm';
-import { EditProblemForm } from '../../components/form/EditProblemForm';
-import Modal from '../../components/Modal';
-import { FaCheck, FaEdit, FaInfo } from 'react-icons/fa';
-import { DeleteProblemButton } from '../../components/buttons/deleteProblemButton';
-import { ProblemInfo } from '../../components/ProblemInfo';
 
 const Problem = () => {
   const [{ canvas }, { initViewer, loadFromCoords }] = useCanvas();
@@ -75,6 +75,7 @@ const Problem = () => {
     sendStatus,
     createdAt
   } = data.getProblem;
+
   const infoProps = {
     rules,
     grade,
@@ -89,6 +90,7 @@ const Problem = () => {
     title,
     id
   };
+
   return (
     <Layout title={title}>
       <div className={styles.problem}>

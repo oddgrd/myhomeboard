@@ -50,7 +50,7 @@ export const AscentForm = ({ id, onClose, mutation, editProps }: Props) => {
         const { errors } = await mutation({
           variables: { options: values },
           update: (cache) => {
-            cache.evict({ fieldName: 'getProblem' });
+            cache.evict({ id: 'Problem:' + id });
           }
         });
         setSubmitting(false);

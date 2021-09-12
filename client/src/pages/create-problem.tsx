@@ -1,12 +1,12 @@
-import { Layout } from '../components/Layout';
-import styles from '../styles/CreateProblem.module.scss';
-import { Toolbar } from '../components/Toolbar';
-import { Canvas } from '../components/Canvas';
-import { useCanvas } from '../hooks/useCanvas';
 import { useEffect } from 'react';
+import { Canvas } from '../components/Canvas';
 import { ProblemForm } from '../components/form/ProblemForm';
-import withApollo from '../utils/withApollo';
+import { Layout } from '../components/Layout';
+import { Toolbar } from '../components/Toolbar';
+import { useCanvas } from '../hooks/useCanvas';
 import { useIsAuth } from '../hooks/useIsAuth';
+import styles from '../styles/CreateProblem.module.scss';
+import withApollo from '../utils/withApollo';
 
 const CreateProblem = () => {
   const [{ canvas, coords }, { init, handleColor, undo }] = useCanvas();
@@ -16,7 +16,7 @@ const CreateProblem = () => {
     if (!init) return;
     init();
   }, [init]);
-  //"https://res.cloudinary.com/dqyhbqh0x/image/upload/c_scale,h_717,q_100,w_540/v1628264532/covegg19-0_1_0_ziflc1.jpg"
+
   return (
     <Layout title='Create Problem'>
       <div className={styles.createProblem}>

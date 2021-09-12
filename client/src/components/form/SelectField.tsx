@@ -1,7 +1,7 @@
 import { useField } from 'formik';
-import styles from '../../styles/Form.module.scss';
 import Select, { OptionTypeBase, StylesConfig } from 'react-select';
 import useWindowDimensions from '../../hooks/useWindowDimensions';
+import styles from '../../styles/Form.module.scss';
 
 type Option = {
   label: string;

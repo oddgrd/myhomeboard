@@ -13,9 +13,12 @@
 .viewer {
   display: flex;
   margin: auto;
-  width: 80%;
+  width: 90%;
   gap: 2rem;
   padding: 0 10px;
+}
+.info {
+  width: 350px;
 }
 .board {
   width: 350px;
@@ -39,17 +42,12 @@
     width: 100%;
   }
 }
-.info {
-  p {
-    font-size: 18px;
-    padding: 5px 0;
-  }
-}
+
 .ascents {
   margin-top: 1rem;
   h3 {
     color: var(--theme-color);
-    width: 80%;
+    width: 90%;
     margin: auto;
     padding-left: 10px;
   }
@@ -81,5 +79,8 @@
       width: 348px;
       margin: auto;
     }
+  }
+  .buttons {
+    max-width: 340px;
   }
 }

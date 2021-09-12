@@ -7,7 +7,7 @@ import { useIsAuth } from '../hooks/useIsAuth';
 const CreateLayout = () => {
   useIsAuth();
   return (
-    <Layout title='Create Board'>
+    <Layout title='Create Layout'>
       <div className={styles.createProblem}>
         <LayoutForm />
       </div>

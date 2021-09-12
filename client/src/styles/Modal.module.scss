@@ -23,10 +23,6 @@
   }
 }
 
-.body {
-  padding-top: 10px;
-}
-
 .overlay {
   position: absolute;
   z-index: 3;
@@ -43,8 +39,11 @@
 @media (max-width: 700px) {
   .wrapper {
     width: 350px;
-    height: 600px;
+    height: auto;
     z-index: 3;
+  }
+  .modal {
+    padding-bottom: 20px;
   }
   .overlay {
     position: fixed;

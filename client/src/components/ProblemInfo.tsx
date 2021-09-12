@@ -1,4 +1,5 @@
 import { Maybe } from '../generated/graphql';
+import styles from '../styles/ProblemInfo.module.scss';
 import { grades } from '../utils/selectOptions';
 import { StarRating } from './StarRating';
 
@@ -20,31 +21,38 @@ export const ProblemInfo = ({
   createdAt
 }: Props) => {
   return (
-    <>
+    <div className={styles.problemInfo}>
+      <div className={styles.ratingAndGrade}>
+        <p>
+          {typeof consensusGrade === 'number'
+            ? grades[consensusGrade].label
+            : grades[grade].label}
+        </p>
+        <p>
+          {typeof consensusRating === 'number' ? (
+            <StarRating rating={consensusRating} />
+          ) : (
+            'Project'
+          )}
+        </p>
+      </div>
+
       <p>
-        Grade:{' '}
-        {typeof consensusGrade === 'number'
-          ? grades[consensusGrade].label
-          : grades[grade].label}
+        <strong>Rules:</strong> {rules}
       </p>
       <p>
-        Rating:{' '}
-        {typeof consensusRating === 'number' ? (
-          <StarRating rating={consensusRating} />
-        ) : (
-          'Project'
-        )}
+        <strong>Set by:</strong> {name}
       </p>
-      <p>Rules: {rules}</p>
-      <p>Set by: {name}</p>
       <p>
-        {new Date(+createdAt).toLocaleString('en-GB', {
-          weekday: 'long',
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric'
-        })}
+        <i>
+          {new Date(+createdAt).toLocaleString('en-GB', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          })}
+        </i>
       </p>
-    </>
+    </div>
   );
 };

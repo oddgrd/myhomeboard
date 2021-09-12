@@ -1,9 +1,9 @@
-import { ProblemSnippetFragment } from '../generated/graphql';
 import Link from 'next/link';
+import { FaCheck } from 'react-icons/fa';
+import { ProblemSnippetFragment } from '../generated/graphql';
 import styles from '../styles/ProblemItem.module.scss';
 import { grades } from '../utils/selectOptions';
 import { StarRating } from './StarRating';
-import { FaCheck } from 'react-icons/fa';
 
 interface Props {
   problem: ProblemSnippetFragment;
@@ -19,7 +19,6 @@ export const ProblemItem = ({ problem }: Props) => {
     creator,
     sendStatus
   } = problem;
-
   return (
     <>
       <Link href={`/problem/${id}`}>
@@ -32,12 +31,12 @@ export const ProblemItem = ({ problem }: Props) => {
             <div className={styles.gradeAndRating}>
               {sendStatus && <FaCheck color='#00ddff' />}
               <p>
-                {consensusGrade
+                {typeof consensusGrade === 'number'
                   ? grades[consensusGrade].label
                   : grades[grade].label}
               </p>
               <p>
-                {consensusRating || consensusRating === 0 ? (
+                {typeof consensusRating === 'number' ? (
                   <StarRating rating={consensusRating} />
                 ) : (
                   'Project'

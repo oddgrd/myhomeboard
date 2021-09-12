@@ -59,7 +59,7 @@ export const useCanvas = () => {
     }
   }, [draw]);
 
-  const initViewer = useCallback(() => {
+  const initViewer = () => {
     ctx.current = canvas?.current?.getContext('2d');
     const ratio = Math.ceil(window.devicePixelRatio) || 1;
     if (canvas && canvas.current && ctx && ctx.current) {
@@ -70,14 +70,14 @@ export const useCanvas = () => {
 
       ctx.current.setTransform(ratio, 0, 0, ratio, 0, 0);
     }
-  }, []);
+  };
 
   const handleColor = (color: string) => {
     setCurrentColor(color);
     selectedColor.current = color;
   };
 
-  const undo = useCallback(() => {
+  const undo = () => {
     if (!ctx.current || !canvas.current || coordsRef.current.length === 0)
       return;
     ctx.current.clearRect(0, 0, canvas.current.width, canvas.current.height);
@@ -90,9 +90,9 @@ export const useCanvas = () => {
       ctx.current.arc(circle.x, circle.y, 12, 0, 2 * Math.PI);
       ctx.current.stroke();
     });
-  }, [coordsRef]);
+  };
 
-  const loadFromCoords = useCallback((coords: Array<Coords>) => {
+  const loadFromCoords = (coords: Array<Coords>) => {
     if (!ctx.current || !canvas.current) return;
     coords.forEach((circle) => {
       if (!ctx.current) return;
@@ -102,7 +102,7 @@ export const useCanvas = () => {
       ctx.current.arc(circle.x, circle.y, 12, 0, 2 * Math.PI);
       ctx.current.stroke();
     });
-  }, []);
+  };
 
   return [
     {

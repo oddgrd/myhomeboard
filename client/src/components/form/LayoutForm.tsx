@@ -1,7 +1,8 @@
 import { useCallback, useState } from 'react';
-import { useCreateLayoutMutation } from '../../generated/graphql';
 import { useDropzone } from 'react-dropzone';
+import { useCreateLayoutMutation } from '../../generated/graphql';
 import styles from '../../styles/BoardForm.module.scss';
+
 export const LayoutForm = () => {
   const [createLayout] = useCreateLayoutMutation();
   const [layoutData, setLayoutData] = useState({

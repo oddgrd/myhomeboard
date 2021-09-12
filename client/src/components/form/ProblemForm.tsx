@@ -1,15 +1,15 @@
-import styles from '../../styles/Form.module.scss';
+import { Form, Formik, FormikHelpers } from 'formik';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 import * as Yup from 'yup';
-import { Formik, FormikHelpers, Form } from 'formik';
-import { Inputfield } from './Inputfield';
-import { SelectField } from './SelectField';
 import {
   CoordinatesInput,
   useCreateProblemMutation
 } from '../../generated/graphql';
+import styles from '../../styles/Form.module.scss';
 import { grades } from '../../utils/selectOptions';
-import { useState } from 'react';
-import { useRouter } from 'next/router';
+import { Inputfield } from './Inputfield';
+import { SelectField } from './SelectField';
 
 interface Props {
   coords?: CoordinatesInput[];

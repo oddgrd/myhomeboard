@@ -1,6 +1,6 @@
+import { useRouter } from 'next/router';
 import { FaTrash } from 'react-icons/fa';
 import { useDeleteProblemMutation } from '../../generated/graphql';
-import { useRouter } from 'next/router';
 
 interface Props {
   id: string;

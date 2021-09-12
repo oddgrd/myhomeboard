@@ -1,18 +1,18 @@
-import Link from 'next/link';
-import styles from '../styles/Header.module.scss';
+import { useApolloClient } from '@apollo/client';
 import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import {
+  FaLongArrowAltLeft,
   FaPlus,
-  FaSignOutAlt,
-  FaSignInAlt,
   FaSearch,
-  FaLongArrowAltLeft
+  FaSignInAlt,
+  FaSignOutAlt
 } from 'react-icons/fa';
 import logo from '../../public/Logo-klatreapp.svg';
 import { useLogoutMutation, useMeQuery } from '../generated/graphql';
-import { useApolloClient } from '@apollo/client';
-import { useRouter } from 'next/router';
 import useWindowDimensions from '../hooks/useWindowDimensions';
+import styles from '../styles/Header.module.scss';
 
 export const Header = () => {
   const { width } = useWindowDimensions();
