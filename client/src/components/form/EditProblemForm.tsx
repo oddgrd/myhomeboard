@@ -73,7 +73,7 @@ export const EditProblemForm = ({
         }
       }}
     >
-      {({ isSubmitting }) => (
+      {({ dirty }) => (
         <div className={styles.form}>
           {!success ? (
             <Form>
@@ -97,7 +97,7 @@ export const EditProblemForm = ({
               <input
                 type='submit'
                 className='btn'
-                disabled={isSubmitting}
+                disabled={!dirty}
                 value='Save Problem'
               />
             </Form>

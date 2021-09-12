@@ -18,8 +18,12 @@ export const DeleteAscentButton = ({ id }: Props) => {
     }
   };
   return (
-    <button className='btn' aria-label='Delete Ascent' onClick={handleDelete}>
-      <FaTimes size={22} />
+    <button
+      className='btn btn-link btn-delete'
+      aria-label='Delete Ascent'
+      onClick={handleDelete}
+    >
+      <FaTimes size={28} />
     </button>
   );
 };

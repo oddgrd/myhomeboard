@@ -3,6 +3,7 @@
 
 :root {
   --theme-color: #00ddff;
+  --theme-delete: #bf212f;
   --theme-background: #161923;
   --theme-foreground: #313649;
   --theme-foreground-hover: #3e445e;
@@ -15,7 +16,7 @@
 
   --fade-up: fadeUp 0.25s ease-in-out;
   --fade-up-slow: fadeUp 0.8s ease-in-out;
-  --fade-down: fadeDown 0.25s ease-in-out;
+  --fade-down: fadeDown 0.25s linear;
   --fade-right-to-left: fadeRightToLeft 0.4s ease-in-out;
   --fade-in: fadeIn 0.25s ease-in-out;
 }
@@ -36,6 +37,12 @@
     opacity: 0;
     transform: translateY(-1rem);
   }
+
+  50% {
+    opacity: 0.5;
+    transform: translateY(-0.5rem);
+  }
+
   100% {
     opacity: 1;
     transform: translateY(0);
@@ -94,6 +101,10 @@ a {
 
 .hide-desktop {
   display: none;
+}
+
+.error {
+  color: var(--theme-delete);
 }
 @media (max-width: 700px) {
   .hide {

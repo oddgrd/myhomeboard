@@ -32,7 +32,6 @@ export const ProblemForm = ({ coords }: Props) => {
         {
           title: '',
           rules: 'Feet follow hands',
-          grade: 0,
           coordinates: coords
         } as Values
       }
@@ -72,7 +71,7 @@ export const ProblemForm = ({ coords }: Props) => {
         }
       }}
     >
-      {({ isSubmitting }) => (
+      {({ isValid, dirty }) => (
         <div className={styles.form}>
           <Form>
             <h1 className='hide'>Create Problem</h1>
@@ -89,14 +88,15 @@ export const ProblemForm = ({ coords }: Props) => {
                 options={grades}
                 label='Grade'
                 width={324}
+                placeholder='4+'
               />
             </div>
 
             <input
               type='submit'
               className='btn'
-              disabled={isSubmitting}
               value='Save Problem'
+              disabled={!isValid || !dirty}
             />
 
             {!validCoords && <p>Add at least three holds!</p>}

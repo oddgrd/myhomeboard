@@ -1,6 +1,6 @@
 import Image from 'next/image';
-import { useState } from 'react';
-import { FaEdit, FaEllipsisV } from 'react-icons/fa';
+import { useEffect, useRef, useState } from 'react';
+import { FaEdit, FaEllipsisV, FaQuoteRight } from 'react-icons/fa';
 import { Maybe, useEditAscentMutation } from '../generated/graphql';
 import styles from '../styles/AscentItem.module.scss';
 import { attempts, grades } from '../utils/selectOptions';
@@ -30,16 +30,23 @@ interface Props {
 
 export const AscentItem = ({ ascent, problemId, currentUserId }: Props) => {
   const [showModal, setShowModal] = useState(false);
+  const scrollIntoViewRef = useRef<HTMLDivElement>(null);
   const [showOptions, toggleShowOptions] = useState(false);
   const [editAscent] = useEditAscentMutation();
 
+  useEffect(() => {
+    if (showOptions && scrollIntoViewRef.current) {
+      scrollIntoViewRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [showOptions]);
   const {
     grade,
     rating,
     user,
     attempts: attemptsCount,
     userId,
-    comment
+    comment,
+    createdAt
   } = ascent;
   const editProps = {
     grade,
@@ -73,23 +80,45 @@ export const AscentItem = ({ ascent, problemId, currentUserId }: Props) => {
           <p>{grades[grade].label}</p>
           {<StarRating rating={rating} />}
         </div>
-
         <button
           className='btn btn-icon'
           onClick={() => toggleShowOptions(!showOptions)}
-          disabled={currentUserId !== userId}
         >
           <FaEllipsisV size={24} />
         </button>
       </div>
-      {currentUserId === userId && showOptions && (
-        <div className={styles.options}>
-          <DeleteAscentButton id={problemId} />
-          <button className='btn' onClick={() => setShowModal(true)}>
-            <FaEdit size={22} />
-          </button>
+      {showOptions && (
+        <div className={styles.lower}>
+          <div className={styles.comment}>
+            {comment.length > 0 && (
+              <p>
+                <FaQuoteRight />
+                {comment}
+              </p>
+            )}
+            <i>
+              {new Date(+createdAt).toLocaleString('en-GB', {
+                weekday: 'short',
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+              })}
+            </i>
+          </div>
+          {currentUserId === userId && (
+            <div className={styles.options}>
+              <button
+                className='btn btn-link'
+                onClick={() => setShowModal(true)}
+              >
+                <FaEdit size={26} />
+              </button>
+              <DeleteAscentButton id={problemId} />
+            </div>
+          )}
         </div>
       )}
+      <div ref={scrollIntoViewRef}></div>
       {showModal && (
         <Modal onClose={() => setShowModal(false)}>
           <AscentForm

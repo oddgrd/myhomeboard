@@ -1,5 +1,5 @@
 import { useField } from 'formik';
-import Select, { OptionTypeBase, StylesConfig } from 'react-select';
+import Select, { StylesConfig } from 'react-select';
 import useWindowDimensions from '../../hooks/useWindowDimensions';
 import styles from '../../styles/Form.module.scss';
 
@@ -14,6 +14,7 @@ interface Props {
   name: string;
   options: Option[];
   width: number;
+  placeholder?: string;
 }
 
 const selectStyle: StylesConfig<Option, IsMulti> = {
@@ -47,30 +48,34 @@ const selectStyle: StylesConfig<Option, IsMulti> = {
   }
 };
 
-export const SelectField = ({ label, options, ...props }: Props) => {
+export const SelectField = ({
+  label,
+  placeholder,
+  options,
+  ...props
+}: Props) => {
   const [field, meta, helpers] = useField(props);
-  const { setValue } = helpers;
+  const { setValue, setTouched } = helpers;
   const { height } = useWindowDimensions();
   return (
     <div className={styles.textInput}>
       <label htmlFor={props.name}>{label}</label>
       <Select
+        {...props}
         options={options}
-        name={field.name}
         value={
           (options
             ? options.find((option) => option.value === field.value)
             : '') as any
         }
-        onChange={(option: OptionTypeBase) => setValue(option.value)}
-        instanceId={label}
+        onChange={(option: Option) => setValue(option.value)}
+        onBlur={() => setTouched(true)}
         styles={selectStyle}
         menuPlacement='auto'
         maxMenuHeight={height > 740 ? 250 : 205}
-        placeholder='?'
-        width={props.width}
+        placeholder={placeholder || '?'}
+        instanceId={label}
       />
-
       {meta.touched && meta.error ? (
         <div className='error'>{meta.error}</div>
       ) : null}

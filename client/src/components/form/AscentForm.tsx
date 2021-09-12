@@ -1,6 +1,6 @@
 import styles from '../../styles/AscentForm.module.scss';
 import * as Yup from 'yup';
-import { Formik, FormikHelpers, Form } from 'formik';
+import { Formik, FormikHelpers, Form, useFormikContext } from 'formik';
 import { SelectField } from './SelectField';
 import {
   AddAscentMutationFn,
@@ -65,7 +65,7 @@ export const AscentForm = ({ id, onClose, mutation, editProps }: Props) => {
         }
       }}
     >
-      {(props) => (
+      {({ isValid, dirty }) => (
         <div className={styles.form}>
           {!success ? (
             <Form>
@@ -95,8 +95,8 @@ export const AscentForm = ({ id, onClose, mutation, editProps }: Props) => {
               <input
                 type='submit'
                 className='btn'
-                value='Save Ascent'
-                disabled={!props.isValid}
+                value='Submit Ascent'
+                disabled={!isValid || !dirty}
               />
             </Form>
           ) : (
