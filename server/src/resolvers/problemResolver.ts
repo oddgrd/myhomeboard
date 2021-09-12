@@ -31,25 +31,23 @@ export class ProblemResolver {
   }
 
   // Field resolver for consensusGrade
-  @FieldResolver(() => Int!, { nullable: true })
+  @FieldResolver(() => Int, { nullable: true })
   consensusGrade(@Root() problem: Problem) {
     if (!problem.ascents || problem.ascents.length === 0) return null;
-    const suggestedGrades = problem.ascents.map((ascent) => ascent.grade);
-    const averageGrade = suggestedGrades.reduce(
-      (val: number, acc: number) => acc + val
-    );
-    return Math.round(averageGrade / suggestedGrades.length);
+    const sumGrades = problem.ascents
+      .map((ascent) => ascent.grade)
+      .reduce((val: number, acc: number) => acc + val);
+    return Math.round(sumGrades / problem.ascents.length);
   }
 
   // Field resolver for consensusRating
-  @FieldResolver(() => Int!, { nullable: true })
+  @FieldResolver(() => Int, { nullable: true })
   consensusRating(@Root() problem: Problem) {
     if (!problem.ascents || problem.ascents.length === 0) return null;
-    const suggestedRatings = problem.ascents.map((ascent) => ascent.rating);
-    const averageRating = suggestedRatings.reduce(
-      (val: number, acc: number) => acc + val
-    );
-    return Math.round(averageRating / suggestedRatings.length);
+    const sumRatings = problem.ascents
+      .map((ascent) => ascent.rating)
+      .reduce((val: number, acc: number) => acc + val);
+    return Math.round(sumRatings / problem.ascents.length);
   }
 
   // Field resolver for sendStatus
