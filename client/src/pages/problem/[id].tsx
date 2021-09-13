@@ -125,7 +125,7 @@ const Problem = () => {
                   </button>
                 </>
               ) : null}
-              {!sendStatus && (
+              {!sendStatus && meData?.me && (
                 <button
                   className='btn'
                   onClick={() => setShowAscentModal(true)}

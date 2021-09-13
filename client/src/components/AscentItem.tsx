@@ -57,7 +57,10 @@ export const AscentItem = ({ ascent, problemId, currentUserId }: Props) => {
   };
 
   return (
-    <div className={styles.ascentItem}>
+    <div
+      className={styles.ascentItem}
+      onClick={() => toggleShowOptions(!showOptions)}
+    >
       <div className={styles.avatar}>
         <Image
           width={48}
@@ -80,10 +83,7 @@ export const AscentItem = ({ ascent, problemId, currentUserId }: Props) => {
           <p>{grades[grade].label}</p>
           {<StarRating rating={rating} />}
         </div>
-        <button
-          className='btn btn-icon'
-          onClick={() => toggleShowOptions(!showOptions)}
-        >
+        <button className='btn btn-icon'>
           <FaEllipsisV size={24} />
         </button>
       </div>
