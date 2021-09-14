@@ -4,8 +4,8 @@ import { FaEdit, FaEllipsisV, FaQuoteRight } from 'react-icons/fa';
 import { Maybe, useEditAscentMutation } from '../generated/graphql';
 import styles from '../styles/AscentItem.module.scss';
 import { attempts, grades } from '../utils/selectOptions';
-import { DeleteAscentButton } from './buttons/deleteAscentButton';
-import { AscentForm } from './form/AscentForm';
+import { DeleteAscentButton } from './Button/deleteAscentButton';
+import { AscentForm } from './Form/AscentForm';
 import Modal from './Modal';
 import { StarRating } from './StarRating';
 

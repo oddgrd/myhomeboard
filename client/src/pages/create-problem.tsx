@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Canvas } from '../components/Canvas';
-import { ProblemForm } from '../components/form/ProblemForm';
+import { ProblemForm } from '../components/Form/ProblemForm';
 import { Layout } from '../components/Layout';
 import { Toolbar } from '../components/Toolbar';
 import { useCanvas } from '../hooks/useCanvas';

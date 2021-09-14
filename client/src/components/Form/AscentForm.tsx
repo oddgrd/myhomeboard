@@ -1,6 +1,6 @@
 import styles from '../../styles/AscentForm.module.scss';
 import * as Yup from 'yup';
-import { Formik, FormikHelpers, Form, useFormikContext } from 'formik';
+import { Formik, FormikHelpers, Form } from 'formik';
 import { SelectField } from './SelectField';
 import {
   AddAscentMutationFn,
@@ -75,20 +75,20 @@ export const AscentForm = ({ id, onClose, mutation, editProps }: Props) => {
                   name='grade'
                   options={grades}
                   label='Grade *'
-                  width={157}
+                  width={145}
                 />
                 <SelectField
                   name='rating'
                   options={ratings}
                   label='Rating *'
-                  width={157}
+                  width={145}
                 />
               </div>
               <SelectField
                 name='attempts'
                 options={attempts}
                 label='Attempts *'
-                width={324}
+                width={300}
               />
               <Textarea name='comment' label='Comment' placeholder='Optional' />
 

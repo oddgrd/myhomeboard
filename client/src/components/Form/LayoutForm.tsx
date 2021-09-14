@@ -27,7 +27,8 @@ export const LayoutForm = () => {
       variables: {
         title: layoutData.title,
         description: layoutData.description,
-        file: layoutData.file
+        file: layoutData.file,
+        boardId: '0b0102b3-4bb0-4659-8cef-2e05c9455edb'
       }
     });
     if (errors) console.log(errors);
@@ -76,7 +77,7 @@ export const LayoutForm = () => {
         value='Add Board'
         disabled={!layoutData.file}
       >
-        Save Board
+        Save Layout
       </button>
     </div>
   );
