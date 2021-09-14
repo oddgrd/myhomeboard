@@ -12,29 +12,35 @@ import { uploadImage } from '../utils/uploadImage';
 import { Layout } from '../entities/Layout';
 import { FileUpload, GraphQLUpload } from 'graphql-upload';
 
-@Resolver()
+@Resolver(Layout)
 export class LayoutResolver {
-  @Query(() => String)
-  hello() {
-    return 'Hello World';
-  }
-
+  // Create new Layout
+  // PRIVATE
   @Mutation(() => Layout)
   @UseMiddleware(isAuth)
   async createLayout(
     @Arg('file', () => GraphQLUpload) file: FileUpload,
     @Arg('title') title: string,
+    @Arg('boardId') boardId: string,
     @Arg('description') description: string,
     @Ctx() { req }: Context
   ): Promise<Layout> {
     const creatorId = req.session.passport?.user;
     const result = await uploadImage(file);
-    const board = await Layout.create({
+    const layout = await Layout.create({
       title,
       description,
       creatorId,
+      boardId,
       url: result.secure_url
     }).save();
-    return board;
+    return layout;
+  }
+
+  // Get all Layouts
+  // PUBLIC
+  @Query(() => [Layout])
+  async getLayouts() {
+    return Layout.find();
   }
 }

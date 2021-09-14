@@ -21,14 +21,15 @@ import authRoutes from './routes/api/auth';
 import { Ascent } from './entities/Ascent';
 import { graphqlUploadExpress } from 'graphql-upload';
 import { createUserLoader } from './utils/createUserLoader';
-import { createAscentLoader } from './utils/createAscentLoader';
+import { Board } from './entities/Board';
+import { BoardResolver } from './resolvers/boardResolver';
 
 const main = async () => {
   const connection = await createConnection({
     applicationName: 'myhomeboard',
     type: 'postgres',
     url: process.env.DATABASE_URL,
-    entities: [User, Problem, Layout, Ascent],
+    entities: [User, Problem, Layout, Ascent, Board],
     migrations: [path.join(__dirname, './migrations/*')],
     logging: true,
     synchronize: true
@@ -60,15 +61,14 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [UserResolver, ProblemResolver, LayoutResolver],
+      resolvers: [UserResolver, ProblemResolver, LayoutResolver, BoardResolver],
       validate: false
     }),
     context: ({ req, res }) => ({
       req,
       res,
       redis,
-      userLoader: createUserLoader(),
-      ascentLoader: createAscentLoader()
+      userLoader: createUserLoader()
     })
   });
 

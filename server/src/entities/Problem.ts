@@ -5,13 +5,17 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm';
 import { User } from './User';
 import { Ascent } from './Ascent';
+import { Board } from './Board';
+import { Layout } from './Layout';
 
 @ObjectType()
 @Entity()
@@ -44,18 +48,28 @@ export class Problem extends BaseEntity {
   @Column({ type: 'int', nullable: true })
   rating: number;
 
-  @Field()
+  @Field(() => User)
   @ManyToOne(() => User, (user) => user.problems)
   creator: User;
+
+  // Add boardId index on next mockData -- todo
+  @Field(() => Board)
+  @ManyToOne(() => Board, (board) => board.problems)
+  board: Board;
 
   @Field(() => [Ascent])
   @OneToMany(() => Ascent, (ascent) => ascent.problem)
   ascents: Ascent[];
 
-  // @Field()
-  // @OneToOne(() => Board)
-  // @JoinColumn()
-  // board: Board;
+  // Make this required on next mockData -- todo
+  @Field()
+  @Column({ nullable: true })
+  layoutUrl: string;
+
+  @Field(() => Layout)
+  @OneToOne(() => Layout)
+  @JoinColumn()
+  layout: Layout;
 
   @Field(() => String)
   @CreateDateColumn()

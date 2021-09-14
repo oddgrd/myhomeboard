@@ -173,6 +173,7 @@ export class ProblemResolver {
     const problem = await getConnection()
       .createQueryBuilder(Problem, 'problem')
       .leftJoinAndSelect('problem.ascents', 'ascent')
+      .orderBy('ascent.createdAt', 'ASC')
       .leftJoinAndSelect('ascent.user', 'u user')
       .leftJoinAndSelect('problem.creator', 'user')
       .where('problem.id = :id', { id })
