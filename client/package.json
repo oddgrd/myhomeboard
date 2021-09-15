@@ -13,6 +13,7 @@
     "@apollo/client": "^3.4.8",
     "apollo-upload-client": "^16.0.0",
     "formik": "^2.2.9",
+    "framer-motion": "^4.1.17",
     "graphql": "^15.5.1",
     "next": "11.1.0",
     "next-apollo": "^5.0.6",

@@ -6,8 +6,9 @@ import styles from '../styles/AscentItem.module.scss';
 import { attempts, grades } from '../utils/selectOptions';
 import { DeleteAscentButton } from './Button/deleteAscentButton';
 import { AscentForm } from './Form/AscentForm';
-import Modal from './Modal';
+import { Modal } from './Modal/Modal';
 import { StarRating } from './StarRating';
+import { AnimatePresence } from 'framer-motion';
 
 interface Props {
   ascent: {
@@ -119,16 +120,22 @@ export const AscentItem = ({ ascent, problemId, currentUserId }: Props) => {
         </div>
       )}
       <div ref={scrollIntoViewRef}></div>
-      {showModal && (
-        <Modal onClose={() => setShowModal(false)}>
-          <AscentForm
-            onClose={() => setShowModal(false)}
-            editProps={editProps}
-            mutation={editAscent}
-            id={problemId}
-          />
-        </Modal>
-      )}
+      <AnimatePresence
+        initial={false}
+        exitBeforeEnter={true}
+        onExitComplete={() => null}
+      >
+        {showModal && (
+          <Modal handleClose={() => setShowModal(false)}>
+            <AscentForm
+              onClose={() => setShowModal(false)}
+              editProps={editProps}
+              mutation={editAscent}
+              id={problemId}
+            />
+          </Modal>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
