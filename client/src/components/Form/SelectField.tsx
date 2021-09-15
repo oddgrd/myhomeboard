@@ -1,4 +1,5 @@
 import { useField } from 'formik';
+import { useState } from 'react';
 import Select, { StylesConfig } from 'react-select';
 import useWindowDimensions from '../../hooks/useWindowDimensions';
 import styles from '../../styles/Form.module.scss';
@@ -54,9 +55,11 @@ export const SelectField = ({
   options,
   ...props
 }: Props) => {
+  const [error, setError] = useState<string | undefined>('Required');
   const [field, meta, helpers] = useField(props);
-  const { setValue, setTouched } = helpers;
+  const { setTouched, setValue } = helpers;
   const { height } = useWindowDimensions();
+
   return (
     <div className={styles.textInput}>
       <label htmlFor={props.name}>{label}</label>
@@ -68,17 +71,20 @@ export const SelectField = ({
             ? options.find((option) => option.value === field.value)
             : '') as any
         }
-        onChange={(option: Option) => setValue(option.value)}
-        onBlur={() => setTouched(true)}
+        onBlur={() => {
+          setTouched(true);
+        }}
+        onChange={(option: Option) => {
+          setError(undefined);
+          setValue(option.value);
+        }}
         styles={selectStyle}
         menuPlacement='auto'
         maxMenuHeight={height > 740 ? 250 : 205}
         placeholder={placeholder || '?'}
         instanceId={label}
       />
-      {meta.touched && meta.error ? (
-        <div className='error'>{meta.error}</div>
-      ) : null}
+      {meta.touched && error ? <div className='error'>{meta.error}</div> : null}
     </div>
   );
 };

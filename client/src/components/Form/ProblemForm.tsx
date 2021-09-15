@@ -28,6 +28,7 @@ export const ProblemForm = ({ coords }: Props) => {
 
   return (
     <Formik
+      validateOnMount
       initialValues={
         {
           title: '',
@@ -71,7 +72,7 @@ export const ProblemForm = ({ coords }: Props) => {
         }
       }}
     >
-      {({ isValid, dirty }) => (
+      {({ isValid }) => (
         <div className={styles.form}>
           <Form>
             <h1 className='hide'>Create Problem</h1>
@@ -88,18 +89,16 @@ export const ProblemForm = ({ coords }: Props) => {
                 options={grades}
                 label='Grade'
                 width={324}
-                placeholder='4+'
               />
             </div>
 
+            {!validCoords && <p>Add at least three holds!</p>}
             <input
               type='submit'
               className='btn'
               value='Save Problem'
-              disabled={!isValid || !dirty}
+              disabled={!isValid}
             />
-
-            {!validCoords && <p>Add at least three holds!</p>}
           </Form>
         </div>
       )}

@@ -65,7 +65,7 @@ export const AscentForm = ({ id, onClose, mutation, editProps }: Props) => {
         }
       }}
     >
-      {({ isValid, dirty }) => (
+      {({ dirty, values }) => (
         <div className={styles.form}>
           {!success ? (
             <Form>
@@ -96,7 +96,12 @@ export const AscentForm = ({ id, onClose, mutation, editProps }: Props) => {
                 type='submit'
                 className='btn'
                 value='Submit Ascent'
-                disabled={!isValid || !dirty}
+                disabled={
+                  typeof values.grade !== 'number' ||
+                  typeof values.rating !== 'number' ||
+                  typeof values.attempts !== 'number' ||
+                  !dirty
+                }
               />
             </Form>
           ) : (

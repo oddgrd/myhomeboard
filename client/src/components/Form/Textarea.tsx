@@ -9,7 +9,6 @@ interface Props {
 
 export const Textarea = ({ label, ...props }: Props) => {
   const [field, meta] = useField(props);
-
   return (
     <div className={styles.textInput}>
       <label htmlFor={props.name}>{label}</label>
