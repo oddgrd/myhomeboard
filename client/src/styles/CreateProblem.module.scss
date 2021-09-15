@@ -20,16 +20,12 @@
 }
 
 @media (max-width: 700px) {
-  .createProblem {
-    width: 100%;
-  }
   .editor {
     flex-direction: column;
     width: 100%;
     gap: 0.5rem;
   }
   .board {
-    margin-top: 0;
     align-self: center;
   }
 }

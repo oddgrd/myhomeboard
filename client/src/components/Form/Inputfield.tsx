@@ -1,5 +1,5 @@
 import { useField } from 'formik';
-import styles from '../../styles/Form.module.scss';
+import styles from '../../styles/FormComponents.module.scss';
 
 interface Props {
   label: string;
@@ -12,7 +12,7 @@ export const Inputfield = ({ label, ...props }: Props) => {
   const [field, meta] = useField(props);
 
   return (
-    <div className={styles.textInput}>
+    <div className={styles.formComponent}>
       <label htmlFor={props.name}>{label}</label>
       <input {...field} {...props} />
       {meta.touched && meta.error ? (

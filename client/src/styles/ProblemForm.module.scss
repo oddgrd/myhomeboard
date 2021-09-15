@@ -1,0 +1,30 @@
+.form {
+  width: 324px;
+  height: 478px;
+  margin: auto;
+  margin-bottom: 1.5rem;
+  color: var(--theme-text);
+  h1 {
+    color: var(--theme-color);
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  input[type='submit'] {
+    width: 100%;
+    font-size: 18px;
+    margin-top: 83px;
+  }
+}
+
+@media (max-width: 700px) {
+  .form {
+    margin-top: 3.8rem;
+    height: auto;
+    input[type='submit'] {
+      width: 100%;
+      font-size: 18px;
+      margin-top: 20px;
+    }
+  }
+}

@@ -2,7 +2,7 @@ import { useField } from 'formik';
 import { useState } from 'react';
 import Select, { StylesConfig } from 'react-select';
 import useWindowDimensions from '../../hooks/useWindowDimensions';
-import styles from '../../styles/Form.module.scss';
+import styles from '../../styles/FormComponents.module.scss';
 
 type Option = {
   label: string;
@@ -61,7 +61,7 @@ export const SelectField = ({
   const { height } = useWindowDimensions();
 
   return (
-    <div className={styles.textInput}>
+    <div className={styles.selectInput}>
       <label htmlFor={props.name}>{label}</label>
       <Select
         {...props}

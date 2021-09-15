@@ -1,40 +1,17 @@
 .form {
-  width: 324px;
-  height: 478px;
+  width: 300px;
+  min-height: 430px;
+  max-height: auto;
   margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   color: var(--theme-text);
 
   h1 {
     color: var(--theme-color);
     margin-bottom: 0.5rem;
     text-align: center;
-  }
-  label {
-    color: var(--theme-color);
-    display: block;
-    margin-bottom: 4px;
-  }
-
-  input[type='text'],
-  input[type='email'],
-  input[type='password'] {
-    display: block;
-    width: 100%;
-    height: 40px;
-    padding: 5px;
-    font-size: 18px;
-    background: var(--theme-foreground);
-    color: var(--theme-text-foreground);
-    border: 1px solid var(--theme-foreground);
-    border-radius: 2px;
-    &:focus {
-      border: 1px solid var(--theme-color);
-      border-radius: 2px;
-      outline: none;
-      &::placeholder {
-        color: transparent;
-      }
-    }
   }
 
   input[type='submit'] {
@@ -43,29 +20,8 @@
     font-weight: 500;
     margin-top: 1.5rem;
   }
-  textarea {
-    width: 100%;
-    height: 100px;
-    font-size: 18px;
-    resize: none;
-    padding: 5px;
-    background: var(--theme-foreground);
-    color: var(--theme-text-foreground);
-    border: 1px solid var(--theme-foreground);
-    border-radius: 2px;
-    &:focus {
-      border: 1px solid var(--theme-color);
-      border-radius: 2px;
-      outline: none;
-      &::placeholder {
-        color: transparent;
-      }
-    }
-  }
 }
-.textInput {
-  margin-bottom: 15px;
-}
+
 .selectContainer {
   display: flex;
   gap: 10px;
@@ -74,18 +30,6 @@
 
 .success {
   color: var(--theme-color);
-  display: flex;
-  justify-content: center;
-  align-items: center;
   height: 100%;
   animation: var(--fade-up-slow);
-}
-@media (max-width: 700px) {
-  .form {
-    input[type='submit'] {
-      width: 100%;
-      font-size: 18px;
-      margin-top: 10px;
-    }
-  }
 }

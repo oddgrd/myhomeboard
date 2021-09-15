@@ -1,13 +1,4 @@
-.form {
-  width: 324px;
-  height: 478px;
-  margin: auto;
-  color: var(--theme-text);
-  h1 {
-    color: var(--theme-color);
-    margin-bottom: 1rem;
-    text-align: center;
-  }
+.formComponent {
   label {
     color: var(--theme-color);
     display: block;
@@ -22,6 +13,7 @@
     height: 40px;
     padding: 5px;
     font-size: 18px;
+    margin-bottom: 10px;
     background: var(--theme-foreground);
     color: var(--theme-text-foreground);
     border: 1px solid var(--theme-foreground);
@@ -36,11 +28,6 @@
     }
   }
 
-  input[type='submit'] {
-    width: 100%;
-    font-size: 18px;
-    margin-top: 83px;
-  }
   textarea {
     width: 100%;
     height: 100px;
@@ -61,23 +48,12 @@
     }
   }
 }
-.textInput {
-  margin-bottom: 15px;
-}
-.selectContainer {
-  display: flex;
-  gap: 10px;
-  width: 100%;
-}
 
-@media (max-width: 700px) {
-  .form {
-    margin-top: 3.8rem;
-    height: auto;
-    input[type='submit'] {
-      width: 100%;
-      font-size: 18px;
-      margin-top: 10px;
-    }
+.selectInput {
+  margin-bottom: 10px;
+  label {
+    color: var(--theme-color);
+    display: block;
+    margin-bottom: 4px;
   }
 }

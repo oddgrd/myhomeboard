@@ -6,7 +6,7 @@ import {
   CoordinatesInput,
   useCreateProblemMutation
 } from '../../generated/graphql';
-import styles from '../../styles/Form.module.scss';
+import styles from '../../styles/ProblemForm.module.scss';
 import { grades } from '../../utils/selectOptions';
 import { Inputfield } from './Inputfield';
 import { SelectField } from './SelectField';
