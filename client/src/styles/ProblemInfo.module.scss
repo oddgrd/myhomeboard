@@ -1,6 +1,7 @@
 .problemInfo {
   padding-bottom: 20px;
   font-size: 18px;
+
   p {
     margin-bottom: 1rem;
   }
@@ -16,6 +17,10 @@
   .problemInfo {
     padding-bottom: 30px;
     font-size: 18px;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
     p {
       margin-bottom: 0;
     }

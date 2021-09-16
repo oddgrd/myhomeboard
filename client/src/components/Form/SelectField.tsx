@@ -1,14 +1,14 @@
 import { useField } from 'formik';
 import { useState } from 'react';
 import Select, { StylesConfig } from 'react-select';
-import useWindowDimensions from '../../hooks/useWindowDimensions';
 import styles from '../../styles/FormComponents.module.scss';
+
+type IsMulti = false;
 
 type Option = {
   label: string;
   value: number;
 };
-type IsMulti = false;
 
 interface Props {
   label: string;
@@ -39,7 +39,8 @@ const selectStyle: StylesConfig<Option, IsMulti> = {
   menu: (provided, state) => ({
     ...provided,
     background: '#313649',
-    color: '#00ddff'
+    color: '#00ddff',
+    zIndex: 10
   }),
   singleValue: (provided, state) => {
     const opacity = state.isDisabled ? 0.5 : 1;
@@ -58,7 +59,6 @@ export const SelectField = ({
   const [error, setError] = useState<string | undefined>('Required');
   const [field, meta, helpers] = useField(props);
   const { setTouched, setValue } = helpers;
-  const { height } = useWindowDimensions();
 
   return (
     <div className={styles.selectInput}>
@@ -80,7 +80,6 @@ export const SelectField = ({
         }}
         styles={selectStyle}
         menuPlacement='auto'
-        maxMenuHeight={height > 740 ? 250 : 205}
         placeholder={placeholder || '?'}
         instanceId={label}
       />

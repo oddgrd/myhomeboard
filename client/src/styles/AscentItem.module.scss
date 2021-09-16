@@ -6,7 +6,6 @@
   display: grid;
   grid-template-columns: 0.5fr 3fr 1fr;
   grid-template-rows: 1fr auto;
-  border-bottom: 1px solid var(--theme-border-transparent);
 }
 .name {
   font-weight: 500;
@@ -28,7 +27,6 @@
   align-items: center;
   justify-content: flex-end;
   grid-area: 1 / 2 / 1 / 2;
-  animation: var(--fade-down);
 
   button {
     max-height: 48px;
@@ -41,7 +39,6 @@
   overflow-wrap: break-word;
   grid-area: 1 / 1 / 1 / 1;
   word-wrap: break-word;
-  animation: var(--fade-down);
   padding-left: 5px;
   p {
     max-width: 100%;

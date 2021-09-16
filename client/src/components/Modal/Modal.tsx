@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import styles from '../../styles/Modal.module.scss';
 import { Backdrop } from './Backdrop';
@@ -7,7 +7,9 @@ import ReactDOM from 'react-dom';
 interface Props {
   handleClose: () => void;
   children: React.ReactNode;
+  variants?: Variants;
 }
+
 const dropIn = {
   hidden: {
     y: '-100vh',
@@ -17,10 +19,8 @@ const dropIn = {
     y: '0',
     opacity: 1,
     transition: {
-      duration: 0.1,
       type: 'spring',
-      damping: 25,
-      stiffnes: 500
+      damping: 16
     }
   },
   exit: {
@@ -29,7 +29,7 @@ const dropIn = {
   }
 };
 
-export const Modal = ({ handleClose, children }: Props) => {
+export const Modal = ({ handleClose, children, variants }: Props) => {
   const [isBrowser, setIsBrowser] = useState(false);
   useEffect(() => {
     setIsBrowser(true);
@@ -40,7 +40,7 @@ export const Modal = ({ handleClose, children }: Props) => {
       <motion.div
         className={styles.modal}
         onClick={(e) => e.stopPropagation()}
-        variants={dropIn}
+        variants={variants || dropIn}
         initial='hidden'
         animate='visible'
         exit='exit'

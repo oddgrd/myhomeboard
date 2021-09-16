@@ -10,6 +10,7 @@ import { attempts, grades, ratings } from '../../utils/selectOptions';
 import { Textarea } from './Textarea';
 import { useState } from 'react';
 import { FaCheck } from 'react-icons/fa';
+import { motion } from 'framer-motion';
 
 interface Props {
   id: string;
@@ -105,9 +106,18 @@ export const AscentForm = ({ id, onClose, mutation, editProps }: Props) => {
               />
             </Form>
           ) : (
-            <div className={styles.success}>
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ rotate: 360, scale: 1 }}
+              transition={{
+                type: 'spring',
+                stiffness: 260,
+                damping: 20
+              }}
+              className={styles.success}
+            >
               <FaCheck size={170} />
-            </div>
+            </motion.div>
           )}
         </div>
       )}

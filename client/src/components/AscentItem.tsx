@@ -8,7 +8,7 @@ import { DeleteAscentButton } from './Button/deleteAscentButton';
 import { AscentForm } from './Form/AscentForm';
 import { Modal } from './Modal/Modal';
 import { StarRating } from './StarRating';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 
 interface Props {
   ascent: {
@@ -57,6 +57,27 @@ export const AscentItem = ({ ascent, problemId, currentUserId }: Props) => {
     comment
   };
 
+  const dropDown = {
+    hidden: {
+      opacity: 0,
+      height: 0
+    },
+    visible: {
+      opacity: 1,
+      height: 'auto',
+      transition: {
+        duration: 0.2
+      }
+    },
+    exit: {
+      opacity: 0,
+      height: 0,
+      transition: {
+        duration: 0.12
+      }
+    }
+  };
+
   return (
     <div
       className={styles.ascentItem}
@@ -88,43 +109,50 @@ export const AscentItem = ({ ascent, problemId, currentUserId }: Props) => {
           <FaEllipsisV size={24} />
         </button>
       </div>
-      {showOptions && (
-        <div className={styles.lower}>
-          <div className={styles.comment}>
-            {comment.length > 0 && (
-              <p>
-                <FaQuoteRight />
-                {comment}
-              </p>
-            )}
-            <i>
-              {new Date(+createdAt).toLocaleString('en-GB', {
-                weekday: 'short',
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric'
-              })}
-            </i>
-          </div>
-          {currentUserId === userId && (
-            <div className={styles.options}>
-              <button
-                className='btn btn-link'
-                onClick={() => setShowModal(true)}
-              >
-                <FaEdit size={26} />
-              </button>
-              <DeleteAscentButton id={problemId} />
-            </div>
-          )}
-        </div>
-      )}
-      <div ref={scrollIntoViewRef}></div>
       <AnimatePresence
         initial={false}
         exitBeforeEnter={true}
         onExitComplete={() => null}
       >
+        {showOptions && (
+          <motion.div
+            className={styles.lower}
+            initial='hidden'
+            animate='visible'
+            exit='exit'
+            variants={dropDown}
+            key='options'
+          >
+            <div className={styles.comment}>
+              {comment.length > 0 && (
+                <p>
+                  <FaQuoteRight />
+                  {comment}
+                </p>
+              )}
+              <i>
+                {new Date(+createdAt).toLocaleString('en-GB', {
+                  weekday: 'short',
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric'
+                })}
+              </i>
+            </div>
+            {currentUserId === userId && (
+              <div className={styles.options}>
+                <button
+                  className='btn btn-link'
+                  onClick={() => setShowModal(true)}
+                >
+                  <FaEdit size={26} />
+                </button>
+                <DeleteAscentButton id={problemId} />
+              </div>
+            )}
+          </motion.div>
+        )}
+
         {showModal && (
           <Modal handleClose={() => setShowModal(false)}>
             <AscentForm
@@ -136,6 +164,7 @@ export const AscentItem = ({ ascent, problemId, currentUserId }: Props) => {
           </Modal>
         )}
       </AnimatePresence>
+      <div ref={scrollIntoViewRef}></div>
     </div>
   );
 };

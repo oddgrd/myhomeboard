@@ -1,4 +1,5 @@
 import { Form, Formik, FormikHelpers } from 'formik';
+import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { FaCheck } from 'react-icons/fa';
 import * as Yup from 'yup';
@@ -102,9 +103,18 @@ export const EditProblemForm = ({
               />
             </Form>
           ) : (
-            <div className={styles.success}>
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ rotate: 360, scale: 1 }}
+              transition={{
+                type: 'spring',
+                stiffness: 260,
+                damping: 20
+              }}
+              className={styles.success}
+            >
               <FaCheck size={170} />
-            </div>
+            </motion.div>
           )}
         </div>
       )}
