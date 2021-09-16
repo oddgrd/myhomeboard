@@ -52,7 +52,10 @@ export class Problem extends BaseEntity {
   @ManyToOne(() => User, (user) => user.problems)
   creator: User;
 
-  // Add boardId index on next mockData -- todo
+  @Field()
+  @Column()
+  boardSlug!: string;
+
   @Field(() => Board)
   @ManyToOne(() => Board, (board) => board.problems)
   board: Board;
@@ -61,10 +64,9 @@ export class Problem extends BaseEntity {
   @OneToMany(() => Ascent, (ascent) => ascent.problem)
   ascents: Ascent[];
 
-  // Make this required on next mockData -- todo
   @Field()
-  @Column({ nullable: true })
-  layoutUrl: string;
+  @Column()
+  layoutUrl!: string;
 
   @Field(() => Layout)
   @OneToOne(() => Layout)

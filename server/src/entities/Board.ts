@@ -6,7 +6,7 @@ import {
   Entity,
   ManyToOne,
   OneToMany,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
   UpdateDateColumn
 } from 'typeorm';
 import { Layout } from './Layout';
@@ -17,16 +17,16 @@ import { User } from './User';
 @Entity()
 export class Board extends BaseEntity {
   @Field()
-  @PrimaryGeneratedColumn('uuid')
-  id!: string;
-
-  @Field()
-  @Column({ type: 'uuid' })
-  creatorId!: string;
+  @PrimaryColumn()
+  slug!: string;
 
   @Field()
   @Column({ unique: true })
   title!: string;
+
+  @Field()
+  @Column({ type: 'uuid' })
+  creatorId!: string;
 
   @Field()
   @Column()

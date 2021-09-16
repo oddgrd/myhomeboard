@@ -34,13 +34,13 @@ export class Layout extends BaseEntity {
   @Column()
   creatorId!: string;
 
-  @Field()
-  @Column()
-  boardId!: string;
-
   @Field(() => User)
   @ManyToOne(() => User, (user) => user.problems)
   creator: User;
+
+  @Field()
+  @Column()
+  boardSlug!: string;
 
   @ManyToOne(() => Board, (board) => board.layouts)
   board: Board;
