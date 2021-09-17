@@ -142,6 +142,9 @@ const main = async () => {
   // Google oauth routes
   app.use('/api/auth', authRoutes);
 
+  // Block faulty favicon 404
+  app.get('/favicon.ico', (_, res) => res.status(204));
+
   app.listen(4000, () => {
     console.log('App listening on port 4000');
   });

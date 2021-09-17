@@ -25,9 +25,10 @@ export class BoardResolver {
     @Ctx() { req }: Context
   ): Promise<Board> {
     const creatorId = req.session.passport?.user;
-    const { title, description, adjustable, angles, location } = options;
+    const { title, description, adjustable, angles, location, slug } = options;
     const board = await Board.create({
       title,
+      slug,
       description,
       adjustable,
       angles,
@@ -49,14 +50,14 @@ export class BoardResolver {
   // Get Board by ID
   // PUBLIC
   @Query(() => Board)
-  async getBoard(@Arg('id') id: string) {
-    return Board.findOne({ where: { id }, relations: ['layouts'] });
+  async getBoard(@Arg('slug') slug: string) {
+    return Board.findOne({ where: { slug }, relations: ['layouts'] });
   }
 
   // Get all Boards
   // PUBLIC
   @Query(() => [Board])
   async getBoards() {
-    return Board.find({ order: { createdAt: 'DESC' }, relations: ['layouts'] });
+    return Board.find({ order: { createdAt: 'ASC' }, relations: ['layouts'] });
   }
 }

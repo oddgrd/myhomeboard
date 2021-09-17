@@ -1,9 +1,6 @@
 import { User } from '../entities/User';
-// import { validateRegister } from '../utils/validateRegister';
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 import { Context } from '../types/context';
-// import { UsernamePasswordInput, UserResponse } from '../types/userTypes';
-// import argon2 from 'argon2';
 
 @Resolver(User)
 export class UserResolver {

@@ -70,13 +70,15 @@ export class ProblemResolver {
     @Ctx() { req }: Context
   ): Promise<Problem> {
     const creatorId = req.session.passport?.user;
-    const { title, rules, grade, coordinates } = options;
+    const { title, rules, grade, coordinates, boardSlug, layoutUrl } = options;
     return Problem.create({
       title,
       rules,
       grade,
       coordinates,
-      creatorId
+      creatorId,
+      boardSlug,
+      layoutUrl
     }).save();
   }
 
@@ -142,6 +144,7 @@ export class ProblemResolver {
   // Get all problems with cursor pagination
   @Query(() => PaginatedProblems)
   async getProblems(
+    @Arg('boardSlug') boardSlug: string,
     @Arg('limit', () => Int!) limit: number,
     @Arg('cursor', () => String, { nullable: true }) cursor: string | null
   ): Promise<PaginatedProblems> {
@@ -152,6 +155,7 @@ export class ProblemResolver {
     const qb = getConnection()
       .createQueryBuilder(Problem, 'problem')
       .leftJoinAndSelect('problem.ascents', 'ascent')
+      .where('problem.boardSlug = :boardSlug', { boardSlug })
       .orderBy('problem.createdAt', 'DESC');
 
     if (cursor) {

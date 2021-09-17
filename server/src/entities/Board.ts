@@ -9,6 +9,7 @@ import {
   PrimaryColumn,
   UpdateDateColumn
 } from 'typeorm';
+import { Ascent } from './Ascent';
 import { Layout } from './Layout';
 import { Problem } from './Problem';
 import { User } from './User';
@@ -59,6 +60,10 @@ export class Board extends BaseEntity {
   @Field(() => [Problem], { nullable: true })
   @OneToMany(() => Problem, (problem) => problem.board)
   problems: Problem[];
+
+  @Field(() => [Ascent], { nullable: true })
+  @OneToMany(() => Ascent, (ascent) => ascent.board)
+  ascents: Ascent[];
 
   @Field(() => String)
   @CreateDateColumn()

@@ -34,6 +34,10 @@ export class User extends BaseEntity {
   @Column()
   googleId!: string;
 
+  // @Field()
+  // @Column({ type: 'uuid', nullable: true })
+  // currentBoard: string;
+
   @Field(() => [Problem], { nullable: true })
   @OneToMany(() => Problem, (problem) => problem.creator)
   problems: Problem[];

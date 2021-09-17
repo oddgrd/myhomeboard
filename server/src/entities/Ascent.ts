@@ -8,6 +8,7 @@ import {
   PrimaryColumn,
   UpdateDateColumn
 } from 'typeorm';
+import { Board } from './Board';
 import { Problem } from './Problem';
 import { User } from './User';
 
@@ -46,10 +47,9 @@ export class Ascent extends BaseEntity {
   @ManyToOne(() => User, (user) => user.ascents)
   user: User;
 
-  // @Field()
-  // @OneToOne(() => Board)
-  // @JoinColumn()
-  // board: Board;
+  @Field(() => Board)
+  @ManyToOne(() => Board, (board) => board.ascents)
+  board: Board;
 
   @Field(() => String)
   @CreateDateColumn()

@@ -3,10 +3,10 @@ import { Field, InputType, Int } from 'type-graphql';
 @InputType()
 export class BoardInput {
   @Field()
-  slug: string;
+  title: string;
 
   @Field()
-  title: string;
+  slug: string;
 
   @Field()
   description: string;

@@ -29,6 +29,12 @@ export class CoordinatesInput {
 @InputType()
 export class CreateProblemInput {
   @Field()
+  boardSlug: string;
+
+  @Field()
+  layoutUrl: string;
+
+  @Field()
   title: string;
 
   @Field()
