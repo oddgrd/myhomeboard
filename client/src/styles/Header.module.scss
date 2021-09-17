@@ -4,9 +4,8 @@
 }
 
 .container {
-  max-width: 960px;
+  max-width: 810px;
   height: 100%;
-  padding: 0 30px;
   margin: auto;
   display: flex;
   justify-content: space-between;
@@ -46,14 +45,14 @@
     display: none;
   }
   .container {
-    padding: 15px 15px;
+    padding: 15px 10px;
   }
   .header {
     height: 80px;
   }
   .logo {
-    img {
-      width: 52px;
+    strong {
+      font-size: 25px;
     }
   }
 }

@@ -1,76 +1,36 @@
-import { useApolloClient } from '@apollo/client';
+import { AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import {
-  FaLongArrowAltLeft,
-  FaPlus,
-  FaSearch,
-  FaSignInAlt,
-  FaSignOutAlt
-} from 'react-icons/fa';
+import { useState } from 'react';
+import { FaBars, FaLongArrowAltLeft, FaPlus } from 'react-icons/fa';
 import logo from '../../public/Logo-klatreapp.svg';
-import { useLogoutMutation, useMeQuery } from '../generated/graphql';
-import useWindowDimensions from '../hooks/useWindowDimensions';
+import { useMeQuery } from '../generated/graphql';
 import styles from '../styles/Header.module.scss';
+import { DropdownMenu } from './DropdownMenu';
+import { Modal } from './Modal/Modal';
 
 export const Header = () => {
-  const { width } = useWindowDimensions();
+  const [menuModal, toggleMenuModal] = useState(false);
   const { data, loading } = useMeQuery();
-  const [logout] = useLogoutMutation();
-  const apolloClient = useApolloClient();
   const router = useRouter();
+  const slug = typeof router.query.slug === 'string' ? router.query.slug : '';
 
-  const handleLogout = async () => {
-    await logout();
-    await apolloClient.resetStore();
-  };
+  if (loading) return null;
 
-  let nav = null;
-  if (loading) {
-  } else if (!data?.me) {
-    nav = (
-      <ul>
-        <li>
-          <Link href='/login'>
-            <a className='btn-secondary btn-icon'>
-              <FaSignInAlt />
-              <span className={styles.hide}>Login</span>
-            </a>
-          </Link>
-        </li>
-      </ul>
-    );
-  } else {
-    nav = (
-      <ul>
-        <li>
-          <Link href='/problems'>
-            <a className='btn btn-link btn-icon'>
-              <FaSearch />
-              <span className={styles.hide}>Browse Problems</span>
-            </a>
-          </Link>
-        </li>
-        <li>
-          <Link href='/create-problem'>
-            <a className='btn btn-link btn-icon'>
-              <FaPlus />
-              <span className={styles.hide}>Create Problem</span>
-            </a>
-          </Link>
-        </li>
-
-        <li>
-          <button className='btn btn-link btn-icon' onClick={handleLogout}>
-            <FaSignOutAlt /> <span className={styles.hide}>Logout</span>
-          </button>
-        </li>
-      </ul>
-    );
-  }
-  let head = null;
-  if (router.pathname === '/problem/[id]' && width < 700) {
+  let head = (
+    <Link href='/'>
+      <a className={styles.logo}>
+        <Image src={logo} alt='Covegg19 Logo' width={42} height={42} />
+        <strong>myHomeBoard</strong>
+      </a>
+    </Link>
+  );
+  let dynamicNav = null;
+  if (
+    router.pathname === '/problem/[id]' ||
+    router.pathname === '/boards/[slug]/create-problem'
+  ) {
     head = (
       <button
         className='btn btn-icon btn-animation'
@@ -78,15 +38,36 @@ export const Header = () => {
           router.back();
         }}
       >
-        <FaLongArrowAltLeft size={46} />
+        <FaLongArrowAltLeft size={62} />
       </button>
+    );
+  } else if (router.pathname === '/boards/[slug]') {
+    head = (
+      <p className={styles.logo}>
+        <strong>{slug.replace('-', ' ')}</strong>
+      </p>
+    );
+    dynamicNav = (
+      <li>
+        <Link href={`/boards/${slug}/create-problem`}>
+          <a className='btn btn-link btn-icon'>
+            <FaPlus size={28} />
+          </a>
+        </Link>
+      </li>
+    );
+  } else if (router.pathname === '/boards') {
+    head = (
+      <p className={styles.logo}>
+        <strong>Select Board</strong>
+      </p>
     );
   } else {
     head = (
       <Link href='/'>
         <a className={styles.logo}>
-          <Image src={logo} alt='Covegg19 Logo' width={42} height={42} />
-          <strong className={styles.hide}>myHomeBoard</strong>
+          <Image src={logo} alt='Covegg19 Logo' width={48} height={48} />
+          <strong> myHomeBoard</strong>
         </a>
       </Link>
     );
@@ -95,8 +76,31 @@ export const Header = () => {
     <header className={styles.header}>
       <div className={styles.container}>
         <div>{head}</div>
-        <nav>{nav}</nav>
+        <nav>
+          <ul>
+            {dynamicNav}
+            <li>
+              <button
+                className='btn btn-link'
+                onClick={() => toggleMenuModal(!menuModal)}
+              >
+                <FaBars size={28} />
+              </button>
+            </li>
+          </ul>
+        </nav>
       </div>
+      <AnimatePresence
+        initial={false}
+        exitBeforeEnter={true}
+        onExitComplete={() => null}
+      >
+        {menuModal && (
+          <Modal handleClose={() => toggleMenuModal(false)}>
+            <DropdownMenu data={data?.me} />
+          </Modal>
+        )}
+      </AnimatePresence>
     </header>
   );
 };
