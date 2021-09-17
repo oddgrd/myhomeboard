@@ -1,0 +1,15 @@
+fragment BoardCore on Board {
+  slug
+  creatorId
+  title
+  description
+  adjustable
+  angles
+  location
+  currentLayout {
+    id
+    title
+    url
+    createdAt
+  }
+}

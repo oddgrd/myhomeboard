@@ -1,5 +1,5 @@
-query GetProblems($limit: Int!, $cursor: String) {
-  getProblems(limit: $limit, cursor: $cursor) {
+query GetProblems($limit: Int!, $cursor: String, $boardSlug: String!) {
+  getProblems(limit: $limit, cursor: $cursor, boardSlug: $boardSlug) {
     hasMore
     problems {
       ...ProblemSnippet

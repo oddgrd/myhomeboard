@@ -1,6 +1,6 @@
 import { Layout } from '../components/Layout';
 import styles from '../styles/CreateProblem.module.scss';
-import { LayoutForm } from '../components/form/LayoutForm';
+import { LayoutForm } from '../components/Form/LayoutForm';
 import withApollo from '../utils/withApollo';
 import { useIsAuth } from '../hooks/useIsAuth';
 

@@ -13,19 +13,24 @@ import { SelectField } from './SelectField';
 
 interface Props {
   coords?: CoordinatesInput[];
+  slug: string;
+  layoutUrl: string | undefined;
 }
 interface Values {
   title: string;
   rules: string;
   grade: number;
+  boardSlug: string;
+  layoutUrl: string;
   coordinates: CoordinatesInput[];
 }
 
-export const ProblemForm = ({ coords }: Props) => {
+export const ProblemForm = ({ coords, slug, layoutUrl }: Props) => {
   const [validCoords, setValidCoords] = useState(true);
   const [createProblem] = useCreateProblemMutation();
   const router = useRouter();
 
+  if (!layoutUrl) return null;
   return (
     <Formik
       validateOnMount
@@ -33,6 +38,8 @@ export const ProblemForm = ({ coords }: Props) => {
         {
           title: '',
           rules: 'Feet follow hands',
+          boardSlug: slug,
+          layoutUrl,
           coordinates: coords
         } as Values
       }
@@ -68,7 +75,7 @@ export const ProblemForm = ({ coords }: Props) => {
           console.log(errors);
         }
         if (!errors) {
-          router.push('/problems');
+          router.push(`/boards/${slug}`);
         }
       }}
     >

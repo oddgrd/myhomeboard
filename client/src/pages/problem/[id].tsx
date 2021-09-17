@@ -3,12 +3,13 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { FaCheck, FaEdit, FaInfo } from 'react-icons/fa';
 import { AscentItem } from '../../components/AscentItem';
-import { DeleteProblemButton } from '../../components/buttons/deleteProblemButton';
+import { DeleteProblemButton } from '../../components/Button/deleteProblemButton';
 import { Canvas } from '../../components/Canvas';
-import { AscentForm } from '../../components/form/AscentForm';
-import { EditProblemForm } from '../../components/form/EditProblemForm';
+import { AscentForm } from '../../components/Form/AscentForm';
+import { EditProblemForm } from '../../components/Form/EditProblemForm';
 import { Layout } from '../../components/Layout';
-import Modal from '../../components/Modal';
+import { Modal } from '../../components/Modal/Modal';
+import { AnimatePresence } from 'framer-motion';
 import { ProblemInfo } from '../../components/ProblemInfo';
 import {
   useAddAscentMutation,
@@ -45,7 +46,7 @@ const Problem = () => {
   }, [data?.getProblem, initViewer, loadFromCoords]);
 
   if (loading) {
-    return null;
+    return <Layout>...loading</Layout>;
   }
 
   if (error) {
@@ -142,28 +143,34 @@ const Problem = () => {
             </div>
           </div>
         </div>
-        {showEditProblemModal && (
-          <Modal onClose={() => setShowEditProblemModal(false)}>
-            <EditProblemForm
-              onClose={() => setShowEditProblemModal(false)}
-              {...editProblemProps}
-            />
-          </Modal>
-        )}
-        {showAscentModal && (
-          <Modal onClose={() => setShowAscentModal(false)}>
-            <AscentForm
-              id={id}
-              onClose={() => setShowAscentModal(false)}
-              mutation={addAscent}
-            />
-          </Modal>
-        )}
-        {showInfoModal && (
-          <Modal onClose={() => setShowInfoModal(false)}>
-            <ProblemInfo {...infoProps} />
-          </Modal>
-        )}
+        <AnimatePresence
+          initial={false}
+          exitBeforeEnter={true}
+          onExitComplete={() => null}
+        >
+          {showEditProblemModal && (
+            <Modal handleClose={() => setShowEditProblemModal(false)}>
+              <EditProblemForm
+                onClose={() => setShowEditProblemModal(false)}
+                {...editProblemProps}
+              />
+            </Modal>
+          )}
+          {showAscentModal && (
+            <Modal handleClose={() => setShowAscentModal(false)}>
+              <AscentForm
+                id={id}
+                onClose={() => setShowAscentModal(false)}
+                mutation={addAscent}
+              />
+            </Modal>
+          )}
+          {showInfoModal && (
+            <Modal handleClose={() => setShowInfoModal(false)}>
+              <ProblemInfo {...infoProps} />
+            </Modal>
+          )}
+        </AnimatePresence>
 
         <div className={styles.ascents}>
           {ascents.length > 0 && <h3>Ascents:</h3>}

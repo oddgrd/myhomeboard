@@ -1,0 +1,5 @@
+query getBoards {
+  getBoards {
+    ...BoardCore
+  }
+}

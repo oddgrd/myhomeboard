@@ -28,7 +28,7 @@ export const LayoutForm = () => {
         title: layoutData.title,
         description: layoutData.description,
         file: layoutData.file,
-        boardId: '0b0102b3-4bb0-4659-8cef-2e05c9455edb'
+        boardSlug: 'covegg-19'
       }
     });
     if (errors) console.log(errors);

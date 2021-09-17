@@ -38,6 +38,32 @@ export type Ascent = {
   updatedAt: Scalars['String'];
 };
 
+export type Board = {
+  __typename?: 'Board';
+  slug: Scalars['String'];
+  title: Scalars['String'];
+  creatorId: Scalars['String'];
+  description: Scalars['String'];
+  adjustable: Scalars['Boolean'];
+  angles: Array<Scalars['Int']>;
+  location?: Maybe<Scalars['String']>;
+  creator: User;
+  layouts?: Maybe<Array<Layout>>;
+  problems?: Maybe<Array<Problem>>;
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  currentLayout?: Maybe<Layout>;
+};
+
+export type BoardInput = {
+  slug: Scalars['String'];
+  title: Scalars['String'];
+  description: Scalars['String'];
+  adjustable: Scalars['Boolean'];
+  angles: Array<Scalars['Int']>;
+  location?: Maybe<Scalars['String']>;
+};
+
 export type Coordinates = {
   __typename?: 'Coordinates';
   x: Scalars['Int'];
@@ -52,6 +78,8 @@ export type CoordinatesInput = {
 };
 
 export type CreateProblemInput = {
+  boardSlug: Scalars['String'];
+  layoutUrl: Scalars['String'];
   title: Scalars['String'];
   rules: Scalars['String'];
   grade: Scalars['Int'];
@@ -72,6 +100,8 @@ export type Layout = {
   description: Scalars['String'];
   url: Scalars['String'];
   creatorId: Scalars['String'];
+  creator: User;
+  boardSlug: Scalars['String'];
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
 };
@@ -86,11 +116,13 @@ export type Mutation = {
   addAscent: Scalars['Boolean'];
   editAscent: Scalars['Boolean'];
   deleteAscent: Scalars['Boolean'];
+  createBoard: Board;
 };
 
 
 export type MutationCreateLayoutArgs = {
   description: Scalars['String'];
+  boardSlug: Scalars['String'];
   title: Scalars['String'];
   file: Scalars['Upload'];
 };
@@ -125,6 +157,11 @@ export type MutationDeleteAscentArgs = {
   problemId: Scalars['String'];
 };
 
+
+export type MutationCreateBoardArgs = {
+  options: BoardInput;
+};
+
 export type PaginatedProblems = {
   __typename?: 'PaginatedProblems';
   problems: Array<Problem>;
@@ -141,7 +178,11 @@ export type Problem = {
   grade: Scalars['Int'];
   rating?: Maybe<Scalars['Int']>;
   creator: User;
+  boardSlug: Scalars['String'];
+  board: Board;
   ascents: Array<Ascent>;
+  layoutUrl: Scalars['String'];
+  layout: Layout;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
   consensusGrade?: Maybe<Scalars['Int']>;
@@ -151,13 +192,15 @@ export type Problem = {
 
 export type Query = {
   __typename?: 'Query';
-  hello: Scalars['String'];
+  getLayouts: Array<Layout>;
   me?: Maybe<User>;
   getUserById?: Maybe<User>;
   getUsers?: Maybe<Array<User>>;
   getProblems: PaginatedProblems;
   getProblem?: Maybe<Problem>;
   getAscents?: Maybe<Array<Ascent>>;
+  getBoard: Board;
+  getBoards: Array<Board>;
 };
 
 
@@ -169,11 +212,17 @@ export type QueryGetUserByIdArgs = {
 export type QueryGetProblemsArgs = {
   cursor?: Maybe<Scalars['String']>;
   limit: Scalars['Int'];
+  boardSlug: Scalars['String'];
 };
 
 
 export type QueryGetProblemArgs = {
   id: Scalars['String'];
+};
+
+
+export type QueryGetBoardArgs = {
+  slug: Scalars['String'];
 };
 
 
@@ -190,7 +239,9 @@ export type User = {
   updatedAt: Scalars['String'];
 };
 
-export type ProblemSnippetFragment = { __typename?: 'Problem', id: string, title: string, grade: number, consensusGrade?: Maybe<number>, consensusRating?: Maybe<number>, creatorId: string, sendStatus?: Maybe<boolean>, createdAt: string, updatedAt: string, creator: { __typename?: 'User', id: string, name: string }, ascents: Array<{ __typename?: 'Ascent', grade: number, rating: number, userId: string }> };
+export type BoardCoreFragment = { __typename?: 'Board', slug: string, creatorId: string, title: string, description: string, adjustable: boolean, angles: Array<number>, location?: Maybe<string>, currentLayout?: Maybe<{ __typename?: 'Layout', id: string, title: string, url: string, createdAt: string }> };
+
+export type ProblemSnippetFragment = { __typename?: 'Problem', id: string, title: string, grade: number, consensusGrade?: Maybe<number>, consensusRating?: Maybe<number>, creatorId: string, sendStatus?: Maybe<boolean>, createdAt: string, updatedAt: string, boardSlug: string, creator: { __typename?: 'User', id: string, name: string }, ascents: Array<{ __typename?: 'Ascent', grade: number, rating: number, userId: string }> };
 
 export type AddAscentMutationVariables = Exact<{
   options: AddAscentInput;
@@ -203,10 +254,11 @@ export type CreateLayoutMutationVariables = Exact<{
   file: Scalars['Upload'];
   title: Scalars['String'];
   description: Scalars['String'];
+  boardSlug: Scalars['String'];
 }>;
 
 
-export type CreateLayoutMutation = { __typename?: 'Mutation', createLayout: { __typename?: 'Layout', title: string, description: string, url: string, creatorId: string } };
+export type CreateLayoutMutation = { __typename?: 'Mutation', createLayout: { __typename?: 'Layout', boardSlug: string, title: string, description: string, url: string, creatorId: string } };
 
 export type CreateProblemMutationVariables = Exact<{
   options: CreateProblemInput;
@@ -248,6 +300,18 @@ export type EditProblemMutationVariables = Exact<{
 
 export type EditProblemMutation = { __typename?: 'Mutation', editProblem: boolean };
 
+export type GetBoardQueryVariables = Exact<{
+  slug: Scalars['String'];
+}>;
+
+
+export type GetBoardQuery = { __typename?: 'Query', getBoard: { __typename?: 'Board', slug: string, creatorId: string, title: string, description: string, adjustable: boolean, angles: Array<number>, location?: Maybe<string>, currentLayout?: Maybe<{ __typename?: 'Layout', id: string, title: string, url: string, createdAt: string }> } };
+
+export type GetBoardsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetBoardsQuery = { __typename?: 'Query', getBoards: Array<{ __typename?: 'Board', slug: string, creatorId: string, title: string, description: string, adjustable: boolean, angles: Array<number>, location?: Maybe<string>, currentLayout?: Maybe<{ __typename?: 'Layout', id: string, title: string, url: string, createdAt: string }> }> };
+
 export type GetProblemQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
@@ -258,16 +322,34 @@ export type GetProblemQuery = { __typename?: 'Query', getProblem?: Maybe<{ __typ
 export type GetProblemsQueryVariables = Exact<{
   limit: Scalars['Int'];
   cursor?: Maybe<Scalars['String']>;
+  boardSlug: Scalars['String'];
 }>;
 
 
-export type GetProblemsQuery = { __typename?: 'Query', getProblems: { __typename?: 'PaginatedProblems', hasMore: boolean, problems: Array<{ __typename?: 'Problem', id: string, title: string, grade: number, consensusGrade?: Maybe<number>, consensusRating?: Maybe<number>, creatorId: string, sendStatus?: Maybe<boolean>, createdAt: string, updatedAt: string, creator: { __typename?: 'User', id: string, name: string }, ascents: Array<{ __typename?: 'Ascent', grade: number, rating: number, userId: string }> }> } };
+export type GetProblemsQuery = { __typename?: 'Query', getProblems: { __typename?: 'PaginatedProblems', hasMore: boolean, problems: Array<{ __typename?: 'Problem', id: string, title: string, grade: number, consensusGrade?: Maybe<number>, consensusRating?: Maybe<number>, creatorId: string, sendStatus?: Maybe<boolean>, createdAt: string, updatedAt: string, boardSlug: string, creator: { __typename?: 'User', id: string, name: string }, ascents: Array<{ __typename?: 'Ascent', grade: number, rating: number, userId: string }> }> } };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type MeQuery = { __typename?: 'Query', me?: Maybe<{ __typename?: 'User', id: string, name: string, email: string, avatar?: Maybe<string>, createdAt: string, updatedAt: string }> };
 
+export const BoardCoreFragmentDoc = gql`
+    fragment BoardCore on Board {
+  slug
+  creatorId
+  title
+  description
+  adjustable
+  angles
+  location
+  currentLayout {
+    id
+    title
+    url
+    createdAt
+  }
+}
+    `;
 export const ProblemSnippetFragmentDoc = gql`
     fragment ProblemSnippet on Problem {
   id
@@ -279,6 +361,7 @@ export const ProblemSnippetFragmentDoc = gql`
   sendStatus
   createdAt
   updatedAt
+  boardSlug
   creator {
     id
     name
@@ -322,8 +405,14 @@ export type AddAscentMutationHookResult = ReturnType<typeof useAddAscentMutation
 export type AddAscentMutationResult = Apollo.MutationResult<AddAscentMutation>;
 export type AddAscentMutationOptions = Apollo.BaseMutationOptions<AddAscentMutation, AddAscentMutationVariables>;
 export const CreateLayoutDocument = gql`
-    mutation CreateLayout($file: Upload!, $title: String!, $description: String!) {
-  createLayout(file: $file, title: $title, description: $description) {
+    mutation CreateLayout($file: Upload!, $title: String!, $description: String!, $boardSlug: String!) {
+  createLayout(
+    file: $file
+    title: $title
+    description: $description
+    boardSlug: $boardSlug
+  ) {
+    boardSlug
     title
     description
     url
@@ -349,6 +438,7 @@ export type CreateLayoutMutationFn = Apollo.MutationFunction<CreateLayoutMutatio
  *      file: // value for 'file'
  *      title: // value for 'title'
  *      description: // value for 'description'
+ *      boardSlug: // value for 'boardSlug'
  *   },
  * });
  */
@@ -558,6 +648,75 @@ export function useEditProblemMutation(baseOptions?: Apollo.MutationHookOptions<
 export type EditProblemMutationHookResult = ReturnType<typeof useEditProblemMutation>;
 export type EditProblemMutationResult = Apollo.MutationResult<EditProblemMutation>;
 export type EditProblemMutationOptions = Apollo.BaseMutationOptions<EditProblemMutation, EditProblemMutationVariables>;
+export const GetBoardDocument = gql`
+    query getBoard($slug: String!) {
+  getBoard(slug: $slug) {
+    ...BoardCore
+  }
+}
+    ${BoardCoreFragmentDoc}`;
+
+/**
+ * __useGetBoardQuery__
+ *
+ * To run a query within a React component, call `useGetBoardQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetBoardQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetBoardQuery({
+ *   variables: {
+ *      slug: // value for 'slug'
+ *   },
+ * });
+ */
+export function useGetBoardQuery(baseOptions: Apollo.QueryHookOptions<GetBoardQuery, GetBoardQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetBoardQuery, GetBoardQueryVariables>(GetBoardDocument, options);
+      }
+export function useGetBoardLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetBoardQuery, GetBoardQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetBoardQuery, GetBoardQueryVariables>(GetBoardDocument, options);
+        }
+export type GetBoardQueryHookResult = ReturnType<typeof useGetBoardQuery>;
+export type GetBoardLazyQueryHookResult = ReturnType<typeof useGetBoardLazyQuery>;
+export type GetBoardQueryResult = Apollo.QueryResult<GetBoardQuery, GetBoardQueryVariables>;
+export const GetBoardsDocument = gql`
+    query getBoards {
+  getBoards {
+    ...BoardCore
+  }
+}
+    ${BoardCoreFragmentDoc}`;
+
+/**
+ * __useGetBoardsQuery__
+ *
+ * To run a query within a React component, call `useGetBoardsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetBoardsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetBoardsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetBoardsQuery(baseOptions?: Apollo.QueryHookOptions<GetBoardsQuery, GetBoardsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetBoardsQuery, GetBoardsQueryVariables>(GetBoardsDocument, options);
+      }
+export function useGetBoardsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetBoardsQuery, GetBoardsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetBoardsQuery, GetBoardsQueryVariables>(GetBoardsDocument, options);
+        }
+export type GetBoardsQueryHookResult = ReturnType<typeof useGetBoardsQuery>;
+export type GetBoardsLazyQueryHookResult = ReturnType<typeof useGetBoardsLazyQuery>;
+export type GetBoardsQueryResult = Apollo.QueryResult<GetBoardsQuery, GetBoardsQueryVariables>;
 export const GetProblemDocument = gql`
     query GetProblem($id: String!) {
   getProblem(id: $id) {
@@ -624,8 +783,8 @@ export type GetProblemQueryHookResult = ReturnType<typeof useGetProblemQuery>;
 export type GetProblemLazyQueryHookResult = ReturnType<typeof useGetProblemLazyQuery>;
 export type GetProblemQueryResult = Apollo.QueryResult<GetProblemQuery, GetProblemQueryVariables>;
 export const GetProblemsDocument = gql`
-    query GetProblems($limit: Int!, $cursor: String) {
-  getProblems(limit: $limit, cursor: $cursor) {
+    query GetProblems($limit: Int!, $cursor: String, $boardSlug: String!) {
+  getProblems(limit: $limit, cursor: $cursor, boardSlug: $boardSlug) {
     hasMore
     problems {
       ...ProblemSnippet
@@ -648,6 +807,7 @@ export const GetProblemsDocument = gql`
  *   variables: {
  *      limit: // value for 'limit'
  *      cursor: // value for 'cursor'
+ *      boardSlug: // value for 'boardSlug'
  *   },
  * });
  */
