@@ -12,20 +12,20 @@ import styles from '../../../../styles/CreateProblem.module.scss';
 import withApollo from '../../../../utils/withApollo';
 
 const CreateProblem = () => {
-  const [{ canvas, coords }, { init, handleColor, undo }] = useCanvas();
+  useIsAuth();
   const router = useRouter();
   const slug = typeof router.query.slug === 'string' ? router.query.slug : '';
+  const [{ canvas, coords }, { init, handleColor, undo }] = useCanvas();
   const toolbarProps = { handleColor, undo };
 
   const { data, loading } = useGetBoardQuery({
     variables: { slug: 'covegg-19' }
   });
 
-  useIsAuth();
   useEffect(() => {
-    if (!init) return;
+    if (!init || !data?.getBoard) return;
     init();
-  }, [init]);
+  }, [init, data?.getBoard]);
 
   if (!data?.getBoard && !loading) {
     return (

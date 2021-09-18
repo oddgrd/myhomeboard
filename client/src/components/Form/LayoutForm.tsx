@@ -1,10 +1,14 @@
+import router from 'next/router';
 import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useCreateLayoutMutation } from '../../generated/graphql';
 import styles from '../../styles/BoardForm.module.scss';
 
-export const LayoutForm = () => {
-  const [createLayout] = useCreateLayoutMutation();
+interface Props {
+  slug: string;
+}
+export const LayoutForm = ({ slug }: Props) => {
+  const [createLayout, { error }] = useCreateLayoutMutation();
   const [layoutData, setLayoutData] = useState({
     title: '',
     description: '',
@@ -28,16 +32,21 @@ export const LayoutForm = () => {
         title: layoutData.title,
         description: layoutData.description,
         file: layoutData.file,
-        boardSlug: 'covegg-19'
+        boardSlug: slug
+      },
+      update: (cache) => {
+        cache.evict({ fieldName: 'getBoards' });
       }
     });
-    if (errors) console.log(errors);
+    if (!errors) {
+      router.push('/boards');
+    }
   };
 
   return (
     <div className={styles.boardForm}>
       <h1>Add New Layout</h1>
-
+      {error && <p>{error.message}</p>}
       <label htmlFor='title'>
         {' '}
         Title

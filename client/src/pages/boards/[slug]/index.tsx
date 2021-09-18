@@ -1,6 +1,9 @@
 import { Layout } from '../../../components/Layout';
 import { ProblemItem } from '../../../components/ProblemItem';
-import { useGetProblemsQuery } from '../../../generated/graphql';
+import {
+  useGetBoardQuery,
+  useGetProblemsQuery
+} from '../../../generated/graphql';
 import styles from '../../../styles/Problems.module.scss';
 import withApollo from '../../../utils/withApollo';
 import { useRouter } from 'next/router';
@@ -17,11 +20,30 @@ const Problems = () => {
     },
     notifyOnNetworkStatusChange: true
   });
+  const { data: boardData, loading: boardLoading } = useGetBoardQuery({
+    variables: {
+      slug
+    }
+  });
 
   if (!loading && !data) {
     return <Layout>{error?.message}</Layout>;
   }
 
+  if (!boardLoading && !boardData?.getBoard.currentLayout) {
+    return (
+      <Layout>
+        <p>No layouts found, create one!</p>
+      </Layout>
+    );
+  }
+  if (!loading && data?.getProblems.problems.length === 0) {
+    return (
+      <Layout>
+        <p>No problems found, create one!</p>
+      </Layout>
+    );
+  }
   return (
     <Layout title='Problems'>
       <div className={styles.problems}>

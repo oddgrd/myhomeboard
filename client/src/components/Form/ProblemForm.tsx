@@ -79,7 +79,7 @@ export const ProblemForm = ({ coords, slug, layoutUrl }: Props) => {
         }
       }}
     >
-      {({ isValid }) => (
+      {({ values }) => (
         <div className={styles.form}>
           <Form>
             <h1 className='hide'>Create Problem</h1>
@@ -104,7 +104,11 @@ export const ProblemForm = ({ coords, slug, layoutUrl }: Props) => {
               type='submit'
               className='btn'
               value='Save Problem'
-              disabled={!isValid}
+              disabled={
+                values.title.length < 2 ||
+                typeof values.grade !== 'number' ||
+                values.rules.length < 2
+              }
             />
           </Form>
         </div>
