@@ -46,14 +46,14 @@ const Problem = () => {
   }, [data?.getProblem, initViewer, loadFromCoords]);
 
   if (loading) {
-    return <Layout>...loading</Layout>;
+    null;
   }
 
   if (error) {
     return <Layout>{error.message}</Layout>;
   }
 
-  if (!data?.getProblem) {
+  if (!data?.getProblem && !loading) {
     return (
       <Layout>
         <p>Problem Not Found</p>
@@ -62,6 +62,10 @@ const Problem = () => {
         </Link>
       </Layout>
     );
+  }
+  // typescript complains if && !loading is included
+  if (!data?.getProblem) {
+    return null;
   }
 
   const {
@@ -74,7 +78,8 @@ const Problem = () => {
     ascents,
     creator,
     sendStatus,
-    createdAt
+    createdAt,
+    layoutUrl
   } = data.getProblem;
 
   const infoProps = {
@@ -106,7 +111,11 @@ const Problem = () => {
 
         <div className={styles.viewer}>
           <div className={styles.board}>
-            <Canvas canvasRef={canvas} />
+            <Canvas
+              canvasRef={canvas}
+              layoutUrl={layoutUrl}
+              cloudName={process.env.NEXT_PUBLIC_CLOUD_NAME!}
+            />
           </div>
           <div className={styles.info}>
             <h2 className={styles.desktopTitle}>{title}</h2>
