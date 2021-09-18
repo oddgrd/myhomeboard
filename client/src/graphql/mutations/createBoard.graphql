@@ -1,0 +1,5 @@
+mutation CreateBoard($options: BoardInput!) {
+  createBoard(options: $options) {
+    ...BoardCore
+  }
+}

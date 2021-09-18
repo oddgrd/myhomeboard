@@ -4,7 +4,6 @@ query Me {
     name
     email
     avatar
-    currentBoard
     createdAt
     updatedAt
   }

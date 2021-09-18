@@ -8,6 +8,7 @@ query GetProblem($id: String!) {
     rules
     creatorId
     sendStatus
+    layoutUrl
     creator {
       id
       name

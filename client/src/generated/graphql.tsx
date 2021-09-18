@@ -34,6 +34,7 @@ export type Ascent = {
   comment: Scalars['String'];
   problem: Problem;
   user: User;
+  board: Board;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
 };
@@ -50,14 +51,15 @@ export type Board = {
   creator: User;
   layouts?: Maybe<Array<Layout>>;
   problems?: Maybe<Array<Problem>>;
+  ascents?: Maybe<Array<Ascent>>;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
   currentLayout?: Maybe<Layout>;
 };
 
 export type BoardInput = {
-  slug: Scalars['String'];
   title: Scalars['String'];
+  slug: Scalars['String'];
   description: Scalars['String'];
   adjustable: Scalars['Boolean'];
   angles: Array<Scalars['Int']>;
@@ -250,6 +252,13 @@ export type AddAscentMutationVariables = Exact<{
 
 export type AddAscentMutation = { __typename?: 'Mutation', addAscent: boolean };
 
+export type CreateBoardMutationVariables = Exact<{
+  options: BoardInput;
+}>;
+
+
+export type CreateBoardMutation = { __typename?: 'Mutation', createBoard: { __typename?: 'Board', slug: string, creatorId: string, title: string, description: string, adjustable: boolean, angles: Array<number>, location?: Maybe<string>, currentLayout?: Maybe<{ __typename?: 'Layout', id: string, title: string, url: string, createdAt: string }> } };
+
 export type CreateLayoutMutationVariables = Exact<{
   file: Scalars['Upload'];
   title: Scalars['String'];
@@ -317,7 +326,7 @@ export type GetProblemQueryVariables = Exact<{
 }>;
 
 
-export type GetProblemQuery = { __typename?: 'Query', getProblem?: Maybe<{ __typename?: 'Problem', id: string, title: string, grade: number, consensusGrade?: Maybe<number>, consensusRating?: Maybe<number>, rules: string, creatorId: string, sendStatus?: Maybe<boolean>, createdAt: string, updatedAt: string, creator: { __typename?: 'User', id: string, name: string }, ascents: Array<{ __typename?: 'Ascent', userId: string, attempts: number, grade: number, rating: number, comment: string, createdAt: string, user: { __typename?: 'User', name: string, avatar?: Maybe<string> } }>, coordinates: Array<{ __typename?: 'Coordinates', x: number, y: number, color: string }> }> };
+export type GetProblemQuery = { __typename?: 'Query', getProblem?: Maybe<{ __typename?: 'Problem', id: string, title: string, grade: number, consensusGrade?: Maybe<number>, consensusRating?: Maybe<number>, rules: string, creatorId: string, sendStatus?: Maybe<boolean>, layoutUrl: string, createdAt: string, updatedAt: string, creator: { __typename?: 'User', id: string, name: string }, ascents: Array<{ __typename?: 'Ascent', userId: string, attempts: number, grade: number, rating: number, comment: string, createdAt: string, user: { __typename?: 'User', name: string, avatar?: Maybe<string> } }>, coordinates: Array<{ __typename?: 'Coordinates', x: number, y: number, color: string }> }> };
 
 export type GetProblemsQueryVariables = Exact<{
   limit: Scalars['Int'];
@@ -404,6 +413,39 @@ export function useAddAscentMutation(baseOptions?: Apollo.MutationHookOptions<Ad
 export type AddAscentMutationHookResult = ReturnType<typeof useAddAscentMutation>;
 export type AddAscentMutationResult = Apollo.MutationResult<AddAscentMutation>;
 export type AddAscentMutationOptions = Apollo.BaseMutationOptions<AddAscentMutation, AddAscentMutationVariables>;
+export const CreateBoardDocument = gql`
+    mutation CreateBoard($options: BoardInput!) {
+  createBoard(options: $options) {
+    ...BoardCore
+  }
+}
+    ${BoardCoreFragmentDoc}`;
+export type CreateBoardMutationFn = Apollo.MutationFunction<CreateBoardMutation, CreateBoardMutationVariables>;
+
+/**
+ * __useCreateBoardMutation__
+ *
+ * To run a mutation, you first call `useCreateBoardMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateBoardMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createBoardMutation, { data, loading, error }] = useCreateBoardMutation({
+ *   variables: {
+ *      options: // value for 'options'
+ *   },
+ * });
+ */
+export function useCreateBoardMutation(baseOptions?: Apollo.MutationHookOptions<CreateBoardMutation, CreateBoardMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateBoardMutation, CreateBoardMutationVariables>(CreateBoardDocument, options);
+      }
+export type CreateBoardMutationHookResult = ReturnType<typeof useCreateBoardMutation>;
+export type CreateBoardMutationResult = Apollo.MutationResult<CreateBoardMutation>;
+export type CreateBoardMutationOptions = Apollo.BaseMutationOptions<CreateBoardMutation, CreateBoardMutationVariables>;
 export const CreateLayoutDocument = gql`
     mutation CreateLayout($file: Upload!, $title: String!, $description: String!, $boardSlug: String!) {
   createLayout(
@@ -728,6 +770,7 @@ export const GetProblemDocument = gql`
     rules
     creatorId
     sendStatus
+    layoutUrl
     creator {
       id
       name
