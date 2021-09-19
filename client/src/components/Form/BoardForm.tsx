@@ -44,15 +44,12 @@ export const BoardForm = ({}: Props) => {
           .required('Required')
       })}
       onSubmit={async (values: Values) => {
-        const anglesToArray = (angles: string) => {
-          return angles.split(' ,').map((a) => parseInt(a));
-        };
         const { errors } = await createBoard({
           variables: {
             options: {
               ...values,
               slug: slugify(values.title),
-              angles: anglesToArray(values.angles),
+              angles: values.angles.split(', ').map(Number),
               adjustable: values.angles.length > 2
             }
           },
