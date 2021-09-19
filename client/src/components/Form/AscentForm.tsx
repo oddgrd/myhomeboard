@@ -2,21 +2,21 @@ import styles from '../../styles/AscentForm.module.scss';
 import * as Yup from 'yup';
 import { Formik, FormikHelpers, Form } from 'formik';
 import { SelectField } from './SelectField';
-import {
-  AddAscentMutationFn,
-  EditAscentMutationFn
-} from '../../generated/graphql';
 import { attempts, grades, ratings } from '../../utils/selectOptions';
 import { Textarea } from './Textarea';
 import { useState } from 'react';
 import { FaCheck } from 'react-icons/fa';
 import { motion } from 'framer-motion';
+import {
+  useAddAscentMutation,
+  useEditAscentMutation
+} from '../../generated/graphql';
 
 interface Props {
   id: string;
-  boardSlug: string;
+  boardSlug?: string;
   onClose: () => void;
-  mutation: AddAscentMutationFn | EditAscentMutationFn;
+  mutation: 'ADD' | 'EDIT';
   editProps?: Values;
 }
 interface Values {
@@ -34,7 +34,10 @@ export const AscentForm = ({
   editProps,
   boardSlug
 }: Props) => {
+  const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [addAscent] = useAddAscentMutation();
+  const [editAscent] = useEditAscentMutation();
 
   return (
     <Formik
@@ -51,21 +54,30 @@ export const AscentForm = ({
         attempts: Yup.number().required('Required'),
         rating: Yup.number().required('Required')
       })}
-      onSubmit={async (
-        values: Values,
-        { setSubmitting }: FormikHelpers<Values>
-      ) => {
-        const { errors } = await mutation({
-          variables: { options: { ...values, boardSlug } },
-          update: (cache) => {
-            cache.evict({ id: 'Problem:' + id });
-          }
-        });
-        setSubmitting(false);
-        if (errors) {
-          console.log(errors);
+      onSubmit={async (values: Values) => {
+        if (mutation === 'ADD' && boardSlug) {
+          const { errors } = await addAscent({
+            variables: { options: { ...values, boardSlug } },
+            update: (cache) => {
+              cache.evict({ id: 'Problem:' + id });
+            }
+          });
+          if (errors) setError(true);
         }
-        if (!errors) {
+        if (mutation === 'EDIT') {
+          const { errors } = await editAscent({
+            variables: { options: values },
+            update: (cache) => {
+              cache.evict({ id: 'Problem:' + id });
+            }
+          });
+          if (errors) setError(true);
+        }
+        if (error) {
+          console.log('Something went wrong');
+          onClose();
+        }
+        if (!error) {
           setSuccess(true);
           setTimeout(() => {
             onClose();

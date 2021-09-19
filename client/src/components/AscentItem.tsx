@@ -18,6 +18,7 @@ interface Props {
     grade: number;
     rating: number;
     comment: string;
+    boardSlug: string;
     createdAt: string;
     user: {
       __typename?: 'User' | undefined;
@@ -47,7 +48,8 @@ export const AscentItem = ({ ascent, problemId, currentUserId }: Props) => {
     attempts: attemptsCount,
     userId,
     comment,
-    createdAt
+    createdAt,
+    boardSlug
   } = ascent;
   const editProps = {
     grade,
@@ -158,7 +160,7 @@ export const AscentItem = ({ ascent, problemId, currentUserId }: Props) => {
             <AscentForm
               onClose={() => setShowModal(false)}
               editProps={editProps}
-              mutation={editAscent}
+              mutation={'EDIT'}
               id={problemId}
             />
           </Modal>

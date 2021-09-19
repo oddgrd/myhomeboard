@@ -172,7 +172,7 @@ const Problem = () => {
                 id={id}
                 boardSlug={boardSlug}
                 onClose={() => setShowAscentModal(false)}
-                mutation={addAscent}
+                mutation={'ADD'}
               />
             </Modal>
           )}

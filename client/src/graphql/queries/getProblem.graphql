@@ -21,6 +21,7 @@ query GetProblem($id: String!) {
       rating
       comment
       createdAt
+      boardSlug
       user {
         name
         avatar
