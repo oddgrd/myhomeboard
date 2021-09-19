@@ -5,18 +5,15 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { FaBars, FaLongArrowAltLeft, FaPlus } from 'react-icons/fa';
 import logo from '../../public/Logo-klatreapp.svg';
-import { useMeQuery } from '../generated/graphql';
 import styles from '../styles/Header.module.scss';
 import { DropdownMenu } from './DropdownMenu';
 import { Modal } from './Modal/Modal';
 
 export const Header = () => {
   const [menuModal, toggleMenuModal] = useState(false);
-  const { data, loading } = useMeQuery();
+
   const router = useRouter();
   const slug = typeof router.query.slug === 'string' ? router.query.slug : '';
-
-  if (loading) return null;
 
   let head = (
     <Link href='/'>
@@ -97,7 +94,7 @@ export const Header = () => {
       >
         {menuModal && (
           <Modal handleClose={() => toggleMenuModal(false)}>
-            <DropdownMenu data={data?.me} />
+            <DropdownMenu onClose={() => toggleMenuModal(false)} />
           </Modal>
         )}
       </AnimatePresence>

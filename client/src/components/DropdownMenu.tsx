@@ -1,4 +1,4 @@
-import { Maybe, useLogoutMutation } from '../generated/graphql';
+import { useLogoutMutation, useMeQuery } from '../generated/graphql';
 import Link from 'next/link';
 import {
   FaClipboardList,
@@ -9,27 +9,23 @@ import {
 } from 'react-icons/fa';
 import { useApolloClient } from '@apollo/client';
 import styles from '../styles/DropdownMenu.module.scss';
+import { useRouter } from 'next/router';
 
 interface Props {
-  data:
-    | Maybe<{
-        __typename?: 'User' | undefined;
-        id: string;
-        name: string;
-        email: string;
-        avatar?: Maybe<string> | undefined;
-        createdAt: string;
-        updatedAt: string;
-      }>
-    | undefined;
+  onClose: () => void;
 }
 
-export const DropdownMenu = ({ data }: Props) => {
+export const DropdownMenu = ({ onClose }: Props) => {
   const apolloClient = useApolloClient();
+  const router = useRouter();
+  const { data } = useMeQuery();
   const [logout] = useLogoutMutation();
+
   const handleLogout = async () => {
-    await apolloClient.resetStore();
     await logout();
+    await apolloClient.resetStore();
+    router.push('/');
+    onClose();
   };
 
   return (
@@ -42,10 +38,10 @@ export const DropdownMenu = ({ data }: Props) => {
             </a>
           </Link>
         </li>
-        {data ? (
+        {data?.me ? (
           <>
             <li>
-              <Link href='/#'>
+              <Link href='/profile'>
                 <a className='btn btn-link btn-dropdown'>
                   <FaUser size={28} /> Profile
                 </a>
