@@ -1,3 +1,3 @@
-mutation EditAscent($options: AddAscentInput!) {
+mutation EditAscent($options: EditAscentInput!) {
   editAscent(options: $options)
 }

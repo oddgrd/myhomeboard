@@ -90,6 +90,14 @@ export type CreateProblemInput = {
   coordinates: Array<CoordinatesInput>;
 };
 
+export type EditAscentInput = {
+  problemId: Scalars['String'];
+  grade: Scalars['Int'];
+  rating: Scalars['Int'];
+  attempts: Scalars['Int'];
+  comment: Scalars['String'];
+};
+
 export type EditProblemInput = {
   problemId: Scalars['String'];
   title: Scalars['String'];
@@ -154,7 +162,7 @@ export type MutationAddAscentArgs = {
 
 
 export type MutationEditAscentArgs = {
-  options: AddAscentInput;
+  options: EditAscentInput;
 };
 
 
@@ -299,7 +307,7 @@ export type DeleteProblemMutationVariables = Exact<{
 export type DeleteProblemMutation = { __typename?: 'Mutation', deleteProblem: boolean };
 
 export type EditAscentMutationVariables = Exact<{
-  options: AddAscentInput;
+  options: EditAscentInput;
 }>;
 
 
@@ -607,7 +615,7 @@ export type DeleteProblemMutationHookResult = ReturnType<typeof useDeleteProblem
 export type DeleteProblemMutationResult = Apollo.MutationResult<DeleteProblemMutation>;
 export type DeleteProblemMutationOptions = Apollo.BaseMutationOptions<DeleteProblemMutation, DeleteProblemMutationVariables>;
 export const EditAscentDocument = gql`
-    mutation EditAscent($options: AddAscentInput!) {
+    mutation EditAscent($options: EditAscentInput!) {
   editAscent(options: $options)
 }
     `;

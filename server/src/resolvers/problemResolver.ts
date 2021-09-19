@@ -14,7 +14,8 @@ import {
   AddAscentInput,
   CreateProblemInput,
   PaginatedProblems,
-  EditProblemInput
+  EditProblemInput,
+  EditAscentInput
 } from '../types/problem';
 import { Problem } from '../entities/Problem';
 import { Context } from '../types/context';
@@ -220,7 +221,7 @@ export class ProblemResolver {
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
   async editAscent(
-    @Arg('options') options: AddAscentInput,
+    @Arg('options') options: EditAscentInput,
     @Ctx() { req }: Context
   ): Promise<Boolean> {
     const userId = req.session.passport?.user;

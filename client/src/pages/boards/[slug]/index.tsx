@@ -27,6 +27,10 @@ const Problems = () => {
     }
   });
 
+  // -- Todo: clean this up
+  if (loading || boardLoading) {
+    return <Layout>...loading</Layout>;
+  }
   if (!loading && !data) {
     return <Layout>{error?.message}</Layout>;
   }
@@ -44,14 +48,24 @@ const Problems = () => {
   if (!boardLoading && !boardData?.getBoard.currentLayout) {
     return (
       <Layout>
-        <p>No layouts found, create one!</p>
+        <p>
+          No layouts found,{' '}
+          <Link href={`/boards/${slug}/create-layout`}>
+            <a className={styles.back}>create one!</a>
+          </Link>
+        </p>
       </Layout>
     );
   }
   if (!loading && data?.getProblems.problems.length === 0) {
     return (
       <Layout>
-        <p>No problems found, create one!</p>
+        <p>
+          No problems found,{' '}
+          <Link href={`/boards/${slug}/create-problem`}>
+            <a className={styles.back}>create one!</a>
+          </Link>
+        </p>
       </Layout>
     );
   }

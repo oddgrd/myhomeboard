@@ -52,6 +52,9 @@
     padding-left: 10px;
   }
 }
+.back {
+  color: var(--theme-color);
+}
 @media (max-width: 700px) {
   .desktopTitle {
     display: none;

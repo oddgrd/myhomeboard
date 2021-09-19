@@ -83,6 +83,24 @@ export class AddAscentInput {
   comment!: string;
 }
 
+@InputType()
+export class EditAscentInput {
+  @Field()
+  problemId!: string;
+
+  @Field(() => Int)
+  grade!: number;
+
+  @Field(() => Int)
+  rating!: number;
+
+  @Field(() => Int)
+  attempts!: number;
+
+  @Field()
+  comment!: string;
+}
+
 @ObjectType()
 export class PaginatedProblems {
   @Field(() => [Problem])
