@@ -1,28 +1,28 @@
-import 'reflect-metadata';
+import { ApolloServer } from 'apollo-server-express';
+import connectRedis from 'connect-redis';
+import cors from 'cors';
 import 'dotenv-safe/config';
 import express from 'express';
-import { ApolloServer } from 'apollo-server-express';
+import session from 'express-session';
+import { graphqlUploadExpress } from 'graphql-upload';
+import Redis from 'ioredis';
+import passport from 'passport';
+import { Strategy } from 'passport-google-oauth20';
+import path from 'path';
+import 'reflect-metadata';
 import { buildSchema } from 'type-graphql';
-import { LayoutResolver } from './resolvers/layoutResolver';
-import cors from 'cors';
 import { createConnection } from 'typeorm';
+import { Ascent } from './entities/Ascent';
+import { Board } from './entities/Board';
 import { Layout } from './entities/Layout';
 import { Problem } from './entities/Problem';
 import { User } from './entities/User';
-import path from 'path';
-import Redis from 'ioredis';
-import session from 'express-session';
-import connectRedis from 'connect-redis';
-import { UserResolver } from './resolvers/userResolver';
-import { ProblemResolver } from './resolvers/problemResolver';
-import { Strategy } from 'passport-google-oauth20';
-import passport from 'passport';
-import authRoutes from './routes/api/auth';
-import { Ascent } from './entities/Ascent';
-import { graphqlUploadExpress } from 'graphql-upload';
-import { createUserLoader } from './utils/createUserLoader';
-import { Board } from './entities/Board';
 import { BoardResolver } from './resolvers/boardResolver';
+import { LayoutResolver } from './resolvers/layoutResolver';
+import { ProblemResolver } from './resolvers/problemResolver';
+import { UserResolver } from './resolvers/userResolver';
+import authRoutes from './routes/api/auth';
+import { createUserLoader } from './utils/createUserLoader';
 
 const main = async () => {
   const connection = await createConnection({
@@ -32,32 +32,22 @@ const main = async () => {
     entities: [User, Problem, Layout, Ascent, Board],
     migrations: [path.join(__dirname, './migrations/*')],
     logging: true,
-    synchronize: true
+    synchronize: false
   });
-  // await connection.runMigrations();
+  await connection.runMigrations();
   const app = express();
 
-  const devWhitelist = [
-    'https://studio.apollographql.com',
-    'http://localhost:3000'
-  ];
   app.set('trust proxy', 1);
   app.use(
     cors({
-      origin: function (origin, callback) {
-        if (!origin || devWhitelist.indexOf(origin) !== -1) {
-          callback(null, true);
-        } else {
-          callback(new Error('Not allowed by CORS'));
-        }
-      },
+      origin: process.env.CORS_ORIGIN,
       credentials: true
     })
   );
   app.use(graphqlUploadExpress());
 
   const RedisStore = connectRedis(session);
-  const redis = new Redis();
+  const redis = new Redis(process.env.REDIS_URL);
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
@@ -125,9 +115,11 @@ const main = async () => {
       store: new RedisStore({ client: redis, disableTouch: true }),
       cookie: {
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'none',
+        sameSite: 'lax',
         httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 24 * 365 * 10
+        maxAge: 1000 * 60 * 60 * 24 * 365 * 10,
+        domain:
+          process.env.NODE_ENV === 'production' ? '.myhomeboard.no' : undefined
       }
     })
   );
@@ -145,7 +137,7 @@ const main = async () => {
   // Block faulty favicon 404
   app.get('/favicon.ico', (_, res) => res.status(204));
 
-  app.listen(4000, () => {
+  app.listen(parseInt(process.env.PORT), () => {
     console.log('App listening on port 4000');
   });
 };
