@@ -9,6 +9,7 @@ query GetProblem($id: String!) {
     creatorId
     sendStatus
     layoutUrl
+    boardSlug
     creator {
       id
       name

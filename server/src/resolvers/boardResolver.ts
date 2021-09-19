@@ -13,6 +13,7 @@ import { Context } from 'src/types/context';
 import { Board } from '../entities/Board';
 import { BoardInput } from '../types/board';
 import { Layout } from '../entities/Layout';
+import { getConnection } from 'typeorm';
 
 @Resolver(Board)
 export class BoardResolver {
@@ -59,5 +60,54 @@ export class BoardResolver {
   @Query(() => [Board])
   async getBoards() {
     return Board.find({ order: { createdAt: 'ASC' }, relations: ['layouts'] });
+  }
+
+  // Delete board
+  @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
+  async deleteBoard(
+    @Arg('slug') slug: string,
+    @Ctx() { req }: Context
+  ): Promise<boolean> {
+    try {
+      await getConnection().transaction(async (em) => {
+        await em.query(
+          `
+            DELETE FROM ascent
+            WHERE "boardSlug" = $1;
+          `,
+          [slug]
+        );
+        await em.query(
+          `
+            DELETE FROM problem
+            WHERE "boardSlug" = $1;
+          `,
+          [slug]
+        );
+        await em.query(
+          `
+            DELETE FROM layout
+            WHERE "boardSlug" = $1;
+          `,
+          [slug]
+        );
+        const board = await em.query(
+          `
+            DELETE FROM board
+            WHERE slug = $1 AND "creatorId" = $2
+            RETURNING *;
+          `,
+          [slug, req.session.passport?.user]
+        );
+        if (board[1] === 0)
+          throw new Error('Problem not found or current user is not creator');
+      });
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+
+    return true;
   }
 }

@@ -47,6 +47,10 @@ export class Ascent extends BaseEntity {
   @ManyToOne(() => User, (user) => user.ascents)
   user: User;
 
+  @Field()
+  @Column()
+  boardSlug: string;
+
   @Field(() => Board)
   @ManyToOne(() => Board, (board) => board.ascents)
   board: Board;

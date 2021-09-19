@@ -197,15 +197,15 @@ export class ProblemResolver {
     @Ctx() { req }: Context
   ): Promise<Boolean> {
     const userId = req.session.passport?.user;
-    const { rating, grade, attempts, comment, problemId } = options;
+    const { rating, grade, attempts, comment, problemId, boardSlug } = options;
 
     try {
       await getConnection().query(
         `
-          INSERT INTO ascent ("userId", "problemId", grade, attempts, rating, comment)
-          VALUES ($1, $2, $3, $4, $5, $6)
+          INSERT INTO ascent ("userId", "problemId", grade, attempts, rating, comment, "boardSlug")
+          VALUES ($1, $2, $3, $4, $5, $6, $7)
         `,
-        [userId, problemId, grade, attempts, rating, comment]
+        [userId, problemId, grade, attempts, rating, comment, boardSlug]
       );
     } catch (error) {
       // Catch duplicate ascent error (duplicate composite primary key)

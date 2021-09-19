@@ -4,9 +4,10 @@ import { useDeleteProblemMutation } from '../../generated/graphql';
 
 interface Props {
   id: string;
+  slug: string;
 }
 
-export const DeleteProblemButton = ({ id }: Props) => {
+export const DeleteProblemButton = ({ id, slug }: Props) => {
   const [deleteProblem] = useDeleteProblemMutation();
   const router = useRouter();
 
@@ -22,7 +23,7 @@ export const DeleteProblemButton = ({ id }: Props) => {
           cache.evict({ id: 'Problem:' + id });
         }
       });
-      router.push('/problems');
+      router.push(`/boards/${slug}`);
     }
   };
   return (

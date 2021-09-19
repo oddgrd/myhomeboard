@@ -7,6 +7,7 @@ import {
 import styles from '../../../styles/Problems.module.scss';
 import withApollo from '../../../utils/withApollo';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 const Problems = () => {
   const router = useRouter();
@@ -30,6 +31,16 @@ const Problems = () => {
     return <Layout>{error?.message}</Layout>;
   }
 
+  if (!boardLoading && !boardData?.getBoard) {
+    return (
+      <Layout>
+        <p>Board Not Found</p>
+        <Link href='/boards'>
+          <a className={styles.back}>{'<'}Go Back</a>
+        </Link>
+      </Layout>
+    );
+  }
   if (!boardLoading && !boardData?.getBoard.currentLayout) {
     return (
       <Layout>

@@ -67,6 +67,9 @@ export class AddAscentInput {
   @Field()
   problemId!: string;
 
+  @Field()
+  boardSlug!: string;
+
   @Field(() => Int)
   grade!: number;
 

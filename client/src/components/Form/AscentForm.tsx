@@ -14,6 +14,7 @@ import { motion } from 'framer-motion';
 
 interface Props {
   id: string;
+  boardSlug: string;
   onClose: () => void;
   mutation: AddAscentMutationFn | EditAscentMutationFn;
   editProps?: Values;
@@ -26,7 +27,13 @@ interface Values {
   comment: string;
 }
 
-export const AscentForm = ({ id, onClose, mutation, editProps }: Props) => {
+export const AscentForm = ({
+  id,
+  onClose,
+  mutation,
+  editProps,
+  boardSlug
+}: Props) => {
   const [success, setSuccess] = useState(false);
 
   return (
@@ -49,7 +56,7 @@ export const AscentForm = ({ id, onClose, mutation, editProps }: Props) => {
         { setSubmitting }: FormikHelpers<Values>
       ) => {
         const { errors } = await mutation({
-          variables: { options: values },
+          variables: { options: { ...values, boardSlug } },
           update: (cache) => {
             cache.evict({ id: 'Problem:' + id });
           }
