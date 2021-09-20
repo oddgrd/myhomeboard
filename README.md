@@ -18,5 +18,6 @@ Tech stack:
 - Redis (session storage)
 
 ### Deployment
-The client is deployed on Vercel, and is continually developed using the Vercel CLI.
-The backend is deployed in a DigitalOcean Dokku Droplet, proxied by ngingx, with the node.js GraphQL API, Redis and Postgres running in separate Docker containers. 
+The client is deployed on Vercel, and can be continually developed using the Vercel CLI.
+The backend is deployed as a Dokku VPS, proxied by ngingx, in a DigitalOcean Droplet with the node.js GraphQL API, Redis and Postgres running in separate Docker containers. 
+The API can be continually developed by pushing a new docker build to Docker Hub, pulling it into the Dokku VPS and deploying.
