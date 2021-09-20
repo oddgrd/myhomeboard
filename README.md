@@ -19,6 +19,10 @@
 - Postgresql 
 - Redis (session storage)
 
+### Authentication
+- Google Oauth
+- tbd: twitter, github oauth
+
 ### Deployment
 The client is deployed on Vercel, and can be continually developed using the Vercel CLI.
 The backend is deployed as a Dokku VPS, proxied by ngingx, in a DigitalOcean Droplet with the node.js GraphQL API, Redis and Postgres running in separate Docker containers. 
