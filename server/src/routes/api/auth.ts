@@ -1,11 +1,11 @@
 import express from 'express';
 import passport from 'passport';
+import { __prod__ } from '../../constants';
 
 const router = express.Router();
-const redirectUrl =
-  process.env.NODE_ENV === 'production'
-    ? 'https://myhomeboard.no/'
-    : 'http://localhost:3000';
+const redirectUrl = __prod__
+  ? 'https://myhomeboard.no/'
+  : 'http://localhost:3000';
 
 // @route    GET api/auth/google
 // @desc     Login redirect to google

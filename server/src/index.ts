@@ -12,6 +12,7 @@ import path from 'path';
 import 'reflect-metadata';
 import { buildSchema } from 'type-graphql';
 import { createConnection } from 'typeorm';
+import { __prod__ } from './constants';
 import { Ascent } from './entities/Ascent';
 import { Board } from './entities/Board';
 import { Layout } from './entities/Layout';
@@ -28,11 +29,11 @@ const main = async () => {
   const connection = await createConnection({
     applicationName: 'myhomeboard',
     type: 'postgres',
-    url: process.env.DATABASE_URL,
+    url: __prod__ ? process.env.DATABASE_URL : process.env.DATABASE_URL_DEV,
     entities: [User, Problem, Layout, Ascent, Board],
     migrations: [path.join(__dirname, './migrations/*')],
     logging: true,
-    synchronize: false
+    synchronize: !__prod__
   });
   await connection.runMigrations();
   const app = express();
@@ -40,11 +41,13 @@ const main = async () => {
   app.set('trust proxy', 1);
   app.use(
     cors({
-      origin: process.env.CORS_ORIGIN,
+      origin: __prod__ ? process.env.CORS_ORIGIN : 'http://localhost:3000',
       credentials: true
     })
   );
-  app.use(graphqlUploadExpress());
+  app.use(
+    graphqlUploadExpress({ maxFileSize: 5000000, maxFieldSize: 5000000 })
+  );
 
   const RedisStore = connectRedis(session);
   const redis = new Redis(process.env.REDIS_URL);
@@ -67,10 +70,9 @@ const main = async () => {
       {
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL:
-          process.env.NODE_ENV === 'production'
-            ? `https://api.myhomeboard.no/api/auth/google/callback`
-            : 'http://localhost:4000/api/auth/google/callback'
+        callbackURL: __prod__
+          ? `https://api.myhomeboard.no/api/auth/google/callback`
+          : 'http://localhost:4000/api/auth/google/callback'
       },
       async (_accessToken, _refreshToken, profile: any, done) => {
         const user = await User.findOne({ where: { googleId: profile.id } });
@@ -117,12 +119,11 @@ const main = async () => {
       saveUninitialized: false,
       store: new RedisStore({ client: redis, disableTouch: true }),
       cookie: {
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
+        secure: __prod__,
+        sameSite: __prod__ ? 'none' : 'lax',
         httpOnly: true,
         maxAge: 1000 * 60 * 60 * 24 * 365 * 10,
-        domain:
-          process.env.NODE_ENV === 'production' ? '.myhomeboard.no' : undefined
+        domain: __prod__ ? '.myhomeboard.no' : undefined
       }
     })
   );
