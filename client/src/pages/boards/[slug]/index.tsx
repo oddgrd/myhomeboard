@@ -2,7 +2,8 @@ import { Layout } from '../../../components/Layout';
 import { ProblemItem } from '../../../components/ProblemItem';
 import {
   useGetBoardQuery,
-  useGetProblemsQuery
+  useGetProblemsQuery,
+  useMeQuery
 } from '../../../generated/graphql';
 import styles from '../../../styles/Problems.module.scss';
 import withApollo from '../../../utils/withApollo';
@@ -26,18 +27,19 @@ const Problems = () => {
       slug
     }
   });
+  const { data: meData } = useMeQuery();
 
   // -- Todo: clean this up
   if (loading || boardLoading) {
-    return <Layout>...loading</Layout>;
+    return <Layout title='Problems'>{null}</Layout>;
   }
   if (!loading && !data) {
-    return <Layout>{error?.message}</Layout>;
+    return <Layout title='Problems'>{error?.message}</Layout>;
   }
 
   if (!boardLoading && !boardData?.getBoard) {
     return (
-      <Layout>
+      <Layout title='Problems'>
         <p>Board Not Found</p>
         <Link href='/boards'>
           <a className={styles.back}>{'<'}Go Back</a>
@@ -47,7 +49,7 @@ const Problems = () => {
   }
   if (!boardLoading && !boardData?.getBoard.currentLayout) {
     return (
-      <Layout>
+      <Layout title='Problems'>
         <p>
           No layouts found,{' '}
           <Link href={`/boards/${slug}/create-layout`}>
@@ -57,21 +59,16 @@ const Problems = () => {
       </Layout>
     );
   }
-  if (!loading && data?.getProblems.problems.length === 0) {
-    return (
-      <Layout>
-        <p>
-          No problems found,{' '}
-          <Link href={`/boards/${slug}/create-problem`}>
-            <a className={styles.back}>create one!</a>
-          </Link>
-        </p>
-      </Layout>
-    );
-  }
   return (
     <Layout title='Problems'>
       <div className={styles.problems}>
+        {meData?.me && data?.getProblems.problems.length === 0 && (
+          <div className={styles.createProblem}>
+            <Link href={`/boards/${slug}/create-problem`}>
+              <a className='btn'>Create First Problem</a>
+            </Link>
+          </div>
+        )}
         <div>
           {loading && !data ? (
             <div></div>

@@ -82,6 +82,7 @@ export const SelectField = ({
         menuPlacement='auto'
         placeholder={placeholder || '?'}
         instanceId={label}
+        isSearchable={false}
       />
       {meta.touched && error ? <div className='error'>{meta.error}</div> : null}
     </div>
