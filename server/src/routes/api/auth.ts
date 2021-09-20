@@ -2,6 +2,10 @@ import express from 'express';
 import passport from 'passport';
 
 const router = express.Router();
+const redirectUrl =
+  process.env.NODE_ENV === 'production'
+    ? 'https://myhomeboard.no/'
+    : 'http://localhost:3000';
 
 // @route    GET api/auth/google
 // @desc     Login redirect to google
@@ -20,8 +24,8 @@ router.get(
 router.get(
   '/google/callback',
   passport.authenticate('google', {
-    successRedirect: `http://localhost:3000`,
-    failureRedirect: '/api/auth/login/failed'
+    successRedirect: redirectUrl,
+    failureRedirect: redirectUrl
   })
 );
 
@@ -30,7 +34,7 @@ router.get(
 // @access   Public
 router.get('/logout', (req, res) => {
   req.logout();
-  res.redirect(`http://localhost:3000`);
+  res.redirect(redirectUrl);
 });
 
 export = router;

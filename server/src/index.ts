@@ -67,7 +67,10 @@ const main = async () => {
       {
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: `http://localhost:4000/api/auth/google/callback`
+        callbackURL:
+          process.env.NODE_ENV === 'production'
+            ? `https://api.myhomeboard.no/api/auth/google/callback`
+            : 'http://localhost:4000/api/auth/google/callback'
       },
       async (_accessToken, _refreshToken, profile: any, done) => {
         const user = await User.findOne({ where: { googleId: profile.id } });
