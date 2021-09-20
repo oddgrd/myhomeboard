@@ -1,6 +1,6 @@
 # myhomeboard - PERN stack project
 ---
-Tech stack: 
+## Tech stack: 
 ### Frontend
 - Next.js
 - Apollo Client
