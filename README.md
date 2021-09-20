@@ -1,12 +1,14 @@
-# myhomeboard - PERN stack project
----
+# myHomeBoard - PERN stack project
+
 ## Tech stack: 
 ### Frontend
+- Typescript
 - Next.js
 - Apollo Client
 - Sass modules
 
 ### Backend
+- Typescript
 - Node.js
 - Express
 - Apollo Server
