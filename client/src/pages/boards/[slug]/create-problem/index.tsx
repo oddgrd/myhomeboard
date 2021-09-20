@@ -19,7 +19,7 @@ const CreateProblem = () => {
   const toolbarProps = { handleColor, undo };
 
   const { data, loading } = useGetBoardQuery({
-    variables: { slug: 'covegg-19' }
+    variables: { slug }
   });
 
   useEffect(() => {

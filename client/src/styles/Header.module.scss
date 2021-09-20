@@ -1,15 +1,17 @@
 .header {
   width: 100%;
-  height: 60px;
+  height: 75px;
 }
 
 .container {
   max-width: 810px;
   height: 100%;
+  padding: 15px 0;
   margin: auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-bottom: 1px solid #00ddff4d;
 
   a {
     color: var(--theme-color);

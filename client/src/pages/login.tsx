@@ -3,11 +3,14 @@ import { Layout } from '../components/Layout';
 import styles from '../styles/Login.module.scss';
 import withApollo from '../utils/withApollo';
 
+const callbackUrl =
+  process.env.NODE_ENV === 'production'
+    ? process.env.NEXT_PUBLIC_GOOGLE_CALLBACK
+    : 'http://localhost:4000/api/auth/google';
 const Login = () => {
   const handleLogin = () => {
-    window.open(`http://localhost:4000/api/auth/google`, '_self');
+    window.open(callbackUrl, '_self');
   };
-
   return (
     <Layout title='Login'>
       <div className={styles.login}>
