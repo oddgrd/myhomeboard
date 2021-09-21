@@ -19,7 +19,7 @@ export const uploadImage = async (
 
   return new Promise((resolve, reject) => {
     const stream = cloudinary.v2.uploader.upload_stream(
-      { eager: eagerOptions },
+      { eager: eagerOptions, folder: 'myhomeboard' },
       (error, result) => {
         if (result) {
           resolve(result);
