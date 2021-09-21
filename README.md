@@ -19,6 +19,9 @@
 - Postgresql 
 - Redis (session storage)
 
+### Image Management
+- Cloudinary
+
 ### Authentication
 - Google Oauth
 - tbd: twitter, github oauth
