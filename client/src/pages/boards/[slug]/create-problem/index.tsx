@@ -49,7 +49,6 @@ const CreateProblem = () => {
             <Canvas
               canvasRef={canvas}
               layoutUrl={data.getBoard.currentLayout.url}
-              cloudName={process.env.NEXT_PUBLIC_CLOUD_NAME!}
             />
             <Toolbar {...toolbarProps} />
           </div>

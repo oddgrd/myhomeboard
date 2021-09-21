@@ -11,11 +11,7 @@ import { Layout } from '../../components/Layout';
 import { Modal } from '../../components/Modal/Modal';
 import { AnimatePresence } from 'framer-motion';
 import { ProblemInfo } from '../../components/ProblemInfo';
-import {
-  useAddAscentMutation,
-  useGetProblemQuery,
-  useMeQuery
-} from '../../generated/graphql';
+import { useGetProblemQuery, useMeQuery } from '../../generated/graphql';
 import { useCanvas } from '../../hooks/useCanvas';
 import styles from '../../styles/Problem.module.scss';
 import { grades } from '../../utils/selectOptions';
@@ -30,7 +26,6 @@ const Problem = () => {
   const router = useRouter();
   const problemId = typeof router.query.id === 'string' ? router.query.id : '';
 
-  const [addAscent] = useAddAscentMutation();
   const { data: meData } = useMeQuery();
   const { data, loading, error } = useGetProblemQuery({
     variables: {
@@ -112,11 +107,7 @@ const Problem = () => {
 
         <div className={styles.viewer}>
           <div className={styles.board}>
-            <Canvas
-              canvasRef={canvas}
-              layoutUrl={layoutUrl}
-              cloudName={process.env.NEXT_PUBLIC_CLOUD_NAME!}
-            />
+            <Canvas canvasRef={canvas} layoutUrl={layoutUrl} />
           </div>
           <div className={styles.info}>
             <h2 className={styles.desktopTitle}>{title}</h2>

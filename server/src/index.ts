@@ -29,13 +29,13 @@ const main = async () => {
   const connection = await createConnection({
     applicationName: 'myhomeboard',
     type: 'postgres',
-    url: __prod__ ? process.env.DATABASE_URL : process.env.DATABASE_URL_DEV,
+    url: __prod__ ? process.env.DATABASE_URL : process.env.DATABASE_URL + 'dev',
     entities: [User, Problem, Layout, Ascent, Board],
     migrations: [path.join(__dirname, './migrations/*')],
     logging: true,
     synchronize: !__prod__
   });
-  await connection.runMigrations();
+  // await connection.runMigrations();
   const app = express();
 
   app.set('trust proxy', 1);
@@ -45,6 +45,8 @@ const main = async () => {
       credentials: true
     })
   );
+
+  // dokku nginx client_max_body_size set to 5mb
   app.use(
     graphqlUploadExpress({ maxFileSize: 5000000, maxFieldSize: 5000000 })
   );

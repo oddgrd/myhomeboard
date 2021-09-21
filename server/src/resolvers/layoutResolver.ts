@@ -32,7 +32,7 @@ export class LayoutResolver {
       boardSlug,
       description,
       creatorId,
-      url: result.secure_url
+      url: result.eager[0].secure_url
     }).save();
     return layout;
   }
