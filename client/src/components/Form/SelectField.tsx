@@ -22,14 +22,14 @@ const selectStyle: StylesConfig<Option, IsMulti> = {
   option: (provided, state) => ({
     ...provided,
     borderBottom: 'none',
-    background: state.isFocused ? '#3e445e' : '#313649',
+    background: state.isFocused ? '#3e445e' : '#161923',
     color: state.isSelected ? '#00ddff' : '#c3c4d6',
     padding: 10
   }),
   control: (provided, state) => ({
     ...provided,
     color: 'white',
-    background: '#313649',
+    background: '#161923',
     width: state.selectProps.width,
     height: 50,
     border: 'none',
@@ -38,7 +38,7 @@ const selectStyle: StylesConfig<Option, IsMulti> = {
   }),
   menu: (provided, state) => ({
     ...provided,
-    background: '#313649',
+    background: '#161923',
     color: '#00ddff',
     zIndex: 10
   }),

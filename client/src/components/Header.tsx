@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { FaBars, FaLongArrowAltLeft, FaPlus } from 'react-icons/fa';
+import { FaBars, FaLongArrowAltLeft, FaPlusSquare } from 'react-icons/fa';
 import logo from '../../public/Logo-klatreapp.svg';
 import styles from '../styles/Header.module.scss';
 import { DropdownMenu } from './DropdownMenu';
@@ -40,15 +40,17 @@ export const Header = () => {
     );
   } else if (router.pathname === '/boards/[slug]') {
     head = (
-      <p className={styles.logo}>
-        <strong>{slug.replace('-', ' ')}</strong>
-      </p>
+      <Link href='/boards'>
+        <a className={styles.logo}>
+          <strong>{slug.replace('-', ' ')}</strong>
+        </a>
+      </Link>
     );
     dynamicNav = (
       <li>
         <Link href={`/boards/${slug}/create-problem`}>
           <a className='btn btn-link btn-icon'>
-            <FaPlus size={28} />
+            <FaPlusSquare size={28} />
           </a>
         </Link>
       </li>

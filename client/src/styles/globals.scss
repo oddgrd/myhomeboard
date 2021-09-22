@@ -2,16 +2,15 @@
 @import 'utils';
 
 :root {
-  --theme-color: #00ddff;
+  --theme-color: #e9c46a;
   --theme-delete: #bf212f;
-  --theme-background: #161923;
-  --theme-nav: rgb(26, 29, 40);
-  --theme-foreground: #313649;
+  --theme-background: #39395f;
+  --theme-foreground: #161923;
   --theme-foreground-hover: #3e445e;
   --theme-links: #287097;
   --theme-text: #dedeeb;
   --theme-border-transparent: rgba(188, 189, 208, 0.6);
-  --theme-text-foreground: #c3c4d6;
+  --theme-text-foreground: #fdfdfd;
   --theme-text-secondary: #737480;
   --theme-box-shadow: none;
 
@@ -107,7 +106,44 @@ a {
 .error {
   color: var(--theme-delete);
 }
-@media (max-width: 700px) {
+
+.spacer {
+  display: inline;
+  aspect-ratio: 960/300;
+  width: 100%;
+  min-height: 400px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+.svg-bg {
+  aspect-ratio: 960/300;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  z-index: 3;
+}
+.layer1 {
+  background-image: url('../images/landing/layer1.svg');
+}
+.wave-bottom {
+  background-image: url('../images/landing/wave-bottom.svg');
+}
+.stacked-waves {
+  background-image: url('../images/landing/stacked-waves-haikei.svg');
+}
+.orange {
+  background: #e76f51;
+}
+.yellow {
+  background: #e9c46a;
+  color: black;
+}
+.purple {
+  background: #3c31dd;
+}
+@media (max-width: 1000px) {
   .hide {
     display: none;
   }
