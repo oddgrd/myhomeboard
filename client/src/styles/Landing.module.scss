@@ -1,6 +1,7 @@
 .body {
   overflow-x: hidden;
-  section {
+  section,
+  footer {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -20,7 +21,7 @@
   }
 }
 .content {
-  padding: 200px 0;
+  padding: 220px 0;
 }
 .topWave {
   position: absolute;

@@ -6,7 +6,7 @@ import styles from '../styles/Landing.module.scss';
 import { useCurves } from '../images/landing/curves';
 
 const Home: NextPage = () => {
-  const { orangeLayeredWave, darkTopWave, darkLayeredWave, orangeBottomWave } =
+  const { layeredTopWave, darkTopWave, darkLayeredWave, orangeBottomWave } =
     useCurves();
   return (
     <div>
@@ -27,7 +27,14 @@ const Home: NextPage = () => {
       <Header />
       <div className={styles.body}>
         <section className='yellow'>
-          {darkTopWave}
+          {layeredTopWave(
+            '90px',
+            '#242440',
+            '#e76f51',
+            '#eb8550',
+            '#ebb05d',
+            '#ebb05d'
+          )}
           <div className={styles.content}>
             <h1>MyHomeBoard</h1>
             <p>
@@ -49,7 +56,7 @@ const Home: NextPage = () => {
           </div>
         </section>
         <section>
-          {orangeLayeredWave}
+          {layeredTopWave()}
           <div className={styles.content}>
             <h1>Browse Problems</h1>
             <p>
@@ -70,7 +77,15 @@ const Home: NextPage = () => {
             </p>
           </div>
         </section>
-        <section>
+        <section style={{ background: '#dd3f31' }}>
+          {layeredTopWave(
+            '190',
+            '#3c31dd',
+            '#af00ad',
+            '#d50080',
+            '#e11858',
+            '#dd3f31'
+          )}
           <div className={styles.content}>
             <h1>Profile</h1>
             <p>
@@ -80,6 +95,14 @@ const Home: NextPage = () => {
           </div>
         </section>
         <section>
+          {layeredTopWave(
+            '190',
+            '#dd3f31',
+            '#ba2653',
+            '#872961',
+            '#502b5a',
+            '#242440'
+          )}
           <div className={styles.content}>
             <h1>Upload New Layouts</h1>
             <p>
@@ -90,6 +113,12 @@ const Home: NextPage = () => {
             </p>
           </div>
         </section>
+        <footer>
+          created by
+          <a href='https://github.com/oddgrd' target='_blank'>
+            oddgrd
+          </a>
+        </footer>
       </div>
     </div>
   );

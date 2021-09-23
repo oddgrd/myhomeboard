@@ -15,6 +15,7 @@ const CreateProblem = () => {
   useIsAuth();
   const router = useRouter();
   const slug = typeof router.query.slug === 'string' ? router.query.slug : '';
+
   const [{ canvas, coords }, { init, handleColor, undo }] = useCanvas();
   const toolbarProps = { handleColor, undo };
 
@@ -62,4 +63,5 @@ const CreateProblem = () => {
     </Layout>
   );
 };
+
 export default withApollo({ ssr: true })(CreateProblem);
