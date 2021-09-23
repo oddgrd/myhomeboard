@@ -3,11 +3,18 @@ import type { NextPage } from 'next';
 import withApollo from '../utils/withApollo';
 import { Header } from '../components/Header';
 import styles from '../styles/Landing.module.scss';
-import { useCurves } from '../images/landing/curves';
+import { useCurves } from '../hooks/useCurves';
+import { FaGithub } from 'react-icons/fa';
+import { motion } from 'framer-motion';
 
 const Home: NextPage = () => {
-  const { layeredTopWave, darkTopWave, darkLayeredWave, orangeBottomWave } =
-    useCurves();
+  const {
+    layeredTopWave,
+    layeredBottomWave,
+    layeredTopWave2,
+    bottomWave,
+    blobVariants
+  } = useCurves();
   return (
     <div>
       <Head>
@@ -28,7 +35,7 @@ const Home: NextPage = () => {
       <div className={styles.body}>
         <section className='yellow'>
           {layeredTopWave(
-            '90px',
+            '120',
             '#242440',
             '#e76f51',
             '#eb8550',
@@ -43,7 +50,7 @@ const Home: NextPage = () => {
             </p>
           </div>
 
-          {orangeBottomWave}
+          {bottomWave()}
         </section>
         <section className='orange'>
           <div className={styles.content}>
@@ -56,7 +63,7 @@ const Home: NextPage = () => {
           </div>
         </section>
         <section>
-          {layeredTopWave()}
+          {layeredTopWave('180px')}
           <div className={styles.content}>
             <h1>Browse Problems</h1>
             <p>
@@ -67,7 +74,7 @@ const Home: NextPage = () => {
           </div>
         </section>
         <section className='purple'>
-          {darkLayeredWave}
+          {layeredTopWave2()}
           <div className={styles.content}>
             <h1>Register Ascents</h1>
             <p>
@@ -95,7 +102,7 @@ const Home: NextPage = () => {
           </div>
         </section>
         <section>
-          {layeredTopWave(
+          {layeredTopWave2(
             '190',
             '#dd3f31',
             '#ba2653',
@@ -112,12 +119,36 @@ const Home: NextPage = () => {
               <i>*Only Board Creator can upload new layouts</i>
             </p>
           </div>
+          {layeredBottomWave('300')}
         </section>
+
         <footer>
-          created by
-          <a href='https://github.com/oddgrd' target='_blank'>
-            oddgrd
-          </a>
+          {/* {blob} */}
+
+          <motion.svg
+            id={styles.blobSvg}
+            initial='start'
+            animate='end'
+            fill='none'
+            xmlns='http://www.w3.org/2000/svg'
+          >
+            <motion.path
+              variants={blobVariants}
+              transition={{
+                duration: 6,
+                yoyo: Infinity,
+                repeat: Infinity
+              }}
+              fill='#7c2b6c'
+            />
+          </motion.svg>
+
+          <div className={styles.footerContent}>
+            <span>created by </span>
+            <a href='https://github.com/oddgrd' target='_blank'>
+              oddgrd <FaGithub />
+            </a>
+          </div>
         </footer>
       </div>
     </div>

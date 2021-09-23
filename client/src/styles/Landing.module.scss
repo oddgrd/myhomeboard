@@ -1,13 +1,24 @@
 .body {
   overflow-x: hidden;
-  section,
-  footer {
+  section {
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     min-height: 400px;
+    padding: 0 8vw;
+    text-align: center;
+  }
+  footer {
+    position: relative;
+    background: #e11858;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 500px;
+    height: 100%;
     padding: 0 8vw;
     text-align: center;
   }
@@ -23,6 +34,26 @@
 .content {
   padding: 220px 0;
 }
+#blobSvg {
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  path {
+    transform: translate(50%, 50%);
+  }
+}
+
+.footerContent {
+  z-index: 0;
+  font-size: clamp(1rem, 2.2vw, 1.4rem);
+  a {
+    color: var(--theme-color);
+    &:hover {
+      color: #dd3f31;
+    }
+  }
+}
 .topWave {
   position: absolute;
   top: 0;
@@ -35,6 +66,21 @@
     display: block;
     z-index: 0;
     width: calc(138% + 1.3px);
+  }
+}
+.bottomWave {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+  svg {
+    position: relative;
+    display: block;
+
+    z-index: 0;
+    width: calc(100% + 1.3px);
   }
 }
 .wave {
@@ -53,7 +99,25 @@
     transform: rotateY(180deg);
   }
 }
-
+.blob {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  line-height: 0;
+  z-index: 0;
+  svg {
+    position: relative;
+    display: block;
+    z-index: 0;
+    width: calc(100% + 1.3px);
+    height: 100%;
+  }
+}
 .shapeFill {
   fill: #e76f51;
 }

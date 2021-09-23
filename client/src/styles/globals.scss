@@ -107,23 +107,6 @@ a {
   color: var(--theme-delete);
 }
 
-.spacer {
-  display: inline;
-  aspect-ratio: 960/300;
-  width: 100%;
-  min-height: 400px;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-}
-.svg-bg {
-  aspect-ratio: 960/300;
-  width: 100%;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  z-index: 3;
-}
 .layer1 {
   background-image: url('../images/landing/layer1.svg');
 }
