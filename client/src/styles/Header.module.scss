@@ -4,9 +4,9 @@
 }
 
 .container {
-  max-width: 810px;
+  max-width: 710px;
   height: 100%;
-  padding: 15px 0;
+  padding: 15px 10px;
   margin: auto;
   display: flex;
   justify-content: space-between;
@@ -41,22 +41,21 @@
   display: flex;
 }
 
-@media (max-width: 700px) {
-  .hide {
-    display: none;
-  }
+@media (max-width: 500px) {
   .container {
     padding: 15px 3px;
-    margin-left: 6px;
-    margin-right: 6px;
     border-bottom: none;
   }
   .header {
-    height: 80px;
+    height: 74px;
   }
   .logo {
     strong {
       font-size: 25px;
+    }
+
+    img {
+      width: 60px;
     }
   }
 }

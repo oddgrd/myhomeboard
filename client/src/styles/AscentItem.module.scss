@@ -1,5 +1,5 @@
 .ascentItem {
-  width: 90%;
+  width: 100%;
   margin: auto;
   padding: 8px 2px;
   padding-left: 10px;
@@ -62,7 +62,7 @@
 }
 @media (max-width: 700px) {
   .ascentItem {
-    width: 94%;
+    width: 100%;
     margin: auto;
     padding: 8px 0px;
     grid-template-columns: 1fr 3fr 2fr;

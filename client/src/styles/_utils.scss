@@ -66,12 +66,15 @@
     align-items: center;
   }
 }
-@media (max-width: 700px) {
+@media (max-width: 600px) {
   .btn {
     &.btn-fetchMore {
       width: 97%;
       margin: auto;
       margin-top: 1.3rem;
+    }
+    &:hover {
+      transform: none;
     }
   }
 }

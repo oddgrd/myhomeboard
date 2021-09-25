@@ -65,9 +65,13 @@ export const Header = () => {
   } else if (router.pathname === '/' && !data?.me) {
     head = (
       <Link href='/'>
-        <a className={styles.logo}>
+        <a
+          className={styles.logo}
+          style={{ marginLeft: '14px', marginTop: '14px' }}
+        >
           <Image src={logo} alt='Covegg19 Logo' width={48} height={48} />
-          <strong> myHomeBoard</strong>
+
+          <strong className='hide'> myHomeBoard</strong>
         </a>
       </Link>
     );
@@ -81,9 +85,12 @@ export const Header = () => {
   } else if (router.pathname === '/' && data?.me) {
     head = (
       <Link href='/'>
-        <a className={styles.logo}>
+        <a
+          className={styles.logo}
+          style={{ marginLeft: '14px', marginTop: '14px' }}
+        >
           <Image src={logo} alt='Covegg19 Logo' width={48} height={48} />
-          <strong> myHomeBoard</strong>
+          <strong className='hide'> myHomeBoard</strong>
         </a>
       </Link>
     );
