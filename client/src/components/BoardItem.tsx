@@ -10,8 +10,8 @@ interface Props {
 export const BoardItem = ({ board }: Props) => {
   const { title, angles, adjustable, currentLayout, location, slug } = board;
   const apolloClient = useApolloClient();
-  const handleClick = async () => {
-    await apolloClient.resetStore();
+  const handleClick = () => {
+    apolloClient.cache.evict({ fieldName: 'getProblems' });
   };
   return (
     <>

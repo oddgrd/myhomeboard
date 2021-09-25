@@ -119,7 +119,7 @@ const Home: NextPage = () => {
               <i>*Only Board Creator can upload new layouts</i>
             </p>
           </div>
-          {layeredBottomWave('300')}
+          {layeredBottomWave('400')}
         </section>
 
         <footer>
@@ -139,7 +139,7 @@ const Home: NextPage = () => {
                 yoyo: Infinity,
                 repeat: Infinity
               }}
-              fill='#7c2b6c'
+              fill='#038373'
             />
           </motion.svg>
 

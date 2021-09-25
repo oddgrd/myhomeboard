@@ -6,48 +6,12 @@
   --theme-delete: #bf212f;
   --theme-background: #242440;
   --theme-foreground: #161923;
-  --theme-foreground-hover: #3e445e;
-  --theme-links: #287097;
   --theme-text: #dedeeb;
   --theme-border-transparent: rgba(188, 189, 208, 0.6);
-  --theme-text-foreground: #fdfdfd;
-  --theme-text-secondary: #737480;
-  --theme-box-shadow: none;
 
-  --fade-up: fadeUp 0.25s ease-in-out;
-  --fade-up-slow: fadeUp 0.8s ease-in-out;
-  --fade-down: fadeDown 0.25s linear;
   --fade-right-to-left: fadeRightToLeft 0.4s ease-in-out;
-  --fade-in: fadeIn 0.25s ease-in-out;
 }
 
-@keyframes fadeUp {
-  0% {
-    opacity: 0;
-    transform: translateY(1rem);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeDown {
-  0% {
-    opacity: 0;
-    transform: translateY(-1rem);
-  }
-
-  50% {
-    opacity: 0.5;
-    transform: translateY(-0.5rem);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 @keyframes fadeRightToLeft {
   0% {
     opacity: 0;
@@ -56,27 +20,6 @@
   100% {
     opacity: 1;
     transform: translatex(0);
-  }
-}
-
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  20% {
-    opacity: 0.2;
-  }
-  40% {
-    opacity: 0.4;
-  }
-  60% {
-    opacity: 0.6;
-  }
-  80% {
-    opacity: 0.8;
-  }
-  100% {
-    opacity: 1;
   }
 }
 
@@ -107,15 +50,6 @@ a {
   color: var(--theme-delete);
 }
 
-.layer1 {
-  background-image: url('../images/landing/layer1.svg');
-}
-.wave-bottom {
-  background-image: url('../images/landing/wave-bottom.svg');
-}
-.stacked-waves {
-  background-image: url('../images/landing/stacked-waves-haikei.svg');
-}
 .orange {
   background: #e76f51;
 }

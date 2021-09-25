@@ -15,7 +15,7 @@
     font-size: 18px;
     margin-bottom: 10px;
     background: var(--theme-foreground);
-    color: var(--theme-text-foreground);
+    color: var(--theme-text);
     border: 1px solid var(--theme-foreground);
     border-radius: 2px;
     &:focus {
@@ -35,7 +35,7 @@
     resize: none;
     padding: 5px;
     background: var(--theme-foreground);
-    color: var(--theme-text-foreground);
+    color: var(--theme-text);
     border: 1px solid var(--theme-foreground);
     border-radius: 2px;
     &:focus {
