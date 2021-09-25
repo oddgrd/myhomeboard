@@ -87,14 +87,14 @@ export const AscentItem = ({ ascent, problemId, currentUserId }: Props) => {
     >
       <div className={styles.avatar}>
         <Image
-          width={48}
-          height={48}
+          width={52}
+          height={52}
           src={user.avatar as string}
           alt='User Avatar'
         />
       </div>
       <div>
-        <p className={styles.name}>{user.name}</p>
+        <p className={styles.name}>{user.name.split(' ')[0]}</p>
         <div className='flex'>
           <p>
             {attempts[attemptsCount].label}
