@@ -56,6 +56,12 @@
   color: var(--theme-color);
 }
 @media (max-width: 700px) {
+  .problem {
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+  }
   .desktopTitle {
     display: none;
   }
@@ -66,6 +72,7 @@
     padding: 0 0.5rem;
     margin-bottom: 0.2rem;
     gap: 3px;
+    max-width: 350px;
     h2 {
       padding: 0 0.4rem;
     }
@@ -75,7 +82,7 @@
   }
   .viewer {
     flex-direction: column;
-    width: 100%;
+    width: 350px;
     gap: 0.5rem;
     border-right: none;
   }
