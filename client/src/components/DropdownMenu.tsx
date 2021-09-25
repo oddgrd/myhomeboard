@@ -32,6 +32,13 @@ export const DropdownMenu = ({ onClose }: Props) => {
     <div className={styles.dropdown}>
       <ul>
         <li>
+          <Link href='/'>
+            <a className='btn btn-link btn-dropdown'>
+              <FaHome size={28} /> Home
+            </a>
+          </Link>
+        </li>
+        <li>
           <Link href='/boards'>
             <a className='btn btn-link btn-dropdown'>
               <FaClipboardList size={28} /> Boards
@@ -58,13 +65,6 @@ export const DropdownMenu = ({ onClose }: Props) => {
           </>
         ) : (
           <>
-            <li>
-              <Link href='/'>
-                <a className='btn btn-link btn-dropdown'>
-                  <FaHome size={28} /> About
-                </a>
-              </Link>
-            </li>
             <li>
               <Link href='/login'>
                 <a className='btn btn-link btn-dropdown'>

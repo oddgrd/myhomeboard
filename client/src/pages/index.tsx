@@ -1,12 +1,12 @@
-import Head from 'next/head';
-import type { NextPage } from 'next';
-import withApollo from '../utils/withApollo';
-import { Header } from '../components/Header';
-import styles from '../styles/Landing.module.scss';
-import { useCurves } from '../hooks/useCurves';
-import { FaGithub } from 'react-icons/fa';
 import { motion } from 'framer-motion';
-
+import type { NextPage } from 'next';
+import Head from 'next/head';
+import Link from 'next/link';
+import { FaGithub } from 'react-icons/fa';
+import { Header } from '../components/Header';
+import { useCurves } from '../hooks/useCurves';
+import styles from '../styles/Landing.module.scss';
+import withApollo from '../utils/withApollo';
 const Home: NextPage = () => {
   const {
     layeredTopWave,
@@ -114,10 +114,14 @@ const Home: NextPage = () => {
             <h1>Upload New Layouts</h1>
             <p>
               Reset your wall? Bought new holds? Simply upload a new photo of
-              your board*. The last added layout will be used by default when
-              creating problems, but this can be changed in the Board settings.
-              <i>*Only Board Creator can upload new layouts</i>
+              your board*.
             </p>
+            <i>*Only Board Creator can upload new layouts</i>
+            <Link href='/login'>
+              <a className='btn' style={{ marginTop: '3.5rem' }}>
+                <strong>GET STARTED</strong>
+              </a>
+            </Link>
           </div>
           {layeredBottomWave('400')}
         </section>
@@ -136,7 +140,7 @@ const Home: NextPage = () => {
               variants={blobVariants}
               transition={{
                 duration: 6,
-                yoyo: Infinity,
+                repeatType: 'reverse',
                 repeat: Infinity
               }}
               fill='#038373'

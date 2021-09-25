@@ -123,7 +123,7 @@ const Problem = () => {
                     className='btn'
                     onClick={() => setShowEditProblemModal(true)}
                   >
-                    <FaEdit size={22} />
+                    <FaEdit size={28} />
                   </button>
                 </>
               ) : null}
@@ -132,14 +132,14 @@ const Problem = () => {
                   className='btn'
                   onClick={() => setShowAscentModal(true)}
                 >
-                  <FaCheck size={22} />
+                  <FaCheck size={28} />
                 </button>
               )}
               <button
                 className='btn hide-desktop'
                 onClick={() => setShowInfoModal(true)}
               >
-                <FaInfo size={22} />
+                <FaInfo size={28} />
               </button>
             </div>
           </div>

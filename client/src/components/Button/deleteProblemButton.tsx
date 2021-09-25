@@ -28,7 +28,7 @@ export const DeleteProblemButton = ({ id, slug }: Props) => {
   };
   return (
     <button className='btn' aria-label='Delete Problem' onClick={handleDelete}>
-      <FaTrash size={22} />
+      <FaTrash size={28} />
     </button>
   );
 };

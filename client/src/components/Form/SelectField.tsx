@@ -23,7 +23,7 @@ const selectStyle: StylesConfig<Option, IsMulti> = {
     ...provided,
     borderBottom: 'none',
     background: state.isFocused ? '#3e445e' : '#161923',
-    color: state.isSelected ? '#00ddff' : '#c3c4d6',
+    color: state.isSelected ? '#e9c46a' : '#c3c4d6',
     padding: 10
   }),
   control: (provided, state) => ({
@@ -34,19 +34,19 @@ const selectStyle: StylesConfig<Option, IsMulti> = {
     height: 50,
     border: 'none',
     borderRadius: '2px',
-    boxShadow: state.menuIsOpen ? 'inset 0px 0px 0px 1px #00DDFF' : 'none'
+    boxShadow: state.menuIsOpen ? 'inset 0px 0px 0px 1px #e9c46a' : 'none'
   }),
   menu: (provided, state) => ({
     ...provided,
     background: '#161923',
-    color: '#00ddff',
+    color: '#e9c46a',
     zIndex: 10
   }),
   singleValue: (provided, state) => {
     const opacity = state.isDisabled ? 0.5 : 1;
     const transition = 'opacity 300ms';
 
-    return { ...provided, opacity, transition, color: '#00ddff' };
+    return { ...provided, opacity, transition, color: '#e9c46a' };
   }
 };
 

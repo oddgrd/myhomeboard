@@ -5,13 +5,14 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { FaBars, FaLongArrowAltLeft, FaPlusSquare } from 'react-icons/fa';
 import logo from '../../public/Logo-klatreapp.svg';
+import { useMeQuery } from '../generated/graphql';
 import styles from '../styles/Header.module.scss';
 import { DropdownMenu } from './DropdownMenu';
 import { Modal } from './Modal/Modal';
 
 export const Header = () => {
   const [menuModal, toggleMenuModal] = useState(false);
-
+  const { data } = useMeQuery();
   const router = useRouter();
   const slug = typeof router.query.slug === 'string' ? router.query.slug : '';
 
@@ -60,6 +61,38 @@ export const Header = () => {
       <p className={styles.logo}>
         <strong>Select Board</strong>
       </p>
+    );
+  } else if (router.pathname === '/' && !data?.me) {
+    head = (
+      <Link href='/'>
+        <a className={styles.logo}>
+          <Image src={logo} alt='Covegg19 Logo' width={48} height={48} />
+          <strong> myHomeBoard</strong>
+        </a>
+      </Link>
+    );
+    dynamicNav = (
+      <li>
+        <Link href={`/login`}>
+          <a className='btn btn-link'>GET STARTED</a>
+        </Link>
+      </li>
+    );
+  } else if (router.pathname === '/' && data?.me) {
+    head = (
+      <Link href='/'>
+        <a className={styles.logo}>
+          <Image src={logo} alt='Covegg19 Logo' width={48} height={48} />
+          <strong> myHomeBoard</strong>
+        </a>
+      </Link>
+    );
+    dynamicNav = (
+      <li>
+        <Link href={'/boards'}>
+          <a className='btn btn-link'>BOARDS</a>
+        </Link>
+      </li>
     );
   } else {
     head = (

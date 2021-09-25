@@ -9,13 +9,17 @@
   border: 1px solid var(--theme-color);
   border-radius: 2px;
   font-size: 18px;
+  transition: 0.2s ease-in-out;
 
   &:hover {
-    opacity: 0.9;
+    transform: scale(1.1);
   }
   &:disabled {
     opacity: 0.6;
     cursor: default;
+    &:hover {
+      transform: none;
+    }
   }
   &.btn-link {
     border: none;
@@ -37,7 +41,7 @@
     font-size: 20px;
   }
   &.btn-undo {
-    box-shadow: inset 0px 0px 0px 2px #00ddff;
+    box-shadow: inset 0px 0px 0px 2px var(--theme-color);
     border: none;
     border-radius: 0;
     width: 42px;
