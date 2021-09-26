@@ -36,6 +36,7 @@ export const LayoutForm = ({ slug }: Props) => {
       },
       update: (cache) => {
         cache.evict({ fieldName: 'getBoards' });
+        cache.evict({ fieldName: 'getBoard' });
       }
     });
     if (!errors) {

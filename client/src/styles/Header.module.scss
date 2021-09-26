@@ -6,7 +6,7 @@
 .container {
   max-width: 710px;
   height: 100%;
-  padding: 15px 10px;
+  padding: 15px 6px;
   margin: auto;
   display: flex;
   justify-content: space-between;
@@ -34,7 +34,6 @@
 
   strong {
     color: var(--theme-color);
-    margin-left: 0.3rem;
   }
 }
 .switch {
@@ -43,7 +42,6 @@
 
 @media (max-width: 500px) {
   .container {
-    padding: 15px 3px;
     border-bottom: none;
   }
   .header {
@@ -51,7 +49,7 @@
   }
   .logo {
     strong {
-      font-size: 25px;
+      font-size: 24px;
     }
 
     img {

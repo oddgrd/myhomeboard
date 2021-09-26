@@ -78,7 +78,9 @@ export const Header = () => {
     dynamicNav = (
       <li>
         <Link href={`/login`}>
-          <a className='btn btn-link'>GET STARTED</a>
+          <a className='btn btn-link'>
+            <strong>GET STARTED</strong>
+          </a>
         </Link>
       </li>
     );
@@ -97,7 +99,9 @@ export const Header = () => {
     dynamicNav = (
       <li>
         <Link href={'/boards'}>
-          <a className='btn btn-link'>BOARDS</a>
+          <a className='btn btn-link'>
+            <strong>BOARDS</strong>
+          </a>
         </Link>
       </li>
     );

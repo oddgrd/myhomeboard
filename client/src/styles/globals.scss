@@ -49,6 +49,10 @@ a {
 .error {
   color: var(--theme-delete);
 }
+
+.underline {
+  text-decoration: underline;
+}
 .loading-svg {
   width: 100%;
   height: 40vh;
