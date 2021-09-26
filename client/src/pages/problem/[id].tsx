@@ -71,7 +71,8 @@ const Problem = () => {
     sendStatus,
     createdAt,
     layoutUrl,
-    boardSlug
+    boardSlug,
+    angle
   } = data.getProblem;
 
   const infoProps = {
@@ -80,13 +81,16 @@ const Problem = () => {
     consensusGrade,
     consensusRating,
     name: creator.name,
+    angle,
     createdAt
   };
   const editProblemProps = {
     rules,
     grade,
     title,
-    id
+    id,
+    angle,
+    boardSlug
   };
 
   return (

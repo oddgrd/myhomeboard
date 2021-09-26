@@ -9,6 +9,7 @@ interface Props {
   grade: number;
   consensusGrade: Maybe<number> | undefined;
   consensusRating: Maybe<number> | undefined;
+  angle: number;
   createdAt: string;
 }
 
@@ -18,6 +19,7 @@ export const ProblemInfo = ({
   consensusGrade,
   consensusRating,
   grade,
+  angle,
   createdAt
 }: Props) => {
   return (
@@ -37,6 +39,9 @@ export const ProblemInfo = ({
         </p>
       </div>
 
+      <p>
+        <strong>Angle:</strong> {angle}°
+      </p>
       <p>
         <strong>Rules:</strong> {rules}
       </p>

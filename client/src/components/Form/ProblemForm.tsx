@@ -15,6 +15,7 @@ interface Props {
   coords?: CoordinatesInput[];
   slug: string;
   layoutUrl: string | undefined;
+  angles: number[];
 }
 interface Values {
   title: string;
@@ -23,9 +24,10 @@ interface Values {
   boardSlug: string;
   layoutUrl: string;
   coordinates: CoordinatesInput[];
+  angle: number;
 }
 
-export const ProblemForm = ({ coords, slug, layoutUrl }: Props) => {
+export const ProblemForm = ({ coords, slug, layoutUrl, angles }: Props) => {
   const [validCoords, setValidCoords] = useState(true);
   const [createProblem] = useCreateProblemMutation();
   const router = useRouter();
@@ -40,7 +42,8 @@ export const ProblemForm = ({ coords, slug, layoutUrl }: Props) => {
           rules: 'Feet follow hands',
           boardSlug: slug,
           layoutUrl,
-          coordinates: coords
+          coordinates: coords,
+          angle: angles[0]
         } as Values
       }
       validationSchema={Yup.object({
@@ -52,7 +55,8 @@ export const ProblemForm = ({ coords, slug, layoutUrl }: Props) => {
           .min(2, 'Must be 2 characters or more')
           .max(80, 'Must be shorter than 80 characters')
           .required('Required'),
-        grade: Yup.number().required('Required')
+        grade: Yup.number().required('Required'),
+        angle: Yup.number().required('Required')
       })}
       onSubmit={async (
         values: Values,
@@ -91,12 +95,34 @@ export const ProblemForm = ({ coords, slug, layoutUrl }: Props) => {
             />
             <Inputfield name='rules' type='text' label='Rules' />
             <div className={styles.selectContainer}>
-              <SelectField
-                name='grade'
-                options={grades}
-                label='Grade'
-                width={324}
-              />
+              {angles.length > 1 ? (
+                <>
+                  <SelectField
+                    name='grade'
+                    options={grades}
+                    label='Grade'
+                    width={157}
+                  />
+                  <SelectField
+                    name='angle'
+                    options={angles.map((a) => {
+                      return Object.fromEntries([
+                        ['value', a],
+                        ['label', a]
+                      ]);
+                    })}
+                    label='Angle'
+                    width={157}
+                  />
+                </>
+              ) : (
+                <SelectField
+                  name='grade'
+                  options={grades}
+                  label='Grade'
+                  width={324}
+                />
+              )}
             </div>
 
             {!validCoords && <p>Add at least three holds!</p>}

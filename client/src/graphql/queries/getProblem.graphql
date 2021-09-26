@@ -10,6 +10,7 @@ query GetProblem($id: String!) {
     sendStatus
     layoutUrl
     boardSlug
+    angle
     creator {
       id
       name

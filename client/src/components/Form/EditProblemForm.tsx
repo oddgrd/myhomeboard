@@ -3,7 +3,10 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { FaCheck } from 'react-icons/fa';
 import * as Yup from 'yup';
-import { useEditProblemMutation } from '../../generated/graphql';
+import {
+  useEditProblemMutation,
+  useGetBoardQuery
+} from '../../generated/graphql';
 import styles from '../../styles/AscentForm.module.scss';
 import { grades } from '../../utils/selectOptions';
 import { Inputfield } from './Inputfield';
@@ -14,12 +17,15 @@ interface Props {
   title: string;
   rules: string;
   grade: number;
+  angle: number;
+  boardSlug: string;
   onClose: () => void;
 }
 interface Values {
   title: string;
   rules: string;
   grade: number;
+  angle: number;
 }
 
 export const EditProblemForm = ({
@@ -27,18 +33,23 @@ export const EditProblemForm = ({
   title,
   rules,
   grade,
+  angle,
+  boardSlug,
   onClose
 }: Props) => {
   const [success, setSuccess] = useState(false);
   const [editProblem] = useEditProblemMutation();
-
+  const { data } = useGetBoardQuery({
+    variables: { slug: boardSlug }
+  });
   return (
     <Formik
       initialValues={
         {
           title: title,
           rules: rules,
-          grade: grade
+          grade: grade,
+          angle: angle
         } as Values
       }
       validationSchema={Yup.object({
@@ -50,7 +61,8 @@ export const EditProblemForm = ({
           .min(2, 'Must be 2 characters or more')
           .max(80, 'Must be shorter than 80 characters')
           .required('Required'),
-        grade: Yup.number().required('Required')
+        grade: Yup.number().required('Required'),
+        angle: Yup.number().required('Required')
       })}
       onSubmit={async (
         values: Values,
@@ -87,12 +99,34 @@ export const EditProblemForm = ({
               />
               <Inputfield name='rules' type='text' label='Rules' />
               <div className={styles.selectContainer}>
-                <SelectField
-                  name='grade'
-                  options={grades}
-                  label='Grade'
-                  width={300}
-                />
+                {data?.getBoard && data.getBoard.angles.length > 1 ? (
+                  <>
+                    <SelectField
+                      name='grade'
+                      options={grades}
+                      label='Grade'
+                      width={145}
+                    />
+                    <SelectField
+                      name='angle'
+                      options={data.getBoard.angles.map((a) => {
+                        return Object.fromEntries([
+                          ['value', a],
+                          ['label', a]
+                        ]);
+                      })}
+                      label='Angle'
+                      width={145}
+                    />
+                  </>
+                ) : (
+                  <SelectField
+                    name='grade'
+                    options={grades}
+                    label='Grade'
+                    width={300}
+                  />
+                )}
               </div>
 
               <input

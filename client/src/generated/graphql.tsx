@@ -87,6 +87,7 @@ export type CreateProblemInput = {
   title: Scalars['String'];
   rules: Scalars['String'];
   grade: Scalars['Int'];
+  angle: Scalars['Int'];
   coordinates: Array<CoordinatesInput>;
 };
 
@@ -103,6 +104,7 @@ export type EditProblemInput = {
   title: Scalars['String'];
   rules: Scalars['String'];
   grade: Scalars['Int'];
+  angle: Scalars['Int'];
 };
 
 export type Layout = {
@@ -120,16 +122,26 @@ export type Layout = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createBoard: Board;
+  deleteBoard: Scalars['Boolean'];
   createLayout: Layout;
-  logout: Scalars['Boolean'];
   createProblem: Problem;
   editProblem: Scalars['Boolean'];
   deleteProblem: Scalars['Boolean'];
   addAscent: Scalars['Boolean'];
   editAscent: Scalars['Boolean'];
   deleteAscent: Scalars['Boolean'];
-  createBoard: Board;
-  deleteBoard: Scalars['Boolean'];
+  logout: Scalars['Boolean'];
+};
+
+
+export type MutationCreateBoardArgs = {
+  options: BoardInput;
+};
+
+
+export type MutationDeleteBoardArgs = {
+  slug: Scalars['String'];
 };
 
 
@@ -170,16 +182,6 @@ export type MutationDeleteAscentArgs = {
   problemId: Scalars['String'];
 };
 
-
-export type MutationCreateBoardArgs = {
-  options: BoardInput;
-};
-
-
-export type MutationDeleteBoardArgs = {
-  slug: Scalars['String'];
-};
-
 export type PaginatedProblems = {
   __typename?: 'PaginatedProblems';
   problems: Array<Problem>;
@@ -192,6 +194,7 @@ export type Problem = {
   creatorId: Scalars['String'];
   title: Scalars['String'];
   rules: Scalars['String'];
+  angle: Scalars['Int'];
   coordinates: Array<Coordinates>;
   grade: Scalars['Int'];
   rating?: Maybe<Scalars['Int']>;
@@ -210,20 +213,20 @@ export type Problem = {
 
 export type Query = {
   __typename?: 'Query';
+  getBoard: Board;
+  getBoards: Array<Board>;
   getLayouts: Array<Layout>;
-  me?: Maybe<User>;
-  getUserById?: Maybe<User>;
-  getUsers?: Maybe<Array<User>>;
   getProblems: PaginatedProblems;
   getProblem?: Maybe<Problem>;
   getAscents?: Maybe<Array<Ascent>>;
-  getBoard: Board;
-  getBoards: Array<Board>;
+  me?: Maybe<User>;
+  getUserById?: Maybe<User>;
+  getUsers?: Maybe<Array<User>>;
 };
 
 
-export type QueryGetUserByIdArgs = {
-  id: Scalars['String'];
+export type QueryGetBoardArgs = {
+  slug: Scalars['String'];
 };
 
 
@@ -239,8 +242,8 @@ export type QueryGetProblemArgs = {
 };
 
 
-export type QueryGetBoardArgs = {
-  slug: Scalars['String'];
+export type QueryGetUserByIdArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -259,7 +262,7 @@ export type User = {
 
 export type BoardCoreFragment = { __typename?: 'Board', slug: string, creatorId: string, title: string, description: string, adjustable: boolean, angles: Array<number>, location?: Maybe<string>, currentLayout?: Maybe<{ __typename?: 'Layout', id: string, title: string, url: string, createdAt: string }> };
 
-export type ProblemSnippetFragment = { __typename?: 'Problem', id: string, title: string, grade: number, consensusGrade?: Maybe<number>, consensusRating?: Maybe<number>, creatorId: string, sendStatus?: Maybe<boolean>, createdAt: string, updatedAt: string, boardSlug: string, creator: { __typename?: 'User', id: string, name: string }, ascents: Array<{ __typename?: 'Ascent', grade: number, rating: number, userId: string }> };
+export type ProblemSnippetFragment = { __typename?: 'Problem', id: string, title: string, grade: number, angle: number, consensusGrade?: Maybe<number>, consensusRating?: Maybe<number>, creatorId: string, sendStatus?: Maybe<boolean>, createdAt: string, updatedAt: string, boardSlug: string, creator: { __typename?: 'User', id: string, name: string }, ascents: Array<{ __typename?: 'Ascent', grade: number, rating: number, userId: string }> };
 
 export type AddAscentMutationVariables = Exact<{
   options: AddAscentInput;
@@ -342,7 +345,7 @@ export type GetProblemQueryVariables = Exact<{
 }>;
 
 
-export type GetProblemQuery = { __typename?: 'Query', getProblem?: Maybe<{ __typename?: 'Problem', id: string, title: string, grade: number, consensusGrade?: Maybe<number>, consensusRating?: Maybe<number>, rules: string, creatorId: string, sendStatus?: Maybe<boolean>, layoutUrl: string, boardSlug: string, createdAt: string, updatedAt: string, creator: { __typename?: 'User', id: string, name: string }, ascents: Array<{ __typename?: 'Ascent', userId: string, attempts: number, grade: number, rating: number, comment: string, createdAt: string, boardSlug: string, user: { __typename?: 'User', name: string, avatar?: Maybe<string> } }>, coordinates: Array<{ __typename?: 'Coordinates', x: number, y: number, color: string }> }> };
+export type GetProblemQuery = { __typename?: 'Query', getProblem?: Maybe<{ __typename?: 'Problem', id: string, title: string, grade: number, consensusGrade?: Maybe<number>, consensusRating?: Maybe<number>, rules: string, creatorId: string, sendStatus?: Maybe<boolean>, layoutUrl: string, boardSlug: string, angle: number, createdAt: string, updatedAt: string, creator: { __typename?: 'User', id: string, name: string }, ascents: Array<{ __typename?: 'Ascent', userId: string, attempts: number, grade: number, rating: number, comment: string, createdAt: string, boardSlug: string, user: { __typename?: 'User', name: string, avatar?: Maybe<string> } }>, coordinates: Array<{ __typename?: 'Coordinates', x: number, y: number, color: string }> }> };
 
 export type GetProblemsQueryVariables = Exact<{
   limit: Scalars['Int'];
@@ -351,7 +354,7 @@ export type GetProblemsQueryVariables = Exact<{
 }>;
 
 
-export type GetProblemsQuery = { __typename?: 'Query', getProblems: { __typename?: 'PaginatedProblems', hasMore: boolean, problems: Array<{ __typename?: 'Problem', id: string, title: string, grade: number, consensusGrade?: Maybe<number>, consensusRating?: Maybe<number>, creatorId: string, sendStatus?: Maybe<boolean>, createdAt: string, updatedAt: string, boardSlug: string, creator: { __typename?: 'User', id: string, name: string }, ascents: Array<{ __typename?: 'Ascent', grade: number, rating: number, userId: string }> }> } };
+export type GetProblemsQuery = { __typename?: 'Query', getProblems: { __typename?: 'PaginatedProblems', hasMore: boolean, problems: Array<{ __typename?: 'Problem', id: string, title: string, grade: number, angle: number, consensusGrade?: Maybe<number>, consensusRating?: Maybe<number>, creatorId: string, sendStatus?: Maybe<boolean>, createdAt: string, updatedAt: string, boardSlug: string, creator: { __typename?: 'User', id: string, name: string }, ascents: Array<{ __typename?: 'Ascent', grade: number, rating: number, userId: string }> }> } };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -380,6 +383,7 @@ export const ProblemSnippetFragmentDoc = gql`
   id
   title
   grade
+  angle
   consensusGrade
   consensusRating
   creatorId
@@ -788,6 +792,7 @@ export const GetProblemDocument = gql`
     sendStatus
     layoutUrl
     boardSlug
+    angle
     creator {
       id
       name

@@ -57,6 +57,7 @@ const CreateProblem = () => {
             coords={coords?.current}
             slug={slug}
             layoutUrl={data?.getBoard.currentLayout?.url}
+            angles={data?.getBoard.angles}
           />
         </div>
       </div>

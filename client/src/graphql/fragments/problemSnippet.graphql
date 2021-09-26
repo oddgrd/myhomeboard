@@ -2,6 +2,7 @@ fragment ProblemSnippet on Problem {
   id
   title
   grade
+  angle
   consensusGrade
   consensusRating
   creatorId
