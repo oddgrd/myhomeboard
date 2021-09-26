@@ -40,10 +40,6 @@ const Problem = () => {
     loadFromCoords(data.getProblem.coordinates);
   }, [data?.getProblem, initViewer, loadFromCoords]);
 
-  if (loading) {
-    null;
-  }
-
   if (error) {
     return <Layout>{error.message}</Layout>;
   }

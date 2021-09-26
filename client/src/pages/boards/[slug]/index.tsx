@@ -1,5 +1,8 @@
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { Layout } from '../../../components/Layout';
 import { ProblemItem } from '../../../components/ProblemItem';
+import { Spinner } from '../../../components/Spinner';
 import {
   useGetBoardQuery,
   useGetProblemsQuery,
@@ -7,8 +10,6 @@ import {
 } from '../../../generated/graphql';
 import styles from '../../../styles/Problems.module.scss';
 import withApollo from '../../../utils/withApollo';
-import { useRouter } from 'next/router';
-import Link from 'next/link';
 
 const Problems = () => {
   const router = useRouter();
@@ -22,7 +23,11 @@ const Problems = () => {
     },
     notifyOnNetworkStatusChange: true
   });
-  const { data: boardData, loading: boardLoading } = useGetBoardQuery({
+  const {
+    data: boardData,
+    loading: boardLoading,
+    error: boardError
+  } = useGetBoardQuery({
     variables: {
       slug
     }
@@ -30,11 +35,10 @@ const Problems = () => {
   const { data: meData } = useMeQuery();
 
   // -- Todo: clean this up
-  if (loading || boardLoading) {
-    return <Layout title='Problems'>{null}</Layout>;
-  }
-  if (!loading && !data) {
-    return <Layout title='Problems'>{error?.message}</Layout>;
+  if (error || boardError) {
+    return (
+      <Layout title='Problems'>{error?.message || boardError?.message}</Layout>
+    );
   }
 
   if (!boardLoading && !boardData?.getBoard) {
@@ -59,6 +63,7 @@ const Problems = () => {
       </Layout>
     );
   }
+
   return (
     <Layout title='Problems'>
       <div className={styles.problems}>
@@ -71,7 +76,7 @@ const Problems = () => {
         )}
         <div>
           {loading && !data ? (
-            <div></div>
+            <Spinner />
           ) : (
             data!.getProblems.problems.map((problem, idx) =>
               // Invalidating problem in cache makes it null
