@@ -71,7 +71,8 @@ export class ProblemResolver {
     @Ctx() { req }: Context
   ): Promise<Problem> {
     const creatorId = req.session.passport?.user;
-    const { title, rules, grade, coordinates, boardSlug, layoutUrl } = options;
+    const { title, rules, grade, coordinates, boardSlug, layoutUrl, angle } =
+      options;
     return Problem.create({
       title,
       rules,
@@ -79,7 +80,8 @@ export class ProblemResolver {
       coordinates,
       creatorId,
       boardSlug,
-      layoutUrl
+      layoutUrl,
+      angle
     }).save();
   }
 
@@ -90,12 +92,12 @@ export class ProblemResolver {
     @Arg('options') options: EditProblemInput,
     @Ctx() { req }: Context
   ): Promise<boolean> {
-    const { title, rules, grade, problemId } = options;
+    const { title, rules, grade, problemId, angle } = options;
 
     const result = await getConnection()
       .createQueryBuilder()
       .update(Problem)
-      .set({ title, rules, grade })
+      .set({ title, rules, grade, angle })
       .where('id = :id and "creatorId" = :creatorId', {
         id: problemId,
         creatorId: req.session.passport?.user

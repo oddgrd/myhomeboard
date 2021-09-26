@@ -32,16 +32,28 @@ const main = async () => {
     url: __prod__ ? process.env.DATABASE_URL : process.env.DATABASE_URL + 'dev',
     entities: [User, Problem, Layout, Ascent, Board],
     migrations: [path.join(__dirname, './migrations/*')],
-    logging: true,
-    synchronize: !__prod__
+    logging: true
+    // synchronize: !__prod__
   });
-  // await connection.runMigrations();
+  await connection.runMigrations();
   const app = express();
 
+  const devWhitelist = [
+    'https://studio.apollographql.com',
+    'http://localhost:3000'
+  ];
   app.set('trust proxy', 1);
   app.use(
     cors({
-      origin: __prod__ ? process.env.CORS_ORIGIN : 'http://localhost:3000',
+      origin: __prod__
+        ? process.env.CORS_ORIGIN
+        : function (origin, callback) {
+            if (!origin || devWhitelist.indexOf(origin) !== -1) {
+              callback(null, true);
+            } else {
+              callback(new Error('Not allowed by CORS'));
+            }
+          },
       credentials: true
     })
   );
@@ -122,7 +134,7 @@ const main = async () => {
       store: new RedisStore({ client: redis, disableTouch: true }),
       cookie: {
         secure: __prod__,
-        sameSite: __prod__ ? 'none' : 'lax',
+        sameSite: 'none',
         httpOnly: true,
         maxAge: 1000 * 60 * 60 * 24 * 365 * 10,
         domain: __prod__ ? '.myhomeboard.no' : undefined

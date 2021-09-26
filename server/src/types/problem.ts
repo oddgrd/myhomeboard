@@ -43,6 +43,9 @@ export class CreateProblemInput {
   @Field(() => Int)
   grade: number;
 
+  @Field(() => Int)
+  angle: number;
+
   @Field(() => [CoordinatesInput])
   coordinates: CoordinatesInput[];
 }
@@ -60,6 +63,9 @@ export class EditProblemInput {
 
   @Field(() => Int)
   grade: number;
+
+  @Field(() => Int)
+  angle: number;
 }
 
 @InputType()

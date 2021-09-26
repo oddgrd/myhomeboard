@@ -36,6 +36,10 @@ export class Problem extends BaseEntity {
   @Column()
   rules!: string;
 
+  @Field(() => Int)
+  @Column()
+  angle!: number;
+
   @Field(() => [Coordinates])
   @Column({ type: 'jsonb' })
   coordinates!: [Coordinates];
