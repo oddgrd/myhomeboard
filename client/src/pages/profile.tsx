@@ -5,7 +5,7 @@ interface Props {}
 
 const Profile = ({}: Props) => {
   return (
-    <Layout>
+    <Layout title="Profile">
       <h1>Profile</h1>
       <h3>Page under construction...</h3>
     </Layout>
