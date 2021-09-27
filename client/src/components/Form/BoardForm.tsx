@@ -40,7 +40,9 @@ export const BoardForm = ({}: Props) => {
           .required('Required'),
         adjustable: Yup.bool().required('Required'),
         angles: Yup.string()
-          .min(2, 'Must select at least one angle')
+        .trim()
+          .min(1, 'Must select at least one angle')
+          .matches(/^(\d+)(,\s*\d+)*$/, "Please enter a comma separated list of angles.")
           .required('Required')
       })}
       onSubmit={async (values: Values) => {
@@ -86,7 +88,7 @@ export const BoardForm = ({}: Props) => {
             <Inputfield
               name='angles'
               type='text'
-              label='Angles (as comma and space separated list)'
+              label='Angles (as comma separated list if several angles)'
               placeholder='10, 20, 30, 40'
             />
             <Textarea
