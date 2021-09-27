@@ -5,6 +5,7 @@ interface Props {
   label: string;
   name: string;
   placeholder?: string;
+  maxLength?: number;
 }
 
 export const Textarea = ({ label, ...props }: Props) => {

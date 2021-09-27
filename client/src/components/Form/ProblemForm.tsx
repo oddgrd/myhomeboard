@@ -1,11 +1,13 @@
 import { Form, Formik, FormikHelpers } from 'formik';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { FaRandom } from 'react-icons/fa';
 import * as Yup from 'yup';
 import {
   CoordinatesInput,
   useCreateProblemMutation
 } from '../../generated/graphql';
+import { useTitleGenerator } from '../../hooks/useTitleGenerator';
 import styles from '../../styles/ProblemForm.module.scss';
 import { grades } from '../../utils/selectOptions';
 import { Inputfield } from './Inputfield';
@@ -49,11 +51,11 @@ export const ProblemForm = ({ coords, slug, layoutUrl, angles }: Props) => {
       validationSchema={Yup.object({
         title: Yup.string()
           .min(2, 'Must be 2 characters or more')
-          .max(60, 'Must be shorter than 60 characters')
+          .max(31, 'Must be shorter than 31 characters')
           .required('Required'),
         rules: Yup.string()
           .min(2, 'Must be 2 characters or more')
-          .max(80, 'Must be shorter than 80 characters')
+          .max(60, 'Must be shorter than 60 characters')
           .required('Required'),
         grade: Yup.number().required('Required'),
         angle: Yup.number().required('Required')
@@ -83,17 +85,30 @@ export const ProblemForm = ({ coords, slug, layoutUrl, angles }: Props) => {
         }
       }}
     >
-      {({ values }) => (
+      {({ values, setFieldValue }) => (
         <div className={styles.form}>
           <Form>
             <h1 className='hide'>Create Problem</h1>
-            <Inputfield
-              name='title'
-              type='text'
-              label='Title'
-              placeholder='Problem title'
-            />
-            <Inputfield name='rules' type='text' label='Rules' />
+            <div className={styles.titleInput}>
+              <Inputfield
+                name='title'
+                type='text'
+                label='Title'
+                placeholder='Problem title'
+                maxLength={31}
+              />
+              <button
+                type='button'
+                className={styles.random}
+                onClick={(e) => {
+                  blur();
+                  setFieldValue('title', useTitleGenerator(2));
+                }}
+              >
+                <FaRandom />
+              </button>
+            </div>
+            <Inputfield name='rules' type='text' label='Rules' maxLength={60} />
             <div className={styles.selectContainer}>
               {angles.length > 1 ? (
                 <>

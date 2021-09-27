@@ -110,7 +110,12 @@ export const AscentForm = ({
                 label='Attempts *'
                 width={300}
               />
-              <Textarea name='comment' label='Comment' placeholder='Optional' />
+              <Textarea
+                name='comment'
+                label='Comment'
+                placeholder='Optional'
+                maxLength={80}
+              />
 
               <input
                 type='submit'

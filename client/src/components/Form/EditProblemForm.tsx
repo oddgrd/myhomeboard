@@ -55,11 +55,11 @@ export const EditProblemForm = ({
       validationSchema={Yup.object({
         title: Yup.string()
           .min(2, 'Must be 2 characters or more')
-          .max(60, 'Must be shorter than 60 characters')
+          .max(31, 'Must be shorter than 31 characters')
           .required('Required'),
         rules: Yup.string()
           .min(2, 'Must be 2 characters or more')
-          .max(80, 'Must be shorter than 80 characters')
+          .max(60, 'Must be shorter than 60 characters')
           .required('Required'),
         grade: Yup.number().required('Required'),
         angle: Yup.number().required('Required')
@@ -95,9 +95,15 @@ export const EditProblemForm = ({
                 name='title'
                 type='text'
                 label='Title'
+                maxLength={31}
                 placeholder='Problem title'
               />
-              <Inputfield name='rules' type='text' label='Rules' />
+              <Inputfield
+                name='rules'
+                type='text'
+                label='Rules'
+                maxLength={60}
+              />
               <div className={styles.selectContainer}>
                 {data?.getBoard && data.getBoard.angles.length > 1 ? (
                   <>

@@ -6,6 +6,7 @@ interface Props {
   name: string;
   type: string;
   placeholder?: string;
+  maxLength?: number;
 }
 
 export const Inputfield = ({ label, ...props }: Props) => {

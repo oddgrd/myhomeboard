@@ -32,7 +32,7 @@ export const BoardForm = ({}: Props) => {
       validationSchema={Yup.object({
         title: Yup.string()
           .min(2, 'Must be 2 characters or more')
-          .max(16, 'Must be shorter than 20 characters')
+          .max(18, 'Must be shorter than 19 characters')
           .required('Required'),
         description: Yup.string()
           .min(2, 'Must be 2 characters or more')
@@ -40,9 +40,12 @@ export const BoardForm = ({}: Props) => {
           .required('Required'),
         adjustable: Yup.bool().required('Required'),
         angles: Yup.string()
-        .trim()
+          .trim()
           .min(1, 'Must select at least one angle')
-          .matches(/^(\d+)(,\s*\d+)*$/, "Please enter a comma separated list of angles.")
+          .matches(
+            /^(\d+)(,\s*\d+)*$/,
+            'Please enter a comma separated list of angles.'
+          )
           .required('Required')
       })}
       onSubmit={async (values: Values) => {
@@ -78,12 +81,14 @@ export const BoardForm = ({}: Props) => {
               type='text'
               label='Title'
               placeholder='Board title'
+              maxLength={18}
             />
             <Inputfield
               name='location'
               type='text'
               label='Location'
               placeholder='Country, City (optional)'
+              maxLength={60}
             />
             <Inputfield
               name='angles'
@@ -95,6 +100,7 @@ export const BoardForm = ({}: Props) => {
               name='description'
               label='Description'
               placeholder='Brief description of your board'
+              maxLength={80}
             />
 
             <input
