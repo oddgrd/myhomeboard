@@ -37,11 +37,12 @@
   height: 42px;
   width: 42px;
   border-radius: 0;
+  transition: 0.2s ease-in-out;
 }
 
 /* On mouse-over, add a grey background color */
 .radioContainer:hover input ~ .radio {
-  box-shadow: inset 0px 0px 0px 2px #00ddff;
+  transform: scale(1.1);
 }
 
 /* When the radio button is checked, add a blue background */
@@ -68,7 +69,7 @@
   width: 14.5px;
   height: 14.5px;
   border-radius: 0;
-  background-color: var(--theme-background);
+  background-color: var(--theme-foreground);
 }
 
 @media (max-width: 700px) {
