@@ -32,8 +32,8 @@ const main = async () => {
     url: __prod__ ? process.env.DATABASE_URL : process.env.DATABASE_URL + 'dev',
     entities: [User, Problem, Layout, Ascent, Board],
     migrations: [path.join(__dirname, './migrations/*')],
-    logging: true
-    // synchronize: !__prod__
+    logging: true,
+    synchronize: false
   });
   await connection.runMigrations();
   const app = express();
