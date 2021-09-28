@@ -2,7 +2,6 @@ import styles from '../../styles/BoardForm.module.scss';
 import * as Yup from 'yup';
 import { Formik, Form } from 'formik';
 import { Textarea } from './Textarea';
-import slugify from 'slugify';
 import { useCreateBoardMutation } from '../../generated/graphql';
 import router from 'next/router';
 import { Inputfield } from './Inputfield';
