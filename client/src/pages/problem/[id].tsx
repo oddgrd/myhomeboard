@@ -1,3 +1,4 @@
+import { AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
@@ -9,14 +10,13 @@ import { AscentForm } from '../../components/Form/AscentForm';
 import { EditProblemForm } from '../../components/Form/EditProblemForm';
 import { Layout } from '../../components/Layout';
 import { Modal } from '../../components/Modal/Modal';
-import { AnimatePresence } from 'framer-motion';
 import { ProblemInfo } from '../../components/ProblemInfo';
+import { Spinner } from '../../components/Spinner';
 import { useGetProblemQuery, useMeQuery } from '../../generated/graphql';
 import { useCanvas } from '../../hooks/useCanvas';
 import styles from '../../styles/Problem.module.scss';
 import { grades } from '../../utils/selectOptions';
 import withApollo from '../../utils/withApollo';
-import { Spinner } from '../../components/Spinner';
 
 const Problem = () => {
   const [{ canvas }, { initViewer, loadFromCoords }] = useCanvas();
@@ -44,12 +44,14 @@ const Problem = () => {
   if (error) {
     return <Layout>{error.message}</Layout>;
   }
-  if (!data?.getProblem && loading) {
-    <Layout>
-      <Spinner />
-    </Layout>;
+  if (loading) {
+    return (
+      <Layout>
+        <Spinner />
+      </Layout>
+    );
   }
-  if (!data?.getProblem && !loading) {
+  if (!data?.getProblem) {
     return (
       <Layout>
         <p>Problem Not Found</p>
@@ -58,10 +60,6 @@ const Problem = () => {
         </Link>
       </Layout>
     );
-  }
-  // typescript complains if && !loading is included
-  if (!data?.getProblem) {
-    return null;
   }
 
   const {
