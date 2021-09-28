@@ -44,7 +44,7 @@ const Problem = () => {
   if (error) {
     return <Layout>{error.message}</Layout>;
   }
-  if (loading) {
+  if (loading && !data?.getProblem) {
     return (
       <Layout>
         <Spinner />
