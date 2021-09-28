@@ -6,7 +6,7 @@ import {
   Entity,
   ManyToOne,
   OneToMany,
-  PrimaryColumn,
+  PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm';
 import { Ascent } from './Ascent';
@@ -18,8 +18,8 @@ import { User } from './User';
 @Entity()
 export class Board extends BaseEntity {
   @Field()
-  @PrimaryColumn()
-  slug!: string;
+  @PrimaryGeneratedColumn('uuid')
+  id!: string;
 
   @Field()
   @Column({ unique: true })

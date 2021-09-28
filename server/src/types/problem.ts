@@ -29,7 +29,7 @@ export class CoordinatesInput {
 @InputType()
 export class CreateProblemInput {
   @Field()
-  boardSlug: string;
+  boardId: string;
 
   @Field()
   layoutUrl: string;
@@ -74,7 +74,7 @@ export class AddAscentInput {
   problemId!: string;
 
   @Field()
-  boardSlug!: string;
+  boardId!: string;
 
   @Field(() => Int)
   grade!: number;

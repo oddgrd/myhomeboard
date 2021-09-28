@@ -21,7 +21,7 @@ export class LayoutResolver {
   async createLayout(
     @Arg('file', () => GraphQLUpload) file: FileUpload,
     @Arg('title') title: string,
-    @Arg('boardSlug') boardSlug: string,
+    @Arg('boardId') boardId: string,
     @Arg('description') description: string,
     @Ctx() { req }: Context
   ): Promise<Layout> {
@@ -29,7 +29,7 @@ export class LayoutResolver {
     const result = await uploadImage(file);
     const layout = await Layout.create({
       title,
-      boardSlug,
+      boardId,
       description,
       creatorId,
       url: result.eager[0].secure_url

@@ -57,8 +57,8 @@ export class Problem extends BaseEntity {
   creator: User;
 
   @Field()
-  @Column()
-  boardSlug!: string;
+  @Column({ type: 'uuid' })
+  boardId!: string;
 
   @Field(() => Board)
   @ManyToOne(() => Board, (board) => board.problems)

@@ -48,8 +48,8 @@ export class Ascent extends BaseEntity {
   user: User;
 
   @Field()
-  @Column()
-  boardSlug: string;
+  @Column({ type: 'uuid' })
+  boardId!: string;
 
   @Field(() => Board)
   @ManyToOne(() => Board, (board) => board.ascents)

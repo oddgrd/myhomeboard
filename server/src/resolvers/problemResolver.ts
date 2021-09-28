@@ -71,7 +71,7 @@ export class ProblemResolver {
     @Ctx() { req }: Context
   ): Promise<Problem> {
     const creatorId = req.session.passport?.user;
-    const { title, rules, grade, coordinates, boardSlug, layoutUrl, angle } =
+    const { title, rules, grade, coordinates, boardId, layoutUrl, angle } =
       options;
     return Problem.create({
       title,
@@ -79,7 +79,7 @@ export class ProblemResolver {
       grade,
       coordinates,
       creatorId,
-      boardSlug,
+      boardId,
       layoutUrl,
       angle
     }).save();
@@ -147,7 +147,7 @@ export class ProblemResolver {
   // Get all problems with cursor pagination
   @Query(() => PaginatedProblems)
   async getProblems(
-    @Arg('boardSlug') boardSlug: string,
+    @Arg('boardId') boardId: string,
     @Arg('limit', () => Int!) limit: number,
     @Arg('cursor', () => String, { nullable: true }) cursor: string | null
   ): Promise<PaginatedProblems> {
@@ -158,7 +158,7 @@ export class ProblemResolver {
     const qb = getConnection()
       .createQueryBuilder(Problem, 'problem')
       .leftJoinAndSelect('problem.ascents', 'ascent')
-      .where('problem.boardSlug = :boardSlug', { boardSlug })
+      .where('problem.boardId = :boardId', { boardId })
       .orderBy('problem.createdAt', 'DESC');
 
     if (cursor) {
@@ -200,15 +200,15 @@ export class ProblemResolver {
     @Ctx() { req }: Context
   ): Promise<Boolean> {
     const userId = req.session.passport?.user;
-    const { rating, grade, attempts, comment, problemId, boardSlug } = options;
+    const { rating, grade, attempts, comment, problemId, boardId } = options;
 
     try {
       await getConnection().query(
         `
-          INSERT INTO ascent ("userId", "problemId", grade, attempts, rating, comment, "boardSlug")
+          INSERT INTO ascent ("userId", "problemId", grade, attempts, rating, comment, "boardId")
           VALUES ($1, $2, $3, $4, $5, $6, $7)
         `,
-        [userId, problemId, grade, attempts, rating, comment, boardSlug]
+        [userId, problemId, grade, attempts, rating, comment, boardId]
       );
     } catch (error) {
       // Catch duplicate ascent error (duplicate composite primary key)

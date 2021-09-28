@@ -39,8 +39,8 @@ export class Layout extends BaseEntity {
   creator: User;
 
   @Field()
-  @Column()
-  boardSlug!: string;
+  @Column({ type: 'uuid' })
+  boardId!: string;
 
   @ManyToOne(() => Board, (board) => board.layouts)
   board: Board;

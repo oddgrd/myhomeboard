@@ -6,9 +6,6 @@ export class BoardInput {
   title: string;
 
   @Field()
-  slug: string;
-
-  @Field()
   description: string;
 
   @Field()
@@ -19,4 +16,10 @@ export class BoardInput {
 
   @Field({ nullable: true })
   location: string;
+}
+
+@InputType()
+export class EditBoardInput extends BoardInput{
+  @Field()
+  boardId: string;
 }

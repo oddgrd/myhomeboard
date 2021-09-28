@@ -33,9 +33,9 @@ const main = async () => {
     entities: [User, Problem, Layout, Ascent, Board],
     migrations: [path.join(__dirname, './migrations/*')],
     logging: true,
-    synchronize: false
+    synchronize: !__prod__
   });
-  await connection.runMigrations();
+  // await connection.runMigrations();
   const app = express();
 
   const devWhitelist = [

@@ -11,7 +11,7 @@ import {
 import { isAuth } from '../middleware/isAuth';
 import { Context } from 'src/types/context';
 import { Board } from '../entities/Board';
-import { BoardInput } from '../types/board';
+import { BoardInput, EditBoardInput } from '../types/board';
 import { Layout } from '../entities/Layout';
 import { getConnection } from 'typeorm';
 
@@ -26,10 +26,9 @@ export class BoardResolver {
     @Ctx() { req }: Context
   ): Promise<Board> {
     const creatorId = req.session.passport?.user;
-    const { title, description, adjustable, angles, location, slug } = options;
+    const { title, description, adjustable, angles, location } = options;
     const board = await Board.create({
       title,
-      slug,
       description,
       adjustable,
       angles,
@@ -38,6 +37,31 @@ export class BoardResolver {
     }).save();
 
     return board;
+  }
+
+  // Edit Board
+  // PRIVATE
+  @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
+  async editBoard(
+    @Arg('options') options: EditBoardInput,
+    @Ctx() { req }: Context
+  ) {
+    const creatorId = req.session.passport?.user;
+    const { title, description, adjustable, angles, location, boardId } = options;
+
+    const result = await getConnection()
+      .createQueryBuilder()
+      .update(Board)
+      .set({ title, angles, adjustable, location, description })
+      .where('id = :id and "creatorId" = :creatorId', {
+        id: boardId,
+        creatorId
+      })
+      .execute();
+
+    if (result.affected === 0) return false;
+    return true;
   }
 
   // Get current layout
@@ -51,8 +75,8 @@ export class BoardResolver {
   // Get Board by ID
   // PUBLIC
   @Query(() => Board)
-  async getBoard(@Arg('slug') slug: string) {
-    return Board.findOne({ where: { slug }, relations: ['layouts'] });
+  async getBoard(@Arg('boardId') boardId: string) {
+    return Board.findOne({ where: { id: boardId }, relations: ['layouts'] });
   }
 
   // Get all Boards
@@ -66,7 +90,7 @@ export class BoardResolver {
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
   async deleteBoard(
-    @Arg('slug') slug: string,
+    @Arg('boardId') boardId: string,
     @Ctx() { req }: Context
   ): Promise<boolean> {
     try {
@@ -74,33 +98,33 @@ export class BoardResolver {
         await em.query(
           `
             DELETE FROM ascent
-            WHERE "boardSlug" = $1;
+            WHERE "boardId" = $1;
           `,
-          [slug]
+          [boardId]
         );
         await em.query(
           `
             DELETE FROM problem
-            WHERE "boardSlug" = $1;
+            WHERE "boardId" = $1;
           `,
-          [slug]
+          [boardId]
         );
         await em.query(
           `
             DELETE FROM layout
-            WHERE "boardSlug" = $1;
+            WHERE "boardId" = $1;
           `,
-          [slug]
+          [boardId]
         );
-        const board = await em.query(
+        const result = await em.query(
           `
             DELETE FROM board
-            WHERE slug = $1 AND "creatorId" = $2
+            WHERE id = $1 AND "creatorId" = $2
             RETURNING *;
           `,
-          [slug, req.session.passport?.user]
+          [boardId, req.session.passport?.user]
         );
-        if (board[1] === 0)
+        if (result[1] === 0)
           throw new Error('Problem not found or current user is not creator');
       });
     } catch (error) {
