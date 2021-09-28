@@ -15,8 +15,9 @@ export const Header = () => {
   const { data } = useMeQuery();
   const router = useRouter();
   const boardId = typeof router.query.id === 'string' ? router.query.id : '';
-  const { data: boardData, loading } = useGetBoardQuery({
-    variables: { boardId }
+  const { data: boardData } = useGetBoardQuery({
+    variables: { boardId },
+    skip: boardId.length === 0
   });
   let head = (
     <Link href='/'>

@@ -29,13 +29,13 @@ const main = async () => {
   const connection = await createConnection({
     applicationName: 'myhomeboard',
     type: 'postgres',
-    url: __prod__ ? process.env.DATABASE_URL : process.env.DATABASE_URL + 'dev',
+    url: process.env.DATABASE_URL,
     entities: [User, Problem, Layout, Ascent, Board],
     migrations: [path.join(__dirname, './migrations/*')],
     logging: true,
-    synchronize: !__prod__
+    synchronize: false
   });
-  // await connection.runMigrations();
+  await connection.runMigrations();
   const app = express();
 
   const devWhitelist = [
