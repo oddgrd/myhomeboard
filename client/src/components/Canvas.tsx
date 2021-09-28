@@ -19,7 +19,6 @@ export const Canvas = ({ canvasRef, layoutUrl }: Props) => {
 
       <Image
         className={styles.image}
-        layout='responsive'
         width={350}
         height={478}
         quality={90}
