@@ -5,11 +5,13 @@ import cloudinary, {
 import { FileUpload } from 'graphql-upload';
 
 const eagerOptions = {
-  width: 350,
-  height: 478,
-  crop: 'fill',
+  width: 'auto',
   dpr: 'auto',
-  quality: 100
+  responsive: 'true',
+  crop: 'fill',
+  quality: 100,
+  fetch_format: 'auto',
+  responsive_placeholder: 'blank'
 };
 export const uploadImage = async (
   file: FileUpload
