@@ -1,5 +1,5 @@
-query getBoard($slug: String!) {
-  getBoard(slug: $slug) {
+query getBoard($boardId: String!) {
+  getBoard(boardId: $boardId) {
     ...BoardCore
   }
 }

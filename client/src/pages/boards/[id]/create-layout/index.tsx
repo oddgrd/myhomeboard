@@ -8,12 +8,12 @@ import { useRouter } from 'next/router';
 const CreateLayout = () => {
   useIsAuth();
   const router = useRouter();
-  const slug = typeof router.query.slug === 'string' ? router.query.slug : '';
+  const boardId = typeof router.query.id === 'string' ? router.query.id : '';
 
   return (
     <Layout title='Create Layout'>
       <div className={styles.createProblem}>
-        <LayoutForm slug={slug} />
+        <LayoutForm boardId={boardId} />
       </div>
     </Layout>
   );

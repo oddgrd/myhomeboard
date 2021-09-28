@@ -14,13 +14,13 @@ import withApollo from '../../../../utils/withApollo';
 const CreateProblem = () => {
   useIsAuth();
   const router = useRouter();
-  const slug = typeof router.query.slug === 'string' ? router.query.slug : '';
+  const boardId = typeof router.query.id === 'string' ? router.query.id : '';
 
   const [{ canvas, coords }, { init, handleColor, undo }] = useCanvas();
   const toolbarProps = { handleColor, undo };
 
   const { data, loading } = useGetBoardQuery({
-    variables: { slug }
+    variables: { boardId }
   });
 
   useEffect(() => {
@@ -55,7 +55,7 @@ const CreateProblem = () => {
           </div>
           <ProblemForm
             coords={coords?.current}
-            slug={slug}
+            boardId={boardId}
             layoutUrl={data?.getBoard.currentLayout?.url}
             angles={data?.getBoard.angles}
           />

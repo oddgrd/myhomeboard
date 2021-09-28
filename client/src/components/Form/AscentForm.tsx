@@ -14,7 +14,7 @@ import {
 
 interface Props {
   id: string;
-  boardSlug?: string;
+  boardId?: string;
   onClose: () => void;
   mutation: 'ADD' | 'EDIT';
   editProps?: Values;
@@ -32,7 +32,7 @@ export const AscentForm = ({
   onClose,
   mutation,
   editProps,
-  boardSlug
+  boardId
 }: Props) => {
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -55,9 +55,9 @@ export const AscentForm = ({
         rating: Yup.number().required('Required')
       })}
       onSubmit={async (values: Values) => {
-        if (mutation === 'ADD' && boardSlug) {
+        if (mutation === 'ADD' && boardId) {
           const { errors } = await addAscent({
-            variables: { options: { ...values, boardSlug } },
+            variables: { options: { ...values, boardId } },
             update: (cache) => {
               cache.evict({ id: 'Problem:' + id });
             }

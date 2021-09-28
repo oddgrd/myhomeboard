@@ -8,14 +8,14 @@ interface Props {
 }
 
 export const BoardItem = ({ board }: Props) => {
-  const { title, angles, adjustable, currentLayout, location, slug } = board;
+  const { title, angles, adjustable, currentLayout, location, id } = board;
   const apolloClient = useApolloClient();
   const handleClick = () => {
     apolloClient.cache.evict({ fieldName: 'getProblems' });
   };
   return (
     <>
-      <Link href={`/boards/${slug}`}>
+      <Link href={`/boards/${id}`}>
         <a onClick={handleClick}>
           <div className={styles.boardItem}>
             <div className={styles.titleDiv}>

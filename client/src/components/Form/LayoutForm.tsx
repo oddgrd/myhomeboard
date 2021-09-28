@@ -5,9 +5,9 @@ import { useCreateLayoutMutation } from '../../generated/graphql';
 import styles from '../../styles/BoardForm.module.scss';
 
 interface Props {
-  slug: string;
+  boardId: string;
 }
-export const LayoutForm = ({ slug }: Props) => {
+export const LayoutForm = ({ boardId }: Props) => {
   const [createLayout, { error }] = useCreateLayoutMutation();
   const [layoutData, setLayoutData] = useState({
     title: '',
@@ -32,7 +32,7 @@ export const LayoutForm = ({ slug }: Props) => {
         title: layoutData.title,
         description: layoutData.description,
         file: layoutData.file,
-        boardSlug: slug
+        boardId
       },
       update: (cache) => {
         cache.evict({ fieldName: 'getBoards' });
@@ -40,7 +40,7 @@ export const LayoutForm = ({ slug }: Props) => {
       }
     });
     if (!errors) {
-      router.push('/boards');
+      router.push(`/boards/${boardId}`);
     }
   };
 

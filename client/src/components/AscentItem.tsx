@@ -18,7 +18,7 @@ interface Props {
     grade: number;
     rating: number;
     comment: string;
-    boardSlug: string;
+    boardId: string;
     createdAt: string;
     user: {
       __typename?: 'User' | undefined;
@@ -34,7 +34,6 @@ export const AscentItem = ({ ascent, problemId, currentUserId }: Props) => {
   const [showModal, setShowModal] = useState(false);
   const scrollIntoViewRef = useRef<HTMLDivElement>(null);
   const [showOptions, toggleShowOptions] = useState(false);
-  const [editAscent] = useEditAscentMutation();
 
   useEffect(() => {
     if (showOptions && scrollIntoViewRef.current) {
@@ -48,8 +47,7 @@ export const AscentItem = ({ ascent, problemId, currentUserId }: Props) => {
     attempts: attemptsCount,
     userId,
     comment,
-    createdAt,
-    boardSlug
+    createdAt
   } = ascent;
   const editProps = {
     grade,

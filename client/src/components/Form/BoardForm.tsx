@@ -10,7 +10,6 @@ import { Inputfield } from './Inputfield';
 interface Props {}
 interface Values {
   title: string;
-  slug: string;
   description: string;
   adjustable: boolean;
   angles: string;
@@ -23,7 +22,6 @@ export const BoardForm = ({}: Props) => {
     <Formik
       initialValues={{
         title: '',
-        slug: '',
         description: '',
         adjustable: false,
         angles: '',
@@ -53,7 +51,6 @@ export const BoardForm = ({}: Props) => {
           variables: {
             options: {
               ...values,
-              slug: slugify(values.title),
               angles: values.angles.split(', ').map(Number),
               adjustable: values.angles.length > 2
             }

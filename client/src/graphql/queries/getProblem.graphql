@@ -9,7 +9,7 @@ query GetProblem($id: String!) {
     creatorId
     sendStatus
     layoutUrl
-    boardSlug
+    boardId
     angle
     creator {
       id
@@ -22,7 +22,7 @@ query GetProblem($id: String!) {
       rating
       comment
       createdAt
-      boardSlug
+      boardId
       user {
         name
         avatar

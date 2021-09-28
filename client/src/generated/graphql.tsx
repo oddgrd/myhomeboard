@@ -18,7 +18,7 @@ export type Scalars = {
 
 export type AddAscentInput = {
   problemId: Scalars['String'];
-  boardSlug: Scalars['String'];
+  boardId: Scalars['String'];
   grade: Scalars['Int'];
   rating: Scalars['Int'];
   attempts: Scalars['Int'];
@@ -35,7 +35,7 @@ export type Ascent = {
   comment: Scalars['String'];
   problem: Problem;
   user: User;
-  boardSlug: Scalars['String'];
+  boardId: Scalars['String'];
   board: Board;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
@@ -43,7 +43,7 @@ export type Ascent = {
 
 export type Board = {
   __typename?: 'Board';
-  slug: Scalars['String'];
+  id: Scalars['String'];
   title: Scalars['String'];
   creatorId: Scalars['String'];
   description: Scalars['String'];
@@ -61,7 +61,6 @@ export type Board = {
 
 export type BoardInput = {
   title: Scalars['String'];
-  slug: Scalars['String'];
   description: Scalars['String'];
   adjustable: Scalars['Boolean'];
   angles: Array<Scalars['Int']>;
@@ -82,7 +81,7 @@ export type CoordinatesInput = {
 };
 
 export type CreateProblemInput = {
-  boardSlug: Scalars['String'];
+  boardId: Scalars['String'];
   layoutUrl: Scalars['String'];
   title: Scalars['String'];
   rules: Scalars['String'];
@@ -97,6 +96,15 @@ export type EditAscentInput = {
   rating: Scalars['Int'];
   attempts: Scalars['Int'];
   comment: Scalars['String'];
+};
+
+export type EditBoardInput = {
+  title: Scalars['String'];
+  description: Scalars['String'];
+  adjustable: Scalars['Boolean'];
+  angles: Array<Scalars['Int']>;
+  location?: Maybe<Scalars['String']>;
+  boardId: Scalars['String'];
 };
 
 export type EditProblemInput = {
@@ -115,7 +123,7 @@ export type Layout = {
   url: Scalars['String'];
   creatorId: Scalars['String'];
   creator: User;
-  boardSlug: Scalars['String'];
+  boardId: Scalars['String'];
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
 };
@@ -123,6 +131,7 @@ export type Layout = {
 export type Mutation = {
   __typename?: 'Mutation';
   createBoard: Board;
+  editBoard: Scalars['Boolean'];
   deleteBoard: Scalars['Boolean'];
   createLayout: Layout;
   createProblem: Problem;
@@ -140,14 +149,19 @@ export type MutationCreateBoardArgs = {
 };
 
 
+export type MutationEditBoardArgs = {
+  options: EditBoardInput;
+};
+
+
 export type MutationDeleteBoardArgs = {
-  slug: Scalars['String'];
+  boardId: Scalars['String'];
 };
 
 
 export type MutationCreateLayoutArgs = {
   description: Scalars['String'];
-  boardSlug: Scalars['String'];
+  boardId: Scalars['String'];
   title: Scalars['String'];
   file: Scalars['Upload'];
 };
@@ -199,7 +213,7 @@ export type Problem = {
   grade: Scalars['Int'];
   rating?: Maybe<Scalars['Int']>;
   creator: User;
-  boardSlug: Scalars['String'];
+  boardId: Scalars['String'];
   board: Board;
   ascents: Array<Ascent>;
   layoutUrl: Scalars['String'];
@@ -226,14 +240,14 @@ export type Query = {
 
 
 export type QueryGetBoardArgs = {
-  slug: Scalars['String'];
+  boardId: Scalars['String'];
 };
 
 
 export type QueryGetProblemsArgs = {
   cursor?: Maybe<Scalars['String']>;
   limit: Scalars['Int'];
-  boardSlug: Scalars['String'];
+  boardId: Scalars['String'];
 };
 
 
@@ -260,9 +274,9 @@ export type User = {
   updatedAt: Scalars['String'];
 };
 
-export type BoardCoreFragment = { __typename?: 'Board', slug: string, creatorId: string, title: string, description: string, adjustable: boolean, angles: Array<number>, location?: Maybe<string>, currentLayout?: Maybe<{ __typename?: 'Layout', id: string, title: string, url: string, createdAt: string }> };
+export type BoardCoreFragment = { __typename?: 'Board', id: string, creatorId: string, title: string, description: string, adjustable: boolean, angles: Array<number>, location?: Maybe<string>, currentLayout?: Maybe<{ __typename?: 'Layout', id: string, title: string, url: string, createdAt: string }> };
 
-export type ProblemSnippetFragment = { __typename?: 'Problem', id: string, title: string, grade: number, angle: number, consensusGrade?: Maybe<number>, consensusRating?: Maybe<number>, creatorId: string, sendStatus?: Maybe<boolean>, createdAt: string, updatedAt: string, boardSlug: string, creator: { __typename?: 'User', id: string, name: string }, ascents: Array<{ __typename?: 'Ascent', grade: number, rating: number, userId: string }> };
+export type ProblemSnippetFragment = { __typename?: 'Problem', id: string, title: string, grade: number, angle: number, consensusGrade?: Maybe<number>, consensusRating?: Maybe<number>, creatorId: string, sendStatus?: Maybe<boolean>, createdAt: string, updatedAt: string, boardId: string, creator: { __typename?: 'User', id: string, name: string }, ascents: Array<{ __typename?: 'Ascent', grade: number, rating: number, userId: string }> };
 
 export type AddAscentMutationVariables = Exact<{
   options: AddAscentInput;
@@ -276,17 +290,17 @@ export type CreateBoardMutationVariables = Exact<{
 }>;
 
 
-export type CreateBoardMutation = { __typename?: 'Mutation', createBoard: { __typename?: 'Board', slug: string, creatorId: string, title: string, description: string, adjustable: boolean, angles: Array<number>, location?: Maybe<string>, currentLayout?: Maybe<{ __typename?: 'Layout', id: string, title: string, url: string, createdAt: string }> } };
+export type CreateBoardMutation = { __typename?: 'Mutation', createBoard: { __typename?: 'Board', id: string, creatorId: string, title: string, description: string, adjustable: boolean, angles: Array<number>, location?: Maybe<string>, currentLayout?: Maybe<{ __typename?: 'Layout', id: string, title: string, url: string, createdAt: string }> } };
 
 export type CreateLayoutMutationVariables = Exact<{
   file: Scalars['Upload'];
   title: Scalars['String'];
   description: Scalars['String'];
-  boardSlug: Scalars['String'];
+  boardId: Scalars['String'];
 }>;
 
 
-export type CreateLayoutMutation = { __typename?: 'Mutation', createLayout: { __typename?: 'Layout', boardSlug: string, title: string, description: string, url: string, creatorId: string } };
+export type CreateLayoutMutation = { __typename?: 'Mutation', createLayout: { __typename?: 'Layout', boardId: string, title: string, description: string, url: string, creatorId: string } };
 
 export type CreateProblemMutationVariables = Exact<{
   options: CreateProblemInput;
@@ -301,6 +315,13 @@ export type DeleteAscentMutationVariables = Exact<{
 
 
 export type DeleteAscentMutation = { __typename?: 'Mutation', deleteAscent: boolean };
+
+export type DeleteBoardMutationVariables = Exact<{
+  boardId: Scalars['String'];
+}>;
+
+
+export type DeleteBoardMutation = { __typename?: 'Mutation', deleteBoard: boolean };
 
 export type DeleteProblemMutationVariables = Exact<{
   id: Scalars['String'];
@@ -329,32 +350,32 @@ export type EditProblemMutationVariables = Exact<{
 export type EditProblemMutation = { __typename?: 'Mutation', editProblem: boolean };
 
 export type GetBoardQueryVariables = Exact<{
-  slug: Scalars['String'];
+  boardId: Scalars['String'];
 }>;
 
 
-export type GetBoardQuery = { __typename?: 'Query', getBoard: { __typename?: 'Board', slug: string, creatorId: string, title: string, description: string, adjustable: boolean, angles: Array<number>, location?: Maybe<string>, currentLayout?: Maybe<{ __typename?: 'Layout', id: string, title: string, url: string, createdAt: string }> } };
+export type GetBoardQuery = { __typename?: 'Query', getBoard: { __typename?: 'Board', id: string, creatorId: string, title: string, description: string, adjustable: boolean, angles: Array<number>, location?: Maybe<string>, currentLayout?: Maybe<{ __typename?: 'Layout', id: string, title: string, url: string, createdAt: string }> } };
 
 export type GetBoardsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetBoardsQuery = { __typename?: 'Query', getBoards: Array<{ __typename?: 'Board', slug: string, creatorId: string, title: string, description: string, adjustable: boolean, angles: Array<number>, location?: Maybe<string>, currentLayout?: Maybe<{ __typename?: 'Layout', id: string, title: string, url: string, createdAt: string }> }> };
+export type GetBoardsQuery = { __typename?: 'Query', getBoards: Array<{ __typename?: 'Board', id: string, creatorId: string, title: string, description: string, adjustable: boolean, angles: Array<number>, location?: Maybe<string>, currentLayout?: Maybe<{ __typename?: 'Layout', id: string, title: string, url: string, createdAt: string }> }> };
 
 export type GetProblemQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type GetProblemQuery = { __typename?: 'Query', getProblem?: Maybe<{ __typename?: 'Problem', id: string, title: string, grade: number, consensusGrade?: Maybe<number>, consensusRating?: Maybe<number>, rules: string, creatorId: string, sendStatus?: Maybe<boolean>, layoutUrl: string, boardSlug: string, angle: number, createdAt: string, updatedAt: string, creator: { __typename?: 'User', id: string, name: string }, ascents: Array<{ __typename?: 'Ascent', userId: string, attempts: number, grade: number, rating: number, comment: string, createdAt: string, boardSlug: string, user: { __typename?: 'User', name: string, avatar?: Maybe<string> } }>, coordinates: Array<{ __typename?: 'Coordinates', x: number, y: number, color: string }> }> };
+export type GetProblemQuery = { __typename?: 'Query', getProblem?: Maybe<{ __typename?: 'Problem', id: string, title: string, grade: number, consensusGrade?: Maybe<number>, consensusRating?: Maybe<number>, rules: string, creatorId: string, sendStatus?: Maybe<boolean>, layoutUrl: string, boardId: string, angle: number, createdAt: string, updatedAt: string, creator: { __typename?: 'User', id: string, name: string }, ascents: Array<{ __typename?: 'Ascent', userId: string, attempts: number, grade: number, rating: number, comment: string, createdAt: string, boardId: string, user: { __typename?: 'User', name: string, avatar?: Maybe<string> } }>, coordinates: Array<{ __typename?: 'Coordinates', x: number, y: number, color: string }> }> };
 
 export type GetProblemsQueryVariables = Exact<{
   limit: Scalars['Int'];
   cursor?: Maybe<Scalars['String']>;
-  boardSlug: Scalars['String'];
+  boardId: Scalars['String'];
 }>;
 
 
-export type GetProblemsQuery = { __typename?: 'Query', getProblems: { __typename?: 'PaginatedProblems', hasMore: boolean, problems: Array<{ __typename?: 'Problem', id: string, title: string, grade: number, angle: number, consensusGrade?: Maybe<number>, consensusRating?: Maybe<number>, creatorId: string, sendStatus?: Maybe<boolean>, createdAt: string, updatedAt: string, boardSlug: string, creator: { __typename?: 'User', id: string, name: string }, ascents: Array<{ __typename?: 'Ascent', grade: number, rating: number, userId: string }> }> } };
+export type GetProblemsQuery = { __typename?: 'Query', getProblems: { __typename?: 'PaginatedProblems', hasMore: boolean, problems: Array<{ __typename?: 'Problem', id: string, title: string, grade: number, angle: number, consensusGrade?: Maybe<number>, consensusRating?: Maybe<number>, creatorId: string, sendStatus?: Maybe<boolean>, createdAt: string, updatedAt: string, boardId: string, creator: { __typename?: 'User', id: string, name: string }, ascents: Array<{ __typename?: 'Ascent', grade: number, rating: number, userId: string }> }> } };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -363,7 +384,7 @@ export type MeQuery = { __typename?: 'Query', me?: Maybe<{ __typename?: 'User', 
 
 export const BoardCoreFragmentDoc = gql`
     fragment BoardCore on Board {
-  slug
+  id
   creatorId
   title
   description
@@ -390,7 +411,7 @@ export const ProblemSnippetFragmentDoc = gql`
   sendStatus
   createdAt
   updatedAt
-  boardSlug
+  boardId
   creator {
     id
     name
@@ -467,14 +488,14 @@ export type CreateBoardMutationHookResult = ReturnType<typeof useCreateBoardMuta
 export type CreateBoardMutationResult = Apollo.MutationResult<CreateBoardMutation>;
 export type CreateBoardMutationOptions = Apollo.BaseMutationOptions<CreateBoardMutation, CreateBoardMutationVariables>;
 export const CreateLayoutDocument = gql`
-    mutation CreateLayout($file: Upload!, $title: String!, $description: String!, $boardSlug: String!) {
+    mutation CreateLayout($file: Upload!, $title: String!, $description: String!, $boardId: String!) {
   createLayout(
     file: $file
     title: $title
     description: $description
-    boardSlug: $boardSlug
+    boardId: $boardId
   ) {
-    boardSlug
+    boardId
     title
     description
     url
@@ -500,7 +521,7 @@ export type CreateLayoutMutationFn = Apollo.MutationFunction<CreateLayoutMutatio
  *      file: // value for 'file'
  *      title: // value for 'title'
  *      description: // value for 'description'
- *      boardSlug: // value for 'boardSlug'
+ *      boardId: // value for 'boardId'
  *   },
  * });
  */
@@ -587,6 +608,37 @@ export function useDeleteAscentMutation(baseOptions?: Apollo.MutationHookOptions
 export type DeleteAscentMutationHookResult = ReturnType<typeof useDeleteAscentMutation>;
 export type DeleteAscentMutationResult = Apollo.MutationResult<DeleteAscentMutation>;
 export type DeleteAscentMutationOptions = Apollo.BaseMutationOptions<DeleteAscentMutation, DeleteAscentMutationVariables>;
+export const DeleteBoardDocument = gql`
+    mutation DeleteBoard($boardId: String!) {
+  deleteBoard(boardId: $boardId)
+}
+    `;
+export type DeleteBoardMutationFn = Apollo.MutationFunction<DeleteBoardMutation, DeleteBoardMutationVariables>;
+
+/**
+ * __useDeleteBoardMutation__
+ *
+ * To run a mutation, you first call `useDeleteBoardMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteBoardMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteBoardMutation, { data, loading, error }] = useDeleteBoardMutation({
+ *   variables: {
+ *      boardId: // value for 'boardId'
+ *   },
+ * });
+ */
+export function useDeleteBoardMutation(baseOptions?: Apollo.MutationHookOptions<DeleteBoardMutation, DeleteBoardMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteBoardMutation, DeleteBoardMutationVariables>(DeleteBoardDocument, options);
+      }
+export type DeleteBoardMutationHookResult = ReturnType<typeof useDeleteBoardMutation>;
+export type DeleteBoardMutationResult = Apollo.MutationResult<DeleteBoardMutation>;
+export type DeleteBoardMutationOptions = Apollo.BaseMutationOptions<DeleteBoardMutation, DeleteBoardMutationVariables>;
 export const DeleteProblemDocument = gql`
     mutation DeleteProblem($id: String!) {
   deleteProblem(id: $id)
@@ -711,8 +763,8 @@ export type EditProblemMutationHookResult = ReturnType<typeof useEditProblemMuta
 export type EditProblemMutationResult = Apollo.MutationResult<EditProblemMutation>;
 export type EditProblemMutationOptions = Apollo.BaseMutationOptions<EditProblemMutation, EditProblemMutationVariables>;
 export const GetBoardDocument = gql`
-    query getBoard($slug: String!) {
-  getBoard(slug: $slug) {
+    query getBoard($boardId: String!) {
+  getBoard(boardId: $boardId) {
     ...BoardCore
   }
 }
@@ -730,7 +782,7 @@ export const GetBoardDocument = gql`
  * @example
  * const { data, loading, error } = useGetBoardQuery({
  *   variables: {
- *      slug: // value for 'slug'
+ *      boardId: // value for 'boardId'
  *   },
  * });
  */
@@ -791,7 +843,7 @@ export const GetProblemDocument = gql`
     creatorId
     sendStatus
     layoutUrl
-    boardSlug
+    boardId
     angle
     creator {
       id
@@ -804,7 +856,7 @@ export const GetProblemDocument = gql`
       rating
       comment
       createdAt
-      boardSlug
+      boardId
       user {
         name
         avatar
@@ -849,8 +901,8 @@ export type GetProblemQueryHookResult = ReturnType<typeof useGetProblemQuery>;
 export type GetProblemLazyQueryHookResult = ReturnType<typeof useGetProblemLazyQuery>;
 export type GetProblemQueryResult = Apollo.QueryResult<GetProblemQuery, GetProblemQueryVariables>;
 export const GetProblemsDocument = gql`
-    query GetProblems($limit: Int!, $cursor: String, $boardSlug: String!) {
-  getProblems(limit: $limit, cursor: $cursor, boardSlug: $boardSlug) {
+    query GetProblems($limit: Int!, $cursor: String, $boardId: String!) {
+  getProblems(limit: $limit, cursor: $cursor, boardId: $boardId) {
     hasMore
     problems {
       ...ProblemSnippet
@@ -873,7 +925,7 @@ export const GetProblemsDocument = gql`
  *   variables: {
  *      limit: // value for 'limit'
  *      cursor: // value for 'cursor'
- *      boardSlug: // value for 'boardSlug'
+ *      boardId: // value for 'boardId'
  *   },
  * });
  */

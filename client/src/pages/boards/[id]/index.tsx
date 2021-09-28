@@ -13,13 +13,13 @@ import withApollo from '../../../utils/withApollo';
 
 const Problems = () => {
   const router = useRouter();
-  const slug = typeof router.query.slug === 'string' ? router.query.slug : '';
+  const boardId = typeof router.query.id === 'string' ? router.query.id : '';
 
   const { data, loading, error, fetchMore, variables } = useGetProblemsQuery({
     variables: {
       limit: 20,
       cursor: null,
-      boardSlug: slug as string
+      boardId
     },
     notifyOnNetworkStatusChange: true
   });
@@ -29,7 +29,7 @@ const Problems = () => {
     error: boardError
   } = useGetBoardQuery({
     variables: {
-      slug
+      boardId
     }
   });
   const { data: meData } = useMeQuery();
@@ -56,7 +56,7 @@ const Problems = () => {
       <Layout title='Problems'>
         <p>
           No layouts found,{' '}
-          <Link href={`/boards/${slug}/create-layout`}>
+          <Link href={`/boards/${boardId}/create-layout`}>
             <a className={styles.back}>create one!</a>
           </Link>
         </p>
@@ -69,7 +69,7 @@ const Problems = () => {
       <div className={styles.problems}>
         {meData?.me && data?.getProblems.problems.length === 0 && (
           <div className={styles.createProblem}>
-            <Link href={`/boards/${slug}/create-problem`}>
+            <Link href={`/boards/${boardId}/create-problem`}>
               <a className='btn'>Create First Problem</a>
             </Link>
           </div>
@@ -93,7 +93,7 @@ const Problems = () => {
             onClick={() => {
               fetchMore({
                 variables: {
-                  boardSlug: slug as string,
+                  boardId,
                   limit: variables?.limit,
                   cursor:
                     data.getProblems.problems[

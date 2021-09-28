@@ -15,7 +15,7 @@ import { SelectField } from './SelectField';
 
 interface Props {
   coords?: CoordinatesInput[];
-  slug: string;
+  boardId: string;
   layoutUrl: string | undefined;
   angles: number[];
 }
@@ -23,13 +23,13 @@ interface Values {
   title: string;
   rules: string;
   grade: number;
-  boardSlug: string;
+  boardId: string;
   layoutUrl: string;
   coordinates: CoordinatesInput[];
   angle: number;
 }
 
-export const ProblemForm = ({ coords, slug, layoutUrl, angles }: Props) => {
+export const ProblemForm = ({ coords, boardId, layoutUrl, angles }: Props) => {
   const [validCoords, setValidCoords] = useState(true);
   const [createProblem] = useCreateProblemMutation();
   const router = useRouter();
@@ -42,7 +42,7 @@ export const ProblemForm = ({ coords, slug, layoutUrl, angles }: Props) => {
         {
           title: '',
           rules: 'Feet follow hands',
-          boardSlug: slug,
+          boardId,
           layoutUrl,
           coordinates: coords,
           angle: angles[0]
@@ -81,7 +81,7 @@ export const ProblemForm = ({ coords, slug, layoutUrl, angles }: Props) => {
           console.log(errors);
         }
         if (!errors) {
-          router.push(`/boards/${slug}`);
+          router.push(`/boards/${boardId}`);
         }
       }}
     >

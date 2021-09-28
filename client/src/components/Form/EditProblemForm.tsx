@@ -18,7 +18,7 @@ interface Props {
   rules: string;
   grade: number;
   angle: number;
-  boardSlug: string;
+  boardId: string;
   onClose: () => void;
 }
 interface Values {
@@ -34,13 +34,13 @@ export const EditProblemForm = ({
   rules,
   grade,
   angle,
-  boardSlug,
+  boardId,
   onClose
 }: Props) => {
   const [success, setSuccess] = useState(false);
   const [editProblem] = useEditProblemMutation();
   const { data } = useGetBoardQuery({
-    variables: { slug: boardSlug }
+    variables: { boardId }
   });
   return (
     <Formik

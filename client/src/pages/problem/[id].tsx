@@ -71,7 +71,7 @@ const Problem = () => {
     sendStatus,
     createdAt,
     layoutUrl,
-    boardSlug,
+    boardId,
     angle
   } = data.getProblem;
 
@@ -90,7 +90,7 @@ const Problem = () => {
     title,
     id,
     angle,
-    boardSlug
+    boardId
   };
 
   return (
@@ -118,7 +118,7 @@ const Problem = () => {
             <div className={styles.buttons}>
               {creator.id === meData?.me?.id ? (
                 <>
-                  <DeleteProblemButton id={problemId} slug={boardSlug} />
+                  <DeleteProblemButton id={problemId} boardId={boardId} />
                   <button
                     className='btn'
                     onClick={() => setShowEditProblemModal(true)}
@@ -161,7 +161,7 @@ const Problem = () => {
             <Modal handleClose={() => setShowAscentModal(false)}>
               <AscentForm
                 id={id}
-                boardSlug={boardSlug}
+                boardId={boardId}
                 onClose={() => setShowAscentModal(false)}
                 mutation={'ADD'}
               />

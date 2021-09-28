@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { FaBars, FaLongArrowAltLeft, FaPlusSquare } from 'react-icons/fa';
 import logo from '../../public/Logo-klatreapp.svg';
-import { useMeQuery } from '../generated/graphql';
+import { useGetBoardQuery, useMeQuery } from '../generated/graphql';
 import styles from '../styles/Header.module.scss';
 import { DropdownMenu } from './DropdownMenu';
 import { Modal } from './Modal/Modal';
@@ -14,8 +14,10 @@ export const Header = () => {
   const [menuModal, toggleMenuModal] = useState(false);
   const { data } = useMeQuery();
   const router = useRouter();
-  const slug = typeof router.query.slug === 'string' ? router.query.slug : '';
-
+  const boardId = typeof router.query.id === 'string' ? router.query.id : '';
+  const { data: boardData, loading } = useGetBoardQuery({
+    variables: { boardId }
+  });
   let head = (
     <Link href='/'>
       <a className={styles.logo}>
@@ -27,7 +29,7 @@ export const Header = () => {
   let dynamicNav = null;
   if (
     router.pathname === '/problem/[id]' ||
-    router.pathname === '/boards/[slug]/create-problem'
+    router.pathname === '/boards/[id]/create-problem'
   ) {
     head = (
       <button
@@ -39,17 +41,17 @@ export const Header = () => {
         <FaLongArrowAltLeft size={62} />
       </button>
     );
-  } else if (router.pathname === '/boards/[slug]') {
+  } else if (router.pathname === '/boards/[id]') {
     head = (
       <Link href='/boards'>
         <a className={styles.logo}>
-          <strong>{slug.replace('-', ' ')}</strong>
+          <strong>{boardData?.getBoard.title}</strong>
         </a>
       </Link>
     );
     dynamicNav = (
       <li>
-        <Link href={`/boards/${slug}/create-problem`}>
+        <Link href={`/boards/${boardId}/create-problem`}>
           <a className='btn btn-link btn-icon'>
             <FaPlusSquare size={28} />
           </a>

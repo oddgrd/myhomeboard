@@ -2,15 +2,15 @@ mutation CreateLayout(
   $file: Upload!
   $title: String!
   $description: String!
-  $boardSlug: String!
+  $boardId: String!
 ) {
   createLayout(
     file: $file
     title: $title
     description: $description
-    boardSlug: $boardSlug
+    boardId: $boardId
   ) {
-    boardSlug
+    boardId
     title
     description
     url

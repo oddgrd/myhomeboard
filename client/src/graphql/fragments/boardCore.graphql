@@ -1,5 +1,5 @@
 fragment BoardCore on Board {
-  slug
+  id
   creatorId
   title
   description
