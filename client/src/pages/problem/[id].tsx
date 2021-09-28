@@ -16,6 +16,7 @@ import { useCanvas } from '../../hooks/useCanvas';
 import styles from '../../styles/Problem.module.scss';
 import { grades } from '../../utils/selectOptions';
 import withApollo from '../../utils/withApollo';
+import { Spinner } from '../../components/Spinner';
 
 const Problem = () => {
   const [{ canvas }, { initViewer, loadFromCoords }] = useCanvas();
@@ -43,7 +44,11 @@ const Problem = () => {
   if (error) {
     return <Layout>{error.message}</Layout>;
   }
-
+  if (!data?.getProblem && loading) {
+    <Layout>
+      <Spinner />
+    </Layout>;
+  }
   if (!data?.getProblem && !loading) {
     return (
       <Layout>
