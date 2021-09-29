@@ -11,6 +11,7 @@ import { Context } from 'src/types/context';
 import { uploadImage } from '../utils/uploadImage';
 import { Layout } from '../entities/Layout';
 import { FileUpload, GraphQLUpload } from 'graphql-upload';
+import { getConnection } from 'typeorm';
 
 @Resolver(Layout)
 export class LayoutResolver {
@@ -37,10 +38,49 @@ export class LayoutResolver {
     return layout;
   }
 
-  // Get all Layouts
+  // Delete layout
+  // PRIVATE
+  @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
+  async deleteLayout(
+    @Arg('layoutId') layoutId: string,
+    @Arg('layoutUrl') layoutUrl: string,
+    @Ctx() { req }: Context
+  ): Promise<boolean> {
+    try {
+      await getConnection().transaction(async (em) => {
+        await em.query(
+          `
+            DELETE FROM problem
+            WHERE "layoutUrl" = $1;
+          `,
+          [layoutUrl]
+        );
+        const result = await em.query(
+          `
+            DELETE FROM layout
+            WHERE id = $1 AND "creatorId" = $2
+            RETURNING *;
+          `,
+          [layoutId, req.session.passport?.user]
+        );
+
+        if (result[1] === 0)
+          throw new Error('Layout not found or current user is not creator');
+      });
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+
+    return true;
+  }
+  // Get all layouts by boardId
   // PUBLIC
   @Query(() => [Layout])
-  async getLayouts() {
-    return Layout.find();
+  async getBoardLayouts(
+    @Arg("boardId") boardId: string
+  ) {
+    return Layout.find({where: {boardId}});
   }
 }

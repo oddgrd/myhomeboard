@@ -115,31 +115,18 @@ export class ProblemResolver {
     @Arg('id') id: string,
     @Ctx() { req }: Context
   ): Promise<boolean> {
-    // Delete the problem's ascents before deleting problem
-    try {
-      await getConnection().transaction(async (em) => {
-        await em.query(
-          `
-            DELETE FROM ascent
-            WHERE "problemId" = $1;
-          `,
-          [id]
-        );
-        const problem = await em.query(
-          `
-            DELETE FROM problem
-            WHERE id = $1 AND "creatorId" = $2
-            RETURNING *;
-          `,
-          [id, req.session.passport?.user]
-        );
-        if (problem[1] === 0)
-          throw new Error('Problem not found or current user is not creator');
-      });
-    } catch (error) {
-      console.log(error);
-      return false;
-    }
+    const creatorId = req.session.passport?.user;
+    const result = await getConnection()
+      .createQueryBuilder()
+      .delete()
+      .from(Problem)
+      .where('"creatorId" = :creatorId', { creatorId })
+      .andWhere('id = :id', {
+        id
+      })
+      .execute();
+
+    if (result.affected === 0) return false;
 
     return true;
   }

@@ -87,6 +87,7 @@ export class BoardResolver {
   }
 
   // Delete board
+  // PRIVATE
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
   async deleteBoard(

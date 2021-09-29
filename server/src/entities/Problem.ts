@@ -65,7 +65,7 @@ export class Problem extends BaseEntity {
   board: Board;
 
   @Field(() => [Ascent])
-  @OneToMany(() => Ascent, (ascent) => ascent.problem)
+  @OneToMany(() => Ascent, (ascent) => ascent.problem, {onDelete: "CASCADE"})
   ascents: Ascent[];
 
   @Field()

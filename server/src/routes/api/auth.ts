@@ -4,7 +4,7 @@ import { __prod__ } from '../../constants';
 
 const router = express.Router();
 const redirectUrl = __prod__
-  ? 'https://myhomeboard.no/'
+  ? 'https://myhomeboard.no'
   : 'http://localhost:3000';
 
 // @route    GET api/auth/google
@@ -25,13 +25,13 @@ router.get(
   '/google/callback',
   passport.authenticate('google', {
     successRedirect: redirectUrl,
-    failureRedirect: redirectUrl
+    failureRedirect: redirectUrl + "/login"
   })
 );
 
 // @route    GET api/auth/logout
 // @desc     Log out
-// @access   Public
+// @access   Private
 router.get('/logout', (req, res) => {
   req.logout();
   res.redirect(redirectUrl);
