@@ -1,0 +1,3 @@
+mutation EditBoard($options: EditBoardInput!) {
+    editBoard(options: $options)
+}

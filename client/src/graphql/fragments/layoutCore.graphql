@@ -1,0 +1,9 @@
+fragment LayoutCore on Layout {
+    id
+    title
+    description
+    url
+    creatorId
+    boardId
+    createdAt
+}

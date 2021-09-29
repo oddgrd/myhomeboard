@@ -1,0 +1,3 @@
+mutation DeleteLayout($layoutId: String!, $layoutUrl: String!) {
+    deleteLayout(layoutId: $layoutId, layoutUrl: $layoutUrl)
+}
