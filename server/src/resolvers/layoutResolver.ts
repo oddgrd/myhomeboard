@@ -81,6 +81,6 @@ export class LayoutResolver {
   async getBoardLayouts(
     @Arg("boardId") boardId: string
   ) {
-    return Layout.find({where: {boardId}});
+    return Layout.find({where: {boardId}, order: {createdAt: "DESC"}});
   }
 }
