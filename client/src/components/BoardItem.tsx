@@ -8,35 +8,40 @@ interface Props {
   currentUser?: string;
 }
 
-export const BoardItem = ({ board }: Props) => {
-  const { title, angles, adjustable, currentLayout, location, id, creatorId } = board;
+export const BoardItem = ({ board, currentUser }: Props) => {
+  const { title, angles, adjustable, currentLayout, location, id, creatorId } =
+    board;
   const apolloClient = useApolloClient();
   const handleClick = () => {
     apolloClient.cache.evict({ fieldName: 'getProblems' });
   };
+
   return (
     <div className={styles.boardItem}>
-          <div className={styles.content}>
       <Link href={`/boards/${id}`}>
-        <a onClick={handleClick}>
-            <div className={styles.titleDiv}>
-              <p className={styles.title}>{title}</p>
-              <p>{currentLayout?.title}</p>
-              {location && <p>{location}</p>}
-            </div>
-             </a>
-      </Link>
-            <div className={styles.gradeAndRating}>
-              {adjustable ? (
-                <p>{angles[0] + '° - ' + angles[angles.length - 1] + '°'}</p>
-              ) : (
-                <p>{angles[0]}°</p>
-              )}
-            </div>
-       
+        <a onClick={handleClick} className={styles.content}>
+          <div className={styles.titleDiv}>
+            <p className={styles.title}>{title}</p>
+            <p>{currentLayout?.title}</p>
+            {location && <p>{location}</p>}
           </div>
-      <div className={styles.settings}><button className="btn btn-icon"><FaCog /></button></div>
-      
+        </a>
+      </Link>
+
+      <div className={styles.settingsAndAngle}>
+        {creatorId === currentUser && (
+          <Link href={`/board/${id}`}>
+            <a>
+              <FaCog size={22} />
+            </a>
+          </Link>
+        )}
+        {adjustable ? (
+          <p>{angles[0] + '° - ' + angles[angles.length - 1] + '°'}</p>
+        ) : (
+          <p>{angles[0]}°</p>
+        )}
+      </div>
     </div>
   );
 };
