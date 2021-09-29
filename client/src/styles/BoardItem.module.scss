@@ -1,4 +1,10 @@
 .boardItem {
+  display: flex;
+
+}
+
+.content {
+  width: 90%;
   margin: 0 5px;
   padding: 10px 3px;
   border-bottom: 1px solid var(--theme-border-transparent);
