@@ -105,7 +105,7 @@ export const ProblemForm = ({ coords, boardId, layoutUrl, angles }: Props) => {
                   setFieldValue('title', useTitleGenerator(2));
                 }}
               >
-                <FaRandom />
+                <FaRandom size={25}/>
               </button>
             </div>
             <Inputfield name='rules' type='text' label='Rules' maxLength={60} />

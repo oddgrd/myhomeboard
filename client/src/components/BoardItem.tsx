@@ -22,7 +22,6 @@ export const BoardItem = ({ board, currentUser }: Props) => {
         <a onClick={handleClick} className={styles.content}>
           <div className={styles.titleDiv}>
             <p className={styles.title}>{title}</p>
-            <p>{currentLayout?.title}</p>
             {location && <p>{location}</p>}
           </div>
         </a>
