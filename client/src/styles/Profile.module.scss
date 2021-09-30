@@ -1,0 +1,40 @@
+.profile {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    section {
+    position: relative;
+    
+  }
+    
+}
+.head {
+    height: 30vh;
+    margin-top: 5vh;
+    img {
+        border-radius: 50%;
+    }
+}
+.snippets {
+    width: 60%;
+    height: 10vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    text-align: center;
+}
+.content {
+    min-height: 50vh;
+    width: 60%;
+}
+
+@media (max-width: 700px) {
+    .snippets {
+        width: 90%;
+    }
+    .content {
+        width: 90%;
+    }
+  }

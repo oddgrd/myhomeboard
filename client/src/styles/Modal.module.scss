@@ -13,16 +13,20 @@
 
 .modal {
   background: var(--theme-background);
-  min-width: 340px;
-  max-width: 380px;
+  min-width: 390px;
   height: auto;
   border-radius: 10px;
-  padding: 20px 10px;
+  padding: 30px 10px;
   z-index: 3;
 }
 
 @media (max-width: 700px) {
   .backdrop {
     position: fixed;
+  }
+  .modal {
+    min-width: 340px;
+  max-width: 380px;
+  padding: 20px 10px;
   }
 }

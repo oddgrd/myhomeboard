@@ -169,6 +169,7 @@ export type MutationCreateLayoutArgs = {
 
 
 export type MutationDeleteLayoutArgs = {
+  layoutUrl: Scalars['String'];
   layoutId: Scalars['String'];
 };
 
@@ -338,6 +339,7 @@ export type DeleteBoardMutation = { __typename?: 'Mutation', deleteBoard: boolea
 
 export type DeleteLayoutMutationVariables = Exact<{
   layoutId: Scalars['String'];
+  layoutUrl: Scalars['String'];
 }>;
 
 
@@ -410,6 +412,13 @@ export type GetProblemsQueryVariables = Exact<{
 
 
 export type GetProblemsQuery = { __typename?: 'Query', getProblems: { __typename?: 'PaginatedProblems', hasMore: boolean, problems: Array<{ __typename?: 'Problem', id: string, title: string, grade: number, angle: number, consensusGrade?: Maybe<number>, consensusRating?: Maybe<number>, creatorId: string, sendStatus?: Maybe<boolean>, createdAt: string, updatedAt: string, boardId: string, creator: { __typename?: 'User', id: string, name: string }, ascents: Array<{ __typename?: 'Ascent', grade: number, rating: number, userId: string }> }> } };
+
+export type GetUserByIdQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type GetUserByIdQuery = { __typename?: 'Query', getUserById?: Maybe<{ __typename?: 'User', name: string, email: string, avatar?: Maybe<string>, createdAt: string }> };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -685,8 +694,8 @@ export type DeleteBoardMutationHookResult = ReturnType<typeof useDeleteBoardMuta
 export type DeleteBoardMutationResult = Apollo.MutationResult<DeleteBoardMutation>;
 export type DeleteBoardMutationOptions = Apollo.BaseMutationOptions<DeleteBoardMutation, DeleteBoardMutationVariables>;
 export const DeleteLayoutDocument = gql`
-    mutation DeleteLayout($layoutId: String!) {
-  deleteLayout(layoutId: $layoutId)
+    mutation DeleteLayout($layoutId: String!, $layoutUrl: String!) {
+  deleteLayout(layoutId: $layoutId, layoutUrl: $layoutUrl)
 }
     `;
 export type DeleteLayoutMutationFn = Apollo.MutationFunction<DeleteLayoutMutation, DeleteLayoutMutationVariables>;
@@ -705,6 +714,7 @@ export type DeleteLayoutMutationFn = Apollo.MutationFunction<DeleteLayoutMutatio
  * const [deleteLayoutMutation, { data, loading, error }] = useDeleteLayoutMutation({
  *   variables: {
  *      layoutId: // value for 'layoutId'
+ *      layoutUrl: // value for 'layoutUrl'
  *   },
  * });
  */
@@ -1082,6 +1092,44 @@ export function useGetProblemsLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type GetProblemsQueryHookResult = ReturnType<typeof useGetProblemsQuery>;
 export type GetProblemsLazyQueryHookResult = ReturnType<typeof useGetProblemsLazyQuery>;
 export type GetProblemsQueryResult = Apollo.QueryResult<GetProblemsQuery, GetProblemsQueryVariables>;
+export const GetUserByIdDocument = gql`
+    query GetUserById($id: String!) {
+  getUserById(id: $id) {
+    name
+    email
+    avatar
+    createdAt
+  }
+}
+    `;
+
+/**
+ * __useGetUserByIdQuery__
+ *
+ * To run a query within a React component, call `useGetUserByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetUserByIdQuery(baseOptions: Apollo.QueryHookOptions<GetUserByIdQuery, GetUserByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserByIdDocument, options);
+      }
+export function useGetUserByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserByIdQuery, GetUserByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserByIdDocument, options);
+        }
+export type GetUserByIdQueryHookResult = ReturnType<typeof useGetUserByIdQuery>;
+export type GetUserByIdLazyQueryHookResult = ReturnType<typeof useGetUserByIdLazyQuery>;
+export type GetUserByIdQueryResult = Apollo.QueryResult<GetUserByIdQuery, GetUserByIdQueryVariables>;
 export const MeDocument = gql`
     query Me {
   me {

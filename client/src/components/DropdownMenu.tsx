@@ -46,14 +46,14 @@ export const DropdownMenu = ({ onClose }: Props) => {
           </Link>
         </li>
         {data?.me ? (
-          <>
-            <li>
-              <Link href='/profile'>
-                <a className='btn btn-link btn-dropdown'>
-                  <FaUser size={28} /> Profile
-                </a>
-              </Link>
-            </li>
+          <>{router.pathname !== "/profile/[id]" && (<li>
+            <Link href={`/profile/${data.me.id}`}>
+              <a className='btn btn-link btn-dropdown'>
+                <FaUser size={28} /> Profile
+              </a>
+            </Link>
+          </li>)}
+            
             <li>
               <button
                 className='btn btn-link btn-dropdown'
