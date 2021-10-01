@@ -1,6 +1,5 @@
 import { Form, Formik, FormikHelpers } from 'formik';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 import { FaRandom } from 'react-icons/fa';
 import * as Yup from 'yup';
 import {
@@ -31,7 +30,6 @@ interface Values {
 }
 
 export const ProblemForm = ({ coords, boardId, layoutUrl, angles }: Props) => {
-  const [validCoords, setValidCoords] = useState(true);
   const [createProblem] = useCreateProblemMutation();
   const router = useRouter();
 
@@ -65,11 +63,9 @@ export const ProblemForm = ({ coords, boardId, layoutUrl, angles }: Props) => {
         values: Values,
         { setSubmitting }: FormikHelpers<Values>
       ) => {
-        if (!coords || coords.length < 3) {
-          setValidCoords(false);
+        if (!coords || coords.length < 2) {
+          toast.error('Mark at least two holds!');
           return;
-        } else {
-          setValidCoords(true);
         }
         const { errors, data } = await createProblem({
           variables: { options: values },
@@ -152,7 +148,6 @@ export const ProblemForm = ({ coords, boardId, layoutUrl, angles }: Props) => {
               )}
             </div>
 
-            {!validCoords && <p>Add at least three holds!</p>}
             <input
               type='submit'
               className='btn'
