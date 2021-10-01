@@ -9,8 +9,7 @@ interface Props {
 }
 
 export const BoardItem = ({ board, currentUser }: Props) => {
-  const { title, angles, adjustable, currentLayout, location, id, creatorId } =
-    board;
+  const { title, angles, adjustable, city, country, id, creatorId } = board;
   const apolloClient = useApolloClient();
   const handleClick = () => {
     apolloClient.cache.evict({ fieldName: 'getProblems' });
@@ -22,7 +21,7 @@ export const BoardItem = ({ board, currentUser }: Props) => {
         <a onClick={handleClick} className={styles.content}>
           <div className={styles.titleDiv}>
             <p className={styles.title}>{title}</p>
-            {location && <p>{location}</p>}
+            <p>{city + ', ' + country}</p>
           </div>
         </a>
       </Link>

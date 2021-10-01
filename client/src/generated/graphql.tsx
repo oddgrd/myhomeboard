@@ -49,7 +49,8 @@ export type Board = {
   description: Scalars['String'];
   adjustable: Scalars['Boolean'];
   angles: Array<Scalars['Int']>;
-  location?: Maybe<Scalars['String']>;
+  city: Scalars['String'];
+  country: Scalars['String'];
   creator: User;
   layouts?: Maybe<Array<Layout>>;
   problems?: Maybe<Array<Problem>>;
@@ -64,7 +65,8 @@ export type BoardInput = {
   description: Scalars['String'];
   adjustable: Scalars['Boolean'];
   angles: Array<Scalars['Int']>;
-  location?: Maybe<Scalars['String']>;
+  city: Scalars['String'];
+  country: Scalars['String'];
 };
 
 export type Coordinates = {
@@ -103,7 +105,8 @@ export type EditBoardInput = {
   description: Scalars['String'];
   adjustable: Scalars['Boolean'];
   angles: Array<Scalars['Int']>;
-  location?: Maybe<Scalars['String']>;
+  city: Scalars['String'];
+  country: Scalars['String'];
   boardId: Scalars['String'];
 };
 
@@ -135,7 +138,7 @@ export type Mutation = {
   deleteBoard: Scalars['Boolean'];
   createLayout: Layout;
   deleteLayout: Scalars['Boolean'];
-  createProblem: Problem;
+  createProblem: ProblemResponse;
   editProblem: Scalars['Boolean'];
   deleteProblem: Scalars['Boolean'];
   addAscent: Scalars['Boolean'];
@@ -232,6 +235,12 @@ export type Problem = {
   sendStatus?: Maybe<Scalars['Boolean']>;
 };
 
+export enum ProblemResponse {
+  Success = 'SUCCESS',
+  Duplicate = 'DUPLICATE',
+  Error = 'ERROR'
+}
+
 export type Query = {
   __typename?: 'Query';
   getBoard: Board;
@@ -286,7 +295,7 @@ export type User = {
   updatedAt: Scalars['String'];
 };
 
-export type BoardCoreFragment = { __typename?: 'Board', id: string, creatorId: string, title: string, description: string, adjustable: boolean, angles: Array<number>, location?: Maybe<string>, currentLayout?: Maybe<{ __typename?: 'Layout', id: string, title: string, url: string, createdAt: string }> };
+export type BoardCoreFragment = { __typename?: 'Board', id: string, creatorId: string, title: string, description: string, adjustable: boolean, angles: Array<number>, city: string, country: string, currentLayout?: Maybe<{ __typename?: 'Layout', id: string, title: string, url: string, createdAt: string }> };
 
 export type LayoutCoreFragment = { __typename?: 'Layout', id: string, title: string, description: string, url: string, creatorId: string, boardId: string, createdAt: string };
 
@@ -304,7 +313,7 @@ export type CreateBoardMutationVariables = Exact<{
 }>;
 
 
-export type CreateBoardMutation = { __typename?: 'Mutation', createBoard: { __typename?: 'Board', id: string, creatorId: string, title: string, description: string, adjustable: boolean, angles: Array<number>, location?: Maybe<string>, currentLayout?: Maybe<{ __typename?: 'Layout', id: string, title: string, url: string, createdAt: string }> } };
+export type CreateBoardMutation = { __typename?: 'Mutation', createBoard: { __typename?: 'Board', id: string, creatorId: string, title: string, description: string, adjustable: boolean, angles: Array<number>, city: string, country: string, currentLayout?: Maybe<{ __typename?: 'Layout', id: string, title: string, url: string, createdAt: string }> } };
 
 export type CreateLayoutMutationVariables = Exact<{
   file: Scalars['Upload'];
@@ -321,7 +330,7 @@ export type CreateProblemMutationVariables = Exact<{
 }>;
 
 
-export type CreateProblemMutation = { __typename?: 'Mutation', createProblem: { __typename?: 'Problem', id: string, creatorId: string, title: string, rules: string, grade: number, rating?: Maybe<number>, createdAt: string, updatedAt: string, coordinates: Array<{ __typename?: 'Coordinates', x: number, y: number, color: string }> } };
+export type CreateProblemMutation = { __typename?: 'Mutation', createProblem: ProblemResponse };
 
 export type DeleteAscentMutationVariables = Exact<{
   problemId: Scalars['String'];
@@ -383,7 +392,7 @@ export type GetBoardQueryVariables = Exact<{
 }>;
 
 
-export type GetBoardQuery = { __typename?: 'Query', getBoard: { __typename?: 'Board', id: string, creatorId: string, title: string, description: string, adjustable: boolean, angles: Array<number>, location?: Maybe<string>, currentLayout?: Maybe<{ __typename?: 'Layout', id: string, title: string, url: string, createdAt: string }> } };
+export type GetBoardQuery = { __typename?: 'Query', getBoard: { __typename?: 'Board', id: string, creatorId: string, title: string, description: string, adjustable: boolean, angles: Array<number>, city: string, country: string, currentLayout?: Maybe<{ __typename?: 'Layout', id: string, title: string, url: string, createdAt: string }> } };
 
 export type GetBoardLayoutsQueryVariables = Exact<{
   boardId: Scalars['String'];
@@ -395,7 +404,7 @@ export type GetBoardLayoutsQuery = { __typename?: 'Query', getBoardLayouts: Arra
 export type GetBoardsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetBoardsQuery = { __typename?: 'Query', getBoards: Array<{ __typename?: 'Board', id: string, creatorId: string, title: string, description: string, adjustable: boolean, angles: Array<number>, location?: Maybe<string>, currentLayout?: Maybe<{ __typename?: 'Layout', id: string, title: string, url: string, createdAt: string }> }> };
+export type GetBoardsQuery = { __typename?: 'Query', getBoards: Array<{ __typename?: 'Board', id: string, creatorId: string, title: string, description: string, adjustable: boolean, angles: Array<number>, city: string, country: string, currentLayout?: Maybe<{ __typename?: 'Layout', id: string, title: string, url: string, createdAt: string }> }> };
 
 export type GetProblemQueryVariables = Exact<{
   id: Scalars['String'];
@@ -433,7 +442,8 @@ export const BoardCoreFragmentDoc = gql`
   description
   adjustable
   angles
-  location
+  city
+  country
   currentLayout {
     id
     title
@@ -588,21 +598,7 @@ export type CreateLayoutMutationResult = Apollo.MutationResult<CreateLayoutMutat
 export type CreateLayoutMutationOptions = Apollo.BaseMutationOptions<CreateLayoutMutation, CreateLayoutMutationVariables>;
 export const CreateProblemDocument = gql`
     mutation CreateProblem($options: CreateProblemInput!) {
-  createProblem(options: $options) {
-    id
-    creatorId
-    title
-    rules
-    grade
-    rating
-    createdAt
-    updatedAt
-    coordinates {
-      x
-      y
-      color
-    }
-  }
+  createProblem(options: $options)
 }
     `;
 export type CreateProblemMutationFn = Apollo.MutationFunction<CreateProblemMutation, CreateProblemMutationVariables>;

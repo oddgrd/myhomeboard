@@ -5,7 +5,8 @@ fragment BoardCore on Board {
   description
   adjustable
   angles
-  location
+  city
+  country
   currentLayout {
     id
     title

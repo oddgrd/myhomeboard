@@ -1,17 +1,3 @@
 mutation CreateProblem($options: CreateProblemInput!) {
-  createProblem(options: $options) {
-    id
-    creatorId
-    title
-    rules
-    grade
-    rating
-    createdAt
-    updatedAt
-    coordinates {
-      x
-      y
-      color
-    }
-  }
+  createProblem(options: $options)
 }

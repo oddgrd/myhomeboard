@@ -12,6 +12,7 @@ import styles from '../../styles/ProblemForm.module.scss';
 import { grades } from '../../utils/selectOptions';
 import { Inputfield } from './Inputfield';
 import { SelectField } from './SelectField';
+import { toast } from 'react-toastify';
 
 interface Props {
   coords?: CoordinatesInput[];
@@ -70,7 +71,7 @@ export const ProblemForm = ({ coords, boardId, layoutUrl, angles }: Props) => {
         } else {
           setValidCoords(true);
         }
-        const { errors } = await createProblem({
+        const { errors, data } = await createProblem({
           variables: { options: values },
           update: (cache) => {
             cache.evict({ fieldName: 'getProblems' });
@@ -78,10 +79,21 @@ export const ProblemForm = ({ coords, boardId, layoutUrl, angles }: Props) => {
         });
         setSubmitting(false);
         if (errors) {
-          console.log(errors);
+          toast.error('Server Error');
         }
-        if (!errors) {
-          router.push(`/boards/${boardId}`);
+        switch (data?.createProblem) {
+          case 'SUCCESS':
+            toast.success('Problem Created!');
+            router.push(`/boards/${boardId}`);
+            break;
+          case 'DUPLICATE':
+            toast.error('Title already exists');
+            break;
+          case 'ERROR':
+            toast.error('Something went wrong');
+            break;
+          default:
+            return;
         }
       }}
     >
@@ -105,7 +117,7 @@ export const ProblemForm = ({ coords, boardId, layoutUrl, angles }: Props) => {
                   setFieldValue('title', useTitleGenerator(2));
                 }}
               >
-                <FaRandom size={25}/>
+                <FaRandom size={25} />
               </button>
             </div>
             <Inputfield name='rules' type='text' label='Rules' maxLength={60} />
