@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { FaBars, FaLongArrowAltLeft, FaPlusSquare } from 'react-icons/fa';
+import { FaArrowLeft, FaBars, FaPlusSquare } from 'react-icons/fa';
 import logo from '../../public/Logo-klatreapp.svg';
 import { useGetBoardQuery, useMeQuery } from '../generated/graphql';
 import styles from '../styles/Header.module.scss';
@@ -39,7 +39,7 @@ export const Header = () => {
           router.back();
         }}
       >
-        <FaLongArrowAltLeft size={62} />
+        <FaArrowLeft size={38} />
       </button>
     );
   } else if (router.pathname === '/boards/[id]') {
