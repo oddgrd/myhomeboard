@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 @import 'utils';
-
+@import 'react-toastify/dist/ReactToastify.css';
 :root {
   --theme-color: #e9c46a;
   --theme-delete: #bf212f;
@@ -10,6 +10,11 @@
   --theme-border-transparent: rgba(188, 189, 208, 0.6);
 
   --fade-right-to-left: fadeRightToLeft 0.4s ease-in-out;
+
+  // Customize react-toastify
+  --toastify-color-dark: var(--theme-foreground) !important;
+  --toastify-color-success: var(--theme-color) !important;
+  --toastify-color-error: var(--theme-delete) !important;
 }
 
 @keyframes fadeRightToLeft {

@@ -1,13 +1,13 @@
 .boardItem {
   display: flex;
-  margin: 0 5px;
+  margin: 0px 5px;
   border-bottom: 1px solid var(--theme-border-transparent);
 }
 
 .content {
   width: 80%;
-  
-  padding: 10px 3px;
+
+  padding: 14px 3px;
   display: flex;
 
   justify-content: space-between;
@@ -16,28 +16,24 @@
 .titleDiv {
   display: flex;
   flex-direction: column;
-  justify-content: center;
 }
 .title {
   color: var(--theme-color);
-
   font-weight: 500;
-  font-size: 17.5px;
+  font-size: 19px;
 }
 .settingsAndAngle {
+  position: relative;
   width: 20%;
   display: flex;
-  align-items: flex-end;
   flex-direction: column;
-  
-  margin: 0 5px;
-  padding: 10px 0;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 8px 6px;
   a {
-    padding: 10px 6px;
-    height: 30%;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
+    position: absolute;
+    top: 0;
+    padding: 10px 3px;
     color: var(--theme-color);
     svg {
       transition: 0.2s ease-in-out;
@@ -49,14 +45,8 @@
     }
   }
   p {
-    font-size: 20px;
-    min-height: 70%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    font-size: 19px;
   }
-
-  font-size: 18px;
 }
 @media (max-width: 700px) {
   .title {
