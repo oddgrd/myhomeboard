@@ -12,7 +12,8 @@ interface Values {
   description: string;
   adjustable: boolean;
   angles: string;
-  location: string;
+  city: string;
+  country: string;
 }
 
 export const BoardForm = ({}: Props) => {
@@ -24,7 +25,8 @@ export const BoardForm = ({}: Props) => {
         description: '',
         adjustable: false,
         angles: '',
-        location: ''
+        city: '',
+        country: ''
       }}
       validationSchema={Yup.object({
         title: Yup.string()
@@ -34,6 +36,14 @@ export const BoardForm = ({}: Props) => {
         description: Yup.string()
           .min(2, 'Must be 2 characters or more')
           .max(80, 'Must be shorter than 80 characters')
+          .required('Required'),
+        city: Yup.string()
+          .min(2, 'Must be 2 characters or more')
+          .max(60, 'Must be shorter than 60 characters')
+          .required('Required'),
+        country: Yup.string()
+          .min(2, 'Must be 2 characters or more')
+          .max(60, 'Must be shorter than 60 characters')
           .required('Required'),
         adjustable: Yup.bool().required('Required'),
         angles: Yup.string()
@@ -80,10 +90,17 @@ export const BoardForm = ({}: Props) => {
               maxLength={18}
             />
             <Inputfield
-              name='location'
+              name='city'
               type='text'
-              label='Location'
-              placeholder='Country, City (optional)'
+              label='City'
+              placeholder='City'
+              maxLength={60}
+            />
+            <Inputfield
+              name='country'
+              type='text'
+              label='Country'
+              placeholder='Country'
               maxLength={60}
             />
             <Inputfield
