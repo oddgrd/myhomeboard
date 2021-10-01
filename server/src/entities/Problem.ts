@@ -10,6 +10,7 @@ import {
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
+  Unique,
   UpdateDateColumn
 } from 'typeorm';
 import { User } from './User';
@@ -19,6 +20,7 @@ import { Layout } from './Layout';
 
 @ObjectType()
 @Entity()
+@Unique(['title', 'boardId'])
 export class Problem extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn('uuid')
@@ -29,7 +31,7 @@ export class Problem extends BaseEntity {
   creatorId!: string;
 
   @Field()
-  @Column()
+  @Column({ name: 'title' })
   title!: string;
 
   @Field()
@@ -41,7 +43,7 @@ export class Problem extends BaseEntity {
   angle!: number;
 
   @Field(() => [Coordinates])
-  @Column({ type: 'jsonb' })
+  @Column({ type: 'jsonb', array: true })
   coordinates!: [Coordinates];
 
   @Field(() => Int)
@@ -57,7 +59,7 @@ export class Problem extends BaseEntity {
   creator: User;
 
   @Field()
-  @Column({ type: 'uuid' })
+  @Column({ type: 'uuid', name: 'boardId' })
   boardId!: string;
 
   @Field(() => Board)
@@ -65,7 +67,7 @@ export class Problem extends BaseEntity {
   board: Board;
 
   @Field(() => [Ascent])
-  @OneToMany(() => Ascent, (ascent) => ascent.problem, {onDelete: "CASCADE"})
+  @OneToMany(() => Ascent, (ascent) => ascent.problem, { onDelete: 'CASCADE' })
   ascents: Ascent[];
 
   @Field()

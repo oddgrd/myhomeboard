@@ -45,9 +45,17 @@ export class Board extends BaseEntity {
   // @Column({ type: 'uuid', array: true })
   // members: string[];
 
-  @Field({ nullable: true })
-  @Column({ nullable: true })
-  location: string;
+  // @Field({ nullable: true })
+  // @Column({ nullable: true })
+  // location: string;
+
+  @Field()
+  @Column()
+  city!: string;
+
+  @Field()
+  @Column()
+  country!: string;
 
   @Field(() => User)
   @ManyToOne(() => User, (user) => user.problems)

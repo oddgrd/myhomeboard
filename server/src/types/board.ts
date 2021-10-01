@@ -14,12 +14,15 @@ export class BoardInput {
   @Field(() => [Int])
   angles: number[];
 
-  @Field({ nullable: true })
-  location: string;
+  @Field()
+  city: string;
+
+  @Field()
+  country: string;
 }
 
 @InputType()
-export class EditBoardInput extends BoardInput{
+export class EditBoardInput extends BoardInput {
   @Field()
   boardId: string;
 }

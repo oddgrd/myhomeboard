@@ -26,14 +26,15 @@ export class BoardResolver {
     @Ctx() { req }: Context
   ): Promise<Board> {
     const creatorId = req.session.passport?.user;
-    const { title, description, adjustable, angles, location } = options;
+    const { title, description, adjustable, angles, city, country } = options;
     const board = await Board.create({
       title,
       description,
       adjustable,
       angles,
-      location,
-      creatorId
+      creatorId,
+      city,
+      country
     }).save();
 
     return board;
@@ -48,12 +49,13 @@ export class BoardResolver {
     @Ctx() { req }: Context
   ) {
     const creatorId = req.session.passport?.user;
-    const { title, description, adjustable, angles, location, boardId } = options;
+    const { title, description, adjustable, angles, boardId, city, country } =
+      options;
 
     const result = await getConnection()
       .createQueryBuilder()
       .update(Board)
-      .set({ title, angles, adjustable, location, description })
+      .set({ title, angles, adjustable, description, city, country })
       .where('id = :id and "creatorId" = :creatorId', {
         id: boardId,
         creatorId

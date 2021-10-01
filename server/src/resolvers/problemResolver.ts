@@ -15,7 +15,8 @@ import {
   CreateProblemInput,
   PaginatedProblems,
   EditProblemInput,
-  EditAscentInput
+  EditAscentInput,
+  ProblemResponse
 } from '../types/problem';
 import { Problem } from '../entities/Problem';
 import { Context } from '../types/context';
@@ -64,25 +65,47 @@ export class ProblemResolver {
   }
 
   // Create new problem
-  @Mutation(() => Problem)
+  @Mutation(() => ProblemResponse)
   @UseMiddleware(isAuth)
   async createProblem(
     @Arg('options') options: CreateProblemInput,
     @Ctx() { req }: Context
-  ): Promise<Problem> {
+  ): Promise<ProblemResponse> {
     const creatorId = req.session.passport?.user;
     const { title, rules, grade, coordinates, boardId, layoutUrl, angle } =
       options;
-    return Problem.create({
-      title,
-      rules,
-      grade,
-      coordinates,
-      creatorId,
-      boardId,
-      layoutUrl,
-      angle
-    }).save();
+
+    try {
+      await getConnection()
+        .query(
+          `
+          INSERT INTO problem (title, rules, grade, coordinates, "creatorId", "boardId", "layoutUrl", angle)
+          VALUES ($1, $2, $3, $4::jsonb[], $5, $6, $7, $8)
+          RETURNING *;
+        `,
+          [
+            title,
+            rules,
+            grade,
+            coordinates,
+            creatorId,
+            boardId,
+            layoutUrl,
+            angle
+          ]
+        )
+        .catch((error) => {
+          throw new Error(error.code);
+        });
+    } catch (error) {
+      // Catch duplicate title error. UNIQUE(title, boardId)
+      if (error.message === '23505') {
+        return ProblemResponse.DUPLICATE;
+      } else {
+        return ProblemResponse.ERROR;
+      }
+    }
+    return ProblemResponse.SUCCESS;
   }
 
   // Update problem info

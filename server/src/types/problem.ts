@@ -1,5 +1,11 @@
 import { Problem } from '../entities/Problem';
-import { InputType, Field, Int, ObjectType } from 'type-graphql';
+import {
+  InputType,
+  Field,
+  Int,
+  ObjectType,
+  registerEnumType
+} from 'type-graphql';
 
 @ObjectType()
 export class Coordinates {
@@ -48,6 +54,22 @@ export class CreateProblemInput {
 
   @Field(() => [CoordinatesInput])
   coordinates: CoordinatesInput[];
+}
+
+export enum ProblemResponse {
+  SUCCESS = 'SUCCESS',
+  DUPLICATE = 'DUPLICATE',
+  ERROR = 'ERROR'
+}
+
+// https://typegraphql.com/docs/0.16.0/enums.html
+registerEnumType(ProblemResponse, {
+  name: 'ProblemResponse'
+});
+@ObjectType()
+export class ProblemResponseObject {
+  @Field(() => ProblemResponse)
+  problemResponse: ProblemResponse;
 }
 
 @InputType()
