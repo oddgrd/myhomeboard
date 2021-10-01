@@ -31,7 +31,7 @@ export class Problem extends BaseEntity {
   creatorId!: string;
 
   @Field()
-  @Column({ name: 'title' })
+  @Column({ name: 'title', type: 'citext' })
   title!: string;
 
   @Field()
