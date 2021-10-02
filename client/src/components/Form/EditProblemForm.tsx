@@ -1,7 +1,5 @@
-import { Form, Formik, FormikHelpers } from 'formik';
-import { motion } from 'framer-motion';
-import { useState } from 'react';
-import { FaCheck } from 'react-icons/fa';
+import { Form, Formik } from 'formik';
+import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 import {
   useEditProblemMutation,
@@ -37,7 +35,6 @@ export const EditProblemForm = ({
   boardId,
   onClose
 }: Props) => {
-  const [success, setSuccess] = useState(false);
   const [editProblem] = useEditProblemMutation();
   const { data } = useGetBoardQuery({
     variables: { boardId }
@@ -64,98 +61,72 @@ export const EditProblemForm = ({
         grade: Yup.number().required('Required'),
         angle: Yup.number().required('Required')
       })}
-      onSubmit={async (
-        values: Values,
-        { setSubmitting }: FormikHelpers<Values>
-      ) => {
+      onSubmit={async (values: Values) => {
         const { errors } = await editProblem({
           variables: { options: { ...values, problemId: id } },
           update: (cache) => {
             cache.evict({ id: 'Problem:' + id });
           }
         });
-        setSubmitting(false);
         if (errors) {
-          console.log(errors);
+          toast.error(errors[0].message);
         }
         if (!errors) {
-          setSuccess(true);
-          setTimeout(() => {
-            onClose();
-          }, 1300);
+          toast.success('Problem edited 🔧');
+          onClose();
         }
       }}
     >
       {({ dirty, isValid }) => (
         <div className={styles.form}>
-          {!success ? (
-            <Form>
-              <h1>Edit Problem</h1>
-              <Inputfield
-                name='title'
-                type='text'
-                label='Title'
-                maxLength={31}
-                placeholder='Problem title'
-              />
-              <Inputfield
-                name='rules'
-                type='text'
-                label='Rules'
-                maxLength={60}
-              />
-              <div className={styles.selectContainer}>
-                {data?.getBoard && data.getBoard.angles.length > 1 ? (
-                  <>
-                    <SelectField
-                      name='grade'
-                      options={grades}
-                      label='Grade'
-                      width={145}
-                    />
-                    <SelectField
-                      name='angle'
-                      options={data.getBoard.angles.map((a) => {
-                        return Object.fromEntries([
-                          ['value', a],
-                          ['label', a]
-                        ]);
-                      })}
-                      label='Angle'
-                      width={145}
-                    />
-                  </>
-                ) : (
+          <Form>
+            <h1>Edit Problem</h1>
+            <Inputfield
+              name='title'
+              type='text'
+              label='Title'
+              maxLength={31}
+              placeholder='Problem title'
+            />
+            <Inputfield name='rules' type='text' label='Rules' maxLength={60} />
+            <div className={styles.selectContainer}>
+              {data?.getBoard && data.getBoard.angles.length > 1 ? (
+                <>
                   <SelectField
                     name='grade'
                     options={grades}
                     label='Grade'
-                    width={300}
+                    width={145}
                   />
-                )}
-              </div>
+                  <SelectField
+                    name='angle'
+                    options={data.getBoard.angles.map((a) => {
+                      return Object.fromEntries([
+                        ['value', a],
+                        ['label', a]
+                      ]);
+                    })}
+                    label='Angle'
+                    width={145}
+                  />
+                </>
+              ) : (
+                <SelectField
+                  name='grade'
+                  options={grades}
+                  label='Grade'
+                  width={300}
+                />
+              )}
+            </div>
 
-              <input
-                type='submit'
-                className='btn'
-                disabled={!dirty || !isValid}
-                value='Save Problem'
-              />
-            </Form>
-          ) : (
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ rotate: 360, scale: 1 }}
-              transition={{
-                type: 'spring',
-                stiffness: 260,
-                damping: 20
-              }}
-              className={styles.success}
-            >
-              <FaCheck size={170} />
-            </motion.div>
-          )}
+            <input
+              type='submit'
+              className='btn'
+              disabled={!dirty || !isValid}
+              value='Save Problem'
+            />
+          </Form>
         </div>
       )}
     </Formik>

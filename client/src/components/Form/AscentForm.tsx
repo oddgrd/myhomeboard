@@ -75,7 +75,9 @@ export const AscentForm = ({
           toast.error(error);
           onClose();
         } else {
-          toast.success(`Ascent added 🤙`);
+          toast.success(
+            mutation === 'ADD' ? 'Ascent added 🤙' : 'Ascent edited 🔧'
+          );
           onClose();
         }
       }}

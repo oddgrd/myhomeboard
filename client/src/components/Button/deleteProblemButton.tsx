@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { FaTrash } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 import { useDeleteProblemMutation } from '../../generated/graphql';
 
 interface Props {
@@ -23,6 +24,7 @@ export const DeleteProblemButton = ({ id, boardId }: Props) => {
           cache.evict({ id: 'Problem:' + id });
         }
       });
+      toast.success('Problem deleted ☠️');
       router.push(`/boards/${boardId}`);
     }
   };

@@ -77,7 +77,7 @@ export const ProblemForm = ({ coords, boardId, layoutUrl, angles }: Props) => {
         }
         switch (data.createProblem) {
           case 'SUCCESS':
-            toast.success(`Problem created`);
+            toast.success(`Problem created 🧗`);
             router.push(`/boards/${boardId}`);
             break;
           case 'DUPLICATE':

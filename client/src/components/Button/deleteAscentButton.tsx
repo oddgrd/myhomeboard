@@ -1,4 +1,5 @@
 import { FaTimes } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 import { useDeleteAscentMutation } from '../../generated/graphql';
 
 interface Props {
@@ -15,6 +16,7 @@ export const DeleteAscentButton = ({ id }: Props) => {
           cache.evict({ id: 'Problem:' + id });
         }
       });
+      toast.success('Ascent deleted ☠️');
     }
   };
   return (
