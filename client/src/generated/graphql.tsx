@@ -92,6 +92,12 @@ export type CreateProblemInput = {
   coordinates: Array<CoordinatesInput>;
 };
 
+export enum CreateResponse {
+  Success = 'SUCCESS',
+  Duplicate = 'DUPLICATE',
+  Error = 'ERROR'
+}
+
 export type EditAscentInput = {
   problemId: Scalars['String'];
   grade: Scalars['Int'];
@@ -133,12 +139,12 @@ export type Layout = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createBoard: Board;
+  createBoard: CreateResponse;
   editBoard: Scalars['Boolean'];
   deleteBoard: Scalars['Boolean'];
   createLayout: Layout;
   deleteLayout: Scalars['Boolean'];
-  createProblem: ProblemResponse;
+  createProblem: CreateResponse;
   editProblem: Scalars['Boolean'];
   deleteProblem: Scalars['Boolean'];
   addAscent: Scalars['Boolean'];
@@ -235,12 +241,6 @@ export type Problem = {
   sendStatus?: Maybe<Scalars['Boolean']>;
 };
 
-export enum ProblemResponse {
-  Success = 'SUCCESS',
-  Duplicate = 'DUPLICATE',
-  Error = 'ERROR'
-}
-
 export type Query = {
   __typename?: 'Query';
   getBoard: Board;
@@ -313,7 +313,7 @@ export type CreateBoardMutationVariables = Exact<{
 }>;
 
 
-export type CreateBoardMutation = { __typename?: 'Mutation', createBoard: { __typename?: 'Board', id: string, creatorId: string, title: string, description: string, adjustable: boolean, angles: Array<number>, city: string, country: string, currentLayout?: Maybe<{ __typename?: 'Layout', id: string, title: string, url: string, createdAt: string }> } };
+export type CreateBoardMutation = { __typename?: 'Mutation', createBoard: CreateResponse };
 
 export type CreateLayoutMutationVariables = Exact<{
   file: Scalars['Upload'];
@@ -330,7 +330,7 @@ export type CreateProblemMutationVariables = Exact<{
 }>;
 
 
-export type CreateProblemMutation = { __typename?: 'Mutation', createProblem: ProblemResponse };
+export type CreateProblemMutation = { __typename?: 'Mutation', createProblem: CreateResponse };
 
 export type DeleteAscentMutationVariables = Exact<{
   problemId: Scalars['String'];
@@ -520,11 +520,9 @@ export type AddAscentMutationResult = Apollo.MutationResult<AddAscentMutation>;
 export type AddAscentMutationOptions = Apollo.BaseMutationOptions<AddAscentMutation, AddAscentMutationVariables>;
 export const CreateBoardDocument = gql`
     mutation CreateBoard($options: BoardInput!) {
-  createBoard(options: $options) {
-    ...BoardCore
-  }
+  createBoard(options: $options)
 }
-    ${BoardCoreFragmentDoc}`;
+    `;
 export type CreateBoardMutationFn = Apollo.MutationFunction<CreateBoardMutation, CreateBoardMutationVariables>;
 
 /**

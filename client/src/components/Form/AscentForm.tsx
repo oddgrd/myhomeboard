@@ -1,16 +1,15 @@
 import styles from '../../styles/AscentForm.module.scss';
 import * as Yup from 'yup';
-import { Formik, FormikHelpers, Form } from 'formik';
+import { Formik, Form } from 'formik';
 import { SelectField } from './SelectField';
 import { attempts, grades, ratings } from '../../utils/selectOptions';
 import { Textarea } from './Textarea';
 import { useState } from 'react';
-import { FaCheck } from 'react-icons/fa';
-import { motion } from 'framer-motion';
 import {
   useAddAscentMutation,
   useEditAscentMutation
 } from '../../generated/graphql';
+import { toast } from 'react-toastify';
 
 interface Props {
   id: string;
@@ -34,8 +33,7 @@ export const AscentForm = ({
   editProps,
   boardId
 }: Props) => {
-  const [error, setError] = useState(false);
-  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState('');
   const [addAscent] = useAddAscentMutation();
   const [editAscent] = useEditAscentMutation();
 
@@ -62,7 +60,7 @@ export const AscentForm = ({
               cache.evict({ id: 'Problem:' + id });
             }
           });
-          if (errors) setError(true);
+          if (errors) setError(errors[0].message);
         }
         if (mutation === 'EDIT') {
           const { errors } = await editAscent({
@@ -71,78 +69,60 @@ export const AscentForm = ({
               cache.evict({ id: 'Problem:' + id });
             }
           });
-          if (errors) setError(true);
+          if (errors) setError(errors[0].message);
         }
         if (error) {
-          console.log('Something went wrong');
+          toast.error(error);
           onClose();
-        }
-        if (!error) {
-          setSuccess(true);
-          setTimeout(() => {
-            onClose();
-          }, 1300);
+        } else {
+          toast.success('Ascent Added!');
+          onClose();
         }
       }}
     >
       {({ dirty, values }) => (
         <div className={styles.form}>
-          {!success ? (
-            <Form>
-              <h1>{!editProps ? 'Add' : 'Edit'} Ascent</h1>
-              <div className={styles.selectContainer}>
-                <SelectField
-                  name='grade'
-                  options={grades}
-                  label='Grade *'
-                  width={145}
-                />
-                <SelectField
-                  name='rating'
-                  options={ratings}
-                  label='Rating *'
-                  width={145}
-                />
-              </div>
+          <Form>
+            <h1>{!editProps ? 'Add' : 'Edit'} Ascent</h1>
+            <div className={styles.selectContainer}>
               <SelectField
-                name='attempts'
-                options={attempts}
-                label='Attempts *'
-                width={300}
+                name='grade'
+                options={grades}
+                label='Grade *'
+                width={145}
               />
-              <Textarea
-                name='comment'
-                label='Comment'
-                placeholder='Optional'
-                maxLength={80}
+              <SelectField
+                name='rating'
+                options={ratings}
+                label='Rating *'
+                width={145}
               />
+            </div>
+            <SelectField
+              name='attempts'
+              options={attempts}
+              label='Attempts *'
+              width={300}
+            />
+            <Textarea
+              name='comment'
+              label='Comment'
+              placeholder='Optional'
+              maxLength={80}
+            />
 
-              <input
-                type='submit'
-                className='btn'
-                value='Submit Ascent'
-                disabled={
-                  typeof values.grade !== 'number' ||
-                  typeof values.rating !== 'number' ||
-                  typeof values.attempts !== 'number' ||
-                  !dirty
-                }
-              />
-            </Form>
-          ) : (
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ rotate: 360, scale: 1 }}
-              transition={{
-                type: 'spring',
-                stiffness: 260,
-                damping: 20
-              }}
-              className={styles.success}
-            >
-              <FaCheck size={170} />
-            </motion.div>
-          )}
+            <input
+              type='submit'
+              className='btn'
+              value='Submit Ascent'
+              disabled={
+                typeof values.grade !== 'number' ||
+                typeof values.rating !== 'number' ||
+                typeof values.attempts !== 'number' ||
+                !dirty
+              }
+            />
+          </Form>
         </div>
       )}
     </Formik>

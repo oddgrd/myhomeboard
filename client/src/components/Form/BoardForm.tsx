@@ -5,6 +5,7 @@ import { Textarea } from './Textarea';
 import { useCreateBoardMutation } from '../../generated/graphql';
 import router from 'next/router';
 import { Inputfield } from './Inputfield';
+import { toast } from 'react-toastify';
 
 interface Props {}
 interface Values {
@@ -56,7 +57,7 @@ export const BoardForm = ({}: Props) => {
           .required('Required')
       })}
       onSubmit={async (values: Values) => {
-        const { errors } = await createBoard({
+        const { errors, data } = await createBoard({
           variables: {
             options: {
               ...values,
@@ -70,10 +71,21 @@ export const BoardForm = ({}: Props) => {
         });
 
         if (errors) {
-          console.log(errors);
+          toast.error('Server Error');
         }
-        if (!errors) {
-          router.push('/boards');
+        switch (data?.createBoard) {
+          case 'SUCCESS':
+            toast.success('Board Created!');
+            router.push(`/boards`);
+            break;
+          case 'DUPLICATE':
+            toast.error('Title already exists');
+            break;
+          case 'ERROR':
+            toast.error('Something went wrong');
+            break;
+          default:
+            return;
         }
       }}
     >
@@ -85,7 +97,7 @@ export const BoardForm = ({}: Props) => {
             <Inputfield
               name='title'
               type='text'
-              label='Title'
+              label='Title (Unique)'
               placeholder='Board title'
               maxLength={18}
             />
