@@ -1,4 +1,4 @@
-import { Form, Formik, FormikHelpers } from 'formik';
+import { Form, Formik } from 'formik';
 import { useRouter } from 'next/router';
 import { FaRandom } from 'react-icons/fa';
 import * as Yup from 'yup';
@@ -59,27 +59,25 @@ export const ProblemForm = ({ coords, boardId, layoutUrl, angles }: Props) => {
         grade: Yup.number().required('Required'),
         angle: Yup.number().required('Required')
       })}
-      onSubmit={async (
-        values: Values,
-        { setSubmitting }: FormikHelpers<Values>
-      ) => {
+      onSubmit={async (values: Values) => {
         if (!coords || coords.length < 2) {
           toast.error('Mark at least two holds!');
           return;
         }
-        const { errors, data } = await createProblem({
+        const { data } = await createProblem({
           variables: { options: values },
           update: (cache) => {
             cache.evict({ fieldName: 'getProblems' });
           }
         });
-        setSubmitting(false);
-        if (errors) {
+
+        if (!data?.createProblem) {
           toast.error('Server Error');
+          return;
         }
-        switch (data?.createProblem) {
+        switch (data.createProblem) {
           case 'SUCCESS':
-            toast.success('Problem Created!');
+            toast.success(`Problem created`);
             router.push(`/boards/${boardId}`);
             break;
           case 'DUPLICATE':

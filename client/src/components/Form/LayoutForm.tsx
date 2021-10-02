@@ -1,15 +1,15 @@
 import router from 'next/router';
 import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
+import { toast } from 'react-toastify';
 import { useCreateLayoutMutation } from '../../generated/graphql';
 import styles from '../../styles/BoardForm.module.scss';
-import { Spinner } from '../Spinner';
+
 interface Props {
   boardId: string;
 }
 export const LayoutForm = ({ boardId }: Props) => {
   const [createLayout, { error }] = useCreateLayoutMutation();
-  const [loading, toggleLoading] = useState(false);
   const [layoutData, setLayoutData] = useState({
     title: '',
     description: '',
@@ -28,28 +28,32 @@ export const LayoutForm = ({ boardId }: Props) => {
     setLayoutData({ ...layoutData, [e.target.name]: e.target.value });
   const handleClick = async (e: any) => {
     e.preventDefault();
-    toggleLoading(!loading);
-    const { errors } = await createLayout({
-      variables: {
-        title: layoutData.title,
-        description: layoutData.description,
-        file: layoutData.file,
-        boardId
-      },
-      update: (cache) => {
-        cache.evict({ fieldName: 'getBoards' });
-        cache.evict({ fieldName: 'getBoard' });
+
+    const { errors } = await toast.promise(
+      createLayout({
+        variables: {
+          title: layoutData.title,
+          description: layoutData.description,
+          file: layoutData.file,
+          boardId
+        },
+        update: (cache) => {
+          cache.evict({ fieldName: 'getBoards' });
+          cache.evict({ fieldName: 'getBoard' });
+        }
+      }),
+      {
+        pending: 'Uploading layout',
+        success: 'Layout added',
+        error: 'Something went wrong'
       }
-    });
-    toggleLoading(!loading);
+    );
     if (!errors) {
       router.push(`/boards/${boardId}`);
     }
   };
 
-  return loading ? (
-    <Spinner />
-  ) : (
+  return (
     <div className={styles.boardForm}>
       <h1>Add New Layout</h1>
       {error && <p>{error.message}</p>}

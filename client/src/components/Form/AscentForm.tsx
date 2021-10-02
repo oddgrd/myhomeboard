@@ -75,7 +75,7 @@ export const AscentForm = ({
           toast.error(error);
           onClose();
         } else {
-          toast.success('Ascent Added!');
+          toast.success(`Ascent added 🤙`);
           onClose();
         }
       }}

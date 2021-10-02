@@ -57,7 +57,7 @@ export const BoardForm = ({}: Props) => {
           .required('Required')
       })}
       onSubmit={async (values: Values) => {
-        const { errors, data } = await createBoard({
+        const { data } = await createBoard({
           variables: {
             options: {
               ...values,
@@ -70,10 +70,11 @@ export const BoardForm = ({}: Props) => {
           }
         });
 
-        if (errors) {
+        if (!data?.createBoard) {
           toast.error('Server Error');
+          return;
         }
-        switch (data?.createBoard) {
+        switch (data.createBoard) {
           case 'SUCCESS':
             toast.success('Board Created!');
             router.push(`/boards`);
