@@ -22,7 +22,7 @@ export class Board extends BaseEntity {
   id!: string;
 
   @Field()
-  @Column({ unique: true })
+  @Column({ unique: true, type: 'citext' })
   title!: string;
 
   @Field()
