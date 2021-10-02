@@ -14,30 +14,43 @@ import { Board } from '../entities/Board';
 import { BoardInput, EditBoardInput } from '../types/board';
 import { Layout } from '../entities/Layout';
 import { getConnection } from 'typeorm';
+import { MutationResponse } from '../types/problem';
 
 @Resolver(Board)
 export class BoardResolver {
   // Create new Board
   // PRIVATE
-  @Mutation(() => Board)
+  @Mutation(() => MutationResponse)
   @UseMiddleware(isAuth)
   async createBoard(
     @Arg('options') options: BoardInput,
     @Ctx() { req }: Context
-  ): Promise<Board> {
+  ): Promise<MutationResponse> {
     const creatorId = req.session.passport?.user;
     const { title, description, adjustable, angles, city, country } = options;
-    const board = await Board.create({
-      title,
-      description,
-      adjustable,
-      angles,
-      creatorId,
-      city,
-      country
-    }).save();
-
-    return board;
+    try {
+      await Board.create({
+        title,
+        description,
+        adjustable,
+        angles,
+        creatorId,
+        city,
+        country
+      })
+        .save()
+        .catch((error) => {
+          throw new Error(error.code);
+        });
+    } catch (error) {
+      // Catch duplicate title error
+      if (error.message === '23505') {
+        return MutationResponse.DUPLICATE;
+      } else {
+        return MutationResponse.ERROR;
+      }
+    }
+    return MutationResponse.SUCCESS;
   }
 
   // Edit Board

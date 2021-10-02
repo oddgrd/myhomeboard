@@ -56,20 +56,20 @@ export class CreateProblemInput {
   coordinates: CoordinatesInput[];
 }
 
-export enum ProblemResponse {
+export enum MutationResponse {
   SUCCESS = 'SUCCESS',
   DUPLICATE = 'DUPLICATE',
   ERROR = 'ERROR'
 }
 
 // https://typegraphql.com/docs/0.16.0/enums.html
-registerEnumType(ProblemResponse, {
-  name: 'ProblemResponse'
+registerEnumType(MutationResponse, {
+  name: 'MutationResponse'
 });
 @ObjectType()
-export class ProblemResponseObject {
-  @Field(() => ProblemResponse)
-  problemResponse: ProblemResponse;
+export class MutationResponseObject {
+  @Field(() => MutationResponse)
+  mutationResponse: MutationResponse;
 }
 
 @InputType()

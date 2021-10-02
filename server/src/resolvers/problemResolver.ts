@@ -16,7 +16,7 @@ import {
   PaginatedProblems,
   EditProblemInput,
   EditAscentInput,
-  ProblemResponse
+  MutationResponse
 } from '../types/problem';
 import { Problem } from '../entities/Problem';
 import { Context } from '../types/context';
@@ -65,12 +65,12 @@ export class ProblemResolver {
   }
 
   // Create new problem
-  @Mutation(() => ProblemResponse)
+  @Mutation(() => MutationResponse)
   @UseMiddleware(isAuth)
   async createProblem(
     @Arg('options') options: CreateProblemInput,
     @Ctx() { req }: Context
-  ): Promise<ProblemResponse> {
+  ): Promise<MutationResponse> {
     const creatorId = req.session.passport?.user;
     const { title, rules, grade, coordinates, boardId, layoutUrl, angle } =
       options;
@@ -100,12 +100,12 @@ export class ProblemResolver {
     } catch (error) {
       // Catch duplicate title error. UNIQUE(title, boardId)
       if (error.message === '23505') {
-        return ProblemResponse.DUPLICATE;
+        return MutationResponse.DUPLICATE;
       } else {
-        return ProblemResponse.ERROR;
+        return MutationResponse.ERROR;
       }
     }
-    return ProblemResponse.SUCCESS;
+    return MutationResponse.SUCCESS;
   }
 
   // Update problem info
