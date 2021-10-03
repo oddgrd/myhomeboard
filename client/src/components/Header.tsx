@@ -24,7 +24,7 @@ export const Header = () => {
     <Link href='/'>
       <a className={styles.logo}>
         <Image src={logo} alt='Covegg19 Logo' width={42} height={42} />
-        <strong>myHomeBoard</strong>
+        <strong className='hide'>myHomeBoard</strong>
       </a>
     </Link>
   );
