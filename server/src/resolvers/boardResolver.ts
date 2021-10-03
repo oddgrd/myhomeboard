@@ -113,13 +113,6 @@ export class BoardResolver {
       await getConnection().transaction(async (em) => {
         await em.query(
           `
-            DELETE FROM ascent
-            WHERE "boardId" = $1;
-          `,
-          [boardId]
-        );
-        await em.query(
-          `
             DELETE FROM problem
             WHERE "boardId" = $1;
           `,

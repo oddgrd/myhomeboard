@@ -80,8 +80,7 @@ export class ProblemResolver {
         .query(
           `
           INSERT INTO problem (title, rules, grade, coordinates, "creatorId", "boardId", "layoutUrl", angle)
-          VALUES ($1, $2, $3, $4::jsonb[], $5, $6, $7, $8)
-          RETURNING *;
+          VALUES ($1, $2, $3, $4::jsonb[], $5, $6, $7, $8);
         `,
           [
             title,
