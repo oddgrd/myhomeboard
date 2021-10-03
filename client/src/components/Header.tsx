@@ -19,6 +19,7 @@ export const Header = () => {
     variables: { boardId },
     skip: boardId.length === 0
   });
+
   let head = (
     <Link href='/'>
       <a className={styles.logo}>
@@ -28,96 +29,80 @@ export const Header = () => {
     </Link>
   );
   let dynamicNav = null;
-  if (
-    router.pathname === '/problem/[id]' ||
-    router.pathname === '/boards/[id]/create-problem'
-  ) {
-    head = (
-      <button
-        className='btn btn-icon btn-animation'
-        onClick={() => {
-          router.back();
-        }}
-      >
-        <FaArrowLeft size={38} />
-      </button>
-    );
-  } else if (router.pathname === '/boards/[id]') {
-    head = (
-      <Link href='/boards'>
-        <a className={styles.logo}>
-          <strong>{boardData?.getBoard.title}</strong>
-        </a>
-      </Link>
-    );
-    dynamicNav = (
-      <li>
-        <Link href={`/boards/${boardId}/create-problem`}>
-          <a className='btn btn-link btn-icon'>
-            <FaPlusSquare size={28} />
-          </a>
-        </Link>
-      </li>
-    );
-  } else if (router.pathname === '/boards') {
-    head = (
-      <p className={styles.logo}>
-        <strong>Select Board</strong>
-      </p>
-    );
-  } else if (router.pathname === '/' && !data?.me) {
-    head = (
-      <Link href='/'>
-        <a
-          className={styles.logo}
-          style={{ marginLeft: '14px', marginTop: '14px' }}
-        >
-          <Image src={logo} alt='Covegg19 Logo' width={48} height={48} />
 
-          <strong className='hide'> myHomeBoard</strong>
-        </a>
-      </Link>
-    );
-    dynamicNav = (
-      <li>
-        <Link href={`/login`}>
-          <a className='btn btn-link'>
-            <strong>GET STARTED</strong>
-          </a>
-        </Link>
-      </li>
-    );
-  } else if (router.pathname === '/' && data?.me) {
-    head = (
-      <Link href='/'>
-        <a
-          className={styles.logo}
-          style={{ marginLeft: '14px', marginTop: '14px' }}
+  switch (router.pathname) {
+    case '/problem/[id]':
+      head = (
+        <button
+          className='btn btn-icon btn-animation'
+          onClick={() => {
+            router.back();
+          }}
         >
-          <Image src={logo} alt='Covegg19 Logo' width={48} height={48} />
-          <strong className='hide'> myHomeBoard</strong>
-        </a>
-      </Link>
-    );
-    dynamicNav = (
-      <li>
-        <Link href={'/boards'}>
-          <a className='btn btn-link'>
-            <strong>BOARDS</strong>
+          <FaArrowLeft size={38} />
+        </button>
+      );
+      break;
+    case '/boards/[id]/create-problem':
+      head = (
+        <button
+          className='btn btn-icon btn-animation'
+          onClick={() => {
+            router.back();
+          }}
+        >
+          <FaArrowLeft size={38} />
+        </button>
+      );
+      break;
+    case '/boards/[id]':
+      head = (
+        <Link href='/boards'>
+          <a className={styles.logo}>
+            <strong>{boardData?.getBoard.title}</strong>
           </a>
         </Link>
-      </li>
-    );
-  } else {
-    head = (
-      <Link href='/'>
-        <a className={styles.logo}>
-          <Image src={logo} alt='Covegg19 Logo' width={48} height={48} />
-          <strong> myHomeBoard</strong>
-        </a>
-      </Link>
-    );
+      );
+      dynamicNav = (
+        <li>
+          <Link href={`/boards/${boardId}/create-problem`}>
+            <a className='btn btn-link btn-icon'>
+              <FaPlusSquare size={28} />
+            </a>
+          </Link>
+        </li>
+      );
+      break;
+    case '/boards':
+      head = (
+        <p className={styles.logo}>
+          <strong>Select Board</strong>
+        </p>
+      );
+      break;
+    case '/':
+      dynamicNav = !data?.me ? (
+        <li>
+          <Link href={`/login`}>
+            <a className='btn btn-link'>
+              <strong>GET STARTED</strong>
+            </a>
+          </Link>
+        </li>
+      ) : (
+        <li>
+          <Link href={'/boards'}>
+            <a className='btn btn-link'>
+              <strong>BOARDS</strong>
+            </a>
+          </Link>
+        </li>
+      );
+      break;
+    default:
+      dynamicNav = null;
   }
+
   return (
     <header className={styles.header}>
       <div className={styles.container}>

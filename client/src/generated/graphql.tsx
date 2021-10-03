@@ -92,12 +92,6 @@ export type CreateProblemInput = {
   coordinates: Array<CoordinatesInput>;
 };
 
-export enum CreateResponse {
-  Success = 'SUCCESS',
-  Duplicate = 'DUPLICATE',
-  Error = 'ERROR'
-}
-
 export type EditAscentInput = {
   problemId: Scalars['String'];
   grade: Scalars['Int'];
@@ -139,12 +133,12 @@ export type Layout = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createBoard: CreateResponse;
+  createBoard: MutationResponse;
   editBoard: Scalars['Boolean'];
   deleteBoard: Scalars['Boolean'];
   createLayout: Layout;
   deleteLayout: Scalars['Boolean'];
-  createProblem: CreateResponse;
+  createProblem: MutationResponse;
   editProblem: Scalars['Boolean'];
   deleteProblem: Scalars['Boolean'];
   addAscent: Scalars['Boolean'];
@@ -211,6 +205,12 @@ export type MutationEditAscentArgs = {
 export type MutationDeleteAscentArgs = {
   problemId: Scalars['String'];
 };
+
+export enum MutationResponse {
+  Success = 'SUCCESS',
+  Duplicate = 'DUPLICATE',
+  Error = 'ERROR'
+}
 
 export type PaginatedProblems = {
   __typename?: 'PaginatedProblems';
@@ -313,7 +313,7 @@ export type CreateBoardMutationVariables = Exact<{
 }>;
 
 
-export type CreateBoardMutation = { __typename?: 'Mutation', createBoard: CreateResponse };
+export type CreateBoardMutation = { __typename?: 'Mutation', createBoard: MutationResponse };
 
 export type CreateLayoutMutationVariables = Exact<{
   file: Scalars['Upload'];
@@ -330,7 +330,7 @@ export type CreateProblemMutationVariables = Exact<{
 }>;
 
 
-export type CreateProblemMutation = { __typename?: 'Mutation', createProblem: CreateResponse };
+export type CreateProblemMutation = { __typename?: 'Mutation', createProblem: MutationResponse };
 
 export type DeleteAscentMutationVariables = Exact<{
   problemId: Scalars['String'];
@@ -427,7 +427,7 @@ export type GetUserByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetUserByIdQuery = { __typename?: 'Query', getUserById?: Maybe<{ __typename?: 'User', name: string, email: string, avatar?: Maybe<string>, createdAt: string }> };
+export type GetUserByIdQuery = { __typename?: 'Query', getUserById?: Maybe<{ __typename?: 'User', name: string, avatar?: Maybe<string>, createdAt: string, problems?: Maybe<Array<{ __typename?: 'Problem', boardId: string, consensusGrade?: Maybe<number>, consensusRating?: Maybe<number>, ascents: Array<{ __typename?: 'Ascent', grade: number, rating: number }> }>>, ascents?: Maybe<Array<{ __typename?: 'Ascent', attempts: number, rating: number, grade: number }>> }> };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1090,9 +1090,22 @@ export const GetUserByIdDocument = gql`
     query GetUserById($id: String!) {
   getUserById(id: $id) {
     name
-    email
     avatar
     createdAt
+    problems {
+      boardId
+      consensusGrade
+      consensusRating
+      ascents {
+        grade
+        rating
+      }
+    }
+    ascents {
+      attempts
+      rating
+      grade
+    }
   }
 }
     `;

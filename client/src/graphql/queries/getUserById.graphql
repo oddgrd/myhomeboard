@@ -1,8 +1,21 @@
 query GetUserById($id: String!) {
-    getUserById(id: $id) {
-        name
-        email
-        avatar
-        createdAt
+  getUserById(id: $id) {
+    name
+    avatar
+    createdAt
+    problems {
+      boardId
+      consensusGrade
+      consensusRating
+      ascents {
+        grade
+        rating
+      }
     }
+    ascents {
+      attempts
+      rating
+      grade
+    }
+  }
 }
