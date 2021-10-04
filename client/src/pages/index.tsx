@@ -129,7 +129,7 @@ const Home: NextPage = () => {
         <footer>
           
 
-          {/* <motion.svg
+          <motion.svg
             id={styles.blobSvg}
             initial='start'
             animate='end'
@@ -152,7 +152,7 @@ const Home: NextPage = () => {
             <a href='https://github.com/oddgrd' target='_blank'>
               oddgrd <FaGithub />
             </a>
-          </div> */}
+          </div>
         </footer>
       </div>
     </div>
