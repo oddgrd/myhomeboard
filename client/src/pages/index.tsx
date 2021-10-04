@@ -34,14 +34,14 @@ const Home: NextPage = () => {
       <Header />
       <div className={styles.body}>
         <section className='yellow'>
-          {/* {layeredTopWave(
+          {layeredTopWave(
             '120',
             '#242440',
             '#e76f51',
             '#eb8550',
             '#ebb05d',
             '#ebb05d'
-          )} */}
+          )}
           <div className={styles.content}>
             <h1>MyHomeBoard</h1>
             <p>
@@ -50,7 +50,7 @@ const Home: NextPage = () => {
             </p>
           </div>
 
-          {/* {bottomWave()} */}
+          {bottomWave()}
         </section>
         <section className='orange'>
           <div className={styles.content}>
@@ -63,7 +63,7 @@ const Home: NextPage = () => {
           </div>
         </section>
         <section>
-          {/* {layeredTopWave('180px')} */}
+          {layeredTopWave('180px')}
           <div className={styles.content}>
             <h1>Browse Problems</h1>
             <p>
@@ -74,7 +74,7 @@ const Home: NextPage = () => {
           </div>
         </section>
         <section className='purple'>
-          {/* {layeredTopWave2()} */}
+          {layeredTopWave2()}
           <div className={styles.content}>
             <h1>Register Ascents</h1>
             <p>
@@ -85,14 +85,14 @@ const Home: NextPage = () => {
           </div>
         </section>
         <section style={{ background: '#dd3f31' }}>
-          {/* {layeredTopWave(
+          {layeredTopWave(
             '190',
             '#3c31dd',
             '#af00ad',
             '#d50080',
             '#e11858',
             '#dd3f31'
-          )} */}
+          )}
           <div className={styles.content}>
             <h1>Profile</h1>
             <p>
@@ -102,14 +102,14 @@ const Home: NextPage = () => {
           </div>
         </section>
         <section>
-          {/* {layeredTopWave2(
+          {layeredTopWave2(
             '190',
             '#dd3f31',
             '#ba2653',
             '#872961',
             '#502b5a',
             '#242440'
-          )} */}
+          )}
           <div className={styles.content}>
             <h1>Upload New Layouts</h1>
             <p>
@@ -123,13 +123,13 @@ const Home: NextPage = () => {
               </a>
             </Link>
           </div>
-          {/* {layeredBottomWave('400')} */}
+          {layeredBottomWave('400')}
         </section>
 
         <footer>
-          {/* {blob} */}
+          
 
-          <motion.svg
+          {/* <motion.svg
             id={styles.blobSvg}
             initial='start'
             animate='end'
@@ -152,7 +152,7 @@ const Home: NextPage = () => {
             <a href='https://github.com/oddgrd' target='_blank'>
               oddgrd <FaGithub />
             </a>
-          </div>
+          </div> */}
         </footer>
       </div>
     </div>
