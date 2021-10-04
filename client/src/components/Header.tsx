@@ -58,7 +58,7 @@ export const Header = () => {
     case '/boards/[id]':
       head = (
         <Link href='/boards'>
-          <a className={styles.logo}>
+          <a className={styles.title}>
             <strong>{boardData?.getBoard.title}</strong>
           </a>
         </Link>
@@ -75,7 +75,7 @@ export const Header = () => {
       break;
     case '/boards':
       head = (
-        <p className={styles.logo}>
+        <p className={styles.title}>
           <strong>Select Board</strong>
         </p>
       );
@@ -99,9 +99,9 @@ export const Header = () => {
         </li>
       );
       break;
-    case "/profile/[id]":
+    case '/profile/[id]':
       head = (
-      <button
+        <button
           className='btn btn-icon btn-animation'
           onClick={() => {
             router.back();

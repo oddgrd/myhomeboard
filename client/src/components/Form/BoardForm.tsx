@@ -57,7 +57,7 @@ export const BoardForm = ({}: Props) => {
           .required('Required')
       })}
       onSubmit={async (values: Values) => {
-        const { data } = await createBoard({
+        const { data, errors } = await createBoard({
           variables: {
             options: {
               ...values,
@@ -70,7 +70,7 @@ export const BoardForm = ({}: Props) => {
           }
         });
 
-        if (!data?.createBoard) {
+        if (!data?.createBoard || errors) {
           toast.error('Server Error');
           return;
         }

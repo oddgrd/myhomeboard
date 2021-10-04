@@ -64,14 +64,14 @@ export const ProblemForm = ({ coords, boardId, layoutUrl, angles }: Props) => {
           toast.error('Mark at least two holds!');
           return;
         }
-        const { data } = await createProblem({
+        const { data, errors } = await createProblem({
           variables: { options: values },
           update: (cache) => {
             cache.evict({ fieldName: 'getProblems' });
           }
         });
 
-        if (!data?.createProblem) {
+        if (!data?.createProblem || errors) {
           toast.error('Server Error');
           return;
         }

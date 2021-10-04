@@ -1,19 +1,19 @@
-import Image from "next/image";
-import { useRouter } from "next/router";
-import { Layout } from "../../components/Layout";
-import { Spinner } from "../../components/Spinner";
-import { useGetUserByIdQuery } from "../../generated/graphql";
-import withApollo from "../../utils/withApollo";
-import styles from "../../styles/Profile.module.scss";
-import { grades } from "../../utils/selectOptions";
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { Layout } from '../../components/Layout';
+import { Spinner } from '../../components/Spinner';
+import { useGetUserByIdQuery } from '../../generated/graphql';
+import withApollo from '../../utils/withApollo';
+import styles from '../../styles/Profile.module.scss';
+import { attempts, grades, ratings } from '../../utils/selectOptions';
 
 interface Props {}
 
 const Profile = ({}: Props) => {
   const router = useRouter();
-  const profileId = typeof router.query.id === "string" ? router.query.id : "";
+  const profileId = typeof router.query.id === 'string' ? router.query.id : '';
   const { data, loading } = useGetUserByIdQuery({
-    variables: { id: profileId },
+    variables: { id: profileId }
   });
   if (!data && loading) {
     return (
@@ -27,7 +27,7 @@ const Profile = ({}: Props) => {
       <Layout>
         <p>Profile not found</p>
         <button
-          className="btn"
+          className='btn'
           onClick={() => {
             router.back();
           }}
@@ -51,25 +51,68 @@ const Profile = ({}: Props) => {
     <Layout>
       <div className={styles.profile}>
         <section className={styles.head}>
-          <Image src={avatar ? avatar : ""} width={96} height={96} />
+          <div>
+            <Image src={avatar ? avatar : ''} width={62} height={62} />
+          </div>
+
           <h1>{name}</h1>
         </section>
+
         <section className={styles.snippets}>
-          <div>
-            <h3>Average Grade</h3>
-            <strong>
-              {ascents && grades[getAverage(ascents.map((a) => a.grade))].label}
-            </strong>
+          <h1>Performance</h1>
+          <div className={styles.content}>
+            <div>
+              <h3>Ascents</h3>
+              <strong>{ascents?.length}</strong>
+            </div>
+            <div>
+              <h3>Average Grade</h3>
+              <strong>
+                {ascents &&
+                  grades[getAverage(ascents.map((a) => a.grade))].label}
+              </strong>
+            </div>
+            <div>
+              <h3>Average Attempts</h3>
+              <strong>
+                {ascents &&
+                  attempts[getAverage(ascents.map((a) => a.attempts))].label}
+              </strong>
+            </div>
           </div>
-          <div className={styles.group}>
+        </section>
+        <section className={styles.snippets}>
+          <h1>{name}'s Problems</h1>
+          <div className={styles.content}>
             <div>
               <h3>Problems</h3>
               <strong>{problems?.length}</strong>
             </div>
-
             <div>
-              <h3>Ascents</h3>
-              <strong>{ascents?.length}</strong>
+              <h3>Average Grade</h3>
+              <strong>
+                {problems &&
+                  grades[
+                    getAverage(
+                      problems
+                        .filter((p) => typeof p.consensusGrade === 'number')
+                        .map((p) => p.consensusGrade as number)
+                    )
+                  ].label}
+              </strong>
+            </div>
+            <div>
+              <h3>Average Rating</h3>
+              <strong>
+                {problems &&
+                  ratings[
+                    getAverage(
+                      problems
+                        .filter((p) => typeof p.consensusRating === 'number')
+                        .map((p) => p.consensusRating as number)
+                    )
+                  ].label}
+              </strong>
             </div>
           </div>
         </section>
