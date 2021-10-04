@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?> <!-- Created with Vectornator for iOS (http://vectornator.io/) --><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg height="100%" style="fill-rule:nonzero;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="100%" xmlns:vectornator="http://vectornator.io" version="1.1" viewBox="0 0 1526 1526">
+<metadata>
+<vectornator:setting key="DimensionsVisible" value="1"/>
+<vectornator:setting key="PencilOnly" value="1"/>
+<vectornator:setting key="SnapToPoints" value="0"/>
+<vectornator:setting key="OutlineMode" value="0"/>
+<vectornator:setting key="CMYKEnabledKey" value="1"/>
+<vectornator:setting key="RulersVisible" value="1"/>
+<vectornator:setting key="SnapToEdges" value="0"/>
+<vectornator:setting key="GuidesVisible" value="1"/>
+<vectornator:setting key="DisplayWhiteBackground" value="0"/>
+<vectornator:setting key="doHistoryDisabled" value="0"/>
+<vectornator:setting key="SnapToGuides" value="1"/>
+<vectornator:setting key="TimeLapseWatermarkDisabled" value="0"/>
+<vectornator:setting key="Units" value="Points"/>
+<vectornator:setting key="DynamicGuides" value="0"/>
+<vectornator:setting key="IsolateActiveLayer" value="0"/>
+<vectornator:setting key="SnapToGrid" value="0"/>
+</metadata>
+<defs/>
+<g id="'" vectornator:layerName="'">
+<path d="M10.7005+759.379C10.7005+345.185+346.487+9.41345+760.7+9.41345C1174.91+9.41345+1510.7+345.185+1510.7+759.379C1510.7+1173.57+1174.91+1509.35+760.7+1509.35C346.487+1509.35+10.7005+1173.57+10.7005+759.379Z" fill-rule="evenodd" fill="#e9c46a" opacity="1"/>
+</g>
+<g id="Layer 3" vectornator:layerName="Layer 3">
+<path d="M329.605+158.276L1194.51+159.519L1193.62+1355.14L329.605+158.276Z" fill-rule="evenodd" fill="#000000" opacity="1"/>
+</g>
+<g id="layer" vectornator:layerName="layer">
+<path stroke="#000000" stroke-width="9.23953" d="M382.306+512.746L339.348+537.377L319.309+564.495L317.536+594.304L335.199+615.939L375.649+631.503L384.724+643.212L382.053+686.022L412.306+728.149L439.382+751.493L469.08+770.667L521.806+859.605L545.835+843.748L579.441+889.013L637.381+891.042L691.534+920.364L748.785+932.88L774.007+974.377L812.027+1013.18L881.737+1078.79L887.701+1073.95L899.995+1089.21L907.762+1112.81L927.755+1116.14L953.284+1103.1L976.588+1091.28L1006.99+1082.3L1020.09+1070.15L1009.88+1056.09L982.943+1060.97L940.591+1062.52L920.488+1056.5L897.005+1034.66L866.781+990.089L827.072+932.847L798.772+878.428L739.703+848.869L675.603+804.122L686.656+786.912L688.912+765.609L719.968+812.957L745.403+852.432L779.505+869.027L821.471+839.919L802.08+823.32L776.915+828.14L761.005+798.576L731.785+746.219L712.777+691.72L696.369+670.264L656.556+692.982L612.957+748.476L599.686+738.533L572.034+696.31L535.433+659.901L555.244+651.449L565.915+628.349L574.558+598.556L573.296+577.368L573.757+543.904L579.453+535.566L586.812+507.719L598.728+496.096L576.048+486.65L560.636+501.528L556.123+535.375L540.711+585.285L523.118+620.891L484.911+631.562L463.226+623.416L459.669+601.922L465.329+568.228L462.356+535.164L462.919+511.855L465.864+476.631L453.698+424.422L440.68+365.696L450.633+337.497L442.253+319.403L441.524+310.009L424.121+307.34L422.596+320.368L419.381+344.051L417.436+355.661L417.421+377.072L415.16+431.839L410.327+471.347L413.764+510.595L415.565+536.239L409.362+530.78L410.563+523.17L403.207+520.391L382.306+512.746Z" fill="#000000" stroke-linecap="round" opacity="1" stroke-linejoin="round"/>
+</g>
+</svg>

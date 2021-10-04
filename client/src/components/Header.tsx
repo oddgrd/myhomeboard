@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { FaArrowLeft, FaBars, FaPlusSquare } from 'react-icons/fa';
-import logo from '../../public/Logo-klatreapp.svg';
+import logo from '../images/Logo-simple.svg';
 import { useGetBoardQuery, useMeQuery } from '../generated/graphql';
 import styles from '../styles/Header.module.scss';
 import { DropdownMenu } from './DropdownMenu';
