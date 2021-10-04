@@ -1,4 +1,5 @@
 .profile {
+    position: relative;
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -10,31 +11,46 @@
     
 }
 .head {
-    height: 30vh;
-    margin-top: 5vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 20vh;
+    min-height: 150px;
+    color: var(--theme-color);
+    margin-top: 4vh;
     img {
         border-radius: 50%;
+       
     }
+    
+    border-bottom: 1px solid var(--theme-color);
 }
 .snippets {
     width: 60%;
-    height: 10vh;
+    height: 15vh;
+    margin-top: 10vh;
+    gap: 1rem;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
     text-align: center;
+    h3 {
+        color: var(--theme-color);
+    }
+    strong {
+        font-size: 22px;
+    }
 }
-.content {
-    min-height: 50vh;
-    width: 60%;
+.group {
+    display: flex;
+    gap: 1rem;
 }
+
 
 @media (max-width: 700px) {
     .snippets {
         width: 90%;
     }
-    .content {
-        width: 90%;
-    }
+
   }

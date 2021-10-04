@@ -1,20 +1,19 @@
-import Image from 'next/image';
-import { useRouter } from 'next/router';
-import { Layout } from '../../components/Layout';
-import { Spinner } from '../../components/Spinner';
-import { useGetUserByIdQuery } from '../../generated/graphql';
-import withApollo from '../../utils/withApollo';
-import styles from '../../styles/Profile.module.scss';
-import Head from 'next/head';
-import { grades } from '../../utils/selectOptions';
+import Image from "next/image";
+import { useRouter } from "next/router";
+import { Layout } from "../../components/Layout";
+import { Spinner } from "../../components/Spinner";
+import { useGetUserByIdQuery } from "../../generated/graphql";
+import withApollo from "../../utils/withApollo";
+import styles from "../../styles/Profile.module.scss";
+import { grades } from "../../utils/selectOptions";
 
 interface Props {}
 
 const Profile = ({}: Props) => {
   const router = useRouter();
-  const profileId = typeof router.query.id === 'string' ? router.query.id : '';
+  const profileId = typeof router.query.id === "string" ? router.query.id : "";
   const { data, loading } = useGetUserByIdQuery({
-    variables: { id: profileId }
+    variables: { id: profileId },
   });
   if (!data && loading) {
     return (
@@ -28,7 +27,7 @@ const Profile = ({}: Props) => {
       <Layout>
         <p>Profile not found</p>
         <button
-          className='btn'
+          className="btn"
           onClick={() => {
             router.back();
           }}
@@ -49,36 +48,33 @@ const Profile = ({}: Props) => {
   };
 
   return (
-    <div>
-      <Head>
-        <title>Profile</title>
-        <link rel='icon' href='/favicon.png' />
-      </Head>
+    <Layout>
       <div className={styles.profile}>
         <section className={styles.head}>
-          <Image src={avatar ? avatar : ''} width={96} height={96} />
+          <Image src={avatar ? avatar : ""} width={96} height={96} />
           <h1>{name}</h1>
         </section>
         <section className={styles.snippets}>
           <div>
-            <h3>Problems</h3>
-            <h3>{problems?.length}</h3>
-          </div>
-          <div>
-            <h3>Ascents</h3>
-            <h3>{ascents?.length}</h3>
-          </div>
-          <div>
             <h3>Average Grade</h3>
-            <h3>
+            <strong>
               {ascents && grades[getAverage(ascents.map((a) => a.grade))].label}
-            </h3>
+            </strong>
+          </div>
+          <div className={styles.group}>
+            <div>
+              <h3>Problems</h3>
+              <strong>{problems?.length}</strong>
+            </div>
+
+            <div>
+              <h3>Ascents</h3>
+              <strong>{ascents?.length}</strong>
+            </div>
           </div>
         </section>
-        <section className={styles.content}>Content</section>
-        <h3>Page under construction...</h3>
       </div>
-    </div>
+    </Layout>
   );
 };
 

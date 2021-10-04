@@ -99,6 +99,18 @@ export const Header = () => {
         </li>
       );
       break;
+    case "/profile/[id]":
+      head = (
+      <button
+          className='btn btn-icon btn-animation'
+          onClick={() => {
+            router.back();
+          }}
+        >
+          <FaArrowLeft size={38} />
+        </button>
+      );
+      break;
     default:
       dynamicNav = null;
   }
