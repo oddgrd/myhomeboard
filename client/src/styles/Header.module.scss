@@ -40,7 +40,7 @@
   display: flex;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 700px) {
   .container {
     border-bottom: none;
   }
@@ -48,6 +48,8 @@
     height: 74px;
   }
   .logo {
+    margin-left: 12px;
+    margin-top: 14px;
     strong {
       font-size: 24px;
     }
