@@ -7,6 +7,7 @@ import {
 } from '../../generated/graphql';
 import styles from '../../styles/AscentForm.module.scss';
 import { grades } from '../../utils/selectOptions';
+import { toErrorMap } from '../../utils/toErrorMap';
 import { Inputfield } from './Inputfield';
 import { SelectField } from './SelectField';
 
@@ -61,17 +62,17 @@ export const EditProblemForm = ({
         grade: Yup.number().required('Required'),
         angle: Yup.number().required('Required')
       })}
-      onSubmit={async (values: Values) => {
-        const { errors } = await editProblem({
+      onSubmit={async (values: Values, { setErrors }) => {
+        const response = await editProblem({
           variables: { options: { ...values, problemId: id } },
           update: (cache) => {
             cache.evict({ id: 'Problem:' + id });
           }
         });
-        if (errors) {
-          toast.error(errors[0].message);
-        }
-        if (!errors) {
+
+        if (response.data?.editProblem.errors) {
+          setErrors(toErrorMap(response.data.editProblem.errors));
+        } else if (response.data?.editProblem.problem) {
           toast.success('Problem edited 🔧');
           onClose();
         }

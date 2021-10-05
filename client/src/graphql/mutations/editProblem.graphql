@@ -1,0 +1,10 @@
+mutation EditProblem($options: EditProblemInput!) {
+  editProblem(options: $options) {
+    problem {
+      id
+    }
+    errors {
+      ...RegularError
+    }
+  }
+}

@@ -69,6 +69,12 @@ export type BoardInput = {
   country: Scalars['String'];
 };
 
+export type BoardResponse = {
+  __typename?: 'BoardResponse';
+  errors?: Maybe<Array<FieldError>>;
+  board?: Maybe<Board>;
+};
+
 export type Coordinates = {
   __typename?: 'Coordinates';
   x: Scalars['Int'];
@@ -118,6 +124,12 @@ export type EditProblemInput = {
   angle: Scalars['Int'];
 };
 
+export type FieldError = {
+  __typename?: 'FieldError';
+  field: Scalars['String'];
+  message: Scalars['String'];
+};
+
 export type Layout = {
   __typename?: 'Layout';
   id: Scalars['String'];
@@ -133,13 +145,13 @@ export type Layout = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createBoard: MutationResponse;
-  editBoard: Scalars['Boolean'];
+  createBoard: BoardResponse;
+  editBoard: BoardResponse;
   deleteBoard: Scalars['Boolean'];
   createLayout: Layout;
   deleteLayout: Scalars['Boolean'];
-  createProblem: MutationResponse;
-  editProblem: Scalars['Boolean'];
+  createProblem: ProblemResponse;
+  editProblem: ProblemResponse;
   deleteProblem: Scalars['Boolean'];
   addAscent: Scalars['Boolean'];
   editAscent: Scalars['Boolean'];
@@ -206,12 +218,6 @@ export type MutationDeleteAscentArgs = {
   problemId: Scalars['String'];
 };
 
-export enum MutationResponse {
-  Success = 'SUCCESS',
-  Duplicate = 'DUPLICATE',
-  Error = 'ERROR'
-}
-
 export type PaginatedProblems = {
   __typename?: 'PaginatedProblems';
   problems: Array<Problem>;
@@ -239,6 +245,12 @@ export type Problem = {
   consensusGrade?: Maybe<Scalars['Int']>;
   consensusRating?: Maybe<Scalars['Int']>;
   sendStatus?: Maybe<Scalars['Boolean']>;
+};
+
+export type ProblemResponse = {
+  __typename?: 'ProblemResponse';
+  errors?: Maybe<Array<FieldError>>;
+  problem?: Maybe<Problem>;
 };
 
 export type Query = {
@@ -295,6 +307,8 @@ export type User = {
   updatedAt: Scalars['String'];
 };
 
+export type RegularErrorFragment = { __typename?: 'FieldError', field: string, message: string };
+
 export type BoardCoreFragment = { __typename?: 'Board', id: string, creatorId: string, title: string, description: string, adjustable: boolean, angles: Array<number>, city: string, country: string, currentLayout?: Maybe<{ __typename?: 'Layout', id: string, title: string, url: string, createdAt: string }> };
 
 export type LayoutCoreFragment = { __typename?: 'Layout', id: string, title: string, description: string, url: string, creatorId: string, boardId: string, createdAt: string };
@@ -313,7 +327,7 @@ export type CreateBoardMutationVariables = Exact<{
 }>;
 
 
-export type CreateBoardMutation = { __typename?: 'Mutation', createBoard: MutationResponse };
+export type CreateBoardMutation = { __typename?: 'Mutation', createBoard: { __typename?: 'BoardResponse', board?: Maybe<{ __typename?: 'Board', id: string }>, errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>> } };
 
 export type CreateLayoutMutationVariables = Exact<{
   file: Scalars['Upload'];
@@ -330,7 +344,7 @@ export type CreateProblemMutationVariables = Exact<{
 }>;
 
 
-export type CreateProblemMutation = { __typename?: 'Mutation', createProblem: MutationResponse };
+export type CreateProblemMutation = { __typename?: 'Mutation', createProblem: { __typename?: 'ProblemResponse', problem?: Maybe<{ __typename?: 'Problem', id: string }>, errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>> } };
 
 export type DeleteAscentMutationVariables = Exact<{
   problemId: Scalars['String'];
@@ -373,19 +387,19 @@ export type EditBoardMutationVariables = Exact<{
 }>;
 
 
-export type EditBoardMutation = { __typename?: 'Mutation', editBoard: boolean };
-
-export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
-
-
-export type LogoutMutation = { __typename?: 'Mutation', logout: boolean };
+export type EditBoardMutation = { __typename?: 'Mutation', editBoard: { __typename?: 'BoardResponse', board?: Maybe<{ __typename?: 'Board', id: string }>, errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>> } };
 
 export type EditProblemMutationVariables = Exact<{
   options: EditProblemInput;
 }>;
 
 
-export type EditProblemMutation = { __typename?: 'Mutation', editProblem: boolean };
+export type EditProblemMutation = { __typename?: 'Mutation', editProblem: { __typename?: 'ProblemResponse', problem?: Maybe<{ __typename?: 'Problem', id: string }>, errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>> } };
+
+export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type LogoutMutation = { __typename?: 'Mutation', logout: boolean };
 
 export type GetBoardQueryVariables = Exact<{
   boardId: Scalars['String'];
@@ -434,6 +448,12 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type MeQuery = { __typename?: 'Query', me?: Maybe<{ __typename?: 'User', id: string, name: string, email: string, avatar?: Maybe<string>, createdAt: string, updatedAt: string }> };
 
+export const RegularErrorFragmentDoc = gql`
+    fragment RegularError on FieldError {
+  field
+  message
+}
+    `;
 export const BoardCoreFragmentDoc = gql`
     fragment BoardCore on Board {
   id
@@ -520,9 +540,16 @@ export type AddAscentMutationResult = Apollo.MutationResult<AddAscentMutation>;
 export type AddAscentMutationOptions = Apollo.BaseMutationOptions<AddAscentMutation, AddAscentMutationVariables>;
 export const CreateBoardDocument = gql`
     mutation CreateBoard($options: BoardInput!) {
-  createBoard(options: $options)
+  createBoard(options: $options) {
+    board {
+      id
+    }
+    errors {
+      ...RegularError
+    }
+  }
 }
-    `;
+    ${RegularErrorFragmentDoc}`;
 export type CreateBoardMutationFn = Apollo.MutationFunction<CreateBoardMutation, CreateBoardMutationVariables>;
 
 /**
@@ -596,9 +623,16 @@ export type CreateLayoutMutationResult = Apollo.MutationResult<CreateLayoutMutat
 export type CreateLayoutMutationOptions = Apollo.BaseMutationOptions<CreateLayoutMutation, CreateLayoutMutationVariables>;
 export const CreateProblemDocument = gql`
     mutation CreateProblem($options: CreateProblemInput!) {
-  createProblem(options: $options)
+  createProblem(options: $options) {
+    problem {
+      id
+    }
+    errors {
+      ...RegularError
+    }
+  }
 }
-    `;
+    ${RegularErrorFragmentDoc}`;
 export type CreateProblemMutationFn = Apollo.MutationFunction<CreateProblemMutation, CreateProblemMutationVariables>;
 
 /**
@@ -783,9 +817,16 @@ export type EditAscentMutationResult = Apollo.MutationResult<EditAscentMutation>
 export type EditAscentMutationOptions = Apollo.BaseMutationOptions<EditAscentMutation, EditAscentMutationVariables>;
 export const EditBoardDocument = gql`
     mutation EditBoard($options: EditBoardInput!) {
-  editBoard(options: $options)
+  editBoard(options: $options) {
+    board {
+      id
+    }
+    errors {
+      ...RegularError
+    }
+  }
 }
-    `;
+    ${RegularErrorFragmentDoc}`;
 export type EditBoardMutationFn = Apollo.MutationFunction<EditBoardMutation, EditBoardMutationVariables>;
 
 /**
@@ -812,6 +853,44 @@ export function useEditBoardMutation(baseOptions?: Apollo.MutationHookOptions<Ed
 export type EditBoardMutationHookResult = ReturnType<typeof useEditBoardMutation>;
 export type EditBoardMutationResult = Apollo.MutationResult<EditBoardMutation>;
 export type EditBoardMutationOptions = Apollo.BaseMutationOptions<EditBoardMutation, EditBoardMutationVariables>;
+export const EditProblemDocument = gql`
+    mutation EditProblem($options: EditProblemInput!) {
+  editProblem(options: $options) {
+    problem {
+      id
+    }
+    errors {
+      ...RegularError
+    }
+  }
+}
+    ${RegularErrorFragmentDoc}`;
+export type EditProblemMutationFn = Apollo.MutationFunction<EditProblemMutation, EditProblemMutationVariables>;
+
+/**
+ * __useEditProblemMutation__
+ *
+ * To run a mutation, you first call `useEditProblemMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditProblemMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editProblemMutation, { data, loading, error }] = useEditProblemMutation({
+ *   variables: {
+ *      options: // value for 'options'
+ *   },
+ * });
+ */
+export function useEditProblemMutation(baseOptions?: Apollo.MutationHookOptions<EditProblemMutation, EditProblemMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<EditProblemMutation, EditProblemMutationVariables>(EditProblemDocument, options);
+      }
+export type EditProblemMutationHookResult = ReturnType<typeof useEditProblemMutation>;
+export type EditProblemMutationResult = Apollo.MutationResult<EditProblemMutation>;
+export type EditProblemMutationOptions = Apollo.BaseMutationOptions<EditProblemMutation, EditProblemMutationVariables>;
 export const LogoutDocument = gql`
     mutation Logout {
   logout
@@ -842,37 +921,6 @@ export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<Logou
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
-export const EditProblemDocument = gql`
-    mutation EditProblem($options: EditProblemInput!) {
-  editProblem(options: $options)
-}
-    `;
-export type EditProblemMutationFn = Apollo.MutationFunction<EditProblemMutation, EditProblemMutationVariables>;
-
-/**
- * __useEditProblemMutation__
- *
- * To run a mutation, you first call `useEditProblemMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useEditProblemMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [editProblemMutation, { data, loading, error }] = useEditProblemMutation({
- *   variables: {
- *      options: // value for 'options'
- *   },
- * });
- */
-export function useEditProblemMutation(baseOptions?: Apollo.MutationHookOptions<EditProblemMutation, EditProblemMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<EditProblemMutation, EditProblemMutationVariables>(EditProblemDocument, options);
-      }
-export type EditProblemMutationHookResult = ReturnType<typeof useEditProblemMutation>;
-export type EditProblemMutationResult = Apollo.MutationResult<EditProblemMutation>;
-export type EditProblemMutationOptions = Apollo.BaseMutationOptions<EditProblemMutation, EditProblemMutationVariables>;
 export const GetBoardDocument = gql`
     query getBoard($boardId: String!) {
   getBoard(boardId: $boardId) {

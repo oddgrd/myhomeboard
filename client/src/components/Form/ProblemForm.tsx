@@ -12,6 +12,7 @@ import { grades } from '../../utils/selectOptions';
 import { Inputfield } from './Inputfield';
 import { SelectField } from './SelectField';
 import { toast } from 'react-toastify';
+import { toErrorMap } from '../../utils/toErrorMap';
 
 interface Props {
   coords?: CoordinatesInput[];
@@ -59,35 +60,23 @@ export const ProblemForm = ({ coords, boardId, layoutUrl, angles }: Props) => {
         grade: Yup.number().required('Required'),
         angle: Yup.number().required('Required')
       })}
-      onSubmit={async (values: Values) => {
+      onSubmit={async (values: Values, { setErrors }) => {
         if (!coords || coords.length < 2) {
           toast.error('Mark at least two holds!');
           return;
         }
-        const { data, errors } = await createProblem({
+        const response = await createProblem({
           variables: { options: values },
           update: (cache) => {
             cache.evict({ fieldName: 'getProblems' });
           }
         });
 
-        if (!data?.createProblem || errors) {
-          toast.error('Server Error');
-          return;
-        }
-        switch (data.createProblem) {
-          case 'SUCCESS':
-            toast.success(`Problem created 🧗`);
-            router.push(`/boards/${boardId}`);
-            break;
-          case 'DUPLICATE':
-            toast.error('Title already exists');
-            break;
-          case 'ERROR':
-            toast.error('Something went wrong');
-            break;
-          default:
-            return;
+        if (response.data?.createProblem.errors) {
+          setErrors(toErrorMap(response.data.createProblem.errors));
+        } else if (response.data?.createProblem.problem) {
+          toast.success(`Problem created  🧗`);
+          router.push(`/boards/${boardId}`);
         }
       }}
     >

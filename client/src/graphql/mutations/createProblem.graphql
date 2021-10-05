@@ -1,3 +1,10 @@
 mutation CreateProblem($options: CreateProblemInput!) {
-  createProblem(options: $options)
+  createProblem(options: $options) {
+    problem {
+      id
+    }
+    errors {
+      ...RegularError
+    }
+  }
 }

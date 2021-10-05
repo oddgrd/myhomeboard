@@ -1,3 +1,10 @@
 mutation EditBoard($options: EditBoardInput!) {
-    editBoard(options: $options)
+  editBoard(options: $options) {
+    board {
+      id
+    }
+    errors {
+      ...RegularError
+    }
+  }
 }
