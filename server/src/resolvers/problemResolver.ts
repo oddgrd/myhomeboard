@@ -16,7 +16,7 @@ import {
   PaginatedProblems,
   EditProblemInput,
   EditAscentInput,
-  MutationResponse
+  ProblemResponse
 } from '../types/problem';
 import { Problem } from '../entities/Problem';
 import { Context } from '../types/context';
@@ -65,69 +65,78 @@ export class ProblemResolver {
   }
 
   // Create new problem
-  @Mutation(() => MutationResponse)
+  @Mutation(() => ProblemResponse)
   @UseMiddleware(isAuth)
   async createProblem(
     @Arg('options') options: CreateProblemInput,
     @Ctx() { req }: Context
-  ): Promise<MutationResponse> {
+  ): Promise<ProblemResponse> {
     const creatorId = req.session.passport?.user;
     const { title, rules, grade, coordinates, boardId, layoutUrl, angle } =
       options;
-
+    let problem;
     try {
-      await getConnection()
-        .query(
-          `
+      const result = await getConnection().query(
+        `
           INSERT INTO problem (title, rules, grade, coordinates, "creatorId", "boardId", "layoutUrl", angle)
-          VALUES ($1, $2, $3, $4::jsonb[], $5, $6, $7, $8);
+          VALUES ($1, $2, $3, $4::jsonb[], $5, $6, $7, $8)
+          RETURNING *;
         `,
-          [
-            title,
-            rules,
-            grade,
-            coordinates,
-            creatorId,
-            boardId,
-            layoutUrl,
-            angle
-          ]
-        )
-        .catch((error) => {
-          throw new Error(error.code);
-        });
+        [title, rules, grade, coordinates, creatorId, boardId, layoutUrl, angle]
+      );
+      problem = result[0];
     } catch (error) {
       // Catch duplicate title error. UNIQUE(title, boardId)
-      if (error.message === '23505') {
-        return MutationResponse.DUPLICATE;
-      } else {
-        return MutationResponse.ERROR;
+      if (error.code === '23505') {
+        return {
+          errors: [
+            {
+              field: 'title',
+              message: 'Title has to be unique'
+            }
+          ]
+        };
       }
     }
-    return MutationResponse.SUCCESS;
+    return { problem };
   }
 
   // Update problem info
-  @Mutation(() => Boolean)
+  @Mutation(() => ProblemResponse)
   @UseMiddleware(isAuth)
   async editProblem(
     @Arg('options') options: EditProblemInput,
     @Ctx() { req }: Context
-  ): Promise<boolean> {
+  ): Promise<ProblemResponse> {
     const { title, rules, grade, problemId, angle } = options;
+    let problem;
+    try {
+      const result = await getConnection()
+        .createQueryBuilder()
+        .update(Problem)
+        .set({ title, rules, grade, angle })
+        .where('id = :id and "creatorId" = :creatorId', {
+          id: problemId,
+          creatorId: req.session.passport?.user
+        })
+        .returning('*')
+        .execute();
+      problem = result.raw[0];
+    } catch (error) {
+      // Catch duplicate title error. UNIQUE(title, boardId)
+      if (error.code === '23505') {
+        return {
+          errors: [
+            {
+              field: 'title',
+              message: 'Title has to be unique'
+            }
+          ]
+        };
+      }
+    }
 
-    const result = await getConnection()
-      .createQueryBuilder()
-      .update(Problem)
-      .set({ title, rules, grade, angle })
-      .where('id = :id and "creatorId" = :creatorId', {
-        id: problemId,
-        creatorId: req.session.passport?.user
-      })
-      .execute();
-
-    if (result.affected === 0) return false;
-    return true;
+    return { problem };
   }
 
   // Delete problem by id and creatorId

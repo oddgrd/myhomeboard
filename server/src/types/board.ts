@@ -1,4 +1,6 @@
-import { Field, InputType, Int } from 'type-graphql';
+import { Board } from '../entities/Board';
+import { Field, InputType, Int, ObjectType } from 'type-graphql';
+import { FieldError } from './problem';
 
 @InputType()
 export class BoardInput {
@@ -25,4 +27,13 @@ export class BoardInput {
 export class EditBoardInput extends BoardInput {
   @Field()
   boardId: string;
+}
+
+@ObjectType()
+export class BoardResponse {
+  @Field(() => [FieldError], { nullable: true })
+  errors?: FieldError[];
+
+  @Field(() => Board, { nullable: true })
+  board?: Board;
 }
