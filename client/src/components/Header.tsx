@@ -23,7 +23,7 @@ export const Header = () => {
   let head = (
     <Link href='/'>
       <a className={styles.logo}>
-        <Image src={logo} alt='Covegg19 Logo' width={42} height={42} />
+        <Image src={logo} alt='Covegg19 Logo' width={42} height={42} priority={true}/>
         <strong className='hide'>myHomeBoard</strong>
       </a>
     </Link>
