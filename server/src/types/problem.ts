@@ -56,20 +56,22 @@ export class CreateProblemInput {
   coordinates: CoordinatesInput[];
 }
 
-export enum MutationResponse {
-  SUCCESS = 'SUCCESS',
-  DUPLICATE = 'DUPLICATE',
-  ERROR = 'ERROR'
+@ObjectType()
+export class FieldError {
+  @Field()
+  field: string;
+
+  @Field()
+  message: string;
 }
 
-// https://typegraphql.com/docs/0.16.0/enums.html
-registerEnumType(MutationResponse, {
-  name: 'MutationResponse'
-});
 @ObjectType()
-export class MutationResponseObject {
-  @Field(() => MutationResponse)
-  mutationResponse: MutationResponse;
+export class ProblemResponse {
+  @Field(() => [FieldError], { nullable: true })
+  errors?: FieldError[];
+
+  @Field(() => Problem, { nullable: true })
+  problem?: Problem;
 }
 
 @InputType()

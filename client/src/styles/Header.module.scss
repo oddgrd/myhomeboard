@@ -36,14 +36,15 @@
     color: var(--theme-color);
   }
 }
+.title {
+  font-size: 28px;
+  color: var(--theme-color);
+}
 .switch {
   display: flex;
 }
 
 @media (max-width: 700px) {
-  .container {
-    border-bottom: none;
-  }
   .header {
     height: 74px;
   }
@@ -57,5 +58,8 @@
     img {
       width: 60px;
     }
+  }
+  .title {
+    font-size: 24px;
   }
 }

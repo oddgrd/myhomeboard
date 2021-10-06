@@ -6,6 +6,7 @@ import { useCreateBoardMutation } from '../../generated/graphql';
 import router from 'next/router';
 import { Inputfield } from './Inputfield';
 import { toast } from 'react-toastify';
+import { toErrorMap } from '../../utils/toErrorMap';
 
 interface Props {}
 interface Values {
@@ -56,8 +57,8 @@ export const BoardForm = ({}: Props) => {
           )
           .required('Required')
       })}
-      onSubmit={async (values: Values) => {
-        const { data } = await createBoard({
+      onSubmit={async (values: Values, { setErrors }) => {
+        const response = await createBoard({
           variables: {
             options: {
               ...values,
@@ -69,24 +70,11 @@ export const BoardForm = ({}: Props) => {
             cache.evict({ fieldName: 'getBoards' });
           }
         });
-
-        if (!data?.createBoard) {
-          toast.error('Server Error');
-          return;
-        }
-        switch (data.createBoard) {
-          case 'SUCCESS':
-            toast.success('Board Created!');
-            router.push(`/boards`);
-            break;
-          case 'DUPLICATE':
-            toast.error('Title already exists');
-            break;
-          case 'ERROR':
-            toast.error('Something went wrong');
-            break;
-          default:
-            return;
+        if (response.data?.createBoard.errors) {
+          setErrors(toErrorMap(response.data.createBoard.errors));
+        } else if (response.data?.createBoard.board) {
+          toast.success('Board created');
+          router.push('/boards');
         }
       }}
     >

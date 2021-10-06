@@ -11,25 +11,25 @@ import {
 import { isAuth } from '../middleware/isAuth';
 import { Context } from 'src/types/context';
 import { Board } from '../entities/Board';
-import { BoardInput, EditBoardInput } from '../types/board';
+import { BoardInput, BoardResponse, EditBoardInput } from '../types/board';
 import { Layout } from '../entities/Layout';
 import { getConnection } from 'typeorm';
-import { MutationResponse } from '../types/problem';
 
 @Resolver(Board)
 export class BoardResolver {
   // Create new Board
   // PRIVATE
-  @Mutation(() => MutationResponse)
+  @Mutation(() => BoardResponse)
   @UseMiddleware(isAuth)
   async createBoard(
     @Arg('options') options: BoardInput,
     @Ctx() { req }: Context
-  ): Promise<MutationResponse> {
+  ): Promise<BoardResponse> {
     const creatorId = req.session.passport?.user;
     const { title, description, adjustable, angles, city, country } = options;
+    let board;
     try {
-      await Board.create({
+      board = await Board.create({
         title,
         description,
         adjustable,
@@ -37,25 +37,26 @@ export class BoardResolver {
         creatorId,
         city,
         country
-      })
-        .save()
-        .catch((error) => {
-          throw new Error(error.code);
-        });
+      }).save();
     } catch (error) {
       // Catch duplicate title error
-      if (error.message === '23505') {
-        return MutationResponse.DUPLICATE;
-      } else {
-        return MutationResponse.ERROR;
+      if (error.code === '23505') {
+        return {
+          errors: [
+            {
+              field: 'title',
+              message: 'Title has to be unique'
+            }
+          ]
+        };
       }
     }
-    return MutationResponse.SUCCESS;
+    return { board };
   }
 
   // Edit Board
   // PRIVATE
-  @Mutation(() => Boolean)
+  @Mutation(() => BoardResponse)
   @UseMiddleware(isAuth)
   async editBoard(
     @Arg('options') options: EditBoardInput,
@@ -64,19 +65,33 @@ export class BoardResolver {
     const creatorId = req.session.passport?.user;
     const { title, description, adjustable, angles, boardId, city, country } =
       options;
+    let board;
+    try {
+      const result = await getConnection()
+        .createQueryBuilder()
+        .update(Board)
+        .set({ title, angles, adjustable, description, city, country })
+        .where('id = :id and "creatorId" = :creatorId', {
+          id: boardId,
+          creatorId
+        })
+        .returning('*')
+        .execute();
+      board = result.raw[0];
+    } catch (error) {
+      if (error.code === '23505') {
+        return {
+          errors: [
+            {
+              field: 'title',
+              message: 'Title has to be unique'
+            }
+          ]
+        };
+      }
+    }
 
-    const result = await getConnection()
-      .createQueryBuilder()
-      .update(Board)
-      .set({ title, angles, adjustable, description, city, country })
-      .where('id = :id and "creatorId" = :creatorId', {
-        id: boardId,
-        creatorId
-      })
-      .execute();
-
-    if (result.affected === 0) return false;
-    return true;
+    return { board };
   }
 
   // Get current layout

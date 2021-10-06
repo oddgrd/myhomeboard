@@ -1,3 +1,0 @@
-mutation EditProblem($options: EditProblemInput!) {
-  editProblem(options: $options)
-}

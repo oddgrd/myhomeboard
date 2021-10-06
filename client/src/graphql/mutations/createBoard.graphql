@@ -1,3 +1,10 @@
 mutation CreateBoard($options: BoardInput!) {
-  createBoard(options: $options)
+  createBoard(options: $options) {
+    board {
+      id
+    }
+    errors {
+      ...RegularError
+    }
+  }
 }
