@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { FaArrowLeft, FaBars, FaPlusSquare } from 'react-icons/fa';
-import logo from '../images/Logo-simple.svg';
+import logo from '../../public/Logo-simple.svg';
 import { useGetBoardQuery, useMeQuery } from '../generated/graphql';
 import styles from '../styles/Header.module.scss';
 import { DropdownMenu } from './DropdownMenu';
@@ -80,25 +80,25 @@ export const Header = () => {
         </p>
       );
       break;
-    case '/':
-      dynamicNav = !data?.me ? (
-        <li>
-          <Link href={`/login`}>
-            <a className='btn btn-link'>
-              <strong>GET STARTED</strong>
-            </a>
-          </Link>
-        </li>
-      ) : (
-        <li>
-          <Link href={'/boards'}>
-            <a className='btn btn-link'>
-              <strong>BOARDS</strong>
-            </a>
-          </Link>
-        </li>
-      );
-      break;
+    // case '/':
+    //   dynamicNav = !data?.me ? (
+    //     <li>
+    //       <Link href={`/login`}>
+    //         <a className='btn btn-link'>
+    //           <strong>GET STARTED</strong>
+    //         </a>
+    //       </Link>
+    //     </li>
+    //   ) : (
+    //     <li>
+    //       <Link href={'/boards'}>
+    //         <a className='btn btn-link'>
+    //           <strong>BOARDS</strong>
+    //         </a>
+    //       </Link>
+    //     </li>
+    //   );
+    //   break;
     case '/profile/[id]':
       head = (
         <button
