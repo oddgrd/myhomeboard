@@ -40,6 +40,7 @@ const Profile = ({}: Props) => {
   const { name, avatar, createdAt, problems, ascents } = data.getUserById;
 
   const getAverage = (values: number[]) => {
+    if (values.length === 0) return 0;
     const sum = values.reduce((acc, val) => {
       return acc + val;
     });
