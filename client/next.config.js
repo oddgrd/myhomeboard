@@ -29,7 +29,7 @@ const securityHeaders = [
   {
     key: "Content-Security-Policy",
     value:
-      "default-src 'self' *.myhomeboard.no; connect-src 'self' *.myhomeboard.no vitals.vercel-insights.com; img-src 'self' lh3.googleusercontent.com res.cloudinary.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;",
+      "default-src 'self' *.myhomeboard.no; connect-src 'self' *.myhomeboard.no vitals.vercel-insights.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' lh3.googleusercontent.com res.cloudinary.com data: https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;",
   },
 ];
 
