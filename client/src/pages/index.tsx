@@ -3,7 +3,6 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 import { FaGithub } from 'react-icons/fa';
-import { Header } from '../components/Header';
 import { useCurves } from '../hooks/useCurves';
 import styles from '../styles/Landing.module.scss';
 import withApollo from '../utils/withApollo';
@@ -31,7 +30,7 @@ const Home: NextPage = () => {
         />
         <link rel='icon' href='/favicon.png' />
       </Head>
-      <Header />
+      {/* <Header /> */}
       <div className={styles.body}>
         <section className='yellow'>
           {layeredTopWave(
