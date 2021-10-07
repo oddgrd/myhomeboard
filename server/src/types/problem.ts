@@ -1,11 +1,5 @@
 import { Problem } from '../entities/Problem';
-import {
-  InputType,
-  Field,
-  Int,
-  ObjectType,
-  registerEnumType
-} from 'type-graphql';
+import { InputType, Field, Int, ObjectType } from 'type-graphql';
 
 @ObjectType()
 export class Coordinates {

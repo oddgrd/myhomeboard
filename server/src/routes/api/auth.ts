@@ -24,17 +24,9 @@ router.get(
 router.get(
   '/google/callback',
   passport.authenticate('google', {
-    successRedirect: redirectUrl,
-    failureRedirect: redirectUrl + "/login"
+    successRedirect: redirectUrl + '/boards',
+    failureRedirect: redirectUrl + '/login'
   })
 );
-
-// @route    GET api/auth/logout
-// @desc     Log out
-// @access   Private
-router.get('/logout', (req, res) => {
-  req.logout();
-  res.redirect(redirectUrl);
-});
 
 export = router;

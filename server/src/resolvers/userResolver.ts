@@ -2,6 +2,7 @@ import { User } from '../entities/User';
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 import { Context } from '../types/context';
 import { getConnection } from 'typeorm';
+import { __prod__ } from '../constants';
 
 @Resolver(User)
 export class UserResolver {
@@ -49,7 +50,9 @@ export class UserResolver {
           resolve(false);
           return;
         }
-        res.clearCookie('mhb');
+        res.clearCookie('mhb', {
+          domain: __prod__ ? '.myhomeboard.no' : undefined
+        });
         resolve(true);
       })
     );
