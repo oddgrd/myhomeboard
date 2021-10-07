@@ -5,19 +5,18 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { FaArrowLeft, FaBars, FaPlusSquare } from 'react-icons/fa';
 import logo from '../../public/Logo-simple.svg';
-import { useGetBoardQuery, useMeQuery } from '../generated/graphql';
+import { useGetBoardQuery } from '../generated/graphql';
 import styles from '../styles/Header.module.scss';
 import { DropdownMenu } from './DropdownMenu';
 import { Modal } from './Modal/Modal';
 
 export const Header = () => {
   const [menuModal, toggleMenuModal] = useState(false);
-  const { data } = useMeQuery();
   const router = useRouter();
   const boardId = typeof router.query.id === 'string' ? router.query.id : '';
   const { data: boardData } = useGetBoardQuery({
     variables: { boardId },
-    skip: boardId.length === 0
+    skip: router.pathname !== "/boards/[id]"
   });
 
   let head = (
@@ -80,25 +79,6 @@ export const Header = () => {
         </p>
       );
       break;
-    // case '/':
-    //   dynamicNav = !data?.me ? (
-    //     <li>
-    //       <Link href={`/login`}>
-    //         <a className='btn btn-link'>
-    //           <strong>GET STARTED</strong>
-    //         </a>
-    //       </Link>
-    //     </li>
-    //   ) : (
-    //     <li>
-    //       <Link href={'/boards'}>
-    //         <a className='btn btn-link'>
-    //           <strong>BOARDS</strong>
-    //         </a>
-    //       </Link>
-    //     </li>
-    //   );
-    //   break;
     case '/profile/[id]':
       head = (
         <button

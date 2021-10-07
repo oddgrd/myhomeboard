@@ -1,19 +1,18 @@
-import Image from 'next/image';
-import { useRouter } from 'next/router';
-import { Layout } from '../../components/Layout';
-import { Spinner } from '../../components/Spinner';
-import { useGetUserByIdQuery } from '../../generated/graphql';
-import withApollo from '../../utils/withApollo';
-import styles from '../../styles/Profile.module.scss';
-import { attempts, grades, ratings } from '../../utils/selectOptions';
+import Image from "next/image";
+import { useRouter } from "next/router";
+import { Layout } from "../../components/Layout";
+import { Spinner } from "../../components/Spinner";
+import { useGetUserByIdQuery } from "../../generated/graphql";
+import withApollo from "../../utils/withApollo";
+import styles from "../../styles/Profile.module.scss";
+import { attempts, grades, ratings } from "../../utils/selectOptions";
 
-interface Props {}
-
-const Profile = ({}: Props) => {
+const Profile = () => {
   const router = useRouter();
-  const profileId = typeof router.query.id === 'string' ? router.query.id : '';
+  const profileId = typeof router.query.id === "string" ? router.query.id : "";
+
   const { data, loading } = useGetUserByIdQuery({
-    variables: { id: profileId }
+    variables: { id: profileId },
   });
   if (!data && loading) {
     return (
@@ -27,7 +26,7 @@ const Profile = ({}: Props) => {
       <Layout>
         <p>Profile not found</p>
         <button
-          className='btn'
+          className="btn"
           onClick={() => {
             router.back();
           }}
@@ -53,7 +52,7 @@ const Profile = ({}: Props) => {
       <div className={styles.profile}>
         <section className={styles.head}>
           <div>
-            <Image src={avatar ? avatar : ''} width={62} height={62} />
+            <Image src={avatar ? avatar : ""} width={62} height={62} />
           </div>
 
           <h1>{name}</h1>
@@ -62,59 +61,77 @@ const Profile = ({}: Props) => {
         <section className={styles.snippets}>
           <h1>Performance</h1>
           <div className={styles.content}>
-            <div>
-              <h3>Ascents</h3>
-              <strong>{ascents?.length}</strong>
-            </div>
-            <div>
-              <h3>Average Grade</h3>
-              <strong>
-                {ascents &&
-                  grades[getAverage(ascents.map((a) => a.grade))].label}
-              </strong>
-            </div>
-            <div>
-              <h3>Average Attempts</h3>
-              <strong>
-                {ascents &&
-                  attempts[getAverage(ascents.map((a) => a.attempts))].label}
-              </strong>
-            </div>
+            {ascents && ascents.length > 0 ? (
+              <>
+                <div>
+                  <h3>Ascents</h3>
+                  <strong>{ascents?.length}</strong>
+                </div>
+                <div>
+                  <h3>Average Grade</h3>
+                  <strong>
+                    {grades[getAverage(ascents.map((a) => a.grade))].label}
+                  </strong>
+                </div>
+                <div>
+                  <h3>Average Attempts</h3>
+                  <strong>
+                    {attempts[getAverage(ascents.map((a) => a.attempts))].label}
+                  </strong>
+                </div>
+              </>
+            ) : (
+              <div>
+                <h1>N/A</h1>
+              </div>
+            )}
           </div>
         </section>
         <section className={styles.snippets}>
           <h1>{name}'s Problems</h1>
           <div className={styles.content}>
-            <div>
-              <h3>Problems</h3>
-              <strong>{problems?.length}</strong>
-            </div>
-            <div>
-              <h3>Average Grade</h3>
-              <strong>
-                {problems &&
-                  grades[
-                    getAverage(
-                      problems
-                        .filter((p) => typeof p.consensusGrade === 'number')
-                        .map((p) => p.consensusGrade as number)
-                    )
-                  ].label}
-              </strong>
-            </div>
-            <div>
-              <h3>Average Rating</h3>
-              <strong>
-                {problems &&
-                  ratings[
-                    getAverage(
-                      problems
-                        .filter((p) => typeof p.consensusRating === 'number')
-                        .map((p) => p.consensusRating as number)
-                    )
-                  ].label}
-              </strong>
-            </div>
+            {problems && problems.length > 0 ? (
+              <>
+                <div>
+                  <h3>Problems</h3>
+                  <strong>{problems?.length}</strong>
+                </div>
+                <div>
+                  <h3>Average Grade</h3>
+                  <strong>
+                    {
+                      grades[
+                        getAverage(
+                          problems
+                            .filter((p) => typeof p.consensusGrade === "number")
+                            .map((p) => p.consensusGrade as number)
+                        )
+                      ].label
+                    }
+                  </strong>
+                </div>
+                <div>
+                  <h3>Average Rating</h3>
+                  <strong>
+                    {
+                      ratings[
+                        getAverage(
+                          problems
+                            .filter(
+                              (p) => typeof p.consensusRating === "number"
+                            )
+                            .map((p) => p.consensusRating as number)
+                        )
+                      ].label
+                    }
+                  </strong>
+                </div>
+              </>
+            ) : (
+              <div>
+                <h1>N/A</h1>
+              </div>
+            )}
           </div>
         </section>
       </div>
