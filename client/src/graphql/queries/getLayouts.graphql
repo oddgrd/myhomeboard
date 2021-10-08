@@ -1,0 +1,5 @@
+query GetLayouts($boardId: String!) {
+  getBoardLayouts(boardId: $boardId) {
+    ...LayoutCore
+  }
+}

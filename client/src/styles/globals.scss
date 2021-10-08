@@ -1,6 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-@import 'utils';
-@import 'react-toastify/dist/ReactToastify.css';
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+@import "utils";
+@import "react-toastify/dist/ReactToastify.css";
 :root {
   --theme-color: #e9c46a;
   --theme-delete: #bf212f;
@@ -36,7 +36,7 @@
 
 html,
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   line-height: 1.8;
   background: var(--theme-background);
   color: var(--theme-text);
@@ -55,8 +55,8 @@ a {
   color: var(--theme-delete);
 }
 
-.underline {
-  text-decoration: underline;
+.back {
+  color: var(--theme-color);
 }
 .loading-svg {
   width: 100%;

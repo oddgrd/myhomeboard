@@ -408,17 +408,17 @@ export type GetBoardQueryVariables = Exact<{
 
 export type GetBoardQuery = { __typename?: 'Query', getBoard: { __typename?: 'Board', id: string, creatorId: string, title: string, description: string, adjustable: boolean, angles: Array<number>, city: string, country: string, currentLayout?: Maybe<{ __typename?: 'Layout', id: string, title: string, url: string, createdAt: string }> } };
 
-export type GetBoardLayoutsQueryVariables = Exact<{
-  boardId: Scalars['String'];
-}>;
-
-
-export type GetBoardLayoutsQuery = { __typename?: 'Query', getBoardLayouts: Array<{ __typename?: 'Layout', id: string, title: string, description: string, url: string, creatorId: string, boardId: string, createdAt: string }> };
-
 export type GetBoardsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetBoardsQuery = { __typename?: 'Query', getBoards: Array<{ __typename?: 'Board', id: string, creatorId: string, title: string, description: string, adjustable: boolean, angles: Array<number>, city: string, country: string, currentLayout?: Maybe<{ __typename?: 'Layout', id: string, title: string, url: string, createdAt: string }> }> };
+
+export type GetLayoutsQueryVariables = Exact<{
+  boardId: Scalars['String'];
+}>;
+
+
+export type GetLayoutsQuery = { __typename?: 'Query', getBoardLayouts: Array<{ __typename?: 'Layout', id: string, title: string, description: string, url: string, creatorId: string, boardId: string, createdAt: string }> };
 
 export type GetProblemQueryVariables = Exact<{
   id: Scalars['String'];
@@ -956,41 +956,6 @@ export function useGetBoardLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<G
 export type GetBoardQueryHookResult = ReturnType<typeof useGetBoardQuery>;
 export type GetBoardLazyQueryHookResult = ReturnType<typeof useGetBoardLazyQuery>;
 export type GetBoardQueryResult = Apollo.QueryResult<GetBoardQuery, GetBoardQueryVariables>;
-export const GetBoardLayoutsDocument = gql`
-    query GetBoardLayouts($boardId: String!) {
-  getBoardLayouts(boardId: $boardId) {
-    ...LayoutCore
-  }
-}
-    ${LayoutCoreFragmentDoc}`;
-
-/**
- * __useGetBoardLayoutsQuery__
- *
- * To run a query within a React component, call `useGetBoardLayoutsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetBoardLayoutsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetBoardLayoutsQuery({
- *   variables: {
- *      boardId: // value for 'boardId'
- *   },
- * });
- */
-export function useGetBoardLayoutsQuery(baseOptions: Apollo.QueryHookOptions<GetBoardLayoutsQuery, GetBoardLayoutsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetBoardLayoutsQuery, GetBoardLayoutsQueryVariables>(GetBoardLayoutsDocument, options);
-      }
-export function useGetBoardLayoutsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetBoardLayoutsQuery, GetBoardLayoutsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetBoardLayoutsQuery, GetBoardLayoutsQueryVariables>(GetBoardLayoutsDocument, options);
-        }
-export type GetBoardLayoutsQueryHookResult = ReturnType<typeof useGetBoardLayoutsQuery>;
-export type GetBoardLayoutsLazyQueryHookResult = ReturnType<typeof useGetBoardLayoutsLazyQuery>;
-export type GetBoardLayoutsQueryResult = Apollo.QueryResult<GetBoardLayoutsQuery, GetBoardLayoutsQueryVariables>;
 export const GetBoardsDocument = gql`
     query getBoards {
   getBoards {
@@ -1025,6 +990,41 @@ export function useGetBoardsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<
 export type GetBoardsQueryHookResult = ReturnType<typeof useGetBoardsQuery>;
 export type GetBoardsLazyQueryHookResult = ReturnType<typeof useGetBoardsLazyQuery>;
 export type GetBoardsQueryResult = Apollo.QueryResult<GetBoardsQuery, GetBoardsQueryVariables>;
+export const GetLayoutsDocument = gql`
+    query GetLayouts($boardId: String!) {
+  getBoardLayouts(boardId: $boardId) {
+    ...LayoutCore
+  }
+}
+    ${LayoutCoreFragmentDoc}`;
+
+/**
+ * __useGetLayoutsQuery__
+ *
+ * To run a query within a React component, call `useGetLayoutsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLayoutsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetLayoutsQuery({
+ *   variables: {
+ *      boardId: // value for 'boardId'
+ *   },
+ * });
+ */
+export function useGetLayoutsQuery(baseOptions: Apollo.QueryHookOptions<GetLayoutsQuery, GetLayoutsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetLayoutsQuery, GetLayoutsQueryVariables>(GetLayoutsDocument, options);
+      }
+export function useGetLayoutsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetLayoutsQuery, GetLayoutsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetLayoutsQuery, GetLayoutsQueryVariables>(GetLayoutsDocument, options);
+        }
+export type GetLayoutsQueryHookResult = ReturnType<typeof useGetLayoutsQuery>;
+export type GetLayoutsLazyQueryHookResult = ReturnType<typeof useGetLayoutsLazyQuery>;
+export type GetLayoutsQueryResult = Apollo.QueryResult<GetLayoutsQuery, GetLayoutsQueryVariables>;
 export const GetProblemDocument = gql`
     query GetProblem($id: String!) {
   getProblem(id: $id) {

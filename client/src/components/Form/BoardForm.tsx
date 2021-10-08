@@ -2,13 +2,26 @@ import styles from '../../styles/BoardForm.module.scss';
 import * as Yup from 'yup';
 import { Formik, Form } from 'formik';
 import { Textarea } from './Textarea';
-import { useCreateBoardMutation } from '../../generated/graphql';
+import {
+  useCreateBoardMutation,
+  useEditBoardMutation,
+} from '../../generated/graphql';
 import router from 'next/router';
 import { Inputfield } from './Inputfield';
 import { toast } from 'react-toastify';
 import { toErrorMap } from '../../utils/toErrorMap';
 
-interface Props {}
+interface Props {
+  editProps?: {
+    title: string;
+    description: string;
+    adjustable: boolean;
+    angles: string;
+    city: string;
+    country: string;
+    boardId: string;
+  };
+}
 interface Values {
   title: string;
   description: string;
@@ -18,18 +31,23 @@ interface Values {
   country: string;
 }
 
-export const BoardForm = ({}: Props) => {
+export const BoardForm = ({ editProps }: Props) => {
   const [createBoard] = useCreateBoardMutation();
+  const [editBoard] = useEditBoardMutation();
   return (
     <Formik
-      initialValues={{
-        title: '',
-        description: '',
-        adjustable: false,
-        angles: '',
-        city: '',
-        country: ''
-      }}
+      initialValues={
+        editProps
+          ? editProps
+          : {
+              title: '',
+              description: '',
+              adjustable: false,
+              angles: '',
+              city: '',
+              country: '',
+            }
+      }
       validationSchema={Yup.object({
         title: Yup.string()
           .min(2, 'Must be 2 characters or more')
@@ -55,33 +73,55 @@ export const BoardForm = ({}: Props) => {
             /^(\d+)(,\s*\d+)*$/,
             'Please enter a comma separated list of angles.'
           )
-          .required('Required')
+          .required('Required'),
       })}
       onSubmit={async (values: Values, { setErrors }) => {
-        const response = await createBoard({
-          variables: {
-            options: {
-              ...values,
-              angles: values.angles.split(', ').map(Number),
-              adjustable: values.angles.length > 2
-            }
-          },
-          update: (cache) => {
-            cache.evict({ fieldName: 'getBoards' });
+        let response;
+        if (editProps) {
+          response = await editBoard({
+            variables: {
+              options: {
+                ...values,
+                boardId: editProps.boardId,
+                angles: values.angles.split(', ').map(Number),
+                adjustable: values.angles.split(', ').length > 1,
+              },
+            },
+            update: (cache) => {
+              cache.evict({ id: 'Board:' + editProps.boardId });
+            },
+          });
+          if (response.data?.editBoard.errors) {
+            setErrors(toErrorMap(response.data.editBoard.errors));
+          } else if (response.data?.editBoard.board) {
+            toast.success('Board edited 🔧');
           }
-        });
-        if (response.data?.createBoard.errors) {
-          setErrors(toErrorMap(response.data.createBoard.errors));
-        } else if (response.data?.createBoard.board) {
-          toast.success('Board created');
-          router.push('/boards');
+        } else {
+          response = await createBoard({
+            variables: {
+              options: {
+                ...values,
+                angles: values.angles.split(', ').map(Number),
+                adjustable: values.angles.split(', ').length > 1,
+              },
+            },
+            update: (cache) => {
+              cache.evict({ fieldName: 'getBoards' });
+            },
+          });
+          if (response.data?.createBoard.errors) {
+            setErrors(toErrorMap(response.data.createBoard.errors));
+          } else if (response.data?.createBoard.board) {
+            toast.success('Board created');
+            router.push('/boards');
+          }
         }
       }}
     >
       {({ dirty, isValid }) => (
         <div className={styles.boardForm}>
           <Form>
-            <h1>Create Board</h1>
+            {!editProps && <h1>Create Board</h1>}
 
             <Inputfield
               name='title'
@@ -120,7 +160,7 @@ export const BoardForm = ({}: Props) => {
             <input
               type='submit'
               className='btn'
-              value='Save Board'
+              value={editProps ? 'Edit Board' : 'Save Board'}
               disabled={!dirty || !isValid}
             />
           </Form>
