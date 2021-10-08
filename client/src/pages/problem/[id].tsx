@@ -30,8 +30,8 @@ const Problem = () => {
   const { data: meData } = useMeQuery();
   const { data, loading, error } = useGetProblemQuery({
     variables: {
-      id: problemId
-    }
+      id: problemId,
+    },
   });
 
   useEffect(() => {
@@ -55,8 +55,8 @@ const Problem = () => {
     return (
       <Layout>
         <p>Problem Not Found</p>
-        <Link href='/'>
-          <a className={styles.back}>{'<'}Go Back</a>
+        <Link href="/">
+          <a className="back">{'<'}Go Back</a>
         </Link>
       </Layout>
     );
@@ -75,7 +75,7 @@ const Problem = () => {
     createdAt,
     layoutUrl,
     boardId,
-    angle
+    angle,
   } = data.getProblem;
 
   const infoProps = {
@@ -85,7 +85,7 @@ const Problem = () => {
     consensusRating,
     name: creator.name,
     angle,
-    createdAt
+    createdAt,
   };
   const editProblemProps = {
     rules,
@@ -93,7 +93,7 @@ const Problem = () => {
     title,
     id,
     angle,
-    boardId
+    boardId,
   };
 
   return (
@@ -114,7 +114,7 @@ const Problem = () => {
           </div>
           <div className={styles.info}>
             <h2 className={styles.desktopTitle}>{title}</h2>
-            <div className='hide'>
+            <div className="hide">
               <ProblemInfo {...infoProps} />
             </div>
 
@@ -123,7 +123,7 @@ const Problem = () => {
                 <>
                   <DeleteProblemButton id={problemId} boardId={boardId} />
                   <button
-                    className='btn'
+                    className="btn"
                     onClick={() => setShowEditProblemModal(true)}
                   >
                     <FaEdit size={28} />
@@ -132,14 +132,14 @@ const Problem = () => {
               ) : null}
               {!sendStatus && meData?.me && (
                 <button
-                  className='btn'
+                  className="btn"
                   onClick={() => setShowAscentModal(true)}
                 >
                   <FaCheck size={28} />
                 </button>
               )}
               <button
-                className='btn hide-desktop'
+                className="btn hide-desktop"
                 onClick={() => setShowInfoModal(true)}
               >
                 <FaInfo size={28} />
