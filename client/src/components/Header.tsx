@@ -16,13 +16,19 @@ export const Header = () => {
   const boardId = typeof router.query.id === 'string' ? router.query.id : '';
   const { data: boardData } = useGetBoardQuery({
     variables: { boardId },
-    skip: router.pathname !== "/boards/[id]"
+    skip: router.pathname !== '/boards/[id]',
   });
 
   let head = (
     <Link href='/'>
       <a className={styles.logo}>
-        <Image src={logo} alt='Covegg19 Logo' width={42} height={42} priority={true}/>
+        <Image
+          src={logo}
+          alt='Covegg19 Logo'
+          width={42}
+          height={42}
+          priority={true}
+        />
         <strong className='hide'>myHomeBoard</strong>
       </a>
     </Link>
@@ -77,6 +83,18 @@ export const Header = () => {
         <p className={styles.title}>
           <strong>Select Board</strong>
         </p>
+      );
+      break;
+    case '/board/[id]':
+      head = (
+        <button
+          className='btn btn-icon btn-animation'
+          onClick={() => {
+            router.back();
+          }}
+        >
+          <FaArrowLeft size={38} />
+        </button>
       );
       break;
     case '/profile/[id]':
