@@ -1,8 +1,8 @@
 .boardForm {
-  width: 500px;
+  width: clamp(324px, 90vw, 510px);
   height: 478px;
-  margin: auto;
   color: var(--theme-text);
+  margin: 2rem auto;
   h1 {
     color: var(--theme-color);
     margin-bottom: 1rem;
@@ -66,10 +66,4 @@
   padding: 1rem;
   cursor: pointer;
   min-height: 100px;
-}
-@media (max-width: 700px) {
-  .boardForm {
-    width: 324px;
-    height: 478px;
-  }
 }
