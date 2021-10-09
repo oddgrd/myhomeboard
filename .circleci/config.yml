@@ -8,7 +8,7 @@ jobs:
   test:
     docker:
       - image: cimg/node:16.10.0
-    working_directory: ~/images/primary
+    working_directory: server
     steps:
       - checkout
       - run:
