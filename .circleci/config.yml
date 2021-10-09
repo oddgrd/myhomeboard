@@ -6,22 +6,40 @@ orbs:
 workflows:
   test-deploy:
     jobs:
-      - test
+      - build
+      - push:
+        requires:
+          - build
+      - deploy:
+        requires:
+          - push
+
 jobs:
-  test:
+  build:
     docker:
       - image: cimg/node:16.10.0
     steps:
+      - checkout
       - docker/build:
         image: oddgrd/myhomeboard
         path: server
+  push:
+    docker:
+      - image: cimg/node:16.10.0
+    steps:
+      - checkout
       - docker/push:
         image: oddgrd/myhomeboard
+  deploy:
+    docker:
+      - image: cimg/node:16.10.0
+    steps:
+      - checkout
       - run:
-        name: Deploy
-        command: |
-          ssh root@164.90.209.133 
-          docker pull oddgrd/myhomeboard:$CIRCLE_SHA1
-          docker tag oddgrd/myhomeboard:$CIRCLE_SHA1 
-          dokku/api:$CIRCLE_SHA1
-          dokku deploy api $CIRCLE_SHA1
+          name: Deploy
+          command: |
+            ssh root@164.90.209.133 
+            docker pull oddgrd/myhomeboard:$CIRCLE_SHA1
+            docker tag oddgrd/myhomeboard:$CIRCLE_SHA1 
+            dokku/api:$CIRCLE_SHA1
+            dokku deploy api $CIRCLE_SHA1
