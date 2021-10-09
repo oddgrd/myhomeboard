@@ -20,6 +20,7 @@ jobs:
       - image: cimg/node:16.10.0
     steps:
       - checkout
+      - setup_remote_docker
       - docker/build:
           image: oddgrd/myhomeboard
           path: server
@@ -28,11 +29,14 @@ jobs:
       - image: cimg/node:16.10.0
     steps:
       - checkout
+      - setup_remote_docker
+      - run:
+          name: Docker Login
+          command: docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
       - docker/push:
           image: oddgrd/myhomeboard
   deploy:
-    docker:
-      - image: cimg/node:16.10.0
+    machine: true
     steps:
       - checkout
       - run:
