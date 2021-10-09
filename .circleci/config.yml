@@ -12,7 +12,6 @@ jobs:
     docker:
       - image: cimg/node:16.10.0
     steps:
-      - checkout
       - docker/build:
         image: oddgrd/myhomeboard
         path: server
