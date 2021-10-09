@@ -8,6 +8,20 @@ jobs:
   test:
     docker:
       - image: cimg/node:16.10.0
+    working_directory: ~/server
     steps:
       - checkout
-      - run: node --version
+      - run:
+        name: Build
+        command: sudo docker build -t oddgrd/myhomeboard:$CIRCLE_SHA1
+      - run:
+        name: Push
+        command: sudo docker push oddgrd/myhomeboard:$CIRCLE_SHA1
+      - run:
+        name: Deploy
+        command: |
+          ssh root@164.90.209.133 
+          docker pull oddgrd/myhomeboard:$CIRCLE_SHA1
+          docker tag oddgrd/myhomeboard:$CIRCLE_SHA1 
+          dokku/api:$CIRCLE_SHA1
+          dokku deploy api $CIRCLE_SHA1
