@@ -8,28 +8,27 @@ workflows:
     jobs:
       - build
       - push:
-        requires:
-          - build
+          requires:
+            - build
       - deploy:
-        requires:
-          - push
+          requires:
+            - push
 
 jobs:
   build:
     docker:
       - image: cimg/node:16.10.0
     steps:
-      - checkout
       - docker/build:
-        image: oddgrd/myhomeboard
-        path: server
+          image: oddgrd/myhomeboard
+          path: server
   push:
     docker:
       - image: cimg/node:16.10.0
     steps:
       - checkout
       - docker/push:
-        image: oddgrd/myhomeboard
+          image: oddgrd/myhomeboard
   deploy:
     docker:
       - image: cimg/node:16.10.0
