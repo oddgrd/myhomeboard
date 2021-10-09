@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  docker: circleci/docker@1.7.0
+
 workflows:
   test-deploy:
     jobs:
@@ -10,17 +13,16 @@ jobs:
       - image: cimg/node:16.10.0
     steps:
       - checkout
+      - docker/build:
+        image: oddgrd/myhomeboard
+        path: server
+      - docker/push:
+        image: oddgrd/myhomeboard
       - run:
-          name: Build
-          command: sudo docker build -t oddgrd/myhomeboard:$CIRCLE_SHA1 .
-      - run:
-          name: Push
-          command: sudo docker push oddgrd/myhomeboard:$CIRCLE_SHA1
-      - run:
-          name: Deploy
-          command: |
-            ssh root@164.90.209.133 
-            docker pull oddgrd/myhomeboard:$CIRCLE_SHA1
-            docker tag oddgrd/myhomeboard:$CIRCLE_SHA1 
-            dokku/api:$CIRCLE_SHA1
-            dokku deploy api $CIRCLE_SHA1
+        name: Deploy
+        command: |
+          ssh root@164.90.209.133 
+          docker pull oddgrd/myhomeboard:$CIRCLE_SHA1
+          docker tag oddgrd/myhomeboard:$CIRCLE_SHA1 
+          dokku/api:$CIRCLE_SHA1
+          dokku deploy api $CIRCLE_SHA1
