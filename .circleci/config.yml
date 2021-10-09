@@ -23,7 +23,7 @@ jobs:
       - setup_remote_docker
       - docker/build:
           image: oddgrd/myhomeboard
-          path: server
+          path: images/primary/
   push:
     docker:
       - image: cimg/node:16.10.0
