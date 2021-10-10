@@ -1,8 +1,17 @@
 version: 2.1
 
-deployment:
-  production:
-    branch: master
-    commands:
-      - git remote add production dokku@api.myhomeboard.com:api
-      - git push production master
+workflows:
+  test-deploy:
+    jobs:
+      - deploy
+jobs:
+  deploy:
+    docker:
+      - image: cimg/node:16.10.0
+    steps:
+      - run:
+          name: remote
+          command: git remote add production dokku@dokku.example.com:my-app
+      - run:
+          name: deploy
+          command: git push production master
