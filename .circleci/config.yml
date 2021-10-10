@@ -11,7 +11,7 @@ jobs:
     steps:
       - run:
           name: remote
-          command: git remote add production dokku@dokku.example.com:my-app
+          command: git remote add production dokku@api.myhomeboard.com:api
       - run:
           name: deploy
           command: git push production master
