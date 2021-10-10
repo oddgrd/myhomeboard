@@ -1,49 +1,8 @@
 version: 2.1
 
-orbs:
-  docker: circleci/docker@1.7.0
-
-workflows:
-  test-deploy:
-    jobs:
-      - build
-      - push:
-          requires:
-            - build
-      - deploy:
-          requires:
-            - push
-
-jobs:
-  build:
-    docker:
-      - image: cimg/node:16.10.0
-    steps:
-      - checkout
-      - setup_remote_docker
-      - docker/build:
-          image: oddgrd/myhomeboard
-          path: images/primary/
-  push:
-    docker:
-      - image: cimg/node:16.10.0
-    steps:
-      - checkout
-      - setup_remote_docker
-      - run:
-          name: Docker Login
-          command: docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
-      - docker/push:
-          image: oddgrd/myhomeboard
-  deploy:
-    machine: true
-    steps:
-      - checkout
-      - run:
-          name: Deploy
-          command: |
-            ssh root@164.90.209.133 
-            docker pull oddgrd/myhomeboard:$CIRCLE_SHA1
-            docker tag oddgrd/myhomeboard:$CIRCLE_SHA1 
-            dokku/api:$CIRCLE_SHA1
-            dokku deploy api $CIRCLE_SHA1
+deployment:
+  production:
+    branch: master
+    commands:
+      - git remote add production dokku@api.myhomeboard.com:api
+      - git push production master
