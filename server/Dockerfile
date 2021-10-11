@@ -20,7 +20,6 @@ RUN yarn build
 
 # Set NODE_ENV to production
 ENV NODE_ENV production
-ENV CORS_ORIGIN https://myhomeboard.no
 
 CMD [ "node", "dist/index.js" ]
 
