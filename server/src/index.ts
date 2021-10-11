@@ -25,8 +25,6 @@ import { UserResolver } from './resolvers/userResolver';
 import authRoutes from './routes/api/auth';
 import { createUserLoader } from './utils/createUserLoader';
 
-// Test github actions deploy workflow
-
 const main = async () => {
   const connection = await createConnection({
     applicationName: 'myhomeboard',
