@@ -20,6 +20,7 @@ RUN yarn build
 
 # Set NODE_ENV to production
 ENV NODE_ENV production
+ENV PORT 5000
 
 EXPOSE 8080
 CMD [ "node", "dist/index.js" ]
