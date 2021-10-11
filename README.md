@@ -33,7 +33,9 @@
 - Google OAuth
 
 ### Deployment
+- Vercel
+- GitHub Actions
 
-The client is deployed on Vercel, and can be continuously deployed by pushing to the Github repository.
-The backend is deployed as a Dokku VPS, proxied by ngingx, in a DigitalOcean Droplet with the Node.js GraphQL API, Redis and Postgres running in separate Docker containers.
-The API can be continuously deployed by pulling from github and pushing to Dokku.
+The client is deployed on Vercel where it is automatically redeployed on push to Github through Vercel's Github integration.
+The server is deployed as a Dokku VPS in a DigitalOcean Droplet with the Node API, Postgres and Redis running in separate, linked containers.
+The API is automatically redeployed through a Github Action on pushes to Github containing changes to the server directory.
