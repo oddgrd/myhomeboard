@@ -24,7 +24,7 @@ import { ProblemResolver } from './resolvers/problemResolver';
 import { UserResolver } from './resolvers/userResolver';
 import authRoutes from './routes/api/auth';
 import { createUserLoader } from './utils/createUserLoader';
-// test ci
+
 const main = async () => {
   const connection = await createConnection({
     applicationName: 'myhomeboard',
@@ -33,14 +33,14 @@ const main = async () => {
     entities: [User, Problem, Layout, Ascent, Board],
     migrations: [path.join(__dirname, './migrations/*')],
     logging: true,
-    synchronize: false
+    synchronize: false,
   });
   await connection.runMigrations();
   const app = express();
 
   const devWhitelist = [
     'https://studio.apollographql.com',
-    'http://localhost:3000'
+    'http://localhost:3000',
   ];
   app.set('trust proxy', 1);
   app.use(
@@ -54,7 +54,7 @@ const main = async () => {
               callback(new Error('Not allowed by CORS'));
             }
           },
-      credentials: true
+      credentials: true,
     })
   );
 
@@ -69,14 +69,14 @@ const main = async () => {
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
       resolvers: [UserResolver, ProblemResolver, LayoutResolver, BoardResolver],
-      validate: false
+      validate: false,
     }),
     context: ({ req, res }) => ({
       req,
       res,
       redis,
-      userLoader: createUserLoader()
-    })
+      userLoader: createUserLoader(),
+    }),
   });
 
   passport.use(
@@ -86,7 +86,7 @@ const main = async () => {
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         callbackURL: __prod__
           ? `https://api.myhomeboard.no/api/auth/google/callback`
-          : 'http://localhost:4000/api/auth/google/callback'
+          : 'http://localhost:4000/api/auth/google/callback',
       },
       async (_accessToken, _refreshToken, profile: any, done) => {
         const user = await User.findOne({ where: { googleId: profile.id } });
@@ -95,7 +95,7 @@ const main = async () => {
             { id: user.id },
             {
               name: profile.displayName,
-              avatar: profile._json.picture
+              avatar: profile._json.picture,
             }
           );
           done(null, user);
@@ -105,7 +105,7 @@ const main = async () => {
               name: profile.displayName,
               email: profile._json.email,
               avatar: profile._json.picture,
-              googleId: profile.id
+              googleId: profile.id,
             }).save();
             done(null, newUser);
           } catch (error) {
@@ -137,8 +137,8 @@ const main = async () => {
         sameSite: 'none',
         httpOnly: true,
         maxAge: 1000 * 60 * 60 * 24 * 365 * 10,
-        domain: __prod__ ? '.myhomeboard.no' : undefined
-      }
+        domain: __prod__ ? '.myhomeboard.no' : undefined,
+      },
     })
   );
 
