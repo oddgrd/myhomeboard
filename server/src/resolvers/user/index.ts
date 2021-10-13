@@ -51,7 +51,7 @@ export class UserResolver {
           return;
         }
         res.clearCookie('mhb', {
-          domain: __prod__ ? '.myhomeboard.no' : undefined
+          domain: __prod__ ? '.myhomeboard.no' : undefined,
         });
         resolve(true);
       })
