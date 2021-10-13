@@ -1,8 +1,8 @@
-import { User } from '../entities/User';
+import { User } from '../../entities/User';
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql';
-import { Context } from '../types/context';
+import { Context } from '../../types/context';
 import { getConnection } from 'typeorm';
-import { __prod__ } from '../constants';
+import { __prod__ } from '../../constants';
 
 @Resolver(User)
 export class UserResolver {

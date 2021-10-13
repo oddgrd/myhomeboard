@@ -1,4 +1,4 @@
-import { Coordinates } from '../types/problem';
+import { Coordinates } from '../resolvers/problem/types';
 import { Field, Int, ObjectType } from 'type-graphql';
 import {
   BaseEntity,

@@ -153,10 +153,10 @@ export type Mutation = {
   createProblem: ProblemResponse;
   editProblem: ProblemResponse;
   deleteProblem: Scalars['Boolean'];
+  logout: Scalars['Boolean'];
   addAscent: Scalars['Boolean'];
   editAscent: Scalars['Boolean'];
   deleteAscent: Scalars['Boolean'];
-  logout: Scalars['Boolean'];
 };
 
 
@@ -260,10 +260,10 @@ export type Query = {
   getBoardLayouts: Array<Layout>;
   getProblems: PaginatedProblems;
   getProblem?: Maybe<Problem>;
-  getAscents?: Maybe<Array<Ascent>>;
   me?: Maybe<User>;
   getUserById?: Maybe<User>;
   getUsers?: Maybe<Array<User>>;
+  getAscents?: Maybe<Array<Ascent>>;
 };
 
 

@@ -1,6 +1,6 @@
-import { Board } from '../entities/Board';
+import { Board } from '../../entities/Board';
 import { Field, InputType, Int, ObjectType } from 'type-graphql';
-import { FieldError } from './problem';
+import { FieldError } from '../problem/types';
 
 @InputType()
 export class BoardInput {

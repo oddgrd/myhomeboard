@@ -6,10 +6,10 @@ import {
   Resolver,
   UseMiddleware
 } from 'type-graphql';
-import { isAuth } from '../middleware/isAuth';
+import { isAuth } from '../../middleware/isAuth';
 import { Context } from 'src/types/context';
-import { uploadImage } from '../utils/uploadImage';
-import { Layout } from '../entities/Layout';
+import { uploadImage } from '../../utils/uploadImage';
+import { Layout } from '../../entities/Layout';
 import { FileUpload, GraphQLUpload } from 'graphql-upload';
 import { getConnection } from 'typeorm';
 
@@ -78,9 +78,7 @@ export class LayoutResolver {
   // Get all layouts by boardId
   // PUBLIC
   @Query(() => [Layout])
-  async getBoardLayouts(
-    @Arg("boardId") boardId: string
-  ) {
-    return Layout.find({where: {boardId}, order: {createdAt: "DESC"}});
+  async getBoardLayouts(@Arg('boardId') boardId: string) {
+    return Layout.find({ where: { boardId }, order: { createdAt: 'DESC' } });
   }
 }

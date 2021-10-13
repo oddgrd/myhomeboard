@@ -1,4 +1,4 @@
-import { Problem } from '../entities/Problem';
+import { Problem } from '../../entities/Problem';
 import { InputType, Field, Int, ObjectType } from 'type-graphql';
 
 @ObjectType()
@@ -84,45 +84,6 @@ export class EditProblemInput {
 
   @Field(() => Int)
   angle: number;
-}
-
-@InputType()
-export class AddAscentInput {
-  @Field()
-  problemId!: string;
-
-  @Field()
-  boardId!: string;
-
-  @Field(() => Int)
-  grade!: number;
-
-  @Field(() => Int)
-  rating!: number;
-
-  @Field(() => Int)
-  attempts!: number;
-
-  @Field()
-  comment!: string;
-}
-
-@InputType()
-export class EditAscentInput {
-  @Field()
-  problemId!: string;
-
-  @Field(() => Int)
-  grade!: number;
-
-  @Field(() => Int)
-  rating!: number;
-
-  @Field(() => Int)
-  attempts!: number;
-
-  @Field()
-  comment!: string;
 }
 
 @ObjectType()

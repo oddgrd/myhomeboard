@@ -8,11 +8,11 @@ import {
   Root,
   UseMiddleware
 } from 'type-graphql';
-import { isAuth } from '../middleware/isAuth';
+import { isAuth } from '../../middleware/isAuth';
 import { Context } from 'src/types/context';
-import { Board } from '../entities/Board';
-import { BoardInput, BoardResponse, EditBoardInput } from '../types/board';
-import { Layout } from '../entities/Layout';
+import { Board } from '../../entities/Board';
+import { BoardInput, BoardResponse, EditBoardInput } from './types';
+import { Layout } from '../../entities/Layout';
 import { getConnection } from 'typeorm';
 
 @Resolver(Board)

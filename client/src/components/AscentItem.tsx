@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import Image from "next/image"
+import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { FaEdit, FaEllipsisV, FaQuoteRight } from 'react-icons/fa';
 import { Maybe } from '../generated/graphql';
@@ -80,22 +80,18 @@ export const AscentItem = ({ ascent, problemId, currentUserId }: Props) => {
   };
 
   return (
-    <div
-      className={styles.ascentItem}
-      
-    >
+    <div className={styles.ascentItem}>
       <div className={styles.avatar}>
         <Link href={`/profile/${userId}`}>
           <a>
-          <Image
-          width={52}
-          height={52}
-          src={user.avatar as string}
-          alt='User Avatar'
-        />
-        </a>
+            <Image
+              width={52}
+              height={52}
+              src={user.avatar as string}
+              alt='User Avatar'
+            />
+          </a>
         </Link>
-        
       </div>
       <div>
         <p className={styles.name}>{user.name.split(' ')[0]}</p>
@@ -107,17 +103,23 @@ export const AscentItem = ({ ascent, problemId, currentUserId }: Props) => {
         </div>
       </div>
       <div className={styles.rightColumn}>
-        <div className={styles.gradeAndRating} onClick={() => toggleShowOptions(!showOptions)}>
+        <div
+          className={styles.gradeAndRating}
+          onClick={() => toggleShowOptions(!showOptions)}
+        >
           <p>{grades[grade].label}</p>
           {<StarRating rating={rating} />}
         </div>
-        <button className='btn btn-icon' onClick={() => toggleShowOptions(!showOptions)}>
+        <button
+          className='btn btn-icon'
+          onClick={() => toggleShowOptions(!showOptions)}
+        >
           <FaEllipsisV size={24} />
         </button>
       </div>
       <AnimatePresence
         initial={false}
-        exitBeforeEnter={true}
+        exitBeforeEnter={false}
         onExitComplete={() => null}
       >
         {showOptions && (

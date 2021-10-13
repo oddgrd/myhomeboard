@@ -10,7 +10,6 @@ import passport from 'passport';
 import { Strategy } from 'passport-google-oauth20';
 import path from 'path';
 import 'reflect-metadata';
-import { buildSchema } from 'type-graphql';
 import { createConnection } from 'typeorm';
 import { __prod__ } from './constants';
 import { Ascent } from './entities/Ascent';
@@ -18,12 +17,9 @@ import { Board } from './entities/Board';
 import { Layout } from './entities/Layout';
 import { Problem } from './entities/Problem';
 import { User } from './entities/User';
-import { BoardResolver } from './resolvers/boardResolver';
-import { LayoutResolver } from './resolvers/layoutResolver';
-import { ProblemResolver } from './resolvers/problemResolver';
-import { UserResolver } from './resolvers/userResolver';
 import authRoutes from './routes/api/auth';
 import { createUserLoader } from './utils/createUserLoader';
+import { createSchema } from './utils/createSchema';
 
 const main = async () => {
   const connection = await createConnection({
@@ -67,10 +63,7 @@ const main = async () => {
   const redis = new Redis(process.env.REDIS_URL);
 
   const apolloServer = new ApolloServer({
-    schema: await buildSchema({
-      resolvers: [UserResolver, ProblemResolver, LayoutResolver, BoardResolver],
-      validate: false,
-    }),
+    schema: await createSchema(),
     context: ({ req, res }) => ({
       req,
       res,
