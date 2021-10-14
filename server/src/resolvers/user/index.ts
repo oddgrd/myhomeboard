@@ -19,7 +19,7 @@ export class UserResolver {
 
   // Get user by ID
   @Query(() => User, { nullable: true })
-  async getUserById(@Arg('id') id: string): Promise<User | null> {
+  async getUser(@Arg('id') id: string): Promise<User | null> {
     const user = await getConnection()
       .createQueryBuilder(User, 'user')
       .leftJoinAndSelect('user.problems', 'problem')

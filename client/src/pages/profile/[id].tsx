@@ -1,17 +1,17 @@
-import Image from "next/image";
-import { useRouter } from "next/router";
-import { Layout } from "../../components/Layout";
-import { Spinner } from "../../components/Spinner";
-import { useGetUserByIdQuery } from "../../generated/graphql";
-import withApollo from "../../utils/withApollo";
-import styles from "../../styles/Profile.module.scss";
-import { attempts, grades, ratings } from "../../utils/selectOptions";
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { Layout } from '../../components/Layout';
+import { Spinner } from '../../components/Spinner';
+import { useGetUserQuery } from '../../generated/graphql';
+import withApollo from '../../utils/withApollo';
+import styles from '../../styles/Profile.module.scss';
+import { attempts, grades, ratings } from '../../utils/selectOptions';
 
 const Profile = () => {
   const router = useRouter();
-  const profileId = typeof router.query.id === "string" ? router.query.id : "";
+  const profileId = typeof router.query.id === 'string' ? router.query.id : '';
 
-  const { data, loading } = useGetUserByIdQuery({
+  const { data, loading } = useGetUserQuery({
     variables: { id: profileId },
   });
   if (!data && loading) {
@@ -21,12 +21,12 @@ const Profile = () => {
       </Layout>
     );
   }
-  if (!data?.getUserById) {
+  if (!data?.getUser) {
     return (
       <Layout>
         <p>Profile not found</p>
         <button
-          className="btn"
+          className='btn'
           onClick={() => {
             router.back();
           }}
@@ -36,7 +36,7 @@ const Profile = () => {
       </Layout>
     );
   }
-  const { name, avatar, createdAt, problems, ascents } = data.getUserById;
+  const { name, avatar, createdAt, problems, ascents } = data.getUser;
 
   const getAverage = (values: number[]) => {
     if (values.length === 0) return 0;
@@ -52,7 +52,7 @@ const Profile = () => {
       <div className={styles.profile}>
         <section className={styles.head}>
           <div>
-            <Image src={avatar ? avatar : ""} width={62} height={62} />
+            <Image src={avatar ? avatar : ''} width={62} height={62} />
           </div>
 
           <h1>{name}</h1>
@@ -103,7 +103,7 @@ const Profile = () => {
                       grades[
                         getAverage(
                           problems
-                            .filter((p) => typeof p.consensusGrade === "number")
+                            .filter((p) => typeof p.consensusGrade === 'number')
                             .map((p) => p.consensusGrade as number)
                         )
                       ].label
@@ -118,7 +118,7 @@ const Profile = () => {
                         getAverage(
                           problems
                             .filter(
-                              (p) => typeof p.consensusRating === "number"
+                              (p) => typeof p.consensusRating === 'number'
                             )
                             .map((p) => p.consensusRating as number)
                         )

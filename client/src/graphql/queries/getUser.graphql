@@ -1,5 +1,5 @@
-query GetUserById($id: String!) {
-  getUserById(id: $id) {
+query GetUser($id: String!) {
+  getUser(id: $id) {
     name
     avatar
     createdAt

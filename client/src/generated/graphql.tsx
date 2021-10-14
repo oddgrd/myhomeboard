@@ -145,6 +145,9 @@ export type Layout = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addAscent: Scalars['Boolean'];
+  editAscent: Scalars['Boolean'];
+  deleteAscent: Scalars['Boolean'];
   createBoard: BoardResponse;
   editBoard: BoardResponse;
   deleteBoard: Scalars['Boolean'];
@@ -154,9 +157,21 @@ export type Mutation = {
   editProblem: ProblemResponse;
   deleteProblem: Scalars['Boolean'];
   logout: Scalars['Boolean'];
-  addAscent: Scalars['Boolean'];
-  editAscent: Scalars['Boolean'];
-  deleteAscent: Scalars['Boolean'];
+};
+
+
+export type MutationAddAscentArgs = {
+  options: AddAscentInput;
+};
+
+
+export type MutationEditAscentArgs = {
+  options: EditAscentInput;
+};
+
+
+export type MutationDeleteAscentArgs = {
+  problemId: Scalars['String'];
 };
 
 
@@ -203,21 +218,6 @@ export type MutationDeleteProblemArgs = {
   id: Scalars['String'];
 };
 
-
-export type MutationAddAscentArgs = {
-  options: AddAscentInput;
-};
-
-
-export type MutationEditAscentArgs = {
-  options: EditAscentInput;
-};
-
-
-export type MutationDeleteAscentArgs = {
-  problemId: Scalars['String'];
-};
-
 export type PaginatedProblems = {
   __typename?: 'PaginatedProblems';
   problems: Array<Problem>;
@@ -255,15 +255,15 @@ export type ProblemResponse = {
 
 export type Query = {
   __typename?: 'Query';
+  getAscents?: Maybe<Array<Ascent>>;
   getBoard: Board;
   getBoards: Array<Board>;
   getBoardLayouts: Array<Layout>;
   getProblems: PaginatedProblems;
   getProblem?: Maybe<Problem>;
   me?: Maybe<User>;
-  getUserById?: Maybe<User>;
+  getUser?: Maybe<User>;
   getUsers?: Maybe<Array<User>>;
-  getAscents?: Maybe<Array<Ascent>>;
 };
 
 
@@ -289,7 +289,7 @@ export type QueryGetProblemArgs = {
 };
 
 
-export type QueryGetUserByIdArgs = {
+export type QueryGetUserArgs = {
   id: Scalars['String'];
 };
 
@@ -436,12 +436,12 @@ export type GetProblemsQueryVariables = Exact<{
 
 export type GetProblemsQuery = { __typename?: 'Query', getProblems: { __typename?: 'PaginatedProblems', hasMore: boolean, problems: Array<{ __typename?: 'Problem', id: string, title: string, grade: number, angle: number, consensusGrade?: Maybe<number>, consensusRating?: Maybe<number>, creatorId: string, sendStatus?: Maybe<boolean>, createdAt: string, updatedAt: string, boardId: string, creator: { __typename?: 'User', id: string, name: string }, ascents: Array<{ __typename?: 'Ascent', grade: number, rating: number, userId: string }> }> } };
 
-export type GetUserByIdQueryVariables = Exact<{
+export type GetUserQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type GetUserByIdQuery = { __typename?: 'Query', getUserById?: Maybe<{ __typename?: 'User', name: string, avatar?: Maybe<string>, createdAt: string, problems?: Maybe<Array<{ __typename?: 'Problem', boardId: string, consensusGrade?: Maybe<number>, consensusRating?: Maybe<number>, ascents: Array<{ __typename?: 'Ascent', grade: number, rating: number }> }>>, ascents?: Maybe<Array<{ __typename?: 'Ascent', attempts: number, rating: number, grade: number }>> }> };
+export type GetUserQuery = { __typename?: 'Query', getUser?: Maybe<{ __typename?: 'User', name: string, avatar?: Maybe<string>, createdAt: string, problems?: Maybe<Array<{ __typename?: 'Problem', boardId: string, consensusGrade?: Maybe<number>, consensusRating?: Maybe<number>, ascents: Array<{ __typename?: 'Ascent', grade: number, rating: number }> }>>, ascents?: Maybe<Array<{ __typename?: 'Ascent', attempts: number, rating: number, grade: number }>> }> };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1134,9 +1134,9 @@ export function useGetProblemsLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type GetProblemsQueryHookResult = ReturnType<typeof useGetProblemsQuery>;
 export type GetProblemsLazyQueryHookResult = ReturnType<typeof useGetProblemsLazyQuery>;
 export type GetProblemsQueryResult = Apollo.QueryResult<GetProblemsQuery, GetProblemsQueryVariables>;
-export const GetUserByIdDocument = gql`
-    query GetUserById($id: String!) {
-  getUserById(id: $id) {
+export const GetUserDocument = gql`
+    query GetUser($id: String!) {
+  getUser(id: $id) {
     name
     avatar
     createdAt
@@ -1159,32 +1159,32 @@ export const GetUserByIdDocument = gql`
     `;
 
 /**
- * __useGetUserByIdQuery__
+ * __useGetUserQuery__
  *
- * To run a query within a React component, call `useGetUserByIdQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetUserByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetUserByIdQuery({
+ * const { data, loading, error } = useGetUserQuery({
  *   variables: {
  *      id: // value for 'id'
  *   },
  * });
  */
-export function useGetUserByIdQuery(baseOptions: Apollo.QueryHookOptions<GetUserByIdQuery, GetUserByIdQueryVariables>) {
+export function useGetUserQuery(baseOptions: Apollo.QueryHookOptions<GetUserQuery, GetUserQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserByIdDocument, options);
+        return Apollo.useQuery<GetUserQuery, GetUserQueryVariables>(GetUserDocument, options);
       }
-export function useGetUserByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserByIdQuery, GetUserByIdQueryVariables>) {
+export function useGetUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserQuery, GetUserQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserByIdDocument, options);
+          return Apollo.useLazyQuery<GetUserQuery, GetUserQueryVariables>(GetUserDocument, options);
         }
-export type GetUserByIdQueryHookResult = ReturnType<typeof useGetUserByIdQuery>;
-export type GetUserByIdLazyQueryHookResult = ReturnType<typeof useGetUserByIdLazyQuery>;
-export type GetUserByIdQueryResult = Apollo.QueryResult<GetUserByIdQuery, GetUserByIdQueryVariables>;
+export type GetUserQueryHookResult = ReturnType<typeof useGetUserQuery>;
+export type GetUserLazyQueryHookResult = ReturnType<typeof useGetUserLazyQuery>;
+export type GetUserQueryResult = Apollo.QueryResult<GetUserQuery, GetUserQueryVariables>;
 export const MeDocument = gql`
     query Me {
   me {
