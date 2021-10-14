@@ -7,11 +7,16 @@ interface Options {
   variableValues?: Maybe<{
     [key: string]: any;
   }>;
+  userId?: string;
 }
 
 let schema: GraphQLSchema;
 
-export const gqlWrapper = async ({ source, variableValues }: Options) => {
+export const gqlWrapper = async ({
+  source,
+  variableValues,
+  userId,
+}: Options) => {
   // Cache schema
   if (!schema) {
     schema = await createSchema();
@@ -21,5 +26,17 @@ export const gqlWrapper = async ({ source, variableValues }: Options) => {
     schema,
     source,
     variableValues,
+    contextValue: {
+      req: {
+        session: {
+          passport: {
+            user: userId,
+          },
+        },
+      },
+      res: {
+        clearCookie: jest.fn().mockReturnThis(),
+      },
+    },
   });
 };

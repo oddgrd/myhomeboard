@@ -8,13 +8,13 @@ import {
   Query,
   Resolver,
   Root,
-  UseMiddleware
+  UseMiddleware,
 } from 'type-graphql';
 import {
   CreateProblemInput,
   PaginatedProblems,
   EditProblemInput,
-  ProblemResponse
+  ProblemResponse,
 } from './types';
 import { Problem } from '../../entities/Problem';
 import { Context } from '../../types/context';
@@ -89,9 +89,18 @@ export class ProblemResolver {
           errors: [
             {
               field: 'title',
-              message: 'Title has to be unique'
-            }
-          ]
+              message: 'Title has to be unique',
+            },
+          ],
+        };
+      } else {
+        return {
+          errors: [
+            {
+              field: error.name,
+              message: error.message,
+            },
+          ],
         };
       }
     }
@@ -114,7 +123,7 @@ export class ProblemResolver {
         .set({ title, rules, grade, angle })
         .where('id = :id and "creatorId" = :creatorId', {
           id: problemId,
-          creatorId: req.session.passport?.user
+          creatorId: req.session.passport?.user,
         })
         .returning('*')
         .execute();
@@ -126,9 +135,9 @@ export class ProblemResolver {
           errors: [
             {
               field: 'title',
-              message: 'Title has to be unique'
-            }
-          ]
+              message: 'Title has to be unique',
+            },
+          ],
         };
       }
     }
@@ -150,7 +159,7 @@ export class ProblemResolver {
       .from(Problem)
       .where('"creatorId" = :creatorId', { creatorId })
       .andWhere('id = :id', {
-        id
+        id,
       })
       .execute();
 
@@ -178,14 +187,14 @@ export class ProblemResolver {
 
     if (cursor) {
       qb.where('problem."createdAt" < :cursor', {
-        cursor: new Date(+cursor)
+        cursor: new Date(+cursor),
       });
     }
     qb.take(realLimitPlusOne);
     const problems = await qb.getMany();
     return {
       problems: problems.slice(0, realLimit),
-      hasMore: problems.length === realLimitPlusOne
+      hasMore: problems.length === realLimitPlusOne,
     };
   }
 
