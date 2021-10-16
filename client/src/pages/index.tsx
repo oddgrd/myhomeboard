@@ -147,9 +147,10 @@ const Landing = () => {
           </motion.svg>
 
           <div className={styles.footerContent}>
-            <span>created by </span>
             <a href='https://github.com/oddgrd' target='_blank'>
-              oddgrd <FaGithub />
+              <p>
+                oddgrd <FaGithub />
+              </p>
             </a>
           </div>
         </footer>

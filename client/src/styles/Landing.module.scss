@@ -49,10 +49,15 @@
 .footerContent {
   z-index: 0;
   font-size: clamp(1rem, 2.2vw, 1.4rem);
+
   a {
     color: var(--theme-color);
-    &:hover {
-      color: #dd3f31;
+    p {
+      transition: 0.4s ease-in-out;
+      &:hover {
+        color: #3c31dd;
+        transform: scale(1.04);
+      }
     }
   }
 }

@@ -5,3 +5,8 @@
   width: clamp(360px, 95vw, 800px);
   background: var(--theme-background);
 }
+@media (max-width: 700px) {
+  .container {
+    margin-top: 0;
+  }
+}
