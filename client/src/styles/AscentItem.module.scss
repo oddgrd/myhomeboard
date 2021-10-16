@@ -6,6 +6,7 @@
   display: grid;
   grid-template-columns: 0.5fr 3fr 1fr;
   grid-template-rows: 1fr auto;
+  border-bottom: 1px solid var(--theme-border-transparent);
 }
 .name {
   font-weight: 500;

@@ -7,6 +7,8 @@
 }
 .desktopTitle {
   display: block;
+  padding-left: 30px;
+  font-size: 1.75rem;
 }
 .mobileTitle {
   display: none;
@@ -19,8 +21,7 @@
   padding: 0 10px;
 }
 .info {
-  width: 350px;
-  border-right: 1px solid var(--theme-color);
+  width: 100%;
 }
 .board {
   width: 350px;
@@ -62,9 +63,6 @@
     display: flex;
     flex-direction: column;
     margin: auto;
-  }
-  .info {
-    border-right: none;
   }
   .desktopTitle {
     display: none;

@@ -1,16 +1,13 @@
-import { motion} from "framer-motion";
-import type { NextPage } from "next";
-import Head from "next/head";
-import Link from "next/link";
-import { useState } from "react";
-import { FaGithub } from "react-icons/fa";
-import { useCurves } from "../hooks/useCurves";
-import styles from "../styles/Landing.module.scss";
-import withApollo from "../utils/withApollo";
-import { LandingHeader } from "../components/LandingHeader";
+import { motion } from 'framer-motion';
+import Head from 'next/head';
+import Link from 'next/link';
+import { FaGithub } from 'react-icons/fa';
+import { useCurves } from '../hooks/useCurves';
+import styles from '../styles/Landing.module.scss';
+import withApollo from '../utils/withApollo';
+import { LandingHeader } from '../components/LandingHeader';
 
-const Home: NextPage = () => {
-  const [menuModal, toggleMenuModal] = useState(false);
+const Landing = () => {
   const {
     layeredTopWave,
     layeredBottomWave,
@@ -23,28 +20,28 @@ const Home: NextPage = () => {
       <Head>
         <title>myHomeBoard</title>
         <meta
-          name="description"
-          content={"Home Climbing Board Management App"}
+          name='description'
+          content={'Home Climbing Board Management App'}
         />
         <meta
-          name="keywords"
+          name='keywords'
           content={
-            "climbing, climb, bouldering, board, boardclimbing, homeboard, homewall"
+            'climbing, climb, bouldering, board, boardclimbing, homeboard, homewall'
           }
         />
-        <link rel="icon" href="/favicon.png" />
+        <link rel='icon' href='/favicon.png' />
       </Head>
       <LandingHeader />
-      
+
       <div className={styles.body}>
-        <section className="yellow">
+        <section className='yellow'>
           {layeredTopWave(
-            "120",
-            "#242440",
-            "#e76f51",
-            "#eb8550",
-            "#ebb05d",
-            "#ebb05d"
+            '120',
+            '#242440',
+            '#e76f51',
+            '#eb8550',
+            '#ebb05d',
+            '#ebb05d'
           )}
           <div className={styles.content}>
             <h1>MyHomeBoard</h1>
@@ -56,7 +53,7 @@ const Home: NextPage = () => {
 
           {bottomWave()}
         </section>
-        <section className="orange">
+        <section className='orange'>
           <div className={styles.content}>
             <h1>Create Problems</h1>
             <p>
@@ -67,7 +64,7 @@ const Home: NextPage = () => {
           </div>
         </section>
         <section>
-          {layeredTopWave("180px")}
+          {layeredTopWave('180px')}
           <div className={styles.content}>
             <h1>Browse Problems</h1>
             <p>
@@ -77,7 +74,7 @@ const Home: NextPage = () => {
             </p>
           </div>
         </section>
-        <section className="purple">
+        <section className='purple'>
           {layeredTopWave2()}
           <div className={styles.content}>
             <h1>Register Ascents</h1>
@@ -88,14 +85,14 @@ const Home: NextPage = () => {
             </p>
           </div>
         </section>
-        <section style={{ background: "#dd3f31" }}>
+        <section style={{ background: '#dd3f31' }}>
           {layeredTopWave(
-            "190",
-            "#3c31dd",
-            "#af00ad",
-            "#d50080",
-            "#e11858",
-            "#dd3f31"
+            '190',
+            '#3c31dd',
+            '#af00ad',
+            '#d50080',
+            '#e11858',
+            '#dd3f31'
           )}
           <div className={styles.content}>
             <h1>Profile</h1>
@@ -107,12 +104,12 @@ const Home: NextPage = () => {
         </section>
         <section>
           {layeredTopWave2(
-            "190",
-            "#dd3f31",
-            "#ba2653",
-            "#872961",
-            "#502b5a",
-            "#242440"
+            '190',
+            '#dd3f31',
+            '#ba2653',
+            '#872961',
+            '#502b5a',
+            '#242440'
           )}
           <div className={styles.content}>
             <h1>Upload New Layouts</h1>
@@ -121,37 +118,37 @@ const Home: NextPage = () => {
               your board*.
             </p>
             <i>*Only Board Creator can upload new layouts</i>
-            <Link href="/login">
-              <a className="btn" style={{ marginTop: "3.5rem" }}>
+            <Link href='/login'>
+              <a className='btn' style={{ marginTop: '3.5rem' }}>
                 <strong>GET STARTED</strong>
               </a>
             </Link>
           </div>
-          {layeredBottomWave("400")}
+          {layeredBottomWave('400')}
         </section>
 
         <footer>
           <motion.svg
             id={styles.blobSvg}
-            initial="start"
-            animate="end"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+            initial='start'
+            animate='end'
+            fill='none'
+            xmlns='http://www.w3.org/2000/svg'
           >
             <motion.path
               variants={blobVariants}
               transition={{
                 duration: 6,
-                repeatType: "reverse",
+                repeatType: 'reverse',
                 repeat: Infinity,
               }}
-              fill="#038373"
+              fill='#038373'
             />
           </motion.svg>
 
           <div className={styles.footerContent}>
             <span>created by </span>
-            <a href="https://github.com/oddgrd" target="_blank">
+            <a href='https://github.com/oddgrd' target='_blank'>
               oddgrd <FaGithub />
             </a>
           </div>
@@ -161,4 +158,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default withApollo({ ssr: true })(Home);
+export default withApollo({ ssr: true })(Landing);

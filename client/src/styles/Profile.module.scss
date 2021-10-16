@@ -20,7 +20,7 @@
 }
 .snippets {
   margin-top: 2rem;
-  width: 60%;
+  width: clamp(330px, 90vw, 400px);
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -39,10 +39,4 @@
   padding: 15px 0;
   border-radius: 3%;
   border: 1px solid var(--theme-color);
-}
-
-@media (max-width: 700px) {
-  .snippets {
-    width: 90%;
-  }
 }

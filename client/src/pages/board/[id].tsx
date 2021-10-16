@@ -62,8 +62,8 @@ const Board = () => {
         <div className={styles.layouts}>
           {' '}
           <h1>Layouts</h1>
-          {layoutData?.getBoardLayouts.map((layout) => (
-            <LayoutItem layout={layout} />
+          {layoutData?.getBoardLayouts.map((layout, idx) => (
+            <LayoutItem layout={layout} key={idx} />
           ))}
         </div>
       </div>

@@ -160,7 +160,7 @@ export const BoardForm = ({ editProps }: Props) => {
             <input
               type='submit'
               className='btn'
-              value={editProps ? 'Edit Board' : 'Save Board'}
+              value={editProps ? 'Save Changes' : 'Save Board'}
               disabled={!dirty || !isValid}
             />
           </Form>
