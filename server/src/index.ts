@@ -1,7 +1,7 @@
 import { ApolloServer } from 'apollo-server-express';
 import connectRedis from 'connect-redis';
 import cors from 'cors';
-import 'dotenv-safe/config';
+import 'dotenv/config';
 import express from 'express';
 import session from 'express-session';
 import { graphqlUploadExpress } from 'graphql-upload';
