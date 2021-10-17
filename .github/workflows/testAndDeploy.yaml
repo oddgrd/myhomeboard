@@ -8,11 +8,13 @@ on:
       - master
     paths:
       - 'server/**'
-      - '.github/workflows/testAndDeploy'
+      - '.github/workflows/testAndDeploy.yaml'
 jobs:
   test:
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        working-directory: ./server
     services:
       postgres:
         image: postgres
@@ -33,9 +35,9 @@ jobs:
           node-version: '14'
           cache: 'yarn'
           cache-dependency-path: server/yarn.lock
-      - run: cd server && yarn
+      - run: yarn
       - name: Connect to PSQL and run tests
-        run: cd server && yarn test
+        run: yarn test
         env:
           POSTGRES_HOST: localhost
           POSTGRES_PORT: 5432
