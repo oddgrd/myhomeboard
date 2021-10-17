@@ -34,7 +34,6 @@ jobs:
         with:
           node-version: '14'
           cache: 'yarn'
-          cache-dependency-path: server/yarn.lock
       - run: yarn
       - name: Connect to PSQL and run tests
         run: yarn test
