@@ -8,7 +8,7 @@ on:
       - master
     paths:
       - 'server/**'
-
+      - '.github/workflows/testAndDeploy'
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -32,7 +32,7 @@ jobs:
         with:
           node-version: '14'
           cache: 'yarn'
-          cache-dependency-path: yarn.lock
+          cache-dependency-path: server/yarn.lock
       - run: yarn
       - name: Connect to PSQL and run tests
         run: yarn test
