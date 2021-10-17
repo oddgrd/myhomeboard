@@ -1,4 +1,4 @@
-import 'dotenv-safe/config';
+import 'dotenv/config';
 import { createConnection } from 'typeorm';
 import { Ascent } from '../entities/Ascent';
 import { Board } from '../entities/Board';
