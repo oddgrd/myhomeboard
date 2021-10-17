@@ -33,9 +33,9 @@ jobs:
           node-version: '14'
           cache: 'yarn'
           cache-dependency-path: server/yarn.lock
-      - run: yarn
+      - run: cd server && yarn
       - name: Connect to PSQL and run tests
-        run: yarn test
+        run: cd server && yarn test
         env:
           POSTGRES_HOST: localhost
           POSTGRES_PORT: 5432
