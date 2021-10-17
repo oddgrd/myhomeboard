@@ -8,5 +8,7 @@ declare namespace NodeJS {
     GOOGLE_CLIENT_SECRET: string;
     CLOUDINARY_URL: string;
     CORS_ORIGIN: string;
+    POSTGRES_PORT: string;
+    POSTGRES_HOST: string;
   }
 }
