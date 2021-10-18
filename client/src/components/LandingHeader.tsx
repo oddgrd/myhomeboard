@@ -26,7 +26,7 @@ export const LandingHeader = () => {
             <li>
               <Link href={`/login`}>
                 <a className='btn btn-link'>
-                  <strong className={styles.landingLinks}>Get Started</strong>
+                  <strong className={styles.landingLinks}>Sign In</strong>
                 </a>
               </Link>
             </li>
