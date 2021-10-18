@@ -1,5 +1,5 @@
 ---
-name: 'testAndDeploy'
+name: 'deploy API'
 
 on:
   push:
@@ -7,13 +7,15 @@ on:
       - master
     paths:
       - 'server/**'
-      - '.github/workflows/testAndDeploy.yaml'
+      - '.github/workflows/deployAPI.yaml'
+
 jobs:
   test:
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./server
+
     services:
       postgres:
         image: postgres
@@ -36,7 +38,7 @@ jobs:
       - name: Clone repo
         uses: actions/checkout@v2
 
-      - name: Setup Node and cache yarn dependencies
+      - name: Setup node
         uses: actions/setup-node@v2
         with:
           node-version: '14'
@@ -55,6 +57,7 @@ jobs:
   deploy:
     needs: test
     runs-on: ubuntu-latest
+
     steps:
       - name: Clone repo
         uses: actions/checkout@v2
