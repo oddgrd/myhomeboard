@@ -32,6 +32,7 @@ export class LayoutResolver {
       description,
       creatorId,
       url: result.eager[0].secure_url,
+      publicId: result.public_id,
     }).save();
     return layout;
   }

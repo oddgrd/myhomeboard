@@ -6,7 +6,7 @@ import {
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
 } from 'typeorm';
 import { Board } from './Board';
 import { User } from './User';
@@ -41,6 +41,10 @@ export class Layout extends BaseEntity {
   @Field()
   @Column({ type: 'uuid' })
   boardId!: string;
+
+  @Field()
+  @Column()
+  publicId!: string;
 
   @ManyToOne(() => Board, (board) => board.layouts)
   board: Board;
