@@ -2,22 +2,23 @@
 
 ## Tech stack:
 
+- Typescript
+
 ### Frontend
 
-- Typescript
 - Next.js
 - Apollo Client
 - GraphQL Codegen
-- Sass modules
+- Sass
 
 ### Backend
 
-- Typescript
 - Node.js
 - Express
 - Apollo Server
 - TypeORM
 - TypeGraphQL
+- Jest
 
 ### Databases
 
@@ -33,9 +34,12 @@
 - Google OAuth
 
 ### Deployment
-- Vercel
-- GitHub Actions
 
-The client is deployed on Vercel where it is automatically redeployed on push to Github through Vercel's Github integration.
-The server is deployed as a Dokku VPS in a DigitalOcean Droplet with the Node API, Postgres and Redis running in separate, linked containers.
-The API is automatically redeployed through a Github Action on pushes to Github containing changes to the server directory.
+- Vercel
+- DigitalOcean
+- Dokku
+- Docker
+- Automated CI/CD with GitHub Actions
+
+The client is hosted on Vercel. The server is hosted on DigitalOcean as a Dokku VPS, with the express API, Postgres and Redis running in separate Docker containers.
+The client and API are continuously deployed through separate Github Actions workflows. When deploying the API integration tests are ran against a temporary Docker Postgres service with the same schema as the production database.
