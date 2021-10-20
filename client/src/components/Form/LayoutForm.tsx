@@ -37,7 +37,7 @@ export const LayoutForm = ({ boardId }: Props) => {
           },
         },
         update: (cache) => {
-          cache.evict({ fieldName: 'getBoards' });
+          cache.evict({ fieldName: 'getBoardLayouts' });
           cache.evict({ fieldName: 'getBoard' });
         },
       }),

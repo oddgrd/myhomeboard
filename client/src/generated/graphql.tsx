@@ -98,6 +98,12 @@ export type CreateProblemInput = {
   coordinates: Array<CoordinatesInput>;
 };
 
+export type DeleteLayoutInput = {
+  layoutId: Scalars['String'];
+  layoutUrl: Scalars['String'];
+  publicId: Scalars['String'];
+};
+
 export type EditAscentInput = {
   problemId: Scalars['String'];
   grade: Scalars['Int'];
@@ -139,6 +145,7 @@ export type Layout = {
   creatorId: Scalars['String'];
   creator: User;
   boardId: Scalars['String'];
+  publicId: Scalars['String'];
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
 };
@@ -203,8 +210,7 @@ export type MutationCreateLayoutArgs = {
 
 
 export type MutationDeleteLayoutArgs = {
-  layoutUrl: Scalars['String'];
-  layoutId: Scalars['String'];
+  options: DeleteLayoutInput;
 };
 
 
@@ -315,7 +321,7 @@ export type RegularErrorFragment = { __typename?: 'FieldError', field: string, m
 
 export type BoardCoreFragment = { __typename?: 'Board', id: string, creatorId: string, title: string, description: string, adjustable: boolean, angles: Array<number>, city: string, country: string, currentLayout?: Maybe<{ __typename?: 'Layout', id: string, title: string, url: string, createdAt: string }> };
 
-export type LayoutCoreFragment = { __typename?: 'Layout', id: string, title: string, description: string, url: string, creatorId: string, boardId: string, createdAt: string };
+export type LayoutCoreFragment = { __typename?: 'Layout', id: string, title: string, description: string, url: string, creatorId: string, boardId: string, publicId: string, createdAt: string };
 
 export type ProblemSnippetFragment = { __typename?: 'Problem', id: string, title: string, grade: number, angle: number, consensusGrade?: Maybe<number>, consensusRating?: Maybe<number>, creatorId: string, sendStatus?: Maybe<boolean>, createdAt: string, updatedAt: string, boardId: string, creator: { __typename?: 'User', id: string, name: string }, ascents: Array<{ __typename?: 'Ascent', grade: number, rating: number, userId: string }> };
 
@@ -362,8 +368,7 @@ export type DeleteBoardMutationVariables = Exact<{
 export type DeleteBoardMutation = { __typename?: 'Mutation', deleteBoard: boolean };
 
 export type DeleteLayoutMutationVariables = Exact<{
-  layoutId: Scalars['String'];
-  layoutUrl: Scalars['String'];
+  options: DeleteLayoutInput;
 }>;
 
 
@@ -414,12 +419,12 @@ export type GetBoardsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetBoardsQuery = { __typename?: 'Query', getBoards: Array<{ __typename?: 'Board', id: string, creatorId: string, title: string, description: string, adjustable: boolean, angles: Array<number>, city: string, country: string, currentLayout?: Maybe<{ __typename?: 'Layout', id: string, title: string, url: string, createdAt: string }> }> };
 
-export type GetLayoutsQueryVariables = Exact<{
+export type GetBoardLayoutsQueryVariables = Exact<{
   boardId: Scalars['String'];
 }>;
 
 
-export type GetLayoutsQuery = { __typename?: 'Query', getBoardLayouts: Array<{ __typename?: 'Layout', id: string, title: string, description: string, url: string, creatorId: string, boardId: string, createdAt: string }> };
+export type GetBoardLayoutsQuery = { __typename?: 'Query', getBoardLayouts: Array<{ __typename?: 'Layout', id: string, title: string, description: string, url: string, creatorId: string, boardId: string, publicId: string, createdAt: string }> };
 
 export type GetProblemQueryVariables = Exact<{
   id: Scalars['String'];
@@ -481,6 +486,7 @@ export const LayoutCoreFragmentDoc = gql`
   url
   creatorId
   boardId
+  publicId
   createdAt
 }
     `;
@@ -715,8 +721,8 @@ export type DeleteBoardMutationHookResult = ReturnType<typeof useDeleteBoardMuta
 export type DeleteBoardMutationResult = Apollo.MutationResult<DeleteBoardMutation>;
 export type DeleteBoardMutationOptions = Apollo.BaseMutationOptions<DeleteBoardMutation, DeleteBoardMutationVariables>;
 export const DeleteLayoutDocument = gql`
-    mutation DeleteLayout($layoutId: String!, $layoutUrl: String!) {
-  deleteLayout(layoutId: $layoutId, layoutUrl: $layoutUrl)
+    mutation DeleteLayout($options: DeleteLayoutInput!) {
+  deleteLayout(options: $options)
 }
     `;
 export type DeleteLayoutMutationFn = Apollo.MutationFunction<DeleteLayoutMutation, DeleteLayoutMutationVariables>;
@@ -734,8 +740,7 @@ export type DeleteLayoutMutationFn = Apollo.MutationFunction<DeleteLayoutMutatio
  * @example
  * const [deleteLayoutMutation, { data, loading, error }] = useDeleteLayoutMutation({
  *   variables: {
- *      layoutId: // value for 'layoutId'
- *      layoutUrl: // value for 'layoutUrl'
+ *      options: // value for 'options'
  *   },
  * });
  */
@@ -983,8 +988,8 @@ export function useGetBoardsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<
 export type GetBoardsQueryHookResult = ReturnType<typeof useGetBoardsQuery>;
 export type GetBoardsLazyQueryHookResult = ReturnType<typeof useGetBoardsLazyQuery>;
 export type GetBoardsQueryResult = Apollo.QueryResult<GetBoardsQuery, GetBoardsQueryVariables>;
-export const GetLayoutsDocument = gql`
-    query GetLayouts($boardId: String!) {
+export const GetBoardLayoutsDocument = gql`
+    query GetBoardLayouts($boardId: String!) {
   getBoardLayouts(boardId: $boardId) {
     ...LayoutCore
   }
@@ -992,32 +997,32 @@ export const GetLayoutsDocument = gql`
     ${LayoutCoreFragmentDoc}`;
 
 /**
- * __useGetLayoutsQuery__
+ * __useGetBoardLayoutsQuery__
  *
- * To run a query within a React component, call `useGetLayoutsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetLayoutsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetBoardLayoutsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetBoardLayoutsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetLayoutsQuery({
+ * const { data, loading, error } = useGetBoardLayoutsQuery({
  *   variables: {
  *      boardId: // value for 'boardId'
  *   },
  * });
  */
-export function useGetLayoutsQuery(baseOptions: Apollo.QueryHookOptions<GetLayoutsQuery, GetLayoutsQueryVariables>) {
+export function useGetBoardLayoutsQuery(baseOptions: Apollo.QueryHookOptions<GetBoardLayoutsQuery, GetBoardLayoutsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetLayoutsQuery, GetLayoutsQueryVariables>(GetLayoutsDocument, options);
+        return Apollo.useQuery<GetBoardLayoutsQuery, GetBoardLayoutsQueryVariables>(GetBoardLayoutsDocument, options);
       }
-export function useGetLayoutsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetLayoutsQuery, GetLayoutsQueryVariables>) {
+export function useGetBoardLayoutsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetBoardLayoutsQuery, GetBoardLayoutsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetLayoutsQuery, GetLayoutsQueryVariables>(GetLayoutsDocument, options);
+          return Apollo.useLazyQuery<GetBoardLayoutsQuery, GetBoardLayoutsQueryVariables>(GetBoardLayoutsDocument, options);
         }
-export type GetLayoutsQueryHookResult = ReturnType<typeof useGetLayoutsQuery>;
-export type GetLayoutsLazyQueryHookResult = ReturnType<typeof useGetLayoutsLazyQuery>;
-export type GetLayoutsQueryResult = Apollo.QueryResult<GetLayoutsQuery, GetLayoutsQueryVariables>;
+export type GetBoardLayoutsQueryHookResult = ReturnType<typeof useGetBoardLayoutsQuery>;
+export type GetBoardLayoutsLazyQueryHookResult = ReturnType<typeof useGetBoardLayoutsLazyQuery>;
+export type GetBoardLayoutsQueryResult = Apollo.QueryResult<GetBoardLayoutsQuery, GetBoardLayoutsQueryVariables>;
 export const GetProblemDocument = gql`
     query GetProblem($id: String!) {
   getProblem(id: $id) {

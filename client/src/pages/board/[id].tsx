@@ -3,7 +3,10 @@ import { useRouter } from 'next/router';
 import { Layout } from '../../components/Layout';
 import { LayoutItem } from '../../components/LayoutItem';
 import { Spinner } from '../../components/Spinner';
-import { useGetBoardQuery, useGetLayoutsQuery } from '../../generated/graphql';
+import {
+  useGetBoardQuery,
+  useGetBoardLayoutsQuery,
+} from '../../generated/graphql';
 import withApollo from '../../utils/withApollo';
 import styles from '../../styles/Board.module.scss';
 import { BoardForm } from '../../components/Form/BoardForm';
@@ -14,7 +17,7 @@ const Board = () => {
   const { data, loading, error } = useGetBoardQuery({
     variables: { boardId },
   });
-  const { data: layoutData } = useGetLayoutsQuery({
+  const { data: layoutData } = useGetBoardLayoutsQuery({
     variables: { boardId },
   });
 
@@ -71,4 +74,4 @@ const Board = () => {
   );
 };
 
-export default withApollo({ ssr: false })(Board);
+export default withApollo({ ssr: true })(Board);

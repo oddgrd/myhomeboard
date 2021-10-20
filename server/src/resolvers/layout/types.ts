@@ -15,3 +15,15 @@ export class LayoutInput {
   @Field()
   description: string;
 }
+
+@InputType()
+export class DeleteLayoutInput {
+  @Field()
+  layoutId: string;
+
+  @Field()
+  layoutUrl: string;
+
+  @Field()
+  publicId: string;
+}

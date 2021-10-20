@@ -6,12 +6,13 @@ import {
   Resolver,
   UseMiddleware,
 } from 'type-graphql';
+import Cloudinary from 'cloudinary';
 import { isAuth } from '../../middleware/isAuth';
 import { Context } from 'src/types/context';
 import { uploadImage } from '../../utils/uploadImage';
 import { Layout } from '../../entities/Layout';
 import { getConnection } from 'typeorm';
-import { LayoutInput } from './types';
+import { DeleteLayoutInput, LayoutInput } from './types';
 
 @Resolver(Layout)
 export class LayoutResolver {
@@ -42,10 +43,10 @@ export class LayoutResolver {
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
   async deleteLayout(
-    @Arg('layoutId') layoutId: string,
-    @Arg('layoutUrl') layoutUrl: string,
+    @Arg('options') options: DeleteLayoutInput,
     @Ctx() { req }: Context
   ): Promise<boolean> {
+    const { layoutUrl, layoutId, publicId } = options;
     try {
       await getConnection().transaction(async (em) => {
         await em.query(
@@ -66,6 +67,11 @@ export class LayoutResolver {
 
         if (result[1] === 0)
           throw new Error('Layout not found or current user is not creator');
+
+        await Cloudinary.v2.uploader.destroy(publicId, (error, result) => {
+          console.log(result, error);
+          if (error) throw new Error(error);
+        });
       });
     } catch (error) {
       console.log(error);

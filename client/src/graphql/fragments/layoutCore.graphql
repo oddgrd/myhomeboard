@@ -1,9 +1,10 @@
 fragment LayoutCore on Layout {
-    id
-    title
-    description
-    url
-    creatorId
-    boardId
-    createdAt
+  id
+  title
+  description
+  url
+  creatorId
+  boardId
+  publicId
+  createdAt
 }

@@ -17,8 +17,8 @@ const client = (ctx?: NextPageContext | undefined) => {
       cookie:
         (typeof window === 'undefined'
           ? ctx?.req?.headers.cookie
-          : undefined) || ''
-    }
+          : undefined) || '',
+    },
   });
 
   return new ApolloClient({
@@ -38,16 +38,15 @@ const client = (ctx?: NextPageContext | undefined) => {
                   ...incoming,
                   problems: [
                     ...(existing?.problems || []),
-                    ...incoming.problems
-                  ]
+                    ...incoming.problems,
+                  ],
                 };
-              }
-            }
-          }
-        }
-      }
-    })
+              },
+            },
+          },
+        },
+      },
+    }),
   });
 };
-
 export default withApollo(client);
