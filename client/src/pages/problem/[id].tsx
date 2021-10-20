@@ -55,8 +55,8 @@ const Problem = () => {
     return (
       <Layout>
         <p>Problem Not Found</p>
-        <Link href="/">
-          <a className="back">{'<'}Go Back</a>
+        <Link href='/'>
+          <a className='back'>{'<'}Go Back</a>
         </Link>
       </Layout>
     );
@@ -114,7 +114,7 @@ const Problem = () => {
           </div>
           <div className={styles.info}>
             <h2 className={styles.desktopTitle}>{title}</h2>
-            <div className="hide">
+            <div className='hide'>
               <ProblemInfo {...infoProps} />
             </div>
 
@@ -123,7 +123,7 @@ const Problem = () => {
                 <>
                   <DeleteProblemButton id={problemId} boardId={boardId} />
                   <button
-                    className="btn"
+                    className='btn'
                     onClick={() => setShowEditProblemModal(true)}
                   >
                     <FaEdit size={28} />
@@ -132,14 +132,14 @@ const Problem = () => {
               ) : null}
               {!sendStatus && meData?.me && (
                 <button
-                  className="btn"
+                  className='btn'
                   onClick={() => setShowAscentModal(true)}
                 >
                   <FaCheck size={28} />
                 </button>
               )}
               <button
-                className="btn hide-desktop"
+                className='btn hide-desktop'
                 onClick={() => setShowInfoModal(true)}
               >
                 <FaInfo size={28} />
@@ -166,7 +166,6 @@ const Problem = () => {
                 id={id}
                 boardId={boardId}
                 onClose={() => setShowAscentModal(false)}
-                mutation={'ADD'}
               />
             </Modal>
           )}
