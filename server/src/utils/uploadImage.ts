@@ -1,6 +1,6 @@
 import cloudinary, {
   UploadApiErrorResponse,
-  UploadApiResponse
+  UploadApiResponse,
 } from 'cloudinary';
 import { FileUpload } from 'graphql-upload';
 
@@ -11,12 +11,13 @@ const eagerOptions = {
   crop: 'fill',
   quality: 100,
   fetch_format: 'auto',
-  responsive_placeholder: 'blank'
+  responsive_placeholder: 'blank',
 };
 export const uploadImage = async (
   file: FileUpload
 ): Promise<UploadApiResponse | UploadApiErrorResponse> => {
-  const { createReadStream } = file;
+  // file is a promise, ignore ts-lint
+  const { createReadStream } = await file;
   const fileStream = createReadStream();
 
   return new Promise((resolve, reject) => {

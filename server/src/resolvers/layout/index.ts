@@ -4,14 +4,14 @@ import {
   Mutation,
   Query,
   Resolver,
-  UseMiddleware
+  UseMiddleware,
 } from 'type-graphql';
 import { isAuth } from '../../middleware/isAuth';
 import { Context } from 'src/types/context';
 import { uploadImage } from '../../utils/uploadImage';
 import { Layout } from '../../entities/Layout';
-import { FileUpload, GraphQLUpload } from 'graphql-upload';
 import { getConnection } from 'typeorm';
+import { LayoutInput } from './types';
 
 @Resolver(Layout)
 export class LayoutResolver {
@@ -20,12 +20,10 @@ export class LayoutResolver {
   @Mutation(() => Layout)
   @UseMiddleware(isAuth)
   async createLayout(
-    @Arg('file', () => GraphQLUpload) file: FileUpload,
-    @Arg('title') title: string,
-    @Arg('boardId') boardId: string,
-    @Arg('description') description: string,
+    @Arg('options') options: LayoutInput,
     @Ctx() { req }: Context
   ): Promise<Layout> {
+    const { title, description, boardId, file } = options;
     const creatorId = req.session.passport?.user;
     const result = await uploadImage(file);
     const layout = await Layout.create({
@@ -33,7 +31,7 @@ export class LayoutResolver {
       boardId,
       description,
       creatorId,
-      url: result.eager[0].secure_url
+      url: result.eager[0].secure_url,
     }).save();
     return layout;
   }

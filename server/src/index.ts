@@ -149,7 +149,7 @@ const main = async () => {
   app.get('/favicon.ico', (_, res) => res.status(204));
 
   app.listen(parseInt(process.env.PORT), () => {
-    console.log('App listening on port 4000');
+    console.log(`App listening on port ${process.env.PORT}`);
   });
 };
 

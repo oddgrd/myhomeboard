@@ -13,7 +13,7 @@ export const LayoutForm = ({ boardId }: Props) => {
   const [layoutData, setLayoutData] = useState({
     title: '',
     description: '',
-    file: null
+    file: null,
   });
 
   const onDrop = useCallback(
@@ -28,24 +28,23 @@ export const LayoutForm = ({ boardId }: Props) => {
     setLayoutData({ ...layoutData, [e.target.name]: e.target.value });
   const handleClick = async (e: any) => {
     e.preventDefault();
-
     const { errors } = await toast.promise(
       createLayout({
         variables: {
-          title: layoutData.title,
-          description: layoutData.description,
-          file: layoutData.file,
-          boardId
+          options: {
+            ...layoutData,
+            boardId,
+          },
         },
         update: (cache) => {
           cache.evict({ fieldName: 'getBoards' });
           cache.evict({ fieldName: 'getBoard' });
-        }
+        },
       }),
       {
         pending: 'Uploading layout',
         success: 'Layout added',
-        error: 'Something went wrong'
+        error: 'Something went wrong',
       }
     );
     if (!errors) {

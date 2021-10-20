@@ -143,6 +143,13 @@ export type Layout = {
   updatedAt: Scalars['String'];
 };
 
+export type LayoutInput = {
+  file: Scalars['Upload'];
+  title: Scalars['String'];
+  boardId: Scalars['String'];
+  description: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addAscent: Scalars['Boolean'];
@@ -191,10 +198,7 @@ export type MutationDeleteBoardArgs = {
 
 
 export type MutationCreateLayoutArgs = {
-  description: Scalars['String'];
-  boardId: Scalars['String'];
-  title: Scalars['String'];
-  file: Scalars['Upload'];
+  options: LayoutInput;
 };
 
 
@@ -330,10 +334,7 @@ export type CreateBoardMutationVariables = Exact<{
 export type CreateBoardMutation = { __typename?: 'Mutation', createBoard: { __typename?: 'BoardResponse', board?: Maybe<{ __typename?: 'Board', id: string }>, errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>> } };
 
 export type CreateLayoutMutationVariables = Exact<{
-  file: Scalars['Upload'];
-  title: Scalars['String'];
-  description: Scalars['String'];
-  boardId: Scalars['String'];
+  options: LayoutInput;
 }>;
 
 
@@ -577,13 +578,8 @@ export type CreateBoardMutationHookResult = ReturnType<typeof useCreateBoardMuta
 export type CreateBoardMutationResult = Apollo.MutationResult<CreateBoardMutation>;
 export type CreateBoardMutationOptions = Apollo.BaseMutationOptions<CreateBoardMutation, CreateBoardMutationVariables>;
 export const CreateLayoutDocument = gql`
-    mutation CreateLayout($file: Upload!, $title: String!, $description: String!, $boardId: String!) {
-  createLayout(
-    file: $file
-    title: $title
-    description: $description
-    boardId: $boardId
-  ) {
+    mutation CreateLayout($options: LayoutInput!) {
+  createLayout(options: $options) {
     boardId
     title
     description
@@ -607,10 +603,7 @@ export type CreateLayoutMutationFn = Apollo.MutationFunction<CreateLayoutMutatio
  * @example
  * const [createLayoutMutation, { data, loading, error }] = useCreateLayoutMutation({
  *   variables: {
- *      file: // value for 'file'
- *      title: // value for 'title'
- *      description: // value for 'description'
- *      boardId: // value for 'boardId'
+ *      options: // value for 'options'
  *   },
  * });
  */
