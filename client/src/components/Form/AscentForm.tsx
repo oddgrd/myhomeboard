@@ -7,7 +7,7 @@ import { Textarea } from './Textarea';
 import { useState } from 'react';
 import {
   useAddAscentMutation,
-  useEditAscentMutation
+  useEditAscentMutation,
 } from '../../generated/graphql';
 import { toast } from 'react-toastify';
 
@@ -15,7 +15,6 @@ interface Props {
   id: string;
   boardId?: string;
   onClose: () => void;
-  mutation: 'ADD' | 'EDIT';
   editProps?: Values;
 }
 interface Values {
@@ -26,13 +25,7 @@ interface Values {
   comment: string;
 }
 
-export const AscentForm = ({
-  id,
-  onClose,
-  mutation,
-  editProps,
-  boardId
-}: Props) => {
+export const AscentForm = ({ id, onClose, editProps, boardId }: Props) => {
   const [error, setError] = useState('');
   const [addAscent] = useAddAscentMutation();
   const [editAscent] = useEditAscentMutation();
@@ -44,30 +37,30 @@ export const AscentForm = ({
           ? editProps
           : ({
               problemId: id,
-              comment: ''
+              comment: '',
             } as Values)
       }
       validationSchema={Yup.object({
         grade: Yup.number().required('Required'),
         attempts: Yup.number().required('Required'),
-        rating: Yup.number().required('Required')
+        rating: Yup.number().required('Required'),
       })}
       onSubmit={async (values: Values) => {
-        if (mutation === 'ADD' && boardId) {
-          const { errors } = await addAscent({
-            variables: { options: { ...values, boardId } },
-            update: (cache) => {
-              cache.evict({ id: 'Problem:' + id });
-            }
-          });
-          if (errors) setError(errors[0].message);
-        }
-        if (mutation === 'EDIT') {
+        if (editProps) {
           const { errors } = await editAscent({
             variables: { options: values },
             update: (cache) => {
               cache.evict({ id: 'Problem:' + id });
-            }
+            },
+          });
+          if (errors) setError(errors[0].message);
+        }
+        if (boardId) {
+          const { errors } = await addAscent({
+            variables: { options: { ...values, boardId } },
+            update: (cache) => {
+              cache.evict({ id: 'Problem:' + id });
+            },
           });
           if (errors) setError(errors[0].message);
         }
@@ -75,9 +68,7 @@ export const AscentForm = ({
           toast.error(error);
           onClose();
         } else {
-          toast.success(
-            mutation === 'ADD' ? 'Ascent added 🤙' : 'Ascent edited 🔧'
-          );
+          toast.success(editProps ? 'Ascent edited 🔧' : 'Ascent added 🤙');
           onClose();
         }
       }}

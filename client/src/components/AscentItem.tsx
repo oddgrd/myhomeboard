@@ -48,35 +48,35 @@ export const AscentItem = ({ ascent, problemId, currentUserId }: Props) => {
     attempts: attemptsCount,
     userId,
     comment,
-    createdAt
+    createdAt,
   } = ascent;
   const editProps = {
     grade,
     rating,
     attempts: attemptsCount,
     problemId,
-    comment
+    comment,
   };
 
   const dropDown = {
     hidden: {
       opacity: 0,
-      height: 0
+      height: 0,
     },
     visible: {
       opacity: 1,
       height: 'auto',
       transition: {
-        duration: 0.2
-      }
+        duration: 0.2,
+      },
     },
     exit: {
       opacity: 0,
       height: 0,
       transition: {
-        duration: 0.12
-      }
-    }
+        duration: 0.12,
+      },
+    },
   };
 
   return (
@@ -143,7 +143,7 @@ export const AscentItem = ({ ascent, problemId, currentUserId }: Props) => {
                   weekday: 'short',
                   year: 'numeric',
                   month: 'short',
-                  day: 'numeric'
+                  day: 'numeric',
                 })}
               </i>
             </div>
@@ -166,7 +166,6 @@ export const AscentItem = ({ ascent, problemId, currentUserId }: Props) => {
             <AscentForm
               onClose={() => setShowModal(false)}
               editProps={editProps}
-              mutation={'EDIT'}
               id={problemId}
             />
           </Modal>
