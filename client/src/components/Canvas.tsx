@@ -22,6 +22,7 @@ export const Canvas = ({ canvasRef, layoutUrl }: Props) => {
         width={350}
         height={478}
         quality={90}
+        priority={true}
         src={layoutUrl}
         aria-label='Board Image'
       />
