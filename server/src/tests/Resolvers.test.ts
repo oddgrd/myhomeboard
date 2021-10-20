@@ -102,7 +102,17 @@ const deleteAscentMutation = `
     deleteAscent(problemId: $problemId)
   }
 `;
-describe('End to end test', () => {
+const deleteProblemMutation = `
+  mutation DeleteProblem($id: String!) {
+    deleteProblem(id: $id)
+  }
+`;
+const deleteBoardMutation = `
+  mutation DeleteBoard($boardId: String!) {
+    deleteBoard(boardId: $boardId)
+  }
+`;
+describe('Resolvers end to end test', () => {
   let userId: string;
   it('creates user', async () => {
     const userInput = {
@@ -264,7 +274,7 @@ describe('End to end test', () => {
     expect(problem).toBeDefined();
     expect(problem!.title).toMatch('edited');
   });
-  it('adds ascents', async () => {
+  it('adds ascent', async () => {
     const ascentInput = {
       problemId,
       boardId,
@@ -289,7 +299,7 @@ describe('End to end test', () => {
     const ascent = await Ascent.findOne({ where: { problemId } });
     expect(ascent).toBeDefined();
   });
-  it('edits ascents', async () => {
+  it('edits ascent', async () => {
     const editAscentInput = {
       problemId,
       comment: faker.lorem.sentence(3),
@@ -314,7 +324,7 @@ describe('End to end test', () => {
     expect(ascent).toBeDefined();
     expect(ascent).toMatchObject(editAscentInput);
   });
-  it('deletes ascents', async () => {
+  it('deletes ascent', async () => {
     const response = await gqlWrapper({
       source: deleteAscentMutation,
       variableValues: {
@@ -330,5 +340,39 @@ describe('End to end test', () => {
 
     const ascent = await Ascent.findOne({ where: { problemId } });
     expect(ascent).toBeUndefined();
+  });
+  it('deletes problem', async () => {
+    const response = await gqlWrapper({
+      source: deleteProblemMutation,
+      variableValues: {
+        id: problemId,
+      },
+      userId: userId,
+    });
+    expect(response).toMatchObject({
+      data: {
+        deleteProblem: true,
+      },
+    });
+
+    const problem = await Problem.findOne({ where: { id: problemId } });
+    expect(problem).toBeUndefined();
+  });
+  it('deletes board', async () => {
+    const response = await gqlWrapper({
+      source: deleteBoardMutation,
+      variableValues: {
+        boardId,
+      },
+      userId: userId,
+    });
+    expect(response).toMatchObject({
+      data: {
+        deleteBoard: true,
+      },
+    });
+
+    const board = await Board.findOne({ where: { id: boardId } });
+    expect(board).toBeUndefined();
   });
 });

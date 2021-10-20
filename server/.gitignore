@@ -4,3 +4,4 @@ node_modules
 .env.production
 yarn-debug.log*
 yarn-error.log*
+src/coverage
