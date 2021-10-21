@@ -26,18 +26,20 @@ export const BoardItem = ({ board, currentUser }: Props) => {
         </a>
       </Link>
 
-      <div className={styles.settingsAndAngle}>
-        {creatorId === currentUser && (
-          <Link href={`/board/${id}`}>
-            <a>
-              <FaCog size={22} />
-            </a>
-          </Link>
-        )}
+      <div className={styles.right}>
         {adjustable ? (
           <p>{angles[0] + '° - ' + angles[angles.length - 1] + '°'}</p>
         ) : (
           <p>{angles[0]}°</p>
+        )}
+      </div>
+      <div className={styles.settings}>
+        {creatorId === currentUser && (
+          <Link href={`/board/${id}`}>
+            <a>
+              <FaCog size={26} />
+            </a>
+          </Link>
         )}
       </div>
     </div>

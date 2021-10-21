@@ -11,7 +11,7 @@ interface Props {
 }
 
 export const LayoutItem = ({ layout }: Props) => {
-  const { title, id, url, publicId, description } = layout;
+  const { title, id, url, publicId, description, createdAt } = layout;
   const [deleteLayout] = useDeleteLayoutMutation();
 
   const handleDelete = async () => {
@@ -44,11 +44,21 @@ export const LayoutItem = ({ layout }: Props) => {
             <p className={styles.title}>{title}</p>
             <p>{description}</p>
           </div>
-          <button className='btn btn-delete' onClick={handleDelete}>
-            <FaTimes />
-          </button>
         </a>
       </Link>
+      <div className={styles.right}>
+        <p>
+          {new Date(+createdAt).toLocaleString('en-GB', {
+            year: 'numeric',
+            month: '2-digit',
+          })}
+        </p>
+      </div>
+      <div className={styles.settings}>
+        <button className='btn btn-delete btn-link' onClick={handleDelete}>
+          <FaTimes size={28} />
+        </button>
+      </div>
     </div>
   );
 };
