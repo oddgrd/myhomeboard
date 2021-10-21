@@ -1,16 +1,15 @@
-.content {
+.board {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4rem;
-  h1 {
+  h1,
+  h3 {
     text-align: center;
     color: var(--theme-color);
   }
 }
 .layouts {
+  margin-top: 2rem;
   width: clamp(324px, 90vw, 610px);
-}
-
-@media (max-width: 700px) {
 }

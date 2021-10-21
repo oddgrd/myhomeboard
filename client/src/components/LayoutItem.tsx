@@ -38,14 +38,13 @@ export const LayoutItem = ({ layout }: Props) => {
   };
   return (
     <div className={styles.boardItem}>
-      <Link href='#'>
-        <a className={styles.content}>
-          <div className={styles.titleDiv}>
-            <p className={styles.title}>{title}</p>
-            <p>{description}</p>
-          </div>
-        </a>
-      </Link>
+      <div className={styles.main}>
+        <div className={styles.titleDiv}>
+          <p className={styles.title}>{title}</p>
+          <p>{description}</p>
+        </div>
+      </div>
+
       <div className={styles.right}>
         <p>
           {new Date(+createdAt).toLocaleString('en-GB', {

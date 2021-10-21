@@ -57,7 +57,7 @@ const Board = () => {
 
   return (
     <Layout title='Title here'>
-      <div className={styles.content}>
+      <div className={styles.board}>
         <div>
           <h1>{title} Settings</h1>
           <BoardForm editProps={editProps} />
@@ -65,9 +65,13 @@ const Board = () => {
         <div className={styles.layouts}>
           {' '}
           <h1>Layouts</h1>
-          {layoutData?.getBoardLayouts.map((layout, idx) => (
-            <LayoutItem layout={layout} key={idx} />
-          ))}
+          {layoutData && layoutData.getBoardLayouts.length > 0 ? (
+            layoutData.getBoardLayouts.map((layout, idx) => (
+              <LayoutItem layout={layout} key={idx} />
+            ))
+          ) : (
+            <h3>N/A</h3>
+          )}
         </div>
       </div>
     </Layout>

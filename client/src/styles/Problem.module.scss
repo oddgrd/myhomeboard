@@ -36,6 +36,7 @@
   margin-top: 0.2rem;
   display: flex;
   justify-content: space-evenly;
+  padding-left: 30px;
   gap: 0.6rem;
   height: 3.8rem;
   max-width: 93%;
@@ -103,5 +104,6 @@
   }
   .buttons {
     max-width: 350px;
+    padding-left: 0;
   }
 }

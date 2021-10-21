@@ -5,8 +5,9 @@
   display: flex;
 
   justify-content: space-between;
+  transition: 0.3s ease-in-out;
   &:hover {
-    border-bottom: 1px solid var(--theme-text);
+    border-bottom: 1px solid var(--theme-hover);
   }
 }
 .titleDiv {

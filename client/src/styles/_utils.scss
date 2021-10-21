@@ -13,6 +13,7 @@
 
   &:hover {
     transform: scale(1.05);
+    color: var(--theme-hover);
   }
   &:disabled {
     opacity: 0.6;
@@ -23,15 +24,9 @@
   }
   &.btn-link {
     border: none;
-    &:hover {
-      color: #ffe197;
-    }
   }
   &.btn-icon {
     border: none;
-    &:hover {
-      color: #ffe197;
-    }
     padding: 12px 8px;
   }
   &.btn-delete {
@@ -75,6 +70,7 @@
     }
     &:hover {
       transform: none;
+      color: var(--theme-color);
     }
   }
 }

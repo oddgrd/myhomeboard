@@ -18,7 +18,7 @@ export const BoardItem = ({ board, currentUser }: Props) => {
   return (
     <div className={styles.boardItem}>
       <Link href={`/boards/${id}`}>
-        <a onClick={handleClick} className={styles.content}>
+        <a onClick={handleClick} className={styles.main}>
           <div className={styles.titleDiv}>
             <p className={styles.title}>{title}</p>
             <p>{city + ', ' + country}</p>

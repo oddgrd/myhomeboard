@@ -8,13 +8,8 @@ import withApollo from '../utils/withApollo';
 import { LandingHeader } from '../components/LandingHeader';
 
 const Landing = () => {
-  const {
-    layeredTopWave,
-    layeredBottomWave,
-    layeredTopWave2,
-    bottomWave,
-    blobVariants,
-  } = useCurves();
+  const { layeredTopWave, layeredBottomWave, layeredTopWave2, blobVariants } =
+    useCurves();
   return (
     <div>
       <Head>
@@ -37,7 +32,7 @@ const Landing = () => {
         <section className='yellow'>
           {layeredTopWave(
             '120',
-            '#242440',
+            '#1c1c31',
             '#e76f51',
             '#eb8550',
             '#ebb05d',
@@ -50,10 +45,16 @@ const Landing = () => {
               problems. Share them with friends and register ascents.
             </p>
           </div>
-
-          {bottomWave()}
         </section>
         <section className='orange'>
+          {layeredTopWave(
+            '160',
+            '#e9c46a',
+            '#ebb05d',
+            '#eb8550',
+            '#eb8550',
+            '#e76f51'
+          )}
           <div className={styles.content}>
             <h1>Create Problems</h1>
             <p>
@@ -104,7 +105,7 @@ const Landing = () => {
         </section>
         <section>
           {layeredTopWave2(
-            '190',
+            '170',
             '#dd3f31',
             '#ba2653',
             '#872961',
@@ -115,16 +116,16 @@ const Landing = () => {
             <h1>Upload New Layouts</h1>
             <p>
               Reset your wall? Bought new holds? Simply upload a new photo of
-              your board*.
+              your board.
             </p>
-            <i>*Only Board Creator can upload new layouts</i>
+
             <Link href='/login'>
               <a className='btn' style={{ marginTop: '3.5rem' }}>
                 <strong>GET STARTED</strong>
               </a>
             </Link>
           </div>
-          {layeredBottomWave('400')}
+          {layeredBottomWave('350')}
         </section>
 
         <footer>
