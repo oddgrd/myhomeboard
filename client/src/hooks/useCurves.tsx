@@ -41,12 +41,12 @@ export const useCurves = () => {
   );
 
   const layeredTopWave2 = (
-    height = '190',
-    fill0 = '#242440',
-    fill1 = '#272a66',
-    fill2 = '#2a2f8d',
-    fill3 = '#2f32b5',
-    fill4 = '#3c31dd'
+    height = '170',
+    fill0 = '#1c1c31',
+    fill1 = '#242440',
+    fill2 = '#272a66',
+    fill3 = '#2a2f8d',
+    fill4 = '#2f32b5'
   ) => (
     <div className={styles.topWave}>
       <svg
