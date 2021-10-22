@@ -8,7 +8,7 @@ interface Props {
   boardId: string;
 }
 
-export const DeleteProblemButton = ({ id, boardId }: Props) => {
+export const DeleteProblem = ({ id, boardId }: Props) => {
   const [deleteProblem] = useDeleteProblemMutation();
   const router = useRouter();
 
@@ -22,7 +22,7 @@ export const DeleteProblemButton = ({ id, boardId }: Props) => {
         variables: { id },
         update: (cache) => {
           cache.evict({ id: 'Problem:' + id });
-        }
+        },
       });
       toast.success('Problem deleted ☠️');
       router.push(`/boards/${boardId}`);

@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { FaCheck, FaEdit, FaInfo } from 'react-icons/fa';
 import { AscentItem } from '../../components/AscentItem';
-import { DeleteProblemButton } from '../../components/Button/deleteProblemButton';
+import { DeleteProblem } from '../../components/Button/deleteProblem';
 import { Canvas } from '../../components/Canvas';
 import { AscentForm } from '../../components/Form/AscentForm';
 import { EditProblemForm } from '../../components/Form/EditProblemForm';
@@ -121,7 +121,7 @@ const Problem = () => {
             <div className={styles.buttons}>
               {creator.id === meData?.me?.id ? (
                 <>
-                  <DeleteProblemButton id={problemId} boardId={boardId} />
+                  <DeleteProblem id={problemId} boardId={boardId} />
                   <button
                     className='btn'
                     onClick={() => setShowEditProblemModal(true)}

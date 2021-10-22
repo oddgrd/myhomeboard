@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "generate": "graphql-codegen"
+    "generate": "graphql-codegen",
+    "test": "jest"
   },
   "dependencies": {
     "@apollo/client": "^3.4.8",
@@ -33,11 +34,16 @@
     "@graphql-codegen/typescript-operations": "^2.1.0",
     "@graphql-codegen/typescript-react-apollo": "^3.1.0",
     "@types/apollo-upload-client": "^14.1.0",
+    "@types/jest": "^27.0.2",
     "@types/react": "17.0.19",
     "@types/react-select": "^4.0.17",
+    "@types/react-test-renderer": "^17.0.1",
     "eslint": "7.32.0",
     "eslint-config-next": "11.1.0",
+    "jest": "^27.3.1",
+    "react-test-renderer": "^17.0.2",
     "sass": "^1.38.0",
+    "ts-jest": "^27.0.7",
     "typescript": "4.3.5"
   }
 }
