@@ -18,19 +18,31 @@ export const DeleteProblem = ({ id, boardId }: Props) => {
         'Are you sure? Problem and ascents will be deleted permanently.'
       )
     ) {
-      await deleteProblem({
+      const { errors } = await deleteProblem({
         variables: { id },
         update: (cache) => {
           cache.evict({ id: 'Problem:' + id });
         },
       });
+      if (errors) {
+        toast.error('Something went wrong');
+        return;
+      }
       toast.success('Problem deleted ☠️');
       router.push(`/boards/${boardId}`);
+    } else {
+      return;
     }
   };
   return (
-    <button className='btn' aria-label='Delete Problem' onClick={handleDelete}>
-      <FaTrash size={28} />
-    </button>
+    <>
+      <button
+        className='btn'
+        aria-label='Delete Problem'
+        onClick={handleDelete}
+      >
+        <FaTrash size={28} />
+      </button>
+    </>
   );
 };
