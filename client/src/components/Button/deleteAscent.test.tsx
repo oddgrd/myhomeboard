@@ -1,14 +1,19 @@
 import React from 'react';
 import { MockedProvider } from '@apollo/client/testing';
 import { DeleteAscentDocument } from '../../generated/graphql';
-import { render, fireEvent, waitFor, screen } from '@testing-library/react';
-import {
-  mockReactToastify,
-  mockToast,
-  mockConfirm,
-} from '../../utils/testUtils';
+import { render, fireEvent, waitFor } from '@testing-library/react';
+import { mockConfirm } from '../../utils/testUtils';
 import { DeleteAscent } from './deleteAscent';
 import faker from 'faker';
+import { toast } from 'react-toastify';
+
+jest.mock('react-toastify', () => ({
+  __esModule: true,
+  toast: {
+    success: jest.fn(),
+    error: jest.fn(),
+  },
+}));
 
 describe('Delete Ascent Button', () => {
   it('should render without error', async () => {
@@ -40,16 +45,14 @@ describe('Delete Ascent Button', () => {
     );
 
     mockConfirm();
-    mockReactToastify();
 
     const button = await findByLabelText('Delete Ascent');
     expect(button).toBeInTheDocument();
     expect(button).toBeEnabled();
 
     fireEvent.click(button);
-
     await waitFor(() => {
-      expect(mockToast.success).toHaveBeenCalledWith('Ascent deleted ☠️');
+      expect(toast.success).toHaveBeenCalledWith('Ascent deleted ☠️');
     });
   });
 });

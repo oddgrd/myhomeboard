@@ -1,8 +1,10 @@
 import { NextRouter } from 'next/router';
 
-const useRouter = jest.spyOn(require('next/router'), 'useRouter');
-const toast = jest.spyOn(require('react-toastify'), 'toast');
 const confirm = jest.spyOn(window, 'confirm');
+
+export const mockConfirm = () => {
+  confirm.mockImplementationOnce(jest.fn(() => true));
+};
 
 export const mockRouter: NextRouter = {
   basePath: '',
@@ -25,20 +27,4 @@ export const mockRouter: NextRouter = {
   isReady: true,
   isFallback: false,
   isLocaleDomain: false,
-};
-export const mockToast = {
-  success: jest.fn(),
-  error: jest.fn(),
-};
-
-export const mockNextUseRouter = () => {
-  useRouter.mockImplementationOnce(() => mockRouter);
-};
-
-export const mockReactToastify = () => {
-  toast.mockImplementationOnce(() => mockToast);
-};
-
-export const mockConfirm = () => {
-  confirm.mockImplementationOnce(jest.fn(() => true));
 };

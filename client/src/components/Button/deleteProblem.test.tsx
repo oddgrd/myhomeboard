@@ -3,14 +3,22 @@ import { MockedProvider } from '@apollo/client/testing';
 import { DeleteProblem } from './deleteProblem';
 import { DeleteProblemDocument } from '../../generated/graphql';
 import { render, fireEvent, waitFor } from '@testing-library/react';
-import {
-  mockNextUseRouter,
-  mockRouter,
-  mockConfirm,
-  mockReactToastify,
-  mockToast,
-} from '../../utils/testUtils';
+import { mockConfirm, mockRouter } from '../../utils/testUtils';
 import faker from 'faker';
+import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
+
+jest.mock('react-toastify', () => ({
+  __esModule: true,
+  toast: {
+    success: jest.fn(),
+    error: jest.fn(),
+  },
+}));
+jest.mock('next/router', () => ({
+  __esModule: true,
+  useRouter: jest.fn(),
+}));
 
 describe('Delete Problem Button', () => {
   it('should render without error', async () => {
@@ -22,6 +30,7 @@ describe('Delete Problem Button', () => {
   });
 
   it('should delete, give visual feedback and router.push to parent board', async () => {
+    (useRouter as jest.Mock).mockReturnValue(mockRouter);
     const variables = {
       id: faker.datatype.uuid(),
     };
@@ -42,10 +51,7 @@ describe('Delete Problem Button', () => {
         <DeleteProblem {...variables} boardId={boardId} />
       </MockedProvider>
     );
-
     mockConfirm();
-    mockNextUseRouter();
-    mockReactToastify();
 
     const button = await findByLabelText('Delete Problem');
     expect(button).toBeInTheDocument();
@@ -54,8 +60,8 @@ describe('Delete Problem Button', () => {
     fireEvent.click(button);
 
     await waitFor(() => {
-      expect(mockToast.success).toHaveBeenCalledWith('Problem deleted ☠️');
-      expect(mockRouter.push).toHaveBeenCalledWith(`/boards/${boardId}`);
+      expect(toast.success).toHaveBeenCalledWith('Problem deleted ☠️');
     });
+    expect(mockRouter.push).toHaveBeenCalledWith(`/boards/${boardId}`);
   });
 });
