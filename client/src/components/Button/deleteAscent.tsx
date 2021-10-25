@@ -6,7 +6,7 @@ interface Props {
   id: string;
 }
 
-export const DeleteAscentButton = ({ id }: Props) => {
+export const DeleteAscent = ({ id }: Props) => {
   const [deleteAscent] = useDeleteAscentMutation();
   const handleDelete = async () => {
     if (window.confirm('Are you sure? Deletion is permanent.')) {
@@ -14,7 +14,7 @@ export const DeleteAscentButton = ({ id }: Props) => {
         variables: { problemId: id },
         update: (cache) => {
           cache.evict({ id: 'Problem:' + id });
-        }
+        },
       });
       toast.success('Ascent deleted ☠️');
     }

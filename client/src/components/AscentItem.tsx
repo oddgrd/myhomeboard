@@ -5,7 +5,7 @@ import { FaEdit, FaEllipsisV, FaQuoteRight } from 'react-icons/fa';
 import { Maybe } from '../generated/graphql';
 import styles from '../styles/AscentItem.module.scss';
 import { attempts, grades } from '../utils/selectOptions';
-import { DeleteAscentButton } from './Button/deleteAscentButton';
+import { DeleteAscent } from './Button/deleteAscent';
 import { AscentForm } from './Form/AscentForm';
 import { Modal } from './Modal/Modal';
 import { StarRating } from './StarRating';
@@ -155,7 +155,7 @@ export const AscentItem = ({ ascent, problemId, currentUserId }: Props) => {
                 >
                   <FaEdit size={26} />
                 </button>
-                <DeleteAscentButton id={problemId} />
+                <DeleteAscent id={problemId} />
               </div>
             )}
           </motion.div>

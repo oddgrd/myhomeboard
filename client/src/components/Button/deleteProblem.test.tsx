@@ -5,17 +5,12 @@ import { DeleteProblemDocument } from '../../generated/graphql';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import {
   mockNextUseRouter,
-  mockReactToastify,
   mockRouter,
+  mockConfirm,
+  mockReactToastify,
   mockToast,
 } from '../../utils/testUtils';
-
-let confirmSpy: jest.SpyInstance<boolean, [message?: string | undefined]>;
-beforeAll(() => {
-  confirmSpy = jest.spyOn(window, 'confirm');
-  confirmSpy.mockImplementation(jest.fn(() => true));
-});
-afterAll(() => confirmSpy.mockRestore());
+import faker from 'faker';
 
 describe('Delete Problem Button', () => {
   it('should render without error', async () => {
@@ -27,34 +22,40 @@ describe('Delete Problem Button', () => {
   });
 
   it('should delete, give visual feedback and router.push to parent board', async () => {
+    const variables = {
+      id: faker.datatype.uuid(),
+    };
+    const boardId = faker.datatype.uuid();
+
     const mocks = [
       {
         request: {
           query: DeleteProblemDocument,
-          variables: { id: 'uuid1' },
+          variables,
         },
         result: { data: { deleteProblem: true } },
       },
     ];
 
-    const { getByLabelText } = render(
+    const { findByLabelText } = render(
       <MockedProvider mocks={mocks} addTypename={false}>
-        <DeleteProblem id={'uuid1'} boardId={'uuid2'} />
+        <DeleteProblem {...variables} boardId={boardId} />
       </MockedProvider>
     );
 
+    mockConfirm();
     mockNextUseRouter();
     mockReactToastify();
 
-    const button = getByLabelText('Delete Problem');
-    expect(button).not.toBeNull();
+    const button = await findByLabelText('Delete Problem');
+    expect(button).toBeInTheDocument();
     expect(button).toBeEnabled();
 
     fireEvent.click(button);
 
-    waitFor(() => {
-      expect(mockRouter.push).toHaveBeenCalledWith('/boards/uuid2');
+    await waitFor(() => {
       expect(mockToast.success).toHaveBeenCalledWith('Problem deleted ☠️');
+      expect(mockRouter.push).toHaveBeenCalledWith(`/boards/${boardId}`);
     });
   });
 });
