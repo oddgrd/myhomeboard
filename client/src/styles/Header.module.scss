@@ -31,7 +31,9 @@
   justify-content: center;
   align-items: center;
   font-size: 1.75rem;
-
+  svg {
+    width: 42px;
+  }
   strong {
     color: var(--theme-color);
   }
@@ -54,7 +56,7 @@
     strong {
       font-size: 24px;
     }
-    img {
+    svg {
       width: 52px;
     }
   }
