@@ -17,18 +17,18 @@ export const ProblemItem = ({ problem }: Props) => {
     consensusGrade,
     id,
     creator,
-    sendStatus
+    sendStatus,
   } = problem;
   return (
     <>
       <Link href={`/problem/${id}`}>
         <a>
           <div className={styles.problemItem}>
-            <div className={styles.titleDiv}>
+            <div className={styles.main}>
               <p className={styles.title}>{title}</p>
               <p>by {creator.name}</p>
             </div>
-            <div className={styles.gradeAndRating}>
+            <div className={styles.right}>
               {sendStatus && <FaCheck color='#00ddff' />}
               <p>
                 {typeof consensusGrade === 'number'

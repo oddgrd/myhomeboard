@@ -20,9 +20,6 @@ export const useCanvas = () => {
     if (!ctx || !ctx.current) {
       return;
     }
-    // let path = new Path2D();
-    // path.arc(lastX.current, lastY.current, 12, 0, 2 * Math.PI);
-    // ctx.current.stroke(path);
     ctx.current.beginPath();
     ctx.current.arc(lastX.current, lastY.current, 12, 0, 2 * Math.PI);
     ctx.current.stroke();
@@ -41,7 +38,7 @@ export const useCanvas = () => {
       const circle = {
         x: lastX.current,
         y: lastY.current,
-        color: selectedColor.current
+        color: selectedColor.current,
       };
       coordsRef.current.push(circle);
     },
@@ -111,14 +108,14 @@ export const useCanvas = () => {
     {
       canvas,
       selectedColor,
-      coords: coordsRef
+      coords: coordsRef,
     },
     {
       init,
       initViewer,
       handleColor,
       undo,
-      loadFromCoords
-    }
+      loadFromCoords,
+    },
   ];
 };

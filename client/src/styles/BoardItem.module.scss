@@ -2,6 +2,10 @@
   display: flex;
   margin: 0px 5px;
   border-bottom: 1px solid var(--theme-border-transparent);
+  transition: 0.3s ease-in-out;
+  &:hover {
+    border-bottom: 1px solid var(--theme-hover);
+  }
 }
 
 .main {
@@ -11,10 +15,6 @@
   justify-content: space-between;
 }
 
-.titleDiv {
-  display: flex;
-  flex-direction: column;
-}
 .title {
   color: var(--theme-color);
   font-weight: 500;
@@ -46,16 +46,8 @@
     }
   }
 }
-.settings {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 7%;
-}
+
 @media (max-width: 700px) {
-  .title {
-    max-width: 290px;
-  }
   .content {
     width: 56%;
   }
