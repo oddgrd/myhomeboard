@@ -22,23 +22,18 @@
 }
 
 .right {
-  width: 20%;
+  width: 27%;
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
   padding: 8px 6px;
-
+  gap: 0.5rem;
   p {
     font-size: 19px;
   }
-}
-.settings {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 7%;
   a {
+    display: flex;
     padding: 10px 3px;
     color: var(--theme-color);
     svg {
@@ -51,17 +46,20 @@
     }
   }
 }
+.settings {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 7%;
+}
 @media (max-width: 700px) {
   .title {
     max-width: 290px;
   }
   .content {
-    width: 60%;
+    width: 56%;
   }
   .right {
-    width: 30%;
-  }
-  .settings {
-    width: 10%;
+    width: 44%;
   }
 }

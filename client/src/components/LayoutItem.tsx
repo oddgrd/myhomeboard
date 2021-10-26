@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { FaTimes } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import {
@@ -6,6 +5,7 @@ import {
   useDeleteLayoutMutation,
 } from '../generated/graphql';
 import styles from '../styles/BoardItem.module.scss';
+
 interface Props {
   layout: LayoutCoreFragment;
 }
@@ -52,8 +52,6 @@ export const LayoutItem = ({ layout }: Props) => {
             month: '2-digit',
           })}
         </p>
-      </div>
-      <div className={styles.settings}>
         <button className='btn btn-delete btn-link' onClick={handleDelete}>
           <FaTimes size={28} />
         </button>

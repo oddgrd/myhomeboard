@@ -1,8 +1,9 @@
 import { useApolloClient } from '@apollo/client';
 import Link from 'next/link';
+import { FaCog } from 'react-icons/fa';
 import { BoardCoreFragment } from '../generated/graphql';
 import styles from '../styles/BoardItem.module.scss';
-import { FaCog } from 'react-icons/fa';
+
 interface Props {
   board: BoardCoreFragment;
   currentUser?: string;
@@ -32,8 +33,6 @@ export const BoardItem = ({ board, currentUser }: Props) => {
         ) : (
           <p>{angles[0]}°</p>
         )}
-      </div>
-      <div className={styles.settings}>
         {creatorId === currentUser && (
           <Link href={`/board/${id}`}>
             <a>
