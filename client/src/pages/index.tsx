@@ -113,7 +113,7 @@ const Landing = () => {
             '#242440'
           )}
           <div className={styles.content}>
-            <h1>Upload New Layouts</h1>
+            <h1>Upload Layouts</h1>
             <p>
               Reset your wall? Bought new holds? Simply upload a new photo of
               your board.

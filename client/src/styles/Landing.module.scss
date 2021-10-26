@@ -7,7 +7,6 @@
     align-items: center;
     justify-content: center;
     min-height: 400px;
-    padding: 0 23vw;
     text-align: center;
   }
   footer {
@@ -25,15 +24,16 @@
 
   h1 {
     padding: 10px 0;
-    font-size: clamp(2.5rem, 3.5vw, 4rem);
+    font-size: clamp(2.3rem, 1.1333rem + 5.3333vw, 3.8rem);
   }
   p {
-    font-size: clamp(1.2rem, 2.2vw, 2.2rem);
+    font-size: clamp(1.2rem, 0.5778rem + 2.8444vw, 2rem);
   }
 }
 .content {
   z-index: 1;
-  padding: 220px 0;
+  padding: 200px 0;
+  width: clamp(340px, 90vw, 900px);
 }
 
 #blobSvg {
@@ -48,11 +48,11 @@
 
 .footerContent {
   z-index: 0;
-  font-size: clamp(1rem, 2.2vw, 1.4rem);
 
   a {
     color: var(--theme-color);
     p {
+      font-size: clamp(1rem, 0.7545rem + 1.0909vw, 1.5rem);
       transition: 0.4s ease-in-out;
       &:hover {
         color: #3c31dd;
@@ -88,13 +88,5 @@
 
     z-index: 0;
     width: calc(100% + 1.3px);
-  }
-}
-
-@media (max-width: 700px) {
-  .body {
-    section {
-      padding: 0 8vw;
-    }
   }
 }
