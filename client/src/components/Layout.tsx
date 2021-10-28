@@ -10,9 +10,9 @@ interface Props {
 }
 export const Layout = ({
   title = 'myHomeBoard',
-  keywords = 'Home Climbing Board App',
+  keywords = 'climbing, climb, bouldering, board, boardclimbing, homeboard, homewall',
   description = 'Manage problems on your home climbing board',
-  children
+  children,
 }: Props) => {
   return (
     <div>

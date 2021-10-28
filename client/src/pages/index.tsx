@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { FaGithub } from 'react-icons/fa';
 import { useCurves } from '../hooks/useCurves';
 import styles from '../styles/Landing.module.scss';
-import withApollo from '../utils/withApollo';
 import { LandingHeader } from '../components/LandingHeader';
 
 const Landing = () => {
@@ -84,47 +83,13 @@ const Landing = () => {
               and a star-rating. The grade and rating of the problem is decided
               by the average of all ascentionist suggestions.
             </p>
-          </div>
-        </section>
-        <section style={{ background: '#dd3f31' }}>
-          {layeredTopWave(
-            '190',
-            '#3c31dd',
-            '#af00ad',
-            '#d50080',
-            '#e11858',
-            '#dd3f31'
-          )}
-          <div className={styles.content}>
-            <h1>Profile</h1>
-            <p>
-              View statistics on your activity, including ascents, problems made
-              and average grade.
-            </p>
-          </div>
-        </section>
-        <section>
-          {layeredTopWave2(
-            '170',
-            '#dd3f31',
-            '#ba2653',
-            '#872961',
-            '#502b5a',
-            '#242440'
-          )}
-          <div className={styles.content}>
-            <h1>Upload Layouts</h1>
-            <p>
-              Reset your wall? Bought new holds? Simply upload a new photo of
-              your board.
-            </p>
-
             <Link href='/login'>
               <a className='btn' style={{ marginTop: '3.5rem' }}>
                 <strong>GET STARTED</strong>
               </a>
             </Link>
           </div>
+
           {layeredBottomWave('350')}
         </section>
 
@@ -160,4 +125,4 @@ const Landing = () => {
   );
 };
 
-export default withApollo({ ssr: true })(Landing);
+export default Landing;
