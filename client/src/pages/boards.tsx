@@ -22,7 +22,13 @@ export const Boards = () => {
           ) : (
             data!.getBoards.map((board, idx) =>
               // Invalidating board in cache makes it null
-              !board ? null : <BoardItem key={idx} board={board} currentUser={meData?.me?.id} />
+              !board ? null : (
+                <BoardItem
+                  key={idx}
+                  board={board}
+                  currentUser={meData?.me?.id}
+                />
+              )
             )
           )}
         </div>

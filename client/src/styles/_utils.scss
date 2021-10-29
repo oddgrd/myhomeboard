@@ -30,7 +30,10 @@
     padding: 12px 8px;
   }
   &.btn-delete {
-    color: #bf212f;
+    color: var(--theme-delete);
+  }
+  &.btn-create {
+    color: var(--theme-create);
   }
   &.btn-dropdown {
     font-size: 20px;

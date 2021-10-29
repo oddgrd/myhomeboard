@@ -6,7 +6,7 @@ import {
   useCreateBoardMutation,
   useEditBoardMutation,
 } from '../../generated/graphql';
-import router from 'next/router';
+import { useRouter } from 'next/router';
 import { Inputfield } from './Inputfield';
 import { toast } from 'react-toastify';
 import { toErrorMap } from '../../utils/toErrorMap';
@@ -32,6 +32,7 @@ interface Values {
 }
 
 export const BoardForm = ({ editProps }: Props) => {
+  const router = useRouter();
   const [createBoard] = useCreateBoardMutation();
   const [editBoard] = useEditBoardMutation();
   return (

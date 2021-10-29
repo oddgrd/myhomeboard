@@ -1,4 +1,4 @@
-import router from 'next/router';
+import { useRouter } from 'next/router';
 import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { toast } from 'react-toastify';
@@ -9,6 +9,7 @@ interface Props {
   boardId: string;
 }
 export const LayoutForm = ({ boardId }: Props) => {
+  const router = useRouter();
   const [createLayout, { error }] = useCreateLayoutMutation();
   const [layoutData, setLayoutData] = useState({
     title: '',

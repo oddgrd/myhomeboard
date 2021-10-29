@@ -10,6 +10,7 @@ import {
 import withApollo from '../../utils/withApollo';
 import styles from '../../styles/Board.module.scss';
 import { BoardForm } from '../../components/Form/BoardForm';
+import { FaPlusSquare } from 'react-icons/fa';
 
 const Board = () => {
   const router = useRouter();
@@ -64,7 +65,14 @@ const Board = () => {
         </div>
         <div className={styles.layouts}>
           {' '}
-          <h1>Layouts</h1>
+          <div className={styles.layoutsHeader}>
+            <h1>Layouts</h1>
+            <Link href={`/boards/${boardId}/create-layout`}>
+              <a className='btn btn-icon btn-create'>
+                <FaPlusSquare size={26} />
+              </a>
+            </Link>
+          </div>
           {layoutData && layoutData.getBoardLayouts.length > 0 ? (
             layoutData.getBoardLayouts.map((layout, idx) => (
               <LayoutItem layout={layout} key={idx} />
@@ -78,4 +86,4 @@ const Board = () => {
   );
 };
 
-export default withApollo({ ssr: true })(Board);
+export default withApollo({ ssr: false })(Board);
