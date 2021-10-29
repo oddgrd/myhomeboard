@@ -36,22 +36,17 @@ export const LandingHeader = () => {
         </Link>
 
         <nav>
-          <ul>
-            <li>
-              <Link href={`/login`}>
-                <a className='btn btn-link'>
-                  <strong className={styles.landingLinks}>Get Started</strong>
-                </a>
-              </Link>
-            </li>
-            <li>
-              <Link href={`/boards`}>
-                <a className='btn btn-link'>
-                  <strong className={styles.landingLinks}>Boards</strong>
-                </a>
-              </Link>
-            </li>
-          </ul>
+          <Link href={`/login`}>
+            <a className='btn btn-link'>
+              <strong className={styles.landingLinks}>Get Started</strong>
+            </a>
+          </Link>
+
+          <Link href={`/boards`}>
+            <a className='btn btn-link'>
+              <strong className={styles.landingLinks}>Boards</strong>
+            </a>
+          </Link>
         </nav>
       </div>
     </header>

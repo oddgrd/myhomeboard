@@ -6,10 +6,12 @@ import { Spinner } from '../../../components/Spinner';
 import {
   useGetBoardQuery,
   useGetProblemsQuery,
-  useMeQuery
+  useMeQuery,
 } from '../../../generated/graphql';
 import styles from '../../../styles/Problems.module.scss';
 import withApollo from '../../../utils/withApollo';
+import { FaPlusSquare } from 'react-icons/fa';
+
 const Problems = () => {
   const router = useRouter();
   const boardId = typeof router.query.id === 'string' ? router.query.id : '';
@@ -18,28 +20,34 @@ const Problems = () => {
     variables: {
       limit: 20,
       cursor: null,
-      boardId
+      boardId,
     },
-    notifyOnNetworkStatusChange: true
+    notifyOnNetworkStatusChange: true,
   });
   const {
     data: boardData,
     loading: boardLoading,
-    error: boardError
+    error: boardError,
   } = useGetBoardQuery({
     variables: {
-      boardId
-    }
+      boardId,
+    },
   });
   const { data: meData } = useMeQuery();
 
-  // -- Todo: clean this up
   if (error || boardError) {
     return (
-      <Layout title='Problems'>{error?.message || boardError?.message}</Layout>
+      <Layout title='Problems'>
+        <p>Something went wrong, try again </p>
+        <button
+          className='btn btn-link'
+          onClick={() => {
+            router.reload();
+          }}
+        />
+      </Layout>
     );
   }
-
   if (!boardLoading && !boardData?.getBoard) {
     return (
       <Layout title='Problems'>
@@ -64,7 +72,17 @@ const Problems = () => {
   }
 
   return (
-    <Layout title='Problems'>
+    <Layout
+      title='Problems'
+      navTitle={boardData?.getBoard.title}
+      navChildren={
+        <Link href={`/boards/${boardId}/create-problem`}>
+          <a className='btn btn-link btn-icon'>
+            <FaPlusSquare size={28} />
+          </a>
+        </Link>
+      }
+    >
       <div className={styles.problems}>
         {meData?.me && data?.getProblems.problems.length === 0 && (
           <div className={styles.createProblem}>
@@ -97,8 +115,8 @@ const Problems = () => {
                   cursor:
                     data.getProblems.problems[
                       data.getProblems.problems.length - 1
-                    ].createdAt
-                }
+                    ].createdAt,
+                },
               });
             }}
           >

@@ -1,134 +1,45 @@
 import { AnimatePresence } from 'framer-motion';
-import Image from 'next/image';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { FaArrowLeft, FaBars, FaPlusSquare } from 'react-icons/fa';
-import logo from '../../public/Logo-simple.svg';
-import { useGetBoardQuery } from '../generated/graphql';
+import { FaArrowLeft, FaBars } from 'react-icons/fa';
 import styles from '../styles/Header.module.scss';
 import { DropdownMenu } from './DropdownMenu';
 import { Modal } from './Modal/Modal';
 
-export const Header = () => {
+interface Props {
+  navTitle?: string;
+  children?: React.ReactNode;
+}
+
+export const Header = ({ navTitle, children }: Props) => {
   const [menuModal, toggleMenuModal] = useState(false);
   const router = useRouter();
-  const boardId = typeof router.query.id === 'string' ? router.query.id : '';
-  const { data: boardData } = useGetBoardQuery({
-    variables: { boardId },
-    skip: router.pathname !== '/boards/[id]',
-  });
-
-  let head = (
-    <Link href='/'>
-      <a className={styles.logo}>
-        <Image
-          src={logo}
-          alt='Covegg19 Logo'
-          width={42}
-          height={42}
-          priority={true}
-        />
-        <strong className='hide'>myHomeBoard</strong>
-      </a>
-    </Link>
-  );
-  let dynamicNav = null;
-
-  switch (router.pathname) {
-    case '/problem/[id]':
-      head = (
-        <button
-          className='btn btn-icon btn-animation'
-          onClick={() => {
-            router.back();
-          }}
-        >
-          <FaArrowLeft size={38} />
-        </button>
-      );
-      break;
-    case '/boards/[id]/create-problem':
-      head = (
-        <button
-          className='btn btn-icon btn-animation'
-          onClick={() => {
-            router.back();
-          }}
-        >
-          <FaArrowLeft size={38} />
-        </button>
-      );
-      break;
-    case '/boards/[id]':
-      head = (
-        <Link href='/boards'>
-          <a className={styles.title}>
-            <strong>{boardData?.getBoard.title}</strong>
-          </a>
-        </Link>
-      );
-      dynamicNav = (
-        <li>
-          <Link href={`/boards/${boardId}/create-problem`}>
-            <a className='btn btn-link btn-icon'>
-              <FaPlusSquare size={28} />
-            </a>
-          </Link>
-        </li>
-      );
-      break;
-    case '/boards':
-      head = (
-        <p className={styles.title}>
-          <strong>Select Board</strong>
-        </p>
-      );
-      break;
-    case '/board/[id]':
-      head = (
-        <button
-          className='btn btn-icon btn-animation'
-          onClick={() => {
-            router.back();
-          }}
-        >
-          <FaArrowLeft size={38} />
-        </button>
-      );
-      break;
-    case '/profile/[id]':
-      head = (
-        <button
-          className='btn btn-icon btn-animation'
-          onClick={() => {
-            router.back();
-          }}
-        >
-          <FaArrowLeft size={38} />
-        </button>
-      );
-      break;
-    default:
-      dynamicNav = null;
-  }
 
   return (
     <header className={styles.header}>
       <div className={styles.container}>
-        <div>{head}</div>
+        <div className={styles.main}>
+          {navTitle ? (
+            <h2 className={styles.title}>{navTitle}</h2>
+          ) : (
+            <button
+              className='btn btn-icon btn-animation'
+              onClick={() => {
+                router.back();
+              }}
+            >
+              <FaArrowLeft size={38} />
+            </button>
+          )}
+        </div>
         <nav>
-          <ul>
-            {dynamicNav}
-            <li>
-              <button
-                className='btn btn-link'
-                onClick={() => toggleMenuModal(!menuModal)}
-              >
-                <FaBars size={28} />
-              </button>
-            </li>
-          </ul>
+          {children}
+          <button
+            className='btn btn-link'
+            onClick={() => toggleMenuModal(!menuModal)}
+          >
+            <FaBars size={28} />
+          </button>
         </nav>
       </div>
       <AnimatePresence

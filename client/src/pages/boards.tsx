@@ -14,7 +14,7 @@ export const Boards = () => {
     return <Layout>{error?.message}</Layout>;
   }
   return (
-    <Layout title='Boards'>
+    <Layout title='Boards' navTitle={'Select Board'}>
       <div className={styles.problems}>
         <div>
           {loading && !data ? (

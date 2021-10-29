@@ -12,7 +12,7 @@ const callbackUrl =
     : 'http://localhost:4000/api/auth/google';
 
 const Login = () => {
-  const {data, loading} = useMeQuery();
+  const { data, loading } = useMeQuery();
   const router = useRouter();
 
   const handleLogin = () => {
@@ -20,8 +20,8 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (data?.me) router.replace("/boards");
-  }, [data?.me])
+    if (data?.me) router.replace('/boards');
+  }, [data?.me]);
 
   return (
     <Layout title='Login'>

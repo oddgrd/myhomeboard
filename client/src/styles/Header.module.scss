@@ -11,18 +11,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  a {
-    color: var(--theme-color);
-    &:hover {
-      color: #ffe197;
-    }
-  }
-  ul {
+  nav {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    list-style: none;
     gap: 1rem;
   }
 }
@@ -31,8 +21,10 @@
   justify-content: center;
   align-items: center;
   font-size: 1.75rem;
+
   svg {
     width: 42px;
+    margin-right: 5px;
   }
   strong {
     color: var(--theme-color);
@@ -47,9 +39,6 @@
 }
 
 @media (max-width: 700px) {
-  .header {
-    height: 74px;
-  }
   .logo {
     margin-left: 12px;
     margin-top: 14px;
@@ -58,6 +47,7 @@
     }
     svg {
       width: 52px;
+      margin-right: 0;
     }
   }
 }
