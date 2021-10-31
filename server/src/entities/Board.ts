@@ -7,7 +7,7 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
 } from 'typeorm';
 import { Ascent } from './Ascent';
 import { Layout } from './Layout';
@@ -40,14 +40,6 @@ export class Board extends BaseEntity {
   @Field(() => [Int])
   @Column({ type: 'smallint', array: true })
   angles!: number[];
-
-  // @Field(() => [String])
-  // @Column({ type: 'uuid', array: true })
-  // members: string[];
-
-  // @Field({ nullable: true })
-  // @Column({ nullable: true })
-  // location: string;
 
   @Field()
   @Column()

@@ -6,7 +6,7 @@ import {
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
 } from 'typeorm';
 import { Ascent } from './Ascent';
 import { Problem } from './Problem';
@@ -34,9 +34,9 @@ export class User extends BaseEntity {
   @Column()
   googleId!: string;
 
-  // @Field()
-  // @Column({ type: 'uuid', nullable: true })
-  // currentBoard: string;
+  @Field(() => [String], { nullable: true })
+  @Column({ type: 'uuid', array: true, nullable: true })
+  boardWhitelist: string[];
 
   @Field(() => [Problem], { nullable: true })
   @OneToMany(() => Problem, (problem) => problem.creator)

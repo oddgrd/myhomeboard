@@ -37,3 +37,12 @@ export class BoardResponse {
   @Field(() => Board, { nullable: true })
   board?: Board;
 }
+
+@ObjectType()
+export class WhitelistResponse {
+  @Field(() => [FieldError], { nullable: true })
+  errors?: FieldError[];
+
+  @Field(() => String, { nullable: true })
+  userId?: string;
+}
