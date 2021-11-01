@@ -477,7 +477,7 @@ export type GetUserQuery = { __typename?: 'Query', getUser?: Maybe<{ __typename?
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me?: Maybe<{ __typename?: 'User', id: string, name: string, email: string, avatar?: Maybe<string>, createdAt: string, updatedAt: string }> };
+export type MeQuery = { __typename?: 'Query', me?: Maybe<{ __typename?: 'User', id: string, name: string, email: string, avatar?: Maybe<string>, boardWhitelist?: Maybe<Array<string>>, createdAt: string, updatedAt: string }> };
 
 export const RegularErrorFragmentDoc = gql`
     fragment RegularError on FieldError {
@@ -1252,6 +1252,7 @@ export const MeDocument = gql`
     name
     email
     avatar
+    boardWhitelist
     createdAt
     updatedAt
   }

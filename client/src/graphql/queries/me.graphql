@@ -4,6 +4,7 @@ query Me {
     name
     email
     avatar
+    boardWhitelist
     createdAt
     updatedAt
   }

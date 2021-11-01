@@ -130,7 +130,7 @@ const Problem = () => {
                   </button>
                 </>
               ) : null}
-              {!sendStatus && meData?.me && (
+              {!sendStatus && meData?.me?.boardWhitelist?.includes(boardId) && (
                 <button
                   className='btn'
                   onClick={() => setShowAscentModal(true)}

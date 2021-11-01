@@ -7,20 +7,20 @@ import { Layout } from '../../../../components/Layout';
 import { Toolbar } from '../../../../components/Toolbar';
 import { useGetBoardQuery } from '../../../../generated/graphql';
 import { useCanvas } from '../../../../hooks/useCanvas';
-import { useIsAuth } from '../../../../hooks/useIsAuth';
+import { useIsWhitelisted } from '../../../../hooks/useIsWhitelisted';
 import styles from '../../../../styles/CreateProblem.module.scss';
 import withApollo from '../../../../utils/withApollo';
 
 const CreateProblem = () => {
-  useIsAuth();
   const router = useRouter();
   const boardId = typeof router.query.id === 'string' ? router.query.id : '';
 
   const [{ canvas, coords }, { init, handleColor, undo }] = useCanvas();
   const toolbarProps = { handleColor, undo };
 
+  useIsWhitelisted(boardId);
   const { data, loading } = useGetBoardQuery({
-    variables: { boardId }
+    variables: { boardId },
   });
 
   useEffect(() => {
