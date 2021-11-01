@@ -97,7 +97,36 @@ const Problem = () => {
   };
 
   return (
-    <Layout title={title}>
+    <Layout
+      title={title}
+      navChildren={
+        <div className={styles.buttons}>
+          {!sendStatus && meData?.me?.boardWhitelist?.includes(boardId) && (
+            <button
+              className='btn btn-link'
+              onClick={() => setShowAscentModal(true)}
+            >
+              <FaCheck size={30} />
+            </button>
+          )}
+
+          <button
+            className='btn btn-link'
+            onClick={() => setShowEditProblemModal(true)}
+          >
+            <FaEdit size={30} />
+          </button>
+
+          <button
+            className='btn btn-link hide-desktop'
+            onClick={() => setShowInfoModal(true)}
+          >
+            <FaInfo size={30} />
+          </button>
+          <DeleteProblem id={problemId} boardId={boardId} />
+        </div>
+      }
+    >
       <div className={styles.problem}>
         <div className={styles.mobileTitle}>
           <h2>{title}</h2>
@@ -116,34 +145,6 @@ const Problem = () => {
             <h2 className={styles.desktopTitle}>{title}</h2>
             <div className='hide'>
               <ProblemInfo {...infoProps} />
-            </div>
-
-            <div className={styles.buttons}>
-              {creator.id === meData?.me?.id ? (
-                <>
-                  <DeleteProblem id={problemId} boardId={boardId} />
-                  <button
-                    className='btn'
-                    onClick={() => setShowEditProblemModal(true)}
-                  >
-                    <FaEdit size={28} />
-                  </button>
-                </>
-              ) : null}
-              {!sendStatus && meData?.me?.boardWhitelist?.includes(boardId) && (
-                <button
-                  className='btn'
-                  onClick={() => setShowAscentModal(true)}
-                >
-                  <FaCheck size={28} />
-                </button>
-              )}
-              <button
-                className='btn hide-desktop'
-                onClick={() => setShowInfoModal(true)}
-              >
-                <FaInfo size={28} />
-              </button>
             </div>
           </div>
         </div>

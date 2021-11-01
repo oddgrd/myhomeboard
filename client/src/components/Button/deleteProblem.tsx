@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { FaTrash } from 'react-icons/fa';
+import { FaTimes } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import { useDeleteProblemMutation } from '../../generated/graphql';
 
@@ -37,11 +37,11 @@ export const DeleteProblem = ({ id, boardId }: Props) => {
   return (
     <>
       <button
-        className='btn'
+        className='btn btn-link btn-delete'
         aria-label='Delete Problem'
         onClick={handleDelete}
       >
-        <FaTrash size={28} />
+        <FaTimes size={30} />
       </button>
     </>
   );
