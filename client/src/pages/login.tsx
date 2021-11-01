@@ -26,7 +26,7 @@ const Login = () => {
   return (
     <Layout title='Login'>
       <div className={styles.login}>
-        <h1>Register or Sign In</h1>
+        <h1>Register / Sign In</h1>
         <GoogleButton onClick={handleLogin} />
         <i>*Only preapproved google accounts are currently able to register</i>
       </div>
