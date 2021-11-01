@@ -1,19 +1,33 @@
+import { AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
+import {
+  FaCheck,
+  FaCloudUploadAlt,
+  FaEdit,
+  FaPlusSquare,
+  FaSearch,
+  FaUpload,
+} from 'react-icons/fa';
+import { BoardForm } from '../../components/Form/BoardForm';
+import { WhitelistForm } from '../../components/Form/WhitelistForm';
 import { Layout } from '../../components/Layout';
 import { LayoutItem } from '../../components/LayoutItem';
+import { Modal } from '../../components/Modal/Modal';
 import { Spinner } from '../../components/Spinner';
 import {
-  useGetBoardQuery,
   useGetBoardLayoutsQuery,
+  useGetBoardQuery,
 } from '../../generated/graphql';
-import withApollo from '../../utils/withApollo';
 import styles from '../../styles/Board.module.scss';
-import { BoardForm } from '../../components/Form/BoardForm';
-import { FaPlusSquare } from 'react-icons/fa';
+import withApollo from '../../utils/withApollo';
 
 const Board = () => {
   const router = useRouter();
+  const [showWhitelistModal, setShowWhitelistModal] = useState(false);
+  const [showBoardForm, toggleShowBoardForm] = useState(false);
+  const [showLayouts, toggleShowLayouts] = useState(false);
   const boardId = typeof router.query.id === 'string' ? router.query.id : '';
   const { data, loading, error } = useGetBoardQuery({
     variables: { boardId },
@@ -59,29 +73,73 @@ const Board = () => {
   return (
     <Layout title='Title here'>
       <div className={styles.board}>
-        <div>
-          <h1>{title} Settings</h1>
-          <BoardForm editProps={editProps} />
-        </div>
-        <div className={styles.layouts}>
-          {' '}
-          <div className={styles.layoutsHeader}>
-            <h1>Layouts</h1>
+        <h1>{title}</h1>
+        <ul>
+          <li>
+            {' '}
+            <button
+              className='btn btn-link btn-dropdown'
+              onClick={() => toggleShowBoardForm(!showBoardForm)}
+            >
+              <FaEdit size={28} /> Edit Board
+            </button>
+          </li>
+          <li>
+            <button
+              className='btn btn-link btn-dropdown'
+              onClick={() => setShowWhitelistModal(true)}
+            >
+              <FaCheck size={28} /> Whitelist User
+            </button>
+          </li>
+          <li>
+            <button
+              className='btn btn-link btn-dropdown'
+              onClick={() => toggleShowLayouts(!showLayouts)}
+            >
+              <FaSearch size={28} /> Browse Layouts
+            </button>
+          </li>
+          <li>
             <Link href={`/boards/${boardId}/create-layout`}>
-              <a className='btn btn-icon btn-create'>
-                <FaPlusSquare size={26} />
+              <a className='btn btn-link btn-dropdown'>
+                <FaCloudUploadAlt size={28} /> Upload Layout
               </a>
             </Link>
+          </li>
+        </ul>
+
+        {showBoardForm && <BoardForm editProps={editProps} />}
+        {showLayouts && (
+          <div className={styles.layouts}>
+            {' '}
+            <div className={styles.layoutsHeader}>
+              <h1>Layouts</h1>
+            </div>
+            {layoutData && layoutData.getBoardLayouts.length > 0 ? (
+              layoutData.getBoardLayouts.map((layout, idx) => (
+                <LayoutItem layout={layout} key={idx} />
+              ))
+            ) : (
+              <h3>N/A</h3>
+            )}
           </div>
-          {layoutData && layoutData.getBoardLayouts.length > 0 ? (
-            layoutData.getBoardLayouts.map((layout, idx) => (
-              <LayoutItem layout={layout} key={idx} />
-            ))
-          ) : (
-            <h3>N/A</h3>
-          )}
-        </div>
+        )}
       </div>
+      <AnimatePresence
+        initial={false}
+        exitBeforeEnter={true}
+        onExitComplete={() => null}
+      >
+        {showWhitelistModal && (
+          <Modal handleClose={() => setShowWhitelistModal(false)}>
+            <WhitelistForm
+              boardId={boardId}
+              onClose={() => setShowWhitelistModal(false)}
+            />
+          </Modal>
+        )}
+      </AnimatePresence>
     </Layout>
   );
 };

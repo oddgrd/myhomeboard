@@ -8,6 +8,25 @@
     text-align: center;
     color: var(--theme-color);
   }
+  ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    font-size: 20px;
+
+    svg {
+      margin-right: 15px;
+    }
+    li {
+      border-bottom: 1px solid var(--theme-color);
+      width: 100%;
+      button {
+        width: 100%;
+      }
+    }
+  }
 }
 .layouts {
   margin-top: 2rem;

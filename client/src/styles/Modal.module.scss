@@ -1,5 +1,5 @@
 .backdrop {
-  position: absolute;
+  position: fixed;
   z-index: 3;
   top: 0;
   left: 0;
@@ -21,12 +21,9 @@
 }
 
 @media (max-width: 700px) {
-  .backdrop {
-    position: fixed;
-  }
   .modal {
     min-width: 340px;
-  max-width: 380px;
-  padding: 20px 10px;
+    max-width: 380px;
+    padding: 20px 10px;
   }
 }
