@@ -11,15 +11,9 @@ import {
 import { isAuth } from '../../middleware/isAuth';
 import { Context } from 'src/types/context';
 import { Board } from '../../entities/Board';
-import {
-  BoardInput,
-  BoardResponse,
-  EditBoardInput,
-  WhitelistResponse,
-} from './types';
+import { BoardInput, BoardResponse, EditBoardInput } from './types';
 import { Layout } from '../../entities/Layout';
 import { getConnection } from 'typeorm';
-import { User } from '../../entities/User';
 
 @Resolver(Board)
 export class BoardResolver {
@@ -120,48 +114,6 @@ export class BoardResolver {
   @Query(() => [Board])
   async getBoards() {
     return Board.find({ order: { createdAt: 'ASC' }, relations: ['layouts'] });
-  }
-
-  // Whitelist user
-  // PRIVATE
-  @Mutation(() => WhitelistResponse)
-  @UseMiddleware(isAuth)
-  async whitelistUser(
-    @Arg('email') email: string,
-    @Arg('boardId') boardId: string
-  ) {
-    const user = await User.findOne({ where: { email } });
-    if (!user) {
-      return {
-        errors: [
-          {
-            field: 'user',
-            message: "User doesn't exist",
-          },
-        ],
-      };
-    }
-    if (user.boardWhitelist && user.boardWhitelist.includes(boardId)) {
-      return {
-        errors: [
-          {
-            field: 'user',
-            message: 'User already whitelisted',
-          },
-        ],
-      };
-    }
-
-    await getConnection().query(
-      `
-      UPDATE "user" 
-      SET "boardWhitelist" = array_append("boardWhitelist", $1) 
-      WHERE id = $2;
-    `,
-      [boardId, user.id]
-    );
-
-    return { userId: user.id };
   }
 
   // Delete board

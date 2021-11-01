@@ -1,8 +1,17 @@
 import { User } from '../../entities/User';
-import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql';
+import {
+  Arg,
+  Ctx,
+  Mutation,
+  Query,
+  Resolver,
+  UseMiddleware,
+} from 'type-graphql';
 import { Context } from '../../types/context';
 import { getConnection } from 'typeorm';
 import { __prod__ } from '../../constants';
+import { isAuth } from '../../middleware/isAuth';
+import { WhitelistInput, WhitelistResponse } from './types';
 
 @Resolver(User)
 export class UserResolver {
@@ -56,5 +65,44 @@ export class UserResolver {
         resolve(true);
       })
     );
+  }
+
+  // Whitelist user
+  // PRIVATE
+  @Mutation(() => WhitelistResponse)
+  @UseMiddleware(isAuth)
+  async whitelistUser(@Arg('options') options: WhitelistInput) {
+    const user = await User.findOne({ where: { email: options.email } });
+    if (!user) {
+      return {
+        errors: [
+          {
+            field: 'email',
+            message: "User doesn't exist",
+          },
+        ],
+      };
+    }
+    if (user.boardWhitelist && user.boardWhitelist.includes(options.boardId)) {
+      return {
+        errors: [
+          {
+            field: 'email',
+            message: 'User already whitelisted',
+          },
+        ],
+      };
+    }
+
+    await getConnection().query(
+      `
+      UPDATE "user" 
+      SET "boardWhitelist" = array_append("boardWhitelist", $1) 
+      WHERE id = $2;
+    `,
+      [options.boardId, user.id]
+    );
+
+    return { userId: user.id };
   }
 }
