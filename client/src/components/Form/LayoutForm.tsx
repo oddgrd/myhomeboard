@@ -55,7 +55,7 @@ export const LayoutForm = ({ boardId }: Props) => {
 
   return (
     <div className={styles.boardForm}>
-      <h1>Add New Layout</h1>
+      <h1>Upload New Layout</h1>
       {error && <p>{error.message}</p>}
       <label htmlFor='title'>
         {' '}

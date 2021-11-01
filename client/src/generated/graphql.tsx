@@ -171,6 +171,7 @@ export type Mutation = {
   editProblem: ProblemResponse;
   deleteProblem: Scalars['Boolean'];
   logout: Scalars['Boolean'];
+  whitelistUser: WhitelistResponse;
 };
 
 
@@ -226,6 +227,11 @@ export type MutationEditProblemArgs = {
 
 export type MutationDeleteProblemArgs = {
   id: Scalars['String'];
+};
+
+
+export type MutationWhitelistUserArgs = {
+  options: WhitelistInput;
 };
 
 export type PaginatedProblems = {
@@ -311,10 +317,22 @@ export type User = {
   email: Scalars['String'];
   avatar?: Maybe<Scalars['String']>;
   googleId: Scalars['String'];
+  boardWhitelist?: Maybe<Array<Scalars['String']>>;
   problems?: Maybe<Array<Problem>>;
   ascents?: Maybe<Array<Ascent>>;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
+};
+
+export type WhitelistInput = {
+  email: Scalars['String'];
+  boardId: Scalars['String'];
+};
+
+export type WhitelistResponse = {
+  __typename?: 'WhitelistResponse';
+  errors?: Maybe<Array<FieldError>>;
+  userId?: Maybe<Scalars['String']>;
 };
 
 export type RegularErrorFragment = { __typename?: 'FieldError', field: string, message: string };
@@ -406,6 +424,13 @@ export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
 
 export type LogoutMutation = { __typename?: 'Mutation', logout: boolean };
+
+export type WhitelistUserMutationVariables = Exact<{
+  options: WhitelistInput;
+}>;
+
+
+export type WhitelistUserMutation = { __typename?: 'Mutation', whitelistUser: { __typename?: 'WhitelistResponse', userId?: Maybe<string>, errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>> } };
 
 export type GetBoardQueryVariables = Exact<{
   boardId: Scalars['String'];
@@ -919,6 +944,43 @@ export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<Logou
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
+export const WhitelistUserDocument = gql`
+    mutation WhitelistUser($options: WhitelistInput!) {
+  whitelistUser(options: $options) {
+    errors {
+      field
+      message
+    }
+    userId
+  }
+}
+    `;
+export type WhitelistUserMutationFn = Apollo.MutationFunction<WhitelistUserMutation, WhitelistUserMutationVariables>;
+
+/**
+ * __useWhitelistUserMutation__
+ *
+ * To run a mutation, you first call `useWhitelistUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useWhitelistUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [whitelistUserMutation, { data, loading, error }] = useWhitelistUserMutation({
+ *   variables: {
+ *      options: // value for 'options'
+ *   },
+ * });
+ */
+export function useWhitelistUserMutation(baseOptions?: Apollo.MutationHookOptions<WhitelistUserMutation, WhitelistUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<WhitelistUserMutation, WhitelistUserMutationVariables>(WhitelistUserDocument, options);
+      }
+export type WhitelistUserMutationHookResult = ReturnType<typeof useWhitelistUserMutation>;
+export type WhitelistUserMutationResult = Apollo.MutationResult<WhitelistUserMutation>;
+export type WhitelistUserMutationOptions = Apollo.BaseMutationOptions<WhitelistUserMutation, WhitelistUserMutationVariables>;
 export const GetBoardDocument = gql`
     query getBoard($boardId: String!) {
   getBoard(boardId: $boardId) {
