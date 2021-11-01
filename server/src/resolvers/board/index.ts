@@ -51,6 +51,15 @@ export class BoardResolver {
         };
       }
     }
+    // Whitelist creator after creating board
+    await getConnection().query(
+      `
+      UPDATE "user" 
+      SET "boardWhitelist" = array_append("boardWhitelist", $1) 
+      WHERE id = $2;
+    `,
+      [board?.id, creatorId]
+    );
     return { board };
   }
 
