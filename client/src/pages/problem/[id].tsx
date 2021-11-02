@@ -182,7 +182,7 @@ const Problem = () => {
         </AnimatePresence>
 
         <div className={styles.ascents}>
-          {ascents.length > 0 && <h3>Ascents:</h3>}
+          {ascents.length > 0 && <h2>Ascents:</h2>}
           {ascents &&
             ascents.map((ascent, idx) => {
               return (

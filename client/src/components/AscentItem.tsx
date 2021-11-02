@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
-import { FaEdit, FaEllipsisV, FaQuoteRight } from 'react-icons/fa';
+import { FaCog, FaEllipsisV, FaQuoteRight } from 'react-icons/fa';
 import { Maybe } from '../generated/graphql';
 import styles from '../styles/AscentItem.module.scss';
 import { attempts, grades } from '../utils/selectOptions';
@@ -153,7 +153,7 @@ export const AscentItem = ({ ascent, problemId, currentUserId }: Props) => {
                   className='btn btn-link'
                   onClick={() => setShowModal(true)}
                 >
-                  <FaEdit size={26} />
+                  <FaCog size={26} />
                 </button>
                 <DeleteAscent id={problemId} />
               </div>
