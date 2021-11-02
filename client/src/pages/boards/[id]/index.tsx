@@ -38,7 +38,7 @@ const Problems = () => {
   if (error || boardError) {
     return (
       <Layout title='Problems'>
-        <p>Something went wrong, try again </p>
+        <p className='centerText'>Something went wrong, try again </p>
         <button
           className='btn btn-link'
           onClick={() => {
@@ -51,7 +51,7 @@ const Problems = () => {
   if (!boardLoading && !boardData?.getBoard) {
     return (
       <Layout title='Problems'>
-        <p>Board Not Found</p>
+        <p className='centerText'>Board Not Found</p>
         <Link href='/boards'>
           <a className={styles.back}>{'<'}Go Back</a>
         </Link>
@@ -61,7 +61,7 @@ const Problems = () => {
   if (!boardLoading && !boardData?.getBoard.currentLayout) {
     return (
       <Layout title='Problems'>
-        <p>
+        <p className='centerText'>
           No layouts found,{' '}
           <Link href={`/boards/${boardId}/create-layout`}>
             <a className={styles.back}>create one!</a>

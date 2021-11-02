@@ -24,6 +24,7 @@ const client = (ctx?: NextPageContext | undefined) => {
   return new ApolloClient({
     // type bug: https://github.com/DefinitelyTyped/DefinitelyTyped/issues/47369
     link: uploadLink as unknown as ApolloLink,
+    ssrMode: typeof window === 'undefined',
     cache: new InMemoryCache({
       typePolicies: {
         Query: {

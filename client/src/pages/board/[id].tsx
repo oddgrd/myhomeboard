@@ -2,14 +2,7 @@ import { AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import {
-  FaCheck,
-  FaCloudUploadAlt,
-  FaEdit,
-  FaPlusSquare,
-  FaSearch,
-  FaUpload,
-} from 'react-icons/fa';
+import { FaCheck, FaCloudUploadAlt, FaEdit, FaSearch } from 'react-icons/fa';
 import { BoardForm } from '../../components/Form/BoardForm';
 import { WhitelistForm } from '../../components/Form/WhitelistForm';
 import { Layout } from '../../components/Layout';
@@ -28,6 +21,7 @@ const Board = () => {
   const [showWhitelistModal, setShowWhitelistModal] = useState(false);
   const [showBoardForm, toggleShowBoardForm] = useState(false);
   const [showLayouts, toggleShowLayouts] = useState(false);
+
   const boardId = typeof router.query.id === 'string' ? router.query.id : '';
   const { data, loading, error } = useGetBoardQuery({
     variables: { boardId },
@@ -71,7 +65,7 @@ const Board = () => {
   };
 
   return (
-    <Layout title='Title here'>
+    <Layout title={title}>
       <div className={styles.board}>
         <h1>{title}</h1>
         <ul>
@@ -144,4 +138,4 @@ const Board = () => {
   );
 };
 
-export default withApollo({ ssr: false })(Board);
+export default withApollo({ ssr: true })(Board);
