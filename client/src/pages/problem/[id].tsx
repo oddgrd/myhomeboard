@@ -111,19 +111,23 @@ const Problem = () => {
           )}
 
           <button
-            className='btn btn-link'
-            onClick={() => setShowEditProblemModal(true)}
-          >
-            <FaEdit size={30} />
-          </button>
-
-          <button
             className='btn btn-link hide-desktop'
             onClick={() => setShowInfoModal(true)}
           >
             <FaInfo size={30} />
           </button>
-          <DeleteProblem id={problemId} boardId={boardId} />
+          {creator.id === meData?.me?.id && (
+            <>
+              <button
+                className='btn btn-link'
+                onClick={() => setShowEditProblemModal(true)}
+              >
+                <FaEdit size={30} />
+              </button>
+
+              <DeleteProblem id={problemId} boardId={boardId} />
+            </>
+          )}
         </div>
       }
     >
