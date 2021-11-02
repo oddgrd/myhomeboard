@@ -2,7 +2,7 @@ import { AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { FaCheck, FaEdit, FaInfo } from 'react-icons/fa';
+import { FaCheck, FaCog, FaInfo } from 'react-icons/fa';
 import { AscentItem } from '../../components/AscentItem';
 import { DeleteProblem } from '../../components/Button/deleteProblem';
 import { Canvas } from '../../components/Canvas';
@@ -106,7 +106,7 @@ const Problem = () => {
               className='btn btn-link'
               onClick={() => setShowAscentModal(true)}
             >
-              <FaCheck size={30} />
+              <FaCheck size={28} color='#ffe197' />
             </button>
           )}
 
@@ -114,7 +114,7 @@ const Problem = () => {
             className='btn btn-link hide-desktop'
             onClick={() => setShowInfoModal(true)}
           >
-            <FaInfo size={30} />
+            <FaInfo size={28} color='#ffe197' />
           </button>
           {creator.id === meData?.me?.id && (
             <>
@@ -122,7 +122,7 @@ const Problem = () => {
                 className='btn btn-link'
                 onClick={() => setShowEditProblemModal(true)}
               >
-                <FaEdit size={30} />
+                <FaCog size={28} color='#ffe197' />
               </button>
 
               <DeleteProblem id={problemId} boardId={boardId} />
