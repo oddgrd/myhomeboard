@@ -6,7 +6,7 @@ import { useGetBoardsQuery, useMeQuery } from '../generated/graphql';
 import styles from '../styles/Problems.module.scss';
 import withApollo from '../utils/withApollo';
 
-export const Boards = () => {
+const Boards = () => {
   const { data, loading, error } = useGetBoardsQuery();
   const { data: meData } = useMeQuery();
 

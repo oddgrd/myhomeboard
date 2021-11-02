@@ -90,6 +90,7 @@ export const BoardForm = ({ editProps }: Props) => {
             },
             update: (cache) => {
               cache.evict({ id: 'Board:' + editProps.boardId });
+              cache.evict({ fieldName: 'me' });
             },
           });
           if (response.data?.editBoard.errors) {
