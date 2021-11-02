@@ -106,7 +106,7 @@ const Problem = () => {
               className='btn btn-link'
               onClick={() => setShowAscentModal(true)}
             >
-              <FaCheck size={28} color='#ffe197' />
+              <FaCheck size={28} />
             </button>
           )}
 
@@ -114,7 +114,7 @@ const Problem = () => {
             className='btn btn-link hide-desktop'
             onClick={() => setShowInfoModal(true)}
           >
-            <FaInfo size={28} color='#ffe197' />
+            <FaInfo size={28} />
           </button>
           {creator.id === meData?.me?.id && (
             <>
@@ -122,7 +122,7 @@ const Problem = () => {
                 className='btn btn-link'
                 onClick={() => setShowEditProblemModal(true)}
               >
-                <FaCog size={28} color='#ffe197' />
+                <FaCog size={28} />
               </button>
 
               <DeleteProblem id={problemId} boardId={boardId} />
