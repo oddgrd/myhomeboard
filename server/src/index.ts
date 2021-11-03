@@ -18,6 +18,7 @@ import { Layout } from './entities/Layout';
 import { Problem } from './entities/Problem';
 import { User } from './entities/User';
 import authRoutes from './routes/api/auth';
+import { createLayoutLoader } from './utils/createLayoutLoader';
 import { createSchema } from './utils/createSchema';
 import { createUserLoader } from './utils/createUserLoader';
 
@@ -69,6 +70,7 @@ const main = async () => {
       res,
       redis,
       userLoader: createUserLoader(),
+      layoutLoader: createLayoutLoader(),
     }),
   });
 

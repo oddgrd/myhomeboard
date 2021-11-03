@@ -5,10 +5,12 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Board } from './Board';
+import { Problem } from './Problem';
 import { User } from './User';
 
 @ObjectType()
@@ -45,6 +47,10 @@ export class Layout extends BaseEntity {
   @Field()
   @Column()
   publicId!: string;
+
+  @Field(() => [Problem], { nullable: true })
+  @OneToMany(() => Problem, (problem) => problem.layout)
+  problems: Problem[];
 
   @ManyToOne(() => Board, (board) => board.layouts)
   board: Board;

@@ -6,7 +6,7 @@ import {
   Entity,
   ManyToOne,
   PrimaryColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
 } from 'typeorm';
 import { Board } from './Board';
 import { Problem } from './Problem';
@@ -40,7 +40,9 @@ export class Ascent extends BaseEntity {
   comment!: string;
 
   @Field(() => Problem)
-  @ManyToOne(() => Problem, (problem) => problem.ascents)
+  @ManyToOne(() => Problem, (problem) => problem.ascents, {
+    onDelete: 'CASCADE',
+  })
   problem: Problem;
 
   @Field(() => User)

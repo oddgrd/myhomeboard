@@ -5,13 +5,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
   ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
   Unique,
-  UpdateDateColumn
+  UpdateDateColumn,
 } from 'typeorm';
 import { User } from './User';
 import { Ascent } from './Ascent';
@@ -71,12 +69,11 @@ export class Problem extends BaseEntity {
   ascents: Ascent[];
 
   @Field()
-  @Column()
-  layoutUrl!: string;
+  @Column({ type: 'uuid' })
+  layoutId!: string;
 
   @Field(() => Layout)
-  @OneToOne(() => Layout)
-  @JoinColumn()
+  @ManyToOne(() => Layout, (layout) => layout.problems)
   layout: Layout;
 
   @Field(() => String)
