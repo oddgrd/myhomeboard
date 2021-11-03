@@ -56,7 +56,7 @@ const CreateProblem = () => {
           <ProblemForm
             coords={coords?.current}
             boardId={boardId}
-            layoutUrl={data?.getBoard.currentLayout?.url}
+            layoutId={data?.getBoard.currentLayout?.id}
             angles={data?.getBoard.angles}
           />
         </div>

@@ -73,7 +73,7 @@ const Problem = () => {
     creator,
     sendStatus,
     createdAt,
-    layoutUrl,
+    layout,
     boardId,
     angle,
   } = data.getProblem;
@@ -143,7 +143,7 @@ const Problem = () => {
 
         <div className={styles.viewer}>
           <div className={styles.board}>
-            <Canvas canvasRef={canvas} layoutUrl={layoutUrl} />
+            <Canvas canvasRef={canvas} layoutUrl={layout.url} />
           </div>
           <div className={styles.info}>
             <h2 className={styles.desktopTitle}>{title}</h2>

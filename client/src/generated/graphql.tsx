@@ -90,7 +90,7 @@ export type CoordinatesInput = {
 
 export type CreateProblemInput = {
   boardId: Scalars['String'];
-  layoutUrl: Scalars['String'];
+  layoutId: Scalars['String'];
   title: Scalars['String'];
   rules: Scalars['String'];
   grade: Scalars['Int'];
@@ -146,6 +146,7 @@ export type Layout = {
   creator: User;
   boardId: Scalars['String'];
   publicId: Scalars['String'];
+  problems?: Maybe<Array<Problem>>;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
 };
@@ -260,7 +261,7 @@ export type Problem = {
   boardId: Scalars['String'];
   board: Board;
   ascents: Array<Ascent>;
-  layoutUrl: Scalars['String'];
+  layoutId: Scalars['String'];
   layout: Layout;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
@@ -469,7 +470,7 @@ export type GetProblemQueryVariables = Exact<{
 }>;
 
 
-export type GetProblemQuery = { __typename?: 'Query', getProblem?: Maybe<{ __typename?: 'Problem', id: string, title: string, grade: number, consensusGrade?: Maybe<number>, consensusRating?: Maybe<number>, rules: string, creatorId: string, sendStatus?: Maybe<boolean>, layoutUrl: string, boardId: string, angle: number, createdAt: string, updatedAt: string, creator: { __typename?: 'User', id: string, name: string }, ascents: Array<{ __typename?: 'Ascent', userId: string, attempts: number, grade: number, rating: number, comment: string, createdAt: string, boardId: string, user: { __typename?: 'User', name: string, avatar?: Maybe<string> } }>, coordinates: Array<{ __typename?: 'Coordinates', x: number, y: number, color: string }> }> };
+export type GetProblemQuery = { __typename?: 'Query', getProblem?: Maybe<{ __typename?: 'Problem', id: string, title: string, grade: number, consensusGrade?: Maybe<number>, consensusRating?: Maybe<number>, rules: string, creatorId: string, sendStatus?: Maybe<boolean>, boardId: string, angle: number, createdAt: string, updatedAt: string, creator: { __typename?: 'User', id: string, name: string }, layout: { __typename?: 'Layout', url: string, title: string }, ascents: Array<{ __typename?: 'Ascent', userId: string, attempts: number, grade: number, rating: number, comment: string, createdAt: string, boardId: string, user: { __typename?: 'User', name: string, avatar?: Maybe<string> } }>, coordinates: Array<{ __typename?: 'Coordinates', x: number, y: number, color: string }> }> };
 
 export type GetProblemsQueryVariables = Exact<{
   limit: Scalars['Int'];
@@ -1144,12 +1145,15 @@ export const GetProblemDocument = gql`
     rules
     creatorId
     sendStatus
-    layoutUrl
     boardId
     angle
     creator {
       id
       name
+    }
+    layout {
+      url
+      title
     }
     ascents {
       userId

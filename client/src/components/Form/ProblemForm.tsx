@@ -4,7 +4,7 @@ import { FaRandom } from 'react-icons/fa';
 import * as Yup from 'yup';
 import {
   CoordinatesInput,
-  useCreateProblemMutation
+  useCreateProblemMutation,
 } from '../../generated/graphql';
 import { useTitleGenerator } from '../../hooks/useTitleGenerator';
 import styles from '../../styles/ProblemForm.module.scss';
@@ -17,7 +17,7 @@ import { toErrorMap } from '../../utils/toErrorMap';
 interface Props {
   coords?: CoordinatesInput[];
   boardId: string;
-  layoutUrl: string | undefined;
+  layoutId: string | undefined;
   angles: number[];
 }
 interface Values {
@@ -25,16 +25,16 @@ interface Values {
   rules: string;
   grade: number;
   boardId: string;
-  layoutUrl: string;
+  layoutId: string;
   coordinates: CoordinatesInput[];
   angle: number;
 }
 
-export const ProblemForm = ({ coords, boardId, layoutUrl, angles }: Props) => {
+export const ProblemForm = ({ coords, boardId, layoutId, angles }: Props) => {
   const [createProblem] = useCreateProblemMutation();
   const router = useRouter();
 
-  if (!layoutUrl) return null;
+  if (!layoutId) return null;
   return (
     <Formik
       validateOnMount
@@ -43,9 +43,9 @@ export const ProblemForm = ({ coords, boardId, layoutUrl, angles }: Props) => {
           title: '',
           rules: 'Feet follow hands',
           boardId,
-          layoutUrl,
+          layoutId,
           coordinates: coords,
-          angle: angles[0]
+          angle: angles[0],
         } as Values
       }
       validationSchema={Yup.object({
@@ -58,7 +58,7 @@ export const ProblemForm = ({ coords, boardId, layoutUrl, angles }: Props) => {
           .max(60, 'Must be shorter than 60 characters')
           .required('Required'),
         grade: Yup.number().required('Required'),
-        angle: Yup.number().required('Required')
+        angle: Yup.number().required('Required'),
       })}
       onSubmit={async (values: Values, { setErrors }) => {
         if (!coords || coords.length < 2) {
@@ -69,7 +69,7 @@ export const ProblemForm = ({ coords, boardId, layoutUrl, angles }: Props) => {
           variables: { options: values },
           update: (cache) => {
             cache.evict({ fieldName: 'getProblems' });
-          }
+          },
         });
 
         if (response.data?.createProblem.errors) {
@@ -118,7 +118,7 @@ export const ProblemForm = ({ coords, boardId, layoutUrl, angles }: Props) => {
                     options={angles.map((a) => {
                       return Object.fromEntries([
                         ['value', a],
-                        ['label', a]
+                        ['label', a],
                       ]);
                     })}
                     label='Angle'

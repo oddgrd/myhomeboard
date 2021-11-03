@@ -8,12 +8,16 @@ query GetProblem($id: String!) {
     rules
     creatorId
     sendStatus
-    layoutUrl
+
     boardId
     angle
     creator {
       id
       name
+    }
+    layout {
+      url
+      title
     }
     ascents {
       userId
