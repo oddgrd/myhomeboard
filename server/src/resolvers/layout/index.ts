@@ -46,15 +46,15 @@ export class LayoutResolver {
     @Arg('options') options: DeleteLayoutInput,
     @Ctx() { req }: Context
   ): Promise<boolean> {
-    const { layoutUrl, layoutId, publicId } = options;
+    const { layoutId, publicId } = options;
     try {
       await getConnection().transaction(async (em) => {
         await em.query(
           `
             DELETE FROM problem
-            WHERE "layoutUrl" = $1;
+            WHERE "layoutId" = $1;
           `,
-          [layoutUrl]
+          [layoutId]
         );
         const result = await em.query(
           `

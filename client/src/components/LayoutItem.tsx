@@ -22,7 +22,7 @@ export const LayoutItem = ({ layout }: Props) => {
     ) {
       await toast.promise(
         deleteLayout({
-          variables: { options: { publicId, layoutId: id, layoutUrl: url } },
+          variables: { options: { publicId, layoutId: id } },
           update: (cache) => {
             cache.evict({ id: 'Layout:' + id });
             cache.evict({ fieldName: 'getProblems' });

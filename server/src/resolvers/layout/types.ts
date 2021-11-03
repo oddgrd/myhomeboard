@@ -22,8 +22,5 @@ export class DeleteLayoutInput {
   layoutId: string;
 
   @Field()
-  layoutUrl: string;
-
-  @Field()
   publicId: string;
 }

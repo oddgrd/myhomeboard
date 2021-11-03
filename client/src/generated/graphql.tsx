@@ -100,7 +100,6 @@ export type CreateProblemInput = {
 
 export type DeleteLayoutInput = {
   layoutId: Scalars['String'];
-  layoutUrl: Scalars['String'];
   publicId: Scalars['String'];
 };
 
