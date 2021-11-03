@@ -4,8 +4,8 @@ import faker from 'faker';
 import { User } from '../entities/User';
 import { gqlWrapper } from '../test-utils/gqlWrapper';
 import { Board } from '../entities/Board';
-import { Problem } from '../entities/Problem';
-import { Ascent } from '../entities/Ascent';
+// import { Problem } from '../entities/Problem';
+// import { Ascent } from '../entities/Ascent';
 
 let conn: Connection;
 beforeAll(async () => {
@@ -45,68 +45,57 @@ const editBoardMutation = `
     }
   }
 `;
-const createProblemMutation = `
-  mutation CreateProblem($options: CreateProblemInput!) {
-    createProblem(options: $options) {
-      problem {
-        id
-        title
-        rules
-        layoutUrl
-        boardId
-        grade
-        angle
-        coordinates {
-          x
-          y
-          color
-        }
-      }
-      errors {
-        field
-        message
-      }
-    }
-  }
-`;
-const editProblemMutation = `
-  mutation EditProblem($options: EditProblemInput!) {
-    editProblem(options: $options) {
-      problem {
-        id
-        title
-        grade
-        angle
-        rules
-      }
-      errors {
-        field
-        message
-      }
-    }
-  }
-`;
-const addAscentMutation = `
-  mutation AddAscent($options: AddAscentInput!) {
-    addAscent(options: $options)
-  }
-`;
-const editAscentMutation = `
-  mutation EditAscent($options: EditAscentInput!) {
-    editAscent(options: $options)
-  }
+// const createProblemMutation = `
+//   mutation CreateProblem($options: CreateProblemInput!) {
+//     createProblem(options: $options) {
+//       problem {
+//         id
+//       }
+//       errors {
+//         field
+//         message
+//       }
+//     }
+//   }
+// `;
+// const editProblemMutation = `
+//   mutation EditProblem($options: EditProblemInput!) {
+//     editProblem(options: $options) {
+//       problem {
+//         id
+//         title
+//         grade
+//         angle
+//         rules
+//       }
+//       errors {
+//         field
+//         message
+//       }
+//     }
+//   }
+// `;
+// const addAscentMutation = `
+//   mutation AddAscent($options: AddAscentInput!) {
+//     addAscent(options: $options)
+//   }
+// `;
+// const editAscentMutation = `
+//   mutation EditAscent($options: EditAscentInput!) {
+//     editAscent(options: $options)
+//   }
 
-`;
-const deleteAscentMutation = `
-  mutation DeleteAscent($problemId: String!) {
-    deleteAscent(problemId: $problemId)
-  }
-`;
-const deleteProblemMutation = `
-  mutation DeleteProblem($id: String!) {
-    deleteProblem(id: $id)
-  }
-`;
+// `;
+// const deleteAscentMutation = `
+//   mutation DeleteAscent($problemId: String!) {
+//     deleteAscent(problemId: $problemId)
+//   }
+// `;
+// const deleteProblemMutation = `
+//   mutation DeleteProblem($id: String!) {
+//     deleteProblem(id: $id)
+//   }
+// `;
 const deleteBoardMutation = `
   mutation DeleteBoard($boardId: String!) {
     deleteBoard(boardId: $boardId)
@@ -194,170 +183,173 @@ describe('Resolvers end to end test', () => {
     expect(board).toBeDefined();
     expect(board!.adjustable).toBeFalsy();
   });
-  let problemId: string;
-  it('creates problem', async () => {
-    const problemInput = {
-      title: faker.name.firstName(),
-      rules: faker.lorem.sentence(3),
-      layoutUrl: faker.internet.url(),
-      boardId,
-      grade: 10,
-      angle: 30,
-      coordinates: [
-        {
-          x: 200,
-          y: 150,
-          color: 'red',
-        },
-        {
-          x: 100,
-          y: 180,
-          color: 'green',
-        },
-        {
-          x: 80,
-          y: 200,
-          color: 'blue',
-        },
-      ],
-    };
+  // let problemId: string;
+  // it('creates problem', async () => {
+  //   const problemInput = {
+  //     title: faker.name.firstName(),
+  //     rules: faker.lorem.sentence(3),
+  //     layoutId: faker.datatype.uuid(),
+  //     boardId,
+  //     grade: 10,
+  //     angle: 30,
+  //     coordinates: [
+  //       {
+  //         x: 200,
+  //         y: 150,
+  //         color: 'red',
+  //       },
+  //       {
+  //         x: 100,
+  //         y: 180,
+  //         color: 'green',
+  //       },
+  //       {
+  //         x: 80,
+  //         y: 200,
+  //         color: 'blue',
+  //       },
+  //     ],
+  //   };
 
-    const response = await gqlWrapper({
-      source: createProblemMutation,
-      variableValues: {
-        options: problemInput,
-      },
-      userId: userId,
-    });
+  //   const response = await gqlWrapper({
+  //     source: createProblemMutation,
+  //     variableValues: {
+  //       options: problemInput,
+  //     },
+  //     userId: userId,
+  //   });
 
-    expect(response).toMatchObject({
-      data: {
-        createProblem: {
-          problem: problemInput,
-          errors: null,
-        },
-      },
-    });
-    problemId = response.data!.createProblem.problem.id;
-    const problem = await Problem.findOne(problemId);
-    expect(problem).toBeDefined();
-  });
-  it('edits problem', async () => {
-    const editProblemInput = {
-      problemId,
-      title: 'edited',
-      rules: faker.lorem.sentence(3),
-      grade: 5,
-      angle: 30,
-    };
-    const response = await gqlWrapper({
-      source: editProblemMutation,
-      variableValues: {
-        options: editProblemInput,
-      },
-      userId: userId,
-    });
-    expect(response).toMatchObject({
-      data: {
-        editProblem: {
-          problem: {
-            title: 'edited',
-            rules: editProblemInput.rules,
-            grade: 5,
-            angle: 30,
-          },
-          errors: null,
-        },
-      },
-    });
-    const problem = await Problem.findOne(problemId);
-    expect(problem).toBeDefined();
-    expect(problem!.title).toMatch('edited');
-  });
-  it('adds ascent', async () => {
-    const ascentInput = {
-      problemId,
-      boardId,
-      comment: faker.lorem.sentence(3),
-      grade: 10,
-      rating: 2,
-      attempts: 6,
-    };
-    const response = await gqlWrapper({
-      source: addAscentMutation,
-      variableValues: {
-        options: ascentInput,
-      },
-      userId: userId,
-    });
-    expect(response).toMatchObject({
-      data: {
-        addAscent: true,
-      },
-    });
+  //   expect(response).toMatchObject({
+  //     data: {
+  //       createProblem: {
+  //         problem: {
+  //           title: problemInput.title,
+  //           rules: problemInput.rules,
+  //         },
+  //         errors: null,
+  //       },
+  //     },
+  //   });
+  //   problemId = response.data!.createProblem.problem.id;
+  //   const problem = await Problem.findOne(problemId);
+  //   expect(problem).toBeDefined();
+  // });
+  // it('edits problem', async () => {
+  //   const editProblemInput = {
+  //     problemId,
+  //     title: 'edited',
+  //     rules: faker.lorem.sentence(3),
+  //     grade: 5,
+  //     angle: 30,
+  //   };
+  //   const response = await gqlWrapper({
+  //     source: editProblemMutation,
+  //     variableValues: {
+  //       options: editProblemInput,
+  //     },
+  //     userId: userId,
+  //   });
+  //   expect(response).toMatchObject({
+  //     data: {
+  //       editProblem: {
+  //         problem: {
+  //           title: 'edited',
+  //           rules: editProblemInput.rules,
+  //           grade: 5,
+  //           angle: 30,
+  //         },
+  //         errors: null,
+  //       },
+  //     },
+  //   });
+  //   const problem = await Problem.findOne(problemId);
+  //   expect(problem).toBeDefined();
+  //   expect(problem!.title).toMatch('edited');
+  // });
+  // it('adds ascent', async () => {
+  //   const ascentInput = {
+  //     problemId,
+  //     boardId,
+  //     comment: faker.lorem.sentence(3),
+  //     grade: 10,
+  //     rating: 2,
+  //     attempts: 6,
+  //   };
+  //   const response = await gqlWrapper({
+  //     source: addAscentMutation,
+  //     variableValues: {
+  //       options: ascentInput,
+  //     },
+  //     userId: userId,
+  //   });
+  //   expect(response).toMatchObject({
+  //     data: {
+  //       addAscent: true,
+  //     },
+  //   });
 
-    const ascent = await Ascent.findOne({ where: { problemId } });
-    expect(ascent).toBeDefined();
-  });
-  it('edits ascent', async () => {
-    const editAscentInput = {
-      problemId,
-      comment: faker.lorem.sentence(3),
-      grade: 5,
-      rating: 0,
-      attempts: 1,
-    };
-    const response = await gqlWrapper({
-      source: editAscentMutation,
-      variableValues: {
-        options: editAscentInput,
-      },
-      userId: userId,
-    });
-    expect(response).toMatchObject({
-      data: {
-        editAscent: true,
-      },
-    });
+  //   const ascent = await Ascent.findOne({ where: { problemId } });
+  //   expect(ascent).toBeDefined();
+  // });
+  // it('edits ascent', async () => {
+  //   const editAscentInput = {
+  //     problemId,
+  //     comment: faker.lorem.sentence(3),
+  //     grade: 5,
+  //     rating: 0,
+  //     attempts: 1,
+  //   };
+  //   const response = await gqlWrapper({
+  //     source: editAscentMutation,
+  //     variableValues: {
+  //       options: editAscentInput,
+  //     },
+  //     userId: userId,
+  //   });
+  //   expect(response).toMatchObject({
+  //     data: {
+  //       editAscent: true,
+  //     },
+  //   });
 
-    const ascent = await Ascent.findOne({ where: { problemId } });
-    expect(ascent).toBeDefined();
-    expect(ascent).toMatchObject(editAscentInput);
-  });
-  it('deletes ascent', async () => {
-    const response = await gqlWrapper({
-      source: deleteAscentMutation,
-      variableValues: {
-        problemId,
-      },
-      userId: userId,
-    });
-    expect(response).toMatchObject({
-      data: {
-        deleteAscent: true,
-      },
-    });
+  //   const ascent = await Ascent.findOne({ where: { problemId } });
+  //   expect(ascent).toBeDefined();
+  //   expect(ascent).toMatchObject(editAscentInput);
+  // });
+  // it('deletes ascent', async () => {
+  //   const response = await gqlWrapper({
+  //     source: deleteAscentMutation,
+  //     variableValues: {
+  //       problemId,
+  //     },
+  //     userId: userId,
+  //   });
+  //   expect(response).toMatchObject({
+  //     data: {
+  //       deleteAscent: true,
+  //     },
+  //   });
 
-    const ascent = await Ascent.findOne({ where: { problemId } });
-    expect(ascent).toBeUndefined();
-  });
-  it('deletes problem', async () => {
-    const response = await gqlWrapper({
-      source: deleteProblemMutation,
-      variableValues: {
-        id: problemId,
-      },
-      userId: userId,
-    });
-    expect(response).toMatchObject({
-      data: {
-        deleteProblem: true,
-      },
-    });
+  //   const ascent = await Ascent.findOne({ where: { problemId } });
+  //   expect(ascent).toBeUndefined();
+  // });
+  // it('deletes problem', async () => {
+  //   const response = await gqlWrapper({
+  //     source: deleteProblemMutation,
+  //     variableValues: {
+  //       id: problemId,
+  //     },
+  //     userId: userId,
+  //   });
+  //   expect(response).toMatchObject({
+  //     data: {
+  //       deleteProblem: true,
+  //     },
+  //   });
 
-    const problem = await Problem.findOne({ where: { id: problemId } });
-    expect(problem).toBeUndefined();
-  });
+  //   const problem = await Problem.findOne({ where: { id: problemId } });
+  //   expect(problem).toBeUndefined();
+  // });
   it('deletes board', async () => {
     const response = await gqlWrapper({
       source: deleteBoardMutation,
