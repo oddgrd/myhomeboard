@@ -3,6 +3,7 @@ import { Redis } from 'ioredis';
 import { Request, Response } from 'express';
 import DataLoader from 'dataloader';
 import { User } from '../entities/User';
+import { Layout } from '../entities/Layout';
 
 export type Context = {
   req: Request & {
@@ -11,4 +12,5 @@ export type Context = {
   res: Response;
   redis: Redis;
   userLoader: DataLoader<string, User, string>;
+  layoutLoader: DataLoader<string, Layout, string>;
 };

@@ -32,7 +32,7 @@ export class CreateProblemInput {
   boardId: string;
 
   @Field()
-  layoutUrl: string;
+  layoutId: string;
 
   @Field()
   title: string;

@@ -20,6 +20,7 @@ import { Problem } from '../../entities/Problem';
 import { Context } from '../../types/context';
 import { getConnection } from 'typeorm';
 import { User } from '../../entities/User';
+import { Layout } from '../../entities/Layout';
 
 @Resolver(Problem)
 export class ProblemResolver {
@@ -27,6 +28,12 @@ export class ProblemResolver {
   @FieldResolver(() => User)
   creator(@Root() problem: Problem, @Ctx() { userLoader }: Context) {
     return userLoader.load(problem.creatorId);
+  }
+
+  // Field resolver for layout field
+  @FieldResolver(() => Layout)
+  layout(@Root() problem: Problem, @Ctx() { layoutLoader }: Context) {
+    return layoutLoader.load(problem.layoutId);
   }
 
   // Field resolver for consensusGrade
@@ -69,17 +76,17 @@ export class ProblemResolver {
     @Ctx() { req }: Context
   ): Promise<ProblemResponse> {
     const creatorId = req.session.passport?.user;
-    const { title, rules, grade, coordinates, boardId, layoutUrl, angle } =
+    const { title, rules, grade, coordinates, boardId, layoutId, angle } =
       options;
     let problem;
     try {
       const result = await getConnection().query(
         `
-          INSERT INTO problem (title, rules, grade, coordinates, "creatorId", "boardId", "layoutUrl", angle)
+          INSERT INTO problem (title, rules, grade, coordinates, "creatorId", "boardId", "layoutId", angle)
           VALUES ($1, $2, $3, $4::jsonb[], $5, $6, $7, $8)
           RETURNING *;
         `,
-        [title, rules, grade, coordinates, creatorId, boardId, layoutUrl, angle]
+        [title, rules, grade, coordinates, creatorId, boardId, layoutId, angle]
       );
       problem = result[0];
     } catch (error) {
@@ -196,8 +203,7 @@ export class ProblemResolver {
       .createQueryBuilder(Problem, 'problem')
       .leftJoinAndSelect('problem.ascents', 'ascent')
       .orderBy('ascent.createdAt', 'ASC')
-      .leftJoinAndSelect('ascent.user', 'u user')
-      .leftJoinAndSelect('problem.creator', 'user')
+      .leftJoinAndSelect('ascent.user', 'user')
       .where('problem.id = :id', { id })
       .getOne();
 
