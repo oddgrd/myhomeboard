@@ -67,7 +67,7 @@ export class UserResolver {
     );
   }
 
-  // Whitelist user
+  // Add board to users whitelist
   // PRIVATE
   @Mutation(() => WhitelistResponse)
   @UseMiddleware(isAuth)
@@ -98,6 +98,45 @@ export class UserResolver {
       `
       UPDATE "user" 
       SET "boardWhitelist" = array_append("boardWhitelist", $1) 
+      WHERE id = $2;
+    `,
+      [options.boardId, user.id]
+    );
+
+    return { userId: user.id };
+  }
+
+  // Remove board from users whitelist
+  // PRIVATE
+  @Mutation(() => WhitelistResponse)
+  @UseMiddleware(isAuth)
+  async removeFromWhitelist(@Arg('options') options: WhitelistInput) {
+    const user = await User.findOne({ where: { email: options.email } });
+    if (!user) {
+      return {
+        errors: [
+          {
+            field: 'email',
+            message: "User doesn't exist",
+          },
+        ],
+      };
+    }
+    if (user.boardWhitelist && !user.boardWhitelist.includes(options.boardId)) {
+      return {
+        errors: [
+          {
+            field: 'email',
+            message: "User isn't whitelisted",
+          },
+        ],
+      };
+    }
+
+    await getConnection().query(
+      `
+      UPDATE "user" 
+      SET "boardWhitelist" = array_remove("boardWhitelist", $1) 
       WHERE id = $2;
     `,
       [options.boardId, user.id]

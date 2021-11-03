@@ -1,0 +1,8 @@
+mutation RemoveFromWhitelist($options: WhitelistInput!) {
+  removeFromWhitelist(options: $options) {
+    errors {
+      ...RegularError
+    }
+    userId
+  }
+}

@@ -18,8 +18,8 @@ import { Layout } from './entities/Layout';
 import { Problem } from './entities/Problem';
 import { User } from './entities/User';
 import authRoutes from './routes/api/auth';
-import { createUserLoader } from './utils/createUserLoader';
 import { createSchema } from './utils/createSchema';
+import { createUserLoader } from './utils/createUserLoader';
 
 const main = async () => {
   const connection = await createConnection({
@@ -54,7 +54,7 @@ const main = async () => {
     })
   );
 
-  // dokku nginx client_max_body_size set to 5mb
+  // nginx client_max_body_size is also set to 5mb
   app.use(
     graphqlUploadExpress({ maxFileSize: 5000000, maxFieldSize: 5000000 })
   );
@@ -112,7 +112,6 @@ const main = async () => {
     done(null, user.id);
   });
   passport.deserializeUser((id: string, done) => {
-    console.log('id:', id);
     User.findOne(id).then((user) => {
       done(null, user);
     });

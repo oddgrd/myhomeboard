@@ -172,6 +172,7 @@ export type Mutation = {
   deleteProblem: Scalars['Boolean'];
   logout: Scalars['Boolean'];
   whitelistUser: WhitelistResponse;
+  removeFromWhitelist: WhitelistResponse;
 };
 
 
@@ -231,6 +232,11 @@ export type MutationDeleteProblemArgs = {
 
 
 export type MutationWhitelistUserArgs = {
+  options: WhitelistInput;
+};
+
+
+export type MutationRemoveFromWhitelistArgs = {
   options: WhitelistInput;
 };
 
@@ -424,6 +430,13 @@ export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
 
 export type LogoutMutation = { __typename?: 'Mutation', logout: boolean };
+
+export type RemoveFromWhitelistMutationVariables = Exact<{
+  options: WhitelistInput;
+}>;
+
+
+export type RemoveFromWhitelistMutation = { __typename?: 'Mutation', removeFromWhitelist: { __typename?: 'WhitelistResponse', userId?: Maybe<string>, errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>> } };
 
 export type WhitelistUserMutationVariables = Exact<{
   options: WhitelistInput;
@@ -944,17 +957,52 @@ export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<Logou
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
-export const WhitelistUserDocument = gql`
-    mutation WhitelistUser($options: WhitelistInput!) {
-  whitelistUser(options: $options) {
+export const RemoveFromWhitelistDocument = gql`
+    mutation RemoveFromWhitelist($options: WhitelistInput!) {
+  removeFromWhitelist(options: $options) {
     errors {
-      field
-      message
+      ...RegularError
     }
     userId
   }
 }
-    `;
+    ${RegularErrorFragmentDoc}`;
+export type RemoveFromWhitelistMutationFn = Apollo.MutationFunction<RemoveFromWhitelistMutation, RemoveFromWhitelistMutationVariables>;
+
+/**
+ * __useRemoveFromWhitelistMutation__
+ *
+ * To run a mutation, you first call `useRemoveFromWhitelistMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveFromWhitelistMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeFromWhitelistMutation, { data, loading, error }] = useRemoveFromWhitelistMutation({
+ *   variables: {
+ *      options: // value for 'options'
+ *   },
+ * });
+ */
+export function useRemoveFromWhitelistMutation(baseOptions?: Apollo.MutationHookOptions<RemoveFromWhitelistMutation, RemoveFromWhitelistMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RemoveFromWhitelistMutation, RemoveFromWhitelistMutationVariables>(RemoveFromWhitelistDocument, options);
+      }
+export type RemoveFromWhitelistMutationHookResult = ReturnType<typeof useRemoveFromWhitelistMutation>;
+export type RemoveFromWhitelistMutationResult = Apollo.MutationResult<RemoveFromWhitelistMutation>;
+export type RemoveFromWhitelistMutationOptions = Apollo.BaseMutationOptions<RemoveFromWhitelistMutation, RemoveFromWhitelistMutationVariables>;
+export const WhitelistUserDocument = gql`
+    mutation WhitelistUser($options: WhitelistInput!) {
+  whitelistUser(options: $options) {
+    errors {
+      ...RegularError
+    }
+    userId
+  }
+}
+    ${RegularErrorFragmentDoc}`;
 export type WhitelistUserMutationFn = Apollo.MutationFunction<WhitelistUserMutation, WhitelistUserMutationVariables>;
 
 /**

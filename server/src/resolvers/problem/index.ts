@@ -93,15 +93,6 @@ export class ProblemResolver {
             },
           ],
         };
-      } else {
-        return {
-          errors: [
-            {
-              field: error.name,
-              message: error.message,
-            },
-          ],
-        };
       }
     }
     return { problem };

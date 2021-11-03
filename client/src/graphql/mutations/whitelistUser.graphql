@@ -1,8 +1,7 @@
 mutation WhitelistUser($options: WhitelistInput!) {
   whitelistUser(options: $options) {
     errors {
-      field
-      message
+      ...RegularError
     }
     userId
   }
