@@ -1,4 +1,5 @@
 import 'dotenv/config';
+import path from 'path';
 import { createConnection } from 'typeorm';
 import { Ascent } from '../entities/Ascent';
 import { Board } from '../entities/Board';
@@ -18,6 +19,7 @@ export const testConn = async (drop: boolean = false) => {
     synchronize: drop,
     dropSchema: drop,
     entities: [User, Problem, Layout, Ascent, Board],
+    migrations: [path.join(__dirname, './testMigrations/*')],
   });
 
   return connection;
