@@ -52,7 +52,12 @@ export const LayoutItem = ({ layout }: Props) => {
             month: '2-digit',
           })}
         </p>
-        <button className='btn btn-delete btn-link' onClick={handleDelete}>
+        <button
+          className='btn btn-delete btn-link'
+          aria-label='Delete layout'
+          title='Delete Layout'
+          onClick={handleDelete}
+        >
           <FaTimes size={28} />
         </button>
       </div>

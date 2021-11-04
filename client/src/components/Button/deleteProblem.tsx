@@ -39,6 +39,7 @@ export const DeleteProblem = ({ id, boardId }: Props) => {
       <button
         className='btn btn-link btn-delete'
         aria-label='Delete Problem'
+        title='Delete Problem'
         onClick={handleDelete}
       >
         <FaTimes size={30} />

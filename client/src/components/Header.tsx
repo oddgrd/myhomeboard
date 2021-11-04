@@ -24,6 +24,7 @@ export const Header = ({ navTitle, children }: Props) => {
           ) : (
             <button
               aria-label='Go back'
+              title='Go Back'
               className='btn btn-icon btn-animation'
               onClick={() => {
                 router.back();
@@ -36,6 +37,7 @@ export const Header = ({ navTitle, children }: Props) => {
         <nav>
           {children}
           <button
+            title='Open Menu'
             aria-label='Open dropdown menu'
             className='btn btn-link'
             onClick={() => toggleMenuModal(!menuModal)}

@@ -35,7 +35,7 @@ export const BoardItem = ({ board, currentUser }: Props) => {
         )}
         {creatorId === currentUser && (
           <Link href={`/board/${id}`}>
-            <a>
+            <a aria-label='Board settings' title='Board Settings'>
               <FaCog size={26} />
             </a>
           </Link>

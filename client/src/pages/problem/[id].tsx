@@ -103,6 +103,8 @@ const Problem = () => {
         <div className={styles.buttons}>
           {!sendStatus && meData?.me?.boardWhitelist?.includes(boardId) && (
             <button
+              title='Register Ascent'
+              aria-label='Register ascent'
               className='btn btn-link'
               onClick={() => setShowAscentModal(true)}
             >
@@ -111,6 +113,8 @@ const Problem = () => {
           )}
 
           <button
+            title='Problem Info'
+            aria-label='Problem Info'
             className='btn btn-link hide-desktop'
             onClick={() => setShowInfoModal(true)}
           >
@@ -119,6 +123,8 @@ const Problem = () => {
           {creator.id === meData?.me?.id && (
             <>
               <button
+                title='Edit Problem'
+                aria-label='Edit problem'
                 className='btn btn-link'
                 onClick={() => setShowEditProblemModal(true)}
               >
