@@ -11,7 +11,18 @@ const Boards = () => {
   const { data: meData } = useMeQuery();
 
   if (!loading && !data) {
-    return <Layout>{error?.message}</Layout>;
+    return (
+      <Layout title='Boards' navTitle={'Select Board'}>
+        {error?.message}
+      </Layout>
+    );
+  }
+  if (!meData?.me && data?.getBoards.length === 0) {
+    return (
+      <Layout title='Boards' navTitle={'Select Board'}>
+        <p className='centerText'>No boards found. Login to create one.</p>
+      </Layout>
+    );
   }
   return (
     <Layout title='Boards' navTitle={'Select Board'}>

@@ -77,7 +77,7 @@ const Problems = () => {
       navTitle={boardData?.getBoard.title}
       navChildren={
         <Link href={`/boards/${boardId}/create-problem`}>
-          <a className='btn btn-link btn-icon'>
+          <a className='btn btn-link btn-icon' aria-label='Create problem'>
             <FaPlusSquare size={28} />
           </a>
         </Link>

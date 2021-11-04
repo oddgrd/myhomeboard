@@ -23,6 +23,7 @@ export const Header = ({ navTitle, children }: Props) => {
             <h2 className={styles.title}>{navTitle}</h2>
           ) : (
             <button
+              aria-label='Go back'
               className='btn btn-icon btn-animation'
               onClick={() => {
                 router.back();
@@ -35,6 +36,7 @@ export const Header = ({ navTitle, children }: Props) => {
         <nav>
           {children}
           <button
+            aria-label='Open dropdown menu'
             className='btn btn-link'
             onClick={() => toggleMenuModal(!menuModal)}
           >

@@ -6,7 +6,7 @@ export const LandingHeader = () => {
   return (
     <header className={styles.header}>
       <div className={styles.container}>
-        <Link href={`/boards`}>
+        <Link href={`/boards`} aria-label='Go to boards page'>
           <a className={styles.logo}>
             <svg
               height='100%'

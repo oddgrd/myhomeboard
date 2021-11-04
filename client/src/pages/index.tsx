@@ -113,7 +113,11 @@ const Landing = () => {
           </motion.svg>
 
           <div className={styles.footerContent}>
-            <a href='https://github.com/oddgrd' target='_blank'>
+            <a
+              href='https://github.com/oddgrd'
+              target='_blank'
+              rel='noreferrer'
+            >
               <p>
                 oddgrd <FaGithub />
               </p>
