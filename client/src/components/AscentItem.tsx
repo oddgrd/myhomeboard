@@ -10,6 +10,7 @@ import { AscentForm } from './Form/AscentForm';
 import { Modal } from './Modal/Modal';
 import { StarRating } from './StarRating';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useApolloClient } from '@apollo/client';
 
 interface Props {
   ascent: {
@@ -36,6 +37,10 @@ export const AscentItem = ({ ascent, problemId, currentUserId }: Props) => {
   const scrollIntoViewRef = useRef<HTMLDivElement>(null);
   const [showOptions, toggleShowOptions] = useState(false);
 
+  const apolloClient = useApolloClient();
+  const handleProfileClick = () => {
+    apolloClient.cache.evict({ fieldName: 'getUser' });
+  };
   useEffect(() => {
     if (showOptions && scrollIntoViewRef.current) {
       scrollIntoViewRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -83,7 +88,7 @@ export const AscentItem = ({ ascent, problemId, currentUserId }: Props) => {
     <div className={styles.ascentItem}>
       <div className={styles.avatar}>
         <Link href={`/profile/${userId}`}>
-          <a>
+          <a onClick={handleProfileClick}>
             <Image
               width={52}
               height={52}

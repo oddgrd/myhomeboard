@@ -5,7 +5,7 @@ import {
   FaHome,
   FaSignInAlt,
   FaSignOutAlt,
-  FaUser
+  FaUser,
 } from 'react-icons/fa';
 import { useApolloClient } from '@apollo/client';
 import styles from '../styles/DropdownMenu.module.scss';
@@ -21,6 +21,9 @@ export const DropdownMenu = ({ onClose }: Props) => {
   const { data } = useMeQuery();
   const [logout] = useLogoutMutation();
 
+  const handleProfileClick = () => {
+    apolloClient.cache.evict({ fieldName: 'getUser' });
+  };
   const handleLogout = async () => {
     await logout();
     await apolloClient.resetStore();
@@ -46,14 +49,20 @@ export const DropdownMenu = ({ onClose }: Props) => {
           </Link>
         </li>
         {data?.me ? (
-          <>{router.pathname !== "/profile/[id]" && (<li>
-            <Link href={`/profile/${data.me.id}`}>
-              <a className='btn btn-link btn-dropdown'>
-                <FaUser size={28} /> Profile
-              </a>
-            </Link>
-          </li>)}
-            
+          <>
+            {router.pathname !== '/profile/[id]' && (
+              <li>
+                <Link href={`/profile/${data.me.id}`}>
+                  <a
+                    onClick={handleProfileClick}
+                    className='btn btn-link btn-dropdown'
+                  >
+                    <FaUser size={28} /> Profile
+                  </a>
+                </Link>
+              </li>
+            )}
+
             <li>
               <button
                 className='btn btn-link btn-dropdown'
