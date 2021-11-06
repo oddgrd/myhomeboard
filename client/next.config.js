@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const withPWA = require('next-pwa');
 const runtimeCaching = require('next-pwa/cache');
+const prod = process.env.NODE_ENV === 'production';
 
 const securityHeaders = [
   {
@@ -37,15 +38,17 @@ module.exports = withPWA({
   pwa: {
     dest: 'public',
     runtimeCaching,
+    // https://github.com/GoogleChrome/workbox/issues/1790
+    disable: !prod,
     // https://github.com/shadowwalker/next-pwa/issues/288
-    buildExcludes: [/middleware-manifest.json$/],
+    buildExcludes: [/middleware-manifest\.json$/],
   },
   reactStrictMode: true,
   images: {
     domains: ['lh3.googleusercontent.com', 'res.cloudinary.com'],
   },
   async headers() {
-    return process.env.NODE_ENV === 'production'
+    return prod
       ? [
           {
             source: '/(.*)',
