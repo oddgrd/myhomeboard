@@ -6,7 +6,7 @@ interface Props {
   id: string;
 }
 
-export const DeleteAscent = ({ id }: Props) => {
+export const DeleteAscentButton = ({ id }: Props) => {
   const [deleteAscent] = useDeleteAscentMutation();
   const handleDelete = async () => {
     if (window.confirm('Are you sure? Deletion is permanent.')) {

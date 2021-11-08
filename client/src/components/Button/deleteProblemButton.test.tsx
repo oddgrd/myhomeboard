@@ -1,6 +1,6 @@
 import React from 'react';
 import { MockedProvider } from '@apollo/client/testing';
-import { DeleteProblem } from './deleteProblem';
+import { DeleteProblemButton } from './deleteProblemButton';
 import { DeleteProblemDocument } from '../../generated/graphql';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import { mockConfirm, mockRouter } from '../../utils/testUtils';
@@ -24,7 +24,7 @@ describe('Delete Problem Button', () => {
   it('should render without error', async () => {
     render(
       <MockedProvider mocks={[]}>
-        <DeleteProblem id={'uuid1'} boardId={'uuid2'} />
+        <DeleteProblemButton id={'uuid1'} boardId={'uuid2'} />
       </MockedProvider>
     );
   });
@@ -48,7 +48,7 @@ describe('Delete Problem Button', () => {
 
     const { findByLabelText } = render(
       <MockedProvider mocks={mocks} addTypename={false}>
-        <DeleteProblem {...variables} boardId={boardId} />
+        <DeleteProblemButton {...variables} boardId={boardId} />
       </MockedProvider>
     );
     mockConfirm();

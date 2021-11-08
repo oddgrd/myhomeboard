@@ -8,7 +8,7 @@ interface Props {
   boardId: string;
 }
 
-export const DeleteProblem = ({ id, boardId }: Props) => {
+export const DeleteProblemButton = ({ id, boardId }: Props) => {
   const [deleteProblem] = useDeleteProblemMutation();
   const router = useRouter();
 
