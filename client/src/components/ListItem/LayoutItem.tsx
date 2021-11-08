@@ -3,8 +3,8 @@ import { toast } from 'react-toastify';
 import {
   LayoutCoreFragment,
   useDeleteLayoutMutation,
-} from '../generated/graphql';
-import styles from '../styles/BoardItem.module.scss';
+} from '../../generated/graphql';
+import styles from '../../styles/BoardItem.module.scss';
 
 interface Props {
   layout: LayoutCoreFragment;

@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import spinner from '../images/Loading.svg';
+import spinner from '../assets/images/Loading.svg';
 
 export const Spinner = () => {
   return (

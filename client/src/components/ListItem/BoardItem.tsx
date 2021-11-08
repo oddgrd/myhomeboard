@@ -1,8 +1,8 @@
 import { useApolloClient } from '@apollo/client';
 import Link from 'next/link';
 import { FaCog } from 'react-icons/fa';
-import { BoardCoreFragment } from '../generated/graphql';
-import styles from '../styles/BoardItem.module.scss';
+import { BoardCoreFragment } from '../../generated/graphql';
+import styles from '../../styles/BoardItem.module.scss';
 
 interface Props {
   board: BoardCoreFragment;

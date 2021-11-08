@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Layout } from '../../../components/Layout';
-import { ProblemItem } from '../../../components/ProblemItem';
+import { ProblemItem } from '../../../components/ListItem/ProblemItem';
 import { Spinner } from '../../../components/Spinner';
 import {
   useGetBoardQuery,

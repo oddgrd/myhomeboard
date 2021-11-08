@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { BoardItem } from '../components/BoardItem';
+import { BoardItem } from '../components/ListItem/BoardItem';
 import { Layout } from '../components/Layout';
 import { Spinner } from '../components/Spinner';
 import { useGetBoardsQuery, useMeQuery } from '../generated/graphql';

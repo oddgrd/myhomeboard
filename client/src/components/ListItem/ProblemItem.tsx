@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import { FaCheck } from 'react-icons/fa';
-import { ProblemSnippetFragment } from '../generated/graphql';
-import styles from '../styles/ProblemItem.module.scss';
-import { grades } from '../assets/selectOptions';
-import { StarRating } from './StarRating';
+import { ProblemSnippetFragment } from '../../generated/graphql';
+import styles from '../../styles/ProblemItem.module.scss';
+import { grades } from '../../assets/selectOptions';
+import { StarRating } from './../StarRating';
 
 interface Props {
   problem: ProblemSnippetFragment;

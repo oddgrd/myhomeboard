@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { FaCheck, FaCog, FaInfo } from 'react-icons/fa';
-import { AscentItem } from '../../components/AscentItem';
+import { AscentItem } from '../../components/ListItem/AscentItem';
 import { DeleteProblemButton } from '../../components/Button/deleteProblemButton';
 import { Canvas } from '../../components/Canvas';
 import { AscentForm } from '../../components/Form/AscentForm';

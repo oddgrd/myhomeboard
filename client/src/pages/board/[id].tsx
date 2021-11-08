@@ -7,7 +7,7 @@ import { DeleteBoardButton } from '../../components/Button/deleteBoardButton';
 import { BoardForm } from '../../components/Form/BoardForm';
 import { WhitelistForm } from '../../components/Form/WhitelistForm';
 import { Layout } from '../../components/Layout';
-import { LayoutItem } from '../../components/LayoutItem';
+import { LayoutItem } from '../../components/ListItem/LayoutItem';
 import { Modal } from '../../components/Modal/Modal';
 import { Spinner } from '../../components/Spinner';
 import {
