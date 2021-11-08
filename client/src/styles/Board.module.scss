@@ -1,6 +1,7 @@
 .board {
   display: flex;
   flex-direction: column;
+
   align-items: center;
   gap: 4rem;
   h1,
@@ -24,6 +25,8 @@
       width: 100%;
       button {
         width: 100%;
+        display: flex;
+        justify-content: flex-start;
       }
     }
   }

@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { FaCheck, FaCloudUploadAlt, FaEdit, FaSearch } from 'react-icons/fa';
+import { DeleteBoardButton } from '../../components/Button/deleteBoardButton';
 import { BoardForm } from '../../components/Form/BoardForm';
 import { WhitelistForm } from '../../components/Form/WhitelistForm';
 import { Layout } from '../../components/Layout';
@@ -100,6 +101,9 @@ const Board = () => {
                 <FaCloudUploadAlt size={28} /> Upload Layout
               </a>
             </Link>
+          </li>
+          <li>
+            <DeleteBoardButton boardId={boardId} />
           </li>
         </ul>
 

@@ -3,12 +3,14 @@ import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { toast } from 'react-toastify';
 import { useCreateLayoutMutation } from '../../generated/graphql';
+import { useIsWhitelisted } from '../../hooks/useIsWhitelisted';
 import styles from '../../styles/BoardForm.module.scss';
 
 interface Props {
   boardId: string;
 }
 export const LayoutForm = ({ boardId }: Props) => {
+  useIsWhitelisted(boardId);
   const router = useRouter();
   const [createLayout, { error }] = useCreateLayoutMutation();
   const [layoutData, setLayoutData] = useState({

@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { FaCheck, FaCog, FaInfo } from 'react-icons/fa';
 import { AscentItem } from '../../components/AscentItem';
-import { DeleteProblem } from '../../components/Button/deleteProblem';
+import { DeleteProblemButton } from '../../components/Button/deleteProblemButton';
 import { Canvas } from '../../components/Canvas';
 import { AscentForm } from '../../components/Form/AscentForm';
 import { EditProblemForm } from '../../components/Form/EditProblemForm';
@@ -131,7 +131,7 @@ const Problem = () => {
                 <FaCog size={28} />
               </button>
 
-              <DeleteProblem id={problemId} boardId={boardId} />
+              <DeleteProblemButton id={problemId} boardId={boardId} />
             </>
           )}
         </div>

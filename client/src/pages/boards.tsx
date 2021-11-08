@@ -8,7 +8,7 @@ import withApollo from '../utils/withApollo';
 
 const Boards = () => {
   const { data, loading, error } = useGetBoardsQuery();
-  const { data: meData } = useMeQuery();
+  const { data: meData } = useMeQuery({ fetchPolicy: 'cache-and-network' });
 
   if (!loading && !data) {
     return (
