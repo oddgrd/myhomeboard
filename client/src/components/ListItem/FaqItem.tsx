@@ -13,14 +13,12 @@ export const FaqItem = ({ question, answer }: Props) => {
         className={styles.question}
         onClick={() => toggleShowAnswer(!showAnswer)}
       >
-        <h2>
-          {showAnswer ? (
-            <FaChevronDown size={28} />
-          ) : (
-            <FaChevronRight size={28} />
-          )}
-          {question}
-        </h2>
+        {showAnswer ? (
+          <FaChevronDown size={28} />
+        ) : (
+          <FaChevronRight size={28} />
+        )}
+        <h2>{question}</h2>
       </div>
       {showAnswer && <p>{answer}</p>}
     </>

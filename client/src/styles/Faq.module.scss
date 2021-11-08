@@ -34,8 +34,12 @@
 }
 .question {
   display: flex;
+  align-items: center;
   margin-top: 1rem;
   cursor: pointer;
+  svg {
+    min-width: 40px;
+  }
   &:hover {
     h2,
     svg {
@@ -46,5 +50,13 @@
 @media (max-width: 700px) {
   .container {
     margin-top: 0;
+  }
+  .question {
+    &:hover {
+      h2,
+      svg {
+        color: var(--theme-color);
+      }
+    }
   }
 }
