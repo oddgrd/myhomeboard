@@ -8,7 +8,7 @@ import {
 } from '../../generated/graphql';
 import { useTitleGenerator } from '../../hooks/useTitleGenerator';
 import styles from '../../styles/ProblemForm.module.scss';
-import { grades } from '../../utils/selectOptions';
+import { grades } from '../../assets/selectOptions';
 import { Inputfield } from './Inputfield';
 import { SelectField } from './SelectField';
 import { toast } from 'react-toastify';

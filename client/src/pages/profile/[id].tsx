@@ -5,7 +5,7 @@ import { Spinner } from '../../components/Spinner';
 import { useGetUserQuery } from '../../generated/graphql';
 import withApollo from '../../utils/withApollo';
 import styles from '../../styles/Profile.module.scss';
-import { attempts, grades, ratings } from '../../utils/selectOptions';
+import { attempts, grades, ratings } from '../../assets/selectOptions';
 
 const Profile = () => {
   const router = useRouter();

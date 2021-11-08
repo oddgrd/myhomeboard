@@ -2,7 +2,7 @@ import styles from '../../styles/AscentForm.module.scss';
 import * as Yup from 'yup';
 import { Formik, Form } from 'formik';
 import { SelectField } from './SelectField';
-import { attempts, grades, ratings } from '../../utils/selectOptions';
+import { attempts, grades, ratings } from '../../assets/selectOptions';
 import { Textarea } from './Textarea';
 import { useState } from 'react';
 import {

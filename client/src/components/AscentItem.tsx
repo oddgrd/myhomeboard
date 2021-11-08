@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { FaCog, FaEllipsisV, FaQuoteRight } from 'react-icons/fa';
 import { Maybe } from '../generated/graphql';
 import styles from '../styles/AscentItem.module.scss';
-import { attempts, grades } from '../utils/selectOptions';
+import { attempts, grades } from '../assets/selectOptions';
 import { DeleteAscentButton } from './Button/deleteAscentButton';
 import { AscentForm } from './Form/AscentForm';
 import { Modal } from './Modal/Modal';

@@ -3,10 +3,10 @@ import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 import {
   useEditProblemMutation,
-  useGetBoardQuery
+  useGetBoardQuery,
 } from '../../generated/graphql';
 import styles from '../../styles/AscentForm.module.scss';
-import { grades } from '../../utils/selectOptions';
+import { grades } from '../../assets/selectOptions';
 import { toErrorMap } from '../../utils/toErrorMap';
 import { Inputfield } from './Inputfield';
 import { SelectField } from './SelectField';
@@ -34,11 +34,11 @@ export const EditProblemForm = ({
   grade,
   angle,
   boardId,
-  onClose
+  onClose,
 }: Props) => {
   const [editProblem] = useEditProblemMutation();
   const { data } = useGetBoardQuery({
-    variables: { boardId }
+    variables: { boardId },
   });
   return (
     <Formik
@@ -47,7 +47,7 @@ export const EditProblemForm = ({
           title: title,
           rules: rules,
           grade: grade,
-          angle: angle
+          angle: angle,
         } as Values
       }
       validationSchema={Yup.object({
@@ -60,14 +60,14 @@ export const EditProblemForm = ({
           .max(60, 'Must be shorter than 60 characters')
           .required('Required'),
         grade: Yup.number().required('Required'),
-        angle: Yup.number().required('Required')
+        angle: Yup.number().required('Required'),
       })}
       onSubmit={async (values: Values, { setErrors }) => {
         const response = await editProblem({
           variables: { options: { ...values, problemId: id } },
           update: (cache) => {
             cache.evict({ id: 'Problem:' + id });
-          }
+          },
         });
 
         if (response.data?.editProblem.errors) {
@@ -104,7 +104,7 @@ export const EditProblemForm = ({
                     options={data.getBoard.angles.map((a) => {
                       return Object.fromEntries([
                         ['value', a],
-                        ['label', a]
+                        ['label', a],
                       ]);
                     })}
                     label='Angle'

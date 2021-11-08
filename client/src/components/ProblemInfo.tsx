@@ -1,6 +1,6 @@
 import { Maybe } from '../generated/graphql';
 import styles from '../styles/ProblemInfo.module.scss';
-import { grades } from '../utils/selectOptions';
+import { grades } from '../assets/selectOptions';
 import { StarRating } from './StarRating';
 
 interface Props {
@@ -20,7 +20,7 @@ export const ProblemInfo = ({
   consensusRating,
   grade,
   angle,
-  createdAt
+  createdAt,
 }: Props) => {
   return (
     <div className={styles.problemInfo}>
@@ -54,7 +54,7 @@ export const ProblemInfo = ({
             weekday: 'long',
             year: 'numeric',
             month: 'long',
-            day: 'numeric'
+            day: 'numeric',
           })}
         </i>
       </p>

@@ -15,7 +15,7 @@ import { Spinner } from '../../components/Spinner';
 import { useGetProblemQuery, useMeQuery } from '../../generated/graphql';
 import { useCanvas } from '../../hooks/useCanvas';
 import styles from '../../styles/Problem.module.scss';
-import { grades } from '../../utils/selectOptions';
+import { grades } from '../../assets/selectOptions';
 import withApollo from '../../utils/withApollo';
 
 const Problem = () => {
