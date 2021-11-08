@@ -19,9 +19,13 @@
     }
     li {
       border-bottom: 1px solid var(--theme-color);
-      min-width: 160px;
+      min-width: 100%;
+      display: flex;
+      justify-content: flex-start;
       button {
         width: 100%;
+        display: flex;
+        justify-content: flex-start;
       }
     }
   }

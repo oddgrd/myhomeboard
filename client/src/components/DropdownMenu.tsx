@@ -3,6 +3,7 @@ import Link from 'next/link';
 import {
   FaClipboardList,
   FaHome,
+  FaQuestion,
   FaSignInAlt,
   FaSignOutAlt,
   FaUser,
@@ -38,6 +39,13 @@ export const DropdownMenu = ({ onClose }: Props) => {
           <Link href='/'>
             <a className='btn btn-link btn-dropdown'>
               <FaHome size={28} /> Home
+            </a>
+          </Link>
+        </li>
+        <li>
+          <Link href='/faq'>
+            <a className='btn btn-link btn-dropdown'>
+              <FaQuestion size={28} /> F.A.Q
             </a>
           </Link>
         </li>
