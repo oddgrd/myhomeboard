@@ -7,7 +7,7 @@
     font-size: clamp(1.8rem, 1.2273rem + 2.5455vw, 2.5rem);
   }
   h2 {
-    font-size: clamp(1.4rem, 0.9091rem + 2.1818vw, 2rem);
+    font-size: clamp(1.4rem, 1.0889rem + 1.4222vw, 1.8rem);
   }
   h1,
   h2,
@@ -16,7 +16,8 @@
     transition: 0.3s ease-in-out;
   }
   p {
-    font-size: clamp(1.2rem, 0.7091rem + 2.1818vw, 1.8rem);
+    font-size: clamp(1.1rem, 0.7889rem + 1.4222vw, 1.5rem);
+    margin-left: 2rem;
   }
 }
 .header {
