@@ -35,16 +35,20 @@ export const LandingHeader = () => {
           </a>
         </Link>
 
-        <nav>
+        <nav className={styles.landingNav}>
           <Link href={`/login`}>
             <a className='btn btn-link'>
-              <strong className={styles.landingLinks}>Get Started</strong>
+              <strong className={styles.landingLinks}>Sign In</strong>
             </a>
           </Link>
-
           <Link href={`/boards`}>
             <a className='btn btn-link'>
               <strong className={styles.landingLinks}>Boards</strong>
+            </a>
+          </Link>
+          <Link href={`/faq`}>
+            <a className='btn btn-link'>
+              <strong className={styles.landingLinks}>FAQ</strong>
             </a>
           </Link>
         </nav>

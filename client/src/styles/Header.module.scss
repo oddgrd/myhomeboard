@@ -13,7 +13,7 @@
   align-items: center;
   nav {
     display: flex;
-    gap: 1rem;
+    gap: clamp(0rem, 1.1vw, 1.2rem);
   }
 }
 .logo {
@@ -30,6 +30,7 @@
     color: var(--theme-color);
   }
 }
+
 .landingLinks {
   font-size: clamp(1.2rem, 0.4375rem + 2.5vw, 1.75rem);
 }
