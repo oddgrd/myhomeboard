@@ -19,11 +19,11 @@ const Profile = () => {
   const { data, loading } = useGetUserQuery({
     variables: { id: profileId },
   });
-  const { data: sendData } = useGetSentProblemsQuery({
+  const { data: sendData, loading: sendLoading } = useGetSentProblemsQuery({
     variables: { userId: profileId },
     fetchPolicy: 'no-cache',
   });
-  if (!data && loading) {
+  if ((!data && loading) || sendLoading) {
     return (
       <Layout title='Profile'>
         <Spinner />
@@ -80,42 +80,47 @@ const Profile = () => {
           <h1>{name}</h1>
         </section>
         <section className={styles.body}>
-          <ProfileItem
-            label='Highest Grade'
-            data={
-              !sendData?.getSentProblems
-                ? 'N/A'
-                : grades[
-                    Math.max(
-                      ...sendData.getSentProblems
-                        .map((problem) => problem.consensusGrade as number)
-                        .reduce(
-                          (acc: number[], curr: number) => acc.concat(curr),
-                          []
+          {sendData?.getSentProblems && (
+            <>
+              <ProfileItem
+                label='Highest Grade'
+                data={
+                  sendData.getSentProblems.length === 0
+                    ? 'N/A'
+                    : grades[
+                        Math.max(
+                          ...sendData.getSentProblems
+                            .map((problem) => problem.consensusGrade as number)
+                            .reduce(
+                              (acc: number[], curr: number) => acc.concat(curr),
+                              []
+                            )
                         )
-                    )
-                  ].label
-            }
-          />
-          <ProfileItem
-            label='Avg Grade'
-            data={
-              !sendData?.getSentProblems
-                ? 'N/A'
-                : grades[
-                    getAverageRounded(
-                      sendData.getSentProblems.map(
-                        (problem) => problem.consensusGrade as number
-                      )
-                    )
-                  ].label
-            }
-          />
+                      ].label
+                }
+              />
+              <ProfileItem
+                label='Avg Grade'
+                data={
+                  sendData.getSentProblems.length === 0
+                    ? 'N/A'
+                    : grades[
+                        getAverageRounded(
+                          sendData.getSentProblems.map(
+                            (problem) => problem.consensusGrade as number
+                          )
+                        )
+                      ].label
+                }
+              />
+            </>
+          )}
+
           <ProfileItem label='Ascents' data={ascents?.length || 0} />
           <ProfileItem
             label='Avg Attempts'
             data={
-              ascents
+              ascents && ascents.length > 0
                 ? attempts[getAverageRounded(ascents.map((a) => a.attempts))]
                     .label
                 : 'N/A'
@@ -125,7 +130,7 @@ const Profile = () => {
           <ProfileItem
             label='Avg Problem Rating'
             data={
-              problems
+              problems && problems.length > 0
                 ? getAverage(
                     problems
                       .filter((p) => typeof p.consensusRating === 'number')
