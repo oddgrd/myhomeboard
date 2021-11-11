@@ -1,0 +1,5 @@
+fragment AscentCore on Ascent {
+  grade
+  rating
+  attempts
+}

@@ -1,0 +1,10 @@
+query GetSentProblems($userId: String!) {
+  getSentProblems(userId: $userId) {
+    id
+    ascents {
+      ...AscentCore
+    }
+    consensusGrade
+    consensusRating
+  }
+}

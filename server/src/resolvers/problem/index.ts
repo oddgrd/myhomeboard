@@ -42,7 +42,7 @@ export class ProblemResolver {
     if (!problem.ascents || problem.ascents.length === 0) return null;
     const sumGrades = problem.ascents
       .map((ascent) => ascent.grade)
-      .reduce((val: number, acc: number) => acc + val);
+      .reduce((acc: number, curr: number) => acc + curr);
     return Math.round(sumGrades / problem.ascents.length);
   }
 
@@ -52,7 +52,7 @@ export class ProblemResolver {
     if (!problem.ascents || problem.ascents.length === 0) return null;
     const sumRatings = problem.ascents
       .map((ascent) => ascent.rating)
-      .reduce((val: number, acc: number) => acc + val);
+      .reduce((acc: number, curr: number) => acc + curr);
     return Math.round(sumRatings / problem.ascents.length);
   }
 
@@ -211,5 +211,23 @@ export class ProblemResolver {
       return null;
     }
     return problem;
+  }
+
+  // Get problems ascended by user by users ascentids
+  @Query(() => [Problem], { nullable: true })
+  @UseMiddleware(isAuth)
+  async getSentProblems(@Arg('userId') userId: string) {
+    const user = await User.findOne({
+      where: { id: userId },
+      relations: ['ascents'],
+    });
+    if (!user || !user.ascents) return null;
+
+    const problemIds = user.ascents.map((a) => a.problemId);
+    const sentProblems = await Problem.findByIds(problemIds, {
+      relations: ['ascents'],
+    });
+
+    return sentProblems;
   }
 }

@@ -283,6 +283,7 @@ export type Query = {
   getBoardLayouts: Array<Layout>;
   getProblems: PaginatedProblems;
   getProblem?: Maybe<Problem>;
+  getSentProblems?: Maybe<Array<Problem>>;
   me?: Maybe<User>;
   getUser?: Maybe<User>;
   getUsers?: Maybe<Array<User>>;
@@ -308,6 +309,11 @@ export type QueryGetProblemsArgs = {
 
 export type QueryGetProblemArgs = {
   id: Scalars['String'];
+};
+
+
+export type QueryGetSentProblemsArgs = {
+  userId: Scalars['String'];
 };
 
 
@@ -342,6 +348,8 @@ export type WhitelistResponse = {
 };
 
 export type RegularErrorFragment = { __typename?: 'FieldError', field: string, message: string };
+
+export type AscentCoreFragment = { __typename?: 'Ascent', grade: number, rating: number, attempts: number };
 
 export type BoardCoreFragment = { __typename?: 'Board', id: string, creatorId: string, title: string, description: string, adjustable: boolean, angles: Array<number>, city: string, country: string, currentLayout?: Maybe<{ __typename?: 'Layout', id: string, title: string, url: string, createdAt: string }> };
 
@@ -480,6 +488,13 @@ export type GetProblemsQueryVariables = Exact<{
 
 export type GetProblemsQuery = { __typename?: 'Query', getProblems: { __typename?: 'PaginatedProblems', hasMore: boolean, problems: Array<{ __typename?: 'Problem', id: string, title: string, grade: number, angle: number, consensusGrade?: Maybe<number>, consensusRating?: Maybe<number>, creatorId: string, sendStatus?: Maybe<boolean>, createdAt: string, updatedAt: string, boardId: string, creator: { __typename?: 'User', id: string, name: string }, ascents: Array<{ __typename?: 'Ascent', grade: number, rating: number, userId: string }> }> } };
 
+export type GetSentProblemsQueryVariables = Exact<{
+  userId: Scalars['String'];
+}>;
+
+
+export type GetSentProblemsQuery = { __typename?: 'Query', getSentProblems?: Maybe<Array<{ __typename?: 'Problem', id: string, consensusGrade?: Maybe<number>, consensusRating?: Maybe<number>, ascents: Array<{ __typename?: 'Ascent', grade: number, rating: number, attempts: number }> }>> };
+
 export type GetUserQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
@@ -496,6 +511,13 @@ export const RegularErrorFragmentDoc = gql`
     fragment RegularError on FieldError {
   field
   message
+}
+    `;
+export const AscentCoreFragmentDoc = gql`
+    fragment AscentCore on Ascent {
+  grade
+  rating
+  attempts
 }
     `;
 export const BoardCoreFragmentDoc = gql`
@@ -1245,6 +1267,46 @@ export function useGetProblemsLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type GetProblemsQueryHookResult = ReturnType<typeof useGetProblemsQuery>;
 export type GetProblemsLazyQueryHookResult = ReturnType<typeof useGetProblemsLazyQuery>;
 export type GetProblemsQueryResult = Apollo.QueryResult<GetProblemsQuery, GetProblemsQueryVariables>;
+export const GetSentProblemsDocument = gql`
+    query GetSentProblems($userId: String!) {
+  getSentProblems(userId: $userId) {
+    id
+    ascents {
+      ...AscentCore
+    }
+    consensusGrade
+    consensusRating
+  }
+}
+    ${AscentCoreFragmentDoc}`;
+
+/**
+ * __useGetSentProblemsQuery__
+ *
+ * To run a query within a React component, call `useGetSentProblemsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSentProblemsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSentProblemsQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useGetSentProblemsQuery(baseOptions: Apollo.QueryHookOptions<GetSentProblemsQuery, GetSentProblemsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetSentProblemsQuery, GetSentProblemsQueryVariables>(GetSentProblemsDocument, options);
+      }
+export function useGetSentProblemsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSentProblemsQuery, GetSentProblemsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetSentProblemsQuery, GetSentProblemsQueryVariables>(GetSentProblemsDocument, options);
+        }
+export type GetSentProblemsQueryHookResult = ReturnType<typeof useGetSentProblemsQuery>;
+export type GetSentProblemsLazyQueryHookResult = ReturnType<typeof useGetSentProblemsLazyQuery>;
+export type GetSentProblemsQueryResult = Apollo.QueryResult<GetSentProblemsQuery, GetSentProblemsQueryVariables>;
 export const GetUserDocument = gql`
     query GetUser($id: String!) {
   getUser(id: $id) {
