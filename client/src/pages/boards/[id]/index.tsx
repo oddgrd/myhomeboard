@@ -18,7 +18,7 @@ const Problems = () => {
 
   const { data, loading, error, fetchMore, variables } = useGetProblemsQuery({
     variables: {
-      limit: 20,
+      limit: 15,
       cursor: null,
       boardId,
     },

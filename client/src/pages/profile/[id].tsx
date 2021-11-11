@@ -2,10 +2,15 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { Layout } from '../../components/Layout';
 import { Spinner } from '../../components/Spinner';
-import { useGetUserQuery } from '../../generated/graphql';
+import { ProfileItem } from '../../components/ListItem/ProfileItem';
+
+import {
+  useGetSentProblemsQuery,
+  useGetUserQuery,
+} from '../../generated/graphql';
 import withApollo from '../../utils/withApollo';
 import styles from '../../styles/Profile.module.scss';
-import { attempts, grades, ratings } from '../../assets/selectOptions';
+import { attempts, grades } from '../../assets/selectOptions';
 
 const Profile = () => {
   const router = useRouter();
@@ -14,16 +19,20 @@ const Profile = () => {
   const { data, loading } = useGetUserQuery({
     variables: { id: profileId },
   });
+  const { data: sendData } = useGetSentProblemsQuery({
+    variables: { userId: profileId },
+    fetchPolicy: 'no-cache',
+  });
   if (!data && loading) {
     return (
-      <Layout>
+      <Layout title='Profile'>
         <Spinner />
       </Layout>
     );
   }
   if (!data?.getUser) {
     return (
-      <Layout>
+      <Layout title='Profile'>
         <p>Profile not found</p>
         <button
           className='btn'
@@ -36,9 +45,17 @@ const Profile = () => {
       </Layout>
     );
   }
-  const { name, avatar, createdAt, problems, ascents } = data.getUser;
+  const { name, avatar, problems, ascents } = data.getUser;
 
   const getAverage = (values: number[]) => {
+    if (values.length === 0) return 0;
+    const sum = values.reduce((acc, val) => {
+      return acc + val;
+    });
+
+    return sum / values.length;
+  };
+  const getAverageRounded = (values: number[]) => {
     if (values.length === 0) return 0;
     const sum = values.reduce((acc, val) => {
       return acc + val;
@@ -48,7 +65,7 @@ const Profile = () => {
   };
 
   return (
-    <Layout>
+    <Layout title='Profile'>
       <div className={styles.profile}>
         <section className={styles.head}>
           <div>
@@ -57,82 +74,61 @@ const Profile = () => {
 
           <h1>{name}</h1>
         </section>
-
-        <section className={styles.snippets}>
-          <h1>Performance</h1>
-          <div className={styles.content}>
-            {ascents && ascents.length > 0 ? (
-              <>
-                <div>
-                  <h3>Ascents</h3>
-                  <strong>{ascents?.length}</strong>
-                </div>
-                <div>
-                  <h3>Average Grade</h3>
-                  <strong>
-                    {grades[getAverage(ascents.map((a) => a.grade))].label}
-                  </strong>
-                </div>
-                <div>
-                  <h3>Average Attempts</h3>
-                  <strong>
-                    {attempts[getAverage(ascents.map((a) => a.attempts))].label}
-                  </strong>
-                </div>
-              </>
-            ) : (
-              <div>
-                <h1>N/A</h1>
-              </div>
-            )}
-          </div>
-        </section>
-        <section className={styles.snippets}>
-          <h1>{name}'s Problems</h1>
-          <div className={styles.content}>
-            {problems && problems.length > 0 ? (
-              <>
-                <div>
-                  <h3>Problems</h3>
-                  <strong>{problems?.length}</strong>
-                </div>
-                <div>
-                  <h3>Average Grade</h3>
-                  <strong>
-                    {
-                      grades[
-                        getAverage(
-                          problems
-                            .filter((p) => typeof p.consensusGrade === 'number')
-                            .map((p) => p.consensusGrade as number)
+        <section className={styles.body}>
+          <ProfileItem
+            label='Highest Grade'
+            data={
+              !sendData?.getSentProblems
+                ? 'N/A'
+                : grades[
+                    Math.max(
+                      ...sendData.getSentProblems
+                        .map((problem) => problem.consensusGrade as number)
+                        .reduce(
+                          (acc: number[], curr: number) => acc.concat(curr),
+                          []
                         )
-                      ].label
-                    }
-                  </strong>
-                </div>
-                <div>
-                  <h3>Average Rating</h3>
-                  <strong>
-                    {
-                      ratings[
-                        getAverage(
-                          problems
-                            .filter(
-                              (p) => typeof p.consensusRating === 'number'
-                            )
-                            .map((p) => p.consensusRating as number)
-                        )
-                      ].label
-                    }
-                  </strong>
-                </div>
-              </>
-            ) : (
-              <div>
-                <h1>N/A</h1>
-              </div>
-            )}
-          </div>
+                    )
+                  ].label
+            }
+          />
+          <ProfileItem
+            label='Avg Grade'
+            data={
+              !sendData?.getSentProblems
+                ? 'N/A'
+                : grades[
+                    getAverageRounded(
+                      sendData.getSentProblems.map(
+                        (problem) => problem.consensusGrade as number
+                      )
+                    )
+                  ].label
+            }
+          />
+          <ProfileItem label='Ascents' data={ascents?.length || 0} />
+          <ProfileItem
+            label='Avg Attempts'
+            data={
+              ascents
+                ? attempts[getAverageRounded(ascents.map((a) => a.attempts))]
+                    .label
+                : 'N/A'
+            }
+          />
+          <ProfileItem label='Problems Created' data={problems?.length || 0} />
+          <ProfileItem
+            label='Avg Problem Rating'
+            data={
+              problems
+                ? getAverage(
+                    problems
+                      .filter((p) => typeof p.consensusRating === 'number')
+                      .map((p) => (p.consensusRating as number) + 1)
+                  ).toFixed(2) + ' / 3'
+                : 'N/A'
+            }
+          />
         </section>
       </div>
     </Layout>

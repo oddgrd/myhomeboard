@@ -18,25 +18,28 @@
     border-radius: 50%;
   }
 }
-.snippets {
+.body {
+  display: grid;
   margin-top: 2rem;
-  width: clamp(330px, 90vw, 400px);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  align-items: center;
-  text-align: center;
-  h3,
-  h1 {
-    color: var(--theme-color);
+  grid-template-columns: 150px 150px;
+  gap: 5px;
+  div {
+    min-height: 125.6px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 5%;
+    border: 1px solid var(--theme-color);
+    background-color: var(--theme-foreground);
+    text-align: center;
+
+    strong {
+      color: var(--theme-color);
+    }
+    p {
+      font-size: 20px;
+      margin-top: 10px;
+    }
   }
-  strong {
-    font-size: 22px;
-  }
-}
-.content {
-  width: 100%;
-  padding: 15px 0;
-  border-radius: 3%;
-  border: 1px solid var(--theme-color);
 }
