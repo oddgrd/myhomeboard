@@ -69,7 +69,12 @@ const Profile = () => {
       <div className={styles.profile}>
         <section className={styles.head}>
           <div>
-            <Image src={avatar ? avatar : ''} width={62} height={62} />
+            <Image
+              src={avatar ? avatar : ''}
+              width={62}
+              height={62}
+              priority={true}
+            />
           </div>
 
           <h1>{name}</h1>
