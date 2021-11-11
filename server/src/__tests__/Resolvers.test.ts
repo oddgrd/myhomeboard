@@ -55,6 +55,15 @@ const createProblemMutation = `
         title
         rules
         id
+        layoutId
+        boardId
+        grade
+        angle
+        coordinates {
+          x
+          y
+          color
+        }
       }
       errors {
         field
@@ -230,10 +239,7 @@ describe('Resolvers end to end test', () => {
     expect(response).toMatchObject({
       data: {
         createProblem: {
-          problem: {
-            title: problemInput.title,
-            rules: problemInput.rules,
-          },
+          problem: problemInput,
           errors: null,
         },
       },

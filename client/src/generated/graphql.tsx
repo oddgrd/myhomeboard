@@ -255,7 +255,6 @@ export type Problem = {
   angle: Scalars['Int'];
   coordinates: Array<Coordinates>;
   grade: Scalars['Int'];
-  rating?: Maybe<Scalars['Int']>;
   creator: User;
   boardId: Scalars['String'];
   board: Board;

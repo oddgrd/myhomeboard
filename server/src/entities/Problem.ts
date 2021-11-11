@@ -48,10 +48,6 @@ export class Problem extends BaseEntity {
   @Column({ type: 'int' })
   grade!: number;
 
-  @Field(() => Int, { nullable: true })
-  @Column({ type: 'int', nullable: true })
-  rating: number;
-
   @Field(() => User)
   @ManyToOne(() => User, (user) => user.problems)
   creator: User;
