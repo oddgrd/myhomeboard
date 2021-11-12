@@ -279,6 +279,7 @@ export type Query = {
   getAscents?: Maybe<Array<Ascent>>;
   getBoard: Board;
   getBoards: Array<Board>;
+  getWhitelist: Array<WhitelistedUser>;
   getBoardLayouts: Array<Layout>;
   getProblems: PaginatedProblems;
   getProblem?: Maybe<Problem>;
@@ -290,6 +291,11 @@ export type Query = {
 
 
 export type QueryGetBoardArgs = {
+  boardId: Scalars['String'];
+};
+
+
+export type QueryGetWhitelistArgs = {
   boardId: Scalars['String'];
 };
 
@@ -344,6 +350,12 @@ export type WhitelistResponse = {
   __typename?: 'WhitelistResponse';
   errors?: Maybe<Array<FieldError>>;
   userId?: Maybe<Scalars['String']>;
+};
+
+export type WhitelistedUser = {
+  __typename?: 'WhitelistedUser';
+  name: Scalars['String'];
+  email: Scalars['String'];
 };
 
 export type RegularErrorFragment = { __typename?: 'FieldError', field: string, message: string };
@@ -500,6 +512,13 @@ export type GetUserQueryVariables = Exact<{
 
 
 export type GetUserQuery = { __typename?: 'Query', getUser?: Maybe<{ __typename?: 'User', name: string, avatar?: Maybe<string>, createdAt: string, problems?: Maybe<Array<{ __typename?: 'Problem', boardId: string, consensusGrade?: Maybe<number>, consensusRating?: Maybe<number>, ascents: Array<{ __typename?: 'Ascent', grade: number, rating: number }> }>>, ascents?: Maybe<Array<{ __typename?: 'Ascent', attempts: number, rating: number, grade: number }>> }> };
+
+export type GetWhitelistQueryVariables = Exact<{
+  boardId: Scalars['String'];
+}>;
+
+
+export type GetWhitelistQuery = { __typename?: 'Query', getWhitelist: Array<{ __typename?: 'WhitelistedUser', name: string, email: string }> };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1357,6 +1376,42 @@ export function useGetUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Ge
 export type GetUserQueryHookResult = ReturnType<typeof useGetUserQuery>;
 export type GetUserLazyQueryHookResult = ReturnType<typeof useGetUserLazyQuery>;
 export type GetUserQueryResult = Apollo.QueryResult<GetUserQuery, GetUserQueryVariables>;
+export const GetWhitelistDocument = gql`
+    query GetWhitelist($boardId: String!) {
+  getWhitelist(boardId: $boardId) {
+    name
+    email
+  }
+}
+    `;
+
+/**
+ * __useGetWhitelistQuery__
+ *
+ * To run a query within a React component, call `useGetWhitelistQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetWhitelistQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetWhitelistQuery({
+ *   variables: {
+ *      boardId: // value for 'boardId'
+ *   },
+ * });
+ */
+export function useGetWhitelistQuery(baseOptions: Apollo.QueryHookOptions<GetWhitelistQuery, GetWhitelistQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetWhitelistQuery, GetWhitelistQueryVariables>(GetWhitelistDocument, options);
+      }
+export function useGetWhitelistLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetWhitelistQuery, GetWhitelistQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetWhitelistQuery, GetWhitelistQueryVariables>(GetWhitelistDocument, options);
+        }
+export type GetWhitelistQueryHookResult = ReturnType<typeof useGetWhitelistQuery>;
+export type GetWhitelistLazyQueryHookResult = ReturnType<typeof useGetWhitelistLazyQuery>;
+export type GetWhitelistQueryResult = Apollo.QueryResult<GetWhitelistQuery, GetWhitelistQueryVariables>;
 export const MeDocument = gql`
     query Me {
   me {

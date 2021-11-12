@@ -1,0 +1,6 @@
+query GetWhitelist($boardId: String!) {
+  getWhitelist(boardId: $boardId) {
+    name
+    email
+  }
+}

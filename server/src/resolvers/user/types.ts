@@ -18,3 +18,12 @@ export class WhitelistResponse {
   @Field(() => String, { nullable: true })
   userId?: string;
 }
+
+@ObjectType()
+export class WhitelistedUser {
+  @Field()
+  name: string;
+
+  @Field()
+  email: string;
+}

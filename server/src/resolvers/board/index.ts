@@ -14,11 +14,11 @@ import { Board } from '../../entities/Board';
 import { BoardInput, BoardResponse, EditBoardInput } from './types';
 import { Layout } from '../../entities/Layout';
 import { getConnection } from 'typeorm';
+import { WhitelistedUser } from '../user/types';
 
 @Resolver(Board)
 export class BoardResolver {
   // Create new Board
-  // PRIVATE
   @Mutation(() => BoardResponse)
   @UseMiddleware(isAuth)
   async createBoard(
@@ -64,7 +64,6 @@ export class BoardResolver {
   }
 
   // Edit Board
-  // PRIVATE
   @Mutation(() => BoardResponse)
   @UseMiddleware(isAuth)
   async editBoard(
@@ -104,7 +103,6 @@ export class BoardResolver {
   }
 
   // Get current layout
-  // PUBLIC
   @FieldResolver(() => Layout, { nullable: true })
   currentLayout(@Root() board: Board) {
     if (!board.layouts) return null;
@@ -112,21 +110,18 @@ export class BoardResolver {
   }
 
   // Get Board by ID
-  // PUBLIC
   @Query(() => Board)
   async getBoard(@Arg('boardId') boardId: string) {
     return Board.findOne({ where: { id: boardId }, relations: ['layouts'] });
   }
 
   // Get all Boards
-  // PUBLIC
   @Query(() => [Board])
   async getBoards() {
     return Board.find({ order: { createdAt: 'ASC' }, relations: ['layouts'] });
   }
 
   // Delete board
-  // PRIVATE
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
   async deleteBoard(
@@ -166,5 +161,20 @@ export class BoardResolver {
     }
 
     return true;
+  }
+
+  // Get whitelisted users for board
+  @Query(() => [WhitelistedUser])
+  @UseMiddleware(isAuth)
+  async getWhitelist(@Arg('boardId') boardId: string) {
+    const whitelistedUsers = await getConnection().query(
+      `
+      SELECT name, email
+      FROM "user"
+      WHERE $1 = ANY ("boardWhitelist");
+    `,
+      [boardId]
+    );
+    return whitelistedUsers;
   }
 }
