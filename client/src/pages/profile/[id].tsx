@@ -11,8 +11,10 @@ import {
 import withApollo from '../../utils/withApollo';
 import styles from '../../styles/Profile.module.scss';
 import { attempts, grades } from '../../assets/selectOptions';
+import { useIsAuth } from '../../hooks/useIsAuth';
 
 const Profile = () => {
+  useIsAuth();
   const router = useRouter();
   const profileId = typeof router.query.id === 'string' ? router.query.id : '';
 
