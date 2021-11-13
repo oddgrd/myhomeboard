@@ -21,7 +21,7 @@ export const WhitelistItem = ({ name, email, boardId }: Props) => {
       await removeFromWhitelist({
         variables: { options: { email, boardId } },
         update: (cache) => {
-          cache.evict({ fieldName: 'getWhiteList' });
+          cache.evict({ fieldName: 'getWhitelist' });
         },
       });
       toast.success('User removed from whitelist ☠️');

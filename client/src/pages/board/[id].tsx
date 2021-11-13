@@ -2,11 +2,18 @@ import { AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { FaCheck, FaCloudUploadAlt, FaEdit, FaSearch } from 'react-icons/fa';
+import {
+  FaCheck,
+  FaCloudUploadAlt,
+  FaEdit,
+  FaList,
+  FaSearch,
+} from 'react-icons/fa';
 import { DeleteBoardButton } from '../../components/Button/deleteBoardButton';
 import { BoardForm } from '../../components/Form/BoardForm';
 import { WhitelistForm } from '../../components/Form/WhitelistForm';
 import { Layout } from '../../components/Layout';
+import { Whitelist } from '../../components/Whitelist';
 import { LayoutItem } from '../../components/ListItem/LayoutItem';
 import { Modal } from '../../components/Modal/Modal';
 import { Spinner } from '../../components/Spinner';
@@ -22,6 +29,7 @@ const Board = () => {
   const [showWhitelistModal, setShowWhitelistModal] = useState(false);
   const [showBoardForm, toggleShowBoardForm] = useState(false);
   const [showLayouts, toggleShowLayouts] = useState(false);
+  const [showWhitelist, toggleShowWhitelist] = useState(false);
 
   const boardId = typeof router.query.id === 'string' ? router.query.id : '';
   const { data, loading, error } = useGetBoardQuery({
@@ -90,6 +98,14 @@ const Board = () => {
           <li>
             <button
               className='btn btn-link btn-dropdown'
+              onClick={() => toggleShowWhitelist(!showWhitelist)}
+            >
+              <FaList size={28} /> Show Whitelist
+            </button>
+          </li>
+          <li>
+            <button
+              className='btn btn-link btn-dropdown'
               onClick={() => toggleShowLayouts(!showLayouts)}
             >
               <FaSearch size={28} /> Browse Layouts
@@ -121,6 +137,11 @@ const Board = () => {
             ) : (
               <h3>N/A</h3>
             )}
+          </div>
+        )}
+        {showWhitelist && (
+          <div className={styles.layouts}>
+            <Whitelist boardId={boardId} />
           </div>
         )}
       </div>

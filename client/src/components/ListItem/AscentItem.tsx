@@ -31,6 +31,26 @@ interface Props {
   problemId: string;
   currentUserId: string | undefined;
 }
+const dropDown = {
+  hidden: {
+    opacity: 0,
+    height: 0,
+  },
+  visible: {
+    opacity: 1,
+    height: 'auto',
+    transition: {
+      duration: 0.2,
+    },
+  },
+  exit: {
+    opacity: 0,
+    height: 0,
+    transition: {
+      duration: 0.12,
+    },
+  },
+};
 
 export const AscentItem = ({ ascent, problemId, currentUserId }: Props) => {
   const [showModal, setShowModal] = useState(false);
@@ -61,27 +81,6 @@ export const AscentItem = ({ ascent, problemId, currentUserId }: Props) => {
     attempts: attemptsCount,
     problemId,
     comment,
-  };
-
-  const dropDown = {
-    hidden: {
-      opacity: 0,
-      height: 0,
-    },
-    visible: {
-      opacity: 1,
-      height: 'auto',
-      transition: {
-        duration: 0.2,
-      },
-    },
-    exit: {
-      opacity: 0,
-      height: 0,
-      transition: {
-        duration: 0.12,
-      },
-    },
   };
 
   return (

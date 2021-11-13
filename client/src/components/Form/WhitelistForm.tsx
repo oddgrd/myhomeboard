@@ -28,7 +28,7 @@ export const WhitelistForm = ({ boardId, onClose }: Props) => {
         const response = await whitelistUser({
           variables: { options: values },
           update: (cache) => {
-            cache.evict({ fieldName: 'me' });
+            cache.evict({ fieldName: 'getWhitelist' });
           },
         });
 

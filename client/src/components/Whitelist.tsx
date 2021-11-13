@@ -14,7 +14,7 @@ export const Whitelist = ({ boardId }: Props) => {
     return <Spinner />;
   }
   return (
-    <div>
+    <>
       <h1>Board Whitelist</h1>
       {data?.getWhitelist ? (
         data.getWhitelist.map((user, idx) => (
@@ -23,6 +23,6 @@ export const Whitelist = ({ boardId }: Props) => {
       ) : (
         <p>No users whitelisted</p>
       )}
-    </div>
+    </>
   );
 };
