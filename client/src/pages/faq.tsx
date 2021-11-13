@@ -1,9 +1,9 @@
+import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { FaArrowLeft, FaGithub } from 'react-icons/fa';
 import { faqData } from '../assets/faqData';
 import { FaqItem } from '../components/ListItem/FaqItem';
-import { FaArrowLeft } from 'react-icons/fa';
 import styles from '../styles/Faq.module.scss';
-import Head from 'next/head';
 
 const Faq = () => {
   const router = useRouter();
@@ -42,6 +42,17 @@ const Faq = () => {
           return <FaqItem {...item} key={idx} />;
         })}
       </div>
+      <footer className={styles.footer}>
+        <a
+          href='https://github.com/oddgrd/myhomeboard'
+          target='_blank'
+          rel='noreferrer'
+        >
+          <p>
+            <FaGithub /> Issues and feedback
+          </p>
+        </a>
+      </footer>
     </>
   );
 };
