@@ -13,7 +13,7 @@ export const faqData = [
     question:
       'Why does it say I am not whitelisted when I try to create problems or layouts?',
     answer:
-      "The board creator needs to whitelist users, this is to prevent abuse. The board creator can whitelist by users email in the board settings, found by clicking the cogwheel on the right of your board on the Boards page. If you have been whitelisted but still don't have access, please try refreshing the page or logging out and in again.",
+      "The board creator needs to whitelist users, this is to prevent abuse. The board creator can whitelist users by email in the board settings, found by clicking the cogwheel on the right of your board on the Boards page. If you have been whitelisted but still don't have access, please try refreshing the page or logging out and in again.",
   },
   {
     question: 'Can I install the app on my phone?',
