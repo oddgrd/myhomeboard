@@ -1,12 +1,12 @@
-import React from 'react';
 import { MockedProvider } from '@apollo/client/testing';
-import { DeleteProblemButton } from './deleteProblemButton';
-import { DeleteProblemDocument } from '../../generated/graphql';
-import { render, fireEvent, waitFor } from '@testing-library/react';
-import { mockConfirm, mockRouter } from '../../utils/testUtils';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import faker from 'faker';
 import { useRouter } from 'next/router';
+import React from 'react';
 import { toast } from 'react-toastify';
+import { DeleteBoardDocument } from '../../generated/graphql';
+import { mockConfirm, mockRouter } from '../../utils/testUtils';
+import { DeleteBoardButton } from './deleteBoardButton';
 
 jest.mock('react-toastify', () => ({
   __esModule: true,
@@ -20,48 +20,48 @@ jest.mock('next/router', () => ({
   useRouter: jest.fn(),
 }));
 
-describe('Delete Problem Button', () => {
+describe('Delete Board Button', () => {
   it('should render without error', async () => {
     render(
       <MockedProvider mocks={[]}>
-        <DeleteProblemButton id={'uuid1'} boardId={'uuid2'} />
+        <DeleteBoardButton boardId={'uuid2'} />
       </MockedProvider>
     );
   });
 
-  it('should delete, give visual feedback and router.replace to parent board', async () => {
+  it('should delete, give visual feedback and router.replace to boards page', async () => {
     (useRouter as jest.Mock).mockReturnValue(mockRouter);
+
     const variables = {
-      id: faker.datatype.uuid(),
+      boardId: faker.datatype.uuid(),
     };
-    const boardId = faker.datatype.uuid();
 
     const mocks = [
       {
         request: {
-          query: DeleteProblemDocument,
+          query: DeleteBoardDocument,
           variables,
         },
-        result: { data: { deleteProblem: true } },
+        result: { data: { deleteBoard: true } },
       },
     ];
 
     const { findByLabelText } = render(
       <MockedProvider mocks={mocks} addTypename={false}>
-        <DeleteProblemButton {...variables} boardId={boardId} />
+        <DeleteBoardButton boardId={variables.boardId} />
       </MockedProvider>
     );
     mockConfirm();
 
-    const button = await findByLabelText('Delete Problem');
+    const button = await findByLabelText('Delete Board');
     expect(button).toBeInTheDocument();
     expect(button).toBeEnabled();
 
     fireEvent.click(button);
 
     await waitFor(() => {
-      expect(toast.success).toHaveBeenCalledWith('Problem deleted ☠️');
+      expect(toast.success).toHaveBeenCalledWith('Board deleted ☠️');
     });
-    expect(mockRouter.replace).toHaveBeenCalledWith(`/boards/${boardId}`);
+    expect(mockRouter.replace).toHaveBeenCalledWith(`/boards`);
   });
 });

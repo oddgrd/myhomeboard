@@ -28,7 +28,7 @@ export const DeleteBoardButton = ({ boardId }: Props) => {
         return;
       }
       toast.success('Board deleted ☠️');
-      router.push(`/boards`);
+      router.replace(`/boards`);
     } else {
       return;
     }

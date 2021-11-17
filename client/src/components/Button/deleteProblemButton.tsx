@@ -29,7 +29,7 @@ export const DeleteProblemButton = ({ id, boardId }: Props) => {
         return;
       }
       toast.success('Problem deleted ☠️');
-      router.push(`/boards/${boardId}`);
+      router.replace(`/boards/${boardId}`);
     } else {
       return;
     }
