@@ -3,6 +3,7 @@ import cloudinary, {
   UploadApiResponse,
 } from 'cloudinary';
 import { FileUpload } from 'graphql-upload';
+import { __prod__ } from '../constants';
 
 const eagerOptions = {
   width: 'auto',
@@ -22,7 +23,10 @@ export const uploadImage = async (
 
   return new Promise((resolve, reject) => {
     const stream = cloudinary.v2.uploader.upload_stream(
-      { eager: eagerOptions, folder: 'myhomeboard' },
+      {
+        eager: eagerOptions,
+        folder: __prod__ ? 'myhomeboard' : 'myhomeboard-dev',
+      },
       (error, result) => {
         if (result) {
           resolve(result);
