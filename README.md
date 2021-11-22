@@ -22,12 +22,13 @@
 
 ### Databases
 
-- Postgresql
+- Postgresql (scheduled back-ups to encrypted S3 bucket)
 - Redis (session storage)
 
-### Image Management
+### Cloud Storage
 
-- Cloudinary
+- Cloudinary (Image storage and transformation)
+- AWS S3
 
 ### Authentication
 
