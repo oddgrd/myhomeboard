@@ -1,4 +1,4 @@
-# myHomeBoard - PERN stack project
+# myHomeBoard - PERN stack PWA
 
 ## Tech stack:
 
