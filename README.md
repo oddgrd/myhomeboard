@@ -9,7 +9,8 @@
 - Next.js
 - Apollo Client
 - GraphQL Codegen
-- Sass
+- Scss
+- Jest
 
 ### Backend
 
