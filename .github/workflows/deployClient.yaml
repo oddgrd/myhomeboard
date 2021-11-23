@@ -25,23 +25,23 @@ jobs:
       - name: Clone repo
         uses: actions/checkout@v2
 
-       - name: Setup node
-         uses: actions/setup-node@v2
-         with:
-           node-version: '14'
-           cache: 'yarn'
-           cache-dependency-path: ./client/yarn.lock
+      - name: Setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          cache: 'yarn'
+          cache-dependency-path: ./client/yarn.lock
 
-       - name: Install dependencies
-         run: yarn
+      - name: Install dependencies
+        run: yarn
 
-       - name: Run tests
-         run: yarn test
+      - name: Run tests
+        run: yarn test
 
   deploy:
     needs: test
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Clone repo
         uses: actions/checkout@v2
