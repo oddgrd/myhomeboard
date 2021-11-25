@@ -8,7 +8,7 @@ import { Problem } from '../entities/Problem';
 import { User } from '../entities/User';
 
 export const testConn = async (drop: boolean = false) => {
-  const connection = await createConnection({
+  return createConnection({
     applicationName: 'myhomeboardtest',
     type: 'postgres',
     host: process.env.POSTGRES_HOST,
@@ -21,6 +21,4 @@ export const testConn = async (drop: boolean = false) => {
     entities: [User, Problem, Layout, Ascent, Board],
     migrations: [path.join(__dirname, './testMigrations/*')],
   });
-
-  return connection;
 };

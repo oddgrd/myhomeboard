@@ -1,5 +1,21 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
-
+const coordinates = [
+  {
+    x: 200,
+    y: 150,
+    color: 'red',
+  },
+  {
+    x: 100,
+    y: 180,
+    color: 'green',
+  },
+  {
+    x: 80,
+    y: 200,
+    color: 'blue',
+  },
+];
 export class TestDummyData1636026446702 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     const user = await queryRunner.query(`
@@ -17,13 +33,22 @@ export class TestDummyData1636026446702 implements MigrationInterface {
       [user[0].id]
     );
 
-    await queryRunner.query(
+    const layout = await queryRunner.query(
       `
         INSERT INTO layout(title, description, url, "creatorId", "boardId", "publicId")
         VALUES ('testlayout', 'test layout for testing', 'https://res.cloudinary.com/dqyhbqh0x/image/upload/v1632246307/sample.jpg', $1, $2, 'asfd123uiasd')
         RETURNING id;
       `,
       [user[0].id, board[0].id]
+    );
+
+    await queryRunner.query(
+      `
+        INSERT INTO problem(title, rules, grade, coordinates, "creatorId", "boardId", "layoutId", angle)
+        VALUES ('testproblem', 'test problem for testing', 3, $1::jsonb[], $2, $3, $4, 40)
+        RETURNING id;
+      `,
+      [coordinates, user[0].id, board[0].id, layout[0].id]
     );
   }
 
