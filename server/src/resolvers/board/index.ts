@@ -9,7 +9,7 @@ import {
   UseMiddleware,
 } from 'type-graphql';
 import { isAuth } from '../../middleware/isAuth';
-import { Context } from 'src/types/context';
+import { Context } from '../../types/context';
 import { Board } from '../../entities/Board';
 import { BoardInput, BoardResponse, EditBoardInput } from './types';
 import { Layout } from '../../entities/Layout';

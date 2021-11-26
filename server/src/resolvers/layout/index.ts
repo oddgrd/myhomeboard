@@ -8,7 +8,7 @@ import {
 } from 'type-graphql';
 import Cloudinary from 'cloudinary';
 import { isAuth } from '../../middleware/isAuth';
-import { Context } from 'src/types/context';
+import { Context } from '../../types/context';
 import { uploadImage } from '../../utils/uploadImage';
 import { Layout } from '../../entities/Layout';
 import { getConnection } from 'typeorm';

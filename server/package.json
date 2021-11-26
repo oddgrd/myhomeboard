@@ -10,7 +10,7 @@
     "start": "node dist/index.js",
     "dev": "nodemon dist/index.js",
     "test:setup": "ts-node ./src/test-utils/setup.ts",
-    "test": "yarn test:setup && jest",
+    "test": "yarn test:setup && jest --runInBand",
     "test:watch": "jest --coverage --watchAll",
     "gen-env": "npx gen-env-types .env -o src/env.d.ts -e ."
   },
