@@ -10,20 +10,21 @@ import {
 } from '../../../generated/graphql';
 import styles from '../../../styles/Problems.module.scss';
 import withApollo from '../../../utils/withApollo';
-import { FaPlusSquare } from 'react-icons/fa';
+import { FaPlusSquare, FaSyncAlt } from 'react-icons/fa';
 
 const Problems = () => {
   const router = useRouter();
   const boardId = typeof router.query.id === 'string' ? router.query.id : '';
 
-  const { data, loading, error, fetchMore, variables } = useGetProblemsQuery({
-    variables: {
-      limit: 15,
-      cursor: null,
-      boardId,
-    },
-    notifyOnNetworkStatusChange: true,
-  });
+  const { data, loading, error, fetchMore, variables, refetch } =
+    useGetProblemsQuery({
+      variables: {
+        limit: 15,
+        cursor: null,
+        boardId,
+      },
+      notifyOnNetworkStatusChange: true,
+    });
   const {
     data: boardData,
     loading: boardLoading,
@@ -76,15 +77,26 @@ const Problems = () => {
       title='Problems'
       navTitle={boardData?.getBoard.title}
       navChildren={
-        <Link href={`/boards/${boardId}/create-problem`}>
-          <a
-            className='btn btn-link btn-icon'
+        <>
+          <button
+            onClick={() => refetch()}
+            className='btn btn-link btn-icon btn-rotate'
             aria-label='Create problem'
             title='Create Problem'
           >
-            <FaPlusSquare size={28} />
-          </a>
-        </Link>
+            <FaSyncAlt size={27} />
+          </button>
+
+          <Link href={`/boards/${boardId}/create-problem`}>
+            <a
+              className='btn btn-link btn-icon'
+              aria-label='Create problem'
+              title='Create Problem'
+            >
+              <FaPlusSquare size={28} />
+            </a>
+          </Link>
+        </>
       }
     >
       <div className={styles.problems}>

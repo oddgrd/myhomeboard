@@ -6,7 +6,7 @@ import { ToastContainer } from 'react-toastify';
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
-      <ToastContainer theme='dark' autoClose={3500} position='top-center' />
+      <ToastContainer theme='dark' autoClose={1900} position='top-center' />
       <Component {...pageProps} />
     </>
   );

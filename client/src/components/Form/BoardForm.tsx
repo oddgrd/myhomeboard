@@ -52,7 +52,7 @@ export const BoardForm = ({ editProps }: Props) => {
       validationSchema={Yup.object({
         title: Yup.string()
           .min(2, 'Must be 2 characters or more')
-          .max(18, 'Must be shorter than 19 characters')
+          .max(16, 'Must be shorter than 17 characters')
           .required('Required'),
         description: Yup.string()
           .min(2, 'Must be 2 characters or more')
