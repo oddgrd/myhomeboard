@@ -25,11 +25,12 @@ export const ProblemItem = ({ problem }: Props) => {
         <a>
           <div className={styles.problemItem}>
             <div className={styles.main}>
-              <p className={styles.title}>{title}</p>
+              <p className={styles.title}>
+                {title} {sendStatus && <FaCheck color='#00ddff' />}
+              </p>
               <p>by {creator.name}</p>
             </div>
             <div className={styles.right}>
-              {sendStatus && <FaCheck color='#00ddff' />}
               <p>
                 {typeof consensusGrade === 'number'
                   ? grades[consensusGrade].label

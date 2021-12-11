@@ -31,7 +31,6 @@
   transition: 0.2s ease-in-out;
 
   &:hover {
-    transform: scale(1.05);
     color: var(--theme-hover);
   }
   &:disabled {
@@ -81,14 +80,12 @@
     -moz-transform: rotate(180deg);
     -ms-transform: rotate(180deg);
     -o-transform: rotate(180deg);
-    transform: rotate(180deg);
   }
   &.btn-rotate:active {
     -webkit-transform: rotate(0deg);
     -moz-transform: rotate(0deg);
     -ms-transform: rotate(0deg);
     -o-transform: rotate(0deg);
-    transform: rotate(0deg);
     transform: rotate(0deg);
     transition:  0s;
   }
