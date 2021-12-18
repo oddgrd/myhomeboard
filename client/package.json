@@ -11,8 +11,6 @@
     "test": "jest"
   },
   "dependencies": {
-    "cross-env": "5.0.5",
-    "server": "1.0.0",
     "@apollo/client": "^3.4.8",
     "@testing-library/react": "^12.1.2",
     "apollo-upload-client": "^16.0.0",

@@ -3,7 +3,9 @@ FROM node:14
 # Create app directory
 WORKDIR /usr/src/app
 
+# Ensure package.json AND yarn-lock.json are copied
 COPY package.json ./
+COPY yarn.lock ./
 
 # Install dependencies on first build/when dependencies
 # change
