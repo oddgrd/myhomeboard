@@ -1,5 +1,5 @@
 {
-  "name": "myhomeboard_server",
+  "name": "server",
   "version": "1.0.0",
   "main": "index.js",
   "author": "oddgrd <oddgrd@gmail.com> (https://github.com/oddgrd)",
@@ -15,6 +15,7 @@
     "gen-env": "npx gen-env-types .env -o src/env.d.ts -e ."
   },
   "devDependencies": {
+    "cross-env": "5.0.5",
     "@types/connect-redis": "^0.0.17",
     "@types/express": "^4.17.13",
     "@types/express-session": "^1.17.4",
