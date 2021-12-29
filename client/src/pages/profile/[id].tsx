@@ -23,7 +23,7 @@ const Profile = () => {
   });
   const { data: sendData, loading: sendLoading } = useGetSentProblemsQuery({
     variables: { userId: profileId },
-    fetchPolicy: 'no-cache',
+    fetchPolicy: 'cache-and-network',
   });
   if ((!data && loading) || sendLoading) {
     return (
