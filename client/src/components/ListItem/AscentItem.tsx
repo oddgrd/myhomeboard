@@ -88,12 +88,7 @@ export const AscentItem = ({ ascent, problemId, currentUserId }: Props) => {
       <div className={styles.avatar}>
         <Link href={`/profile/${userId}`}>
           <a onClick={handleProfileClick} aria-label={`${user.name} profile`}>
-            <Image
-              width={52}
-              height={52}
-              src={user.avatar as string}
-              priority={true}
-            />
+            <Image width={52} height={52} src={user.avatar as string} />
           </a>
         </Link>
       </div>
