@@ -1,8 +1,8 @@
-import { withApollo } from 'next-apollo';
-import { ApolloClient, ApolloLink, InMemoryCache } from '@apollo/client';
-import { PaginatedProblems } from '../generated/graphql';
-import { NextPageContext } from 'next';
+import { ApolloClient, ApolloLink } from '@apollo/client';
 import { createUploadLink } from 'apollo-upload-client';
+import { NextPageContext } from 'next';
+import { withApollo } from 'next-apollo';
+import { initCache } from './initCache';
 
 const client = (ctx?: NextPageContext | undefined) => {
   const apiUrl =
@@ -22,32 +22,10 @@ const client = (ctx?: NextPageContext | undefined) => {
   });
 
   return new ApolloClient({
-    // type bug: https://github.com/DefinitelyTyped/DefinitelyTyped/issues/47369
-    link: uploadLink as unknown as ApolloLink,
-    ssrMode: typeof window === 'undefined',
-    cache: new InMemoryCache({
-      typePolicies: {
-        Query: {
-          fields: {
-            getProblems: {
-              keyArgs: [],
-              merge(
-                existing: PaginatedProblems | undefined,
-                incoming: PaginatedProblems
-              ) {
-                return {
-                  ...incoming,
-                  problems: [
-                    ...(existing?.problems || []),
-                    ...incoming.problems,
-                  ],
-                };
-              },
-            },
-          },
-        },
-      },
-    }),
-  });
+        // type bug: https://github.com/DefinitelyTyped/DefinitelyTyped/issues/47369
+        link: uploadLink as unknown as ApolloLink,
+        ssrMode: typeof window === 'undefined',
+        cache: initCache()
+        });
 };
 export default withApollo(client);
