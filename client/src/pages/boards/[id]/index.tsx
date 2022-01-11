@@ -113,7 +113,13 @@ const Problems = () => {
           ) : (
             data!.getProblems.problems.map((problem, idx) =>
               // Invalidating problem in cache makes it null
-              !problem ? null : <ProblemItem key={idx} problem={problem} />
+              !problem ? null : (
+                <ProblemItem
+                  key={idx}
+                  problem={problem}
+                  userId={meData?.me?.id}
+                />
+              )
             )
           )}
         </div>

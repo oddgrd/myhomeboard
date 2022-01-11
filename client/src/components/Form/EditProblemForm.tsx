@@ -66,6 +66,7 @@ export const EditProblemForm = ({
         const response = await editProblem({
           variables: { options: { ...values, problemId: id } },
           update: (cache) => {
+            cache.evict({ fieldName: 'getProblems' });
             cache.evict({ id: 'Problem:' + id });
           },
         });

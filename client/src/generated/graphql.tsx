@@ -1,6 +1,7 @@
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
+export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
@@ -17,85 +18,85 @@ export type Scalars = {
 };
 
 export type AddAscentInput = {
-  problemId: Scalars['String'];
-  boardId: Scalars['String'];
-  grade: Scalars['Int'];
-  rating: Scalars['Int'];
   attempts: Scalars['Int'];
+  boardId: Scalars['String'];
   comment: Scalars['String'];
+  grade: Scalars['Int'];
+  problemId: Scalars['String'];
+  rating: Scalars['Int'];
 };
 
 export type Ascent = {
   __typename?: 'Ascent';
-  userId: Scalars['String'];
-  problemId: Scalars['String'];
   attempts: Scalars['Int'];
-  grade: Scalars['Int'];
-  rating: Scalars['Int'];
-  comment: Scalars['String'];
-  problem: Problem;
-  user: User;
-  boardId: Scalars['String'];
   board: Board;
+  boardId: Scalars['String'];
+  comment: Scalars['String'];
   createdAt: Scalars['String'];
+  grade: Scalars['Int'];
+  problem: Problem;
+  problemId: Scalars['String'];
+  rating: Scalars['Int'];
   updatedAt: Scalars['String'];
+  user: User;
+  userId: Scalars['String'];
 };
 
 export type Board = {
   __typename?: 'Board';
-  id: Scalars['String'];
-  title: Scalars['String'];
-  creatorId: Scalars['String'];
-  description: Scalars['String'];
   adjustable: Scalars['Boolean'];
   angles: Array<Scalars['Int']>;
+  ascents?: Maybe<Array<Ascent>>;
   city: Scalars['String'];
   country: Scalars['String'];
+  createdAt: Scalars['String'];
   creator: User;
+  creatorId: Scalars['String'];
+  currentLayout?: Maybe<Layout>;
+  description: Scalars['String'];
+  id: Scalars['String'];
   layouts?: Maybe<Array<Layout>>;
   problems?: Maybe<Array<Problem>>;
-  ascents?: Maybe<Array<Ascent>>;
-  createdAt: Scalars['String'];
+  title: Scalars['String'];
   updatedAt: Scalars['String'];
-  currentLayout?: Maybe<Layout>;
 };
 
 export type BoardInput = {
-  title: Scalars['String'];
-  description: Scalars['String'];
   adjustable: Scalars['Boolean'];
   angles: Array<Scalars['Int']>;
   city: Scalars['String'];
   country: Scalars['String'];
+  description: Scalars['String'];
+  title: Scalars['String'];
 };
 
 export type BoardResponse = {
   __typename?: 'BoardResponse';
-  errors?: Maybe<Array<FieldError>>;
   board?: Maybe<Board>;
+  errors?: Maybe<Array<FieldError>>;
 };
 
 export type Coordinates = {
   __typename?: 'Coordinates';
+  color: Scalars['String'];
   x: Scalars['Int'];
   y: Scalars['Int'];
-  color: Scalars['String'];
 };
 
 export type CoordinatesInput = {
+  color: Scalars['String'];
   x: Scalars['Int'];
   y: Scalars['Int'];
-  color: Scalars['String'];
 };
 
 export type CreateProblemInput = {
-  boardId: Scalars['String'];
-  layoutId: Scalars['String'];
-  title: Scalars['String'];
-  rules: Scalars['String'];
-  grade: Scalars['Int'];
   angle: Scalars['Int'];
+  boardId: Scalars['String'];
   coordinates: Array<CoordinatesInput>;
+  grade: Scalars['Int'];
+  layoutId: Scalars['String'];
+  rules: Scalars['String'];
+  title: Scalars['String'];
 };
 
 export type DeleteLayoutInput = {
@@ -104,29 +105,29 @@ export type DeleteLayoutInput = {
 };
 
 export type EditAscentInput = {
-  problemId: Scalars['String'];
-  grade: Scalars['Int'];
-  rating: Scalars['Int'];
   attempts: Scalars['Int'];
   comment: Scalars['String'];
+  grade: Scalars['Int'];
+  problemId: Scalars['String'];
+  rating: Scalars['Int'];
 };
 
 export type EditBoardInput = {
-  title: Scalars['String'];
-  description: Scalars['String'];
   adjustable: Scalars['Boolean'];
   angles: Array<Scalars['Int']>;
+  boardId: Scalars['String'];
   city: Scalars['String'];
   country: Scalars['String'];
-  boardId: Scalars['String'];
+  description: Scalars['String'];
+  title: Scalars['String'];
 };
 
 export type EditProblemInput = {
-  problemId: Scalars['String'];
-  title: Scalars['String'];
-  rules: Scalars['String'];
-  grade: Scalars['Int'];
   angle: Scalars['Int'];
+  grade: Scalars['Int'];
+  problemId: Scalars['String'];
+  rules: Scalars['String'];
+  title: Scalars['String'];
 };
 
 export type FieldError = {
@@ -137,42 +138,42 @@ export type FieldError = {
 
 export type Layout = {
   __typename?: 'Layout';
-  id: Scalars['String'];
-  title: Scalars['String'];
-  description: Scalars['String'];
-  url: Scalars['String'];
-  creatorId: Scalars['String'];
-  creator: User;
   boardId: Scalars['String'];
-  publicId: Scalars['String'];
-  problems?: Maybe<Array<Problem>>;
   createdAt: Scalars['String'];
+  creator: User;
+  creatorId: Scalars['String'];
+  description: Scalars['String'];
+  id: Scalars['String'];
+  problems?: Maybe<Array<Problem>>;
+  publicId: Scalars['String'];
+  title: Scalars['String'];
   updatedAt: Scalars['String'];
+  url: Scalars['String'];
 };
 
 export type LayoutInput = {
-  file: Scalars['Upload'];
-  title: Scalars['String'];
   boardId: Scalars['String'];
   description: Scalars['String'];
+  file: Scalars['Upload'];
+  title: Scalars['String'];
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
   addAscent: Scalars['Boolean'];
-  editAscent: Scalars['Boolean'];
-  deleteAscent: Scalars['Boolean'];
   createBoard: BoardResponse;
-  editBoard: BoardResponse;
-  deleteBoard: Scalars['Boolean'];
   createLayout: Layout;
-  deleteLayout: Scalars['Boolean'];
   createProblem: ProblemResponse;
-  editProblem: ProblemResponse;
+  deleteAscent: Scalars['Boolean'];
+  deleteBoard: Scalars['Boolean'];
+  deleteLayout: Scalars['Boolean'];
   deleteProblem: Scalars['Boolean'];
+  editAscent: Scalars['Boolean'];
+  editBoard: BoardResponse;
+  editProblem: ProblemResponse;
   logout: Scalars['Boolean'];
-  whitelistUser: WhitelistResponse;
   removeFromWhitelist: WhitelistResponse;
+  whitelistUser: WhitelistResponse;
 };
 
 
@@ -181,28 +182,8 @@ export type MutationAddAscentArgs = {
 };
 
 
-export type MutationEditAscentArgs = {
-  options: EditAscentInput;
-};
-
-
-export type MutationDeleteAscentArgs = {
-  problemId: Scalars['String'];
-};
-
-
 export type MutationCreateBoardArgs = {
   options: BoardInput;
-};
-
-
-export type MutationEditBoardArgs = {
-  options: EditBoardInput;
-};
-
-
-export type MutationDeleteBoardArgs = {
-  boardId: Scalars['String'];
 };
 
 
@@ -211,18 +192,23 @@ export type MutationCreateLayoutArgs = {
 };
 
 
-export type MutationDeleteLayoutArgs = {
-  options: DeleteLayoutInput;
-};
-
-
 export type MutationCreateProblemArgs = {
   options: CreateProblemInput;
 };
 
 
-export type MutationEditProblemArgs = {
-  options: EditProblemInput;
+export type MutationDeleteAscentArgs = {
+  problemId: Scalars['String'];
+};
+
+
+export type MutationDeleteBoardArgs = {
+  boardId: Scalars['String'];
+};
+
+
+export type MutationDeleteLayoutArgs = {
+  options: DeleteLayoutInput;
 };
 
 
@@ -231,8 +217,18 @@ export type MutationDeleteProblemArgs = {
 };
 
 
-export type MutationWhitelistUserArgs = {
-  options: WhitelistInput;
+export type MutationEditAscentArgs = {
+  options: EditAscentInput;
+};
+
+
+export type MutationEditBoardArgs = {
+  options: EditBoardInput;
+};
+
+
+export type MutationEditProblemArgs = {
+  options: EditProblemInput;
 };
 
 
@@ -240,32 +236,53 @@ export type MutationRemoveFromWhitelistArgs = {
   options: WhitelistInput;
 };
 
+
+export type MutationWhitelistUserArgs = {
+  options: WhitelistInput;
+};
+
 export type PaginatedProblems = {
   __typename?: 'PaginatedProblems';
-  problems: Array<Problem>;
   hasMore: Scalars['Boolean'];
+  problems: Array<ProblemItem>;
 };
 
 export type Problem = {
   __typename?: 'Problem';
-  id: Scalars['String'];
-  creatorId: Scalars['String'];
-  title: Scalars['String'];
-  rules: Scalars['String'];
   angle: Scalars['Int'];
-  coordinates: Array<Coordinates>;
-  grade: Scalars['Int'];
-  creator: User;
-  boardId: Scalars['String'];
-  board: Board;
   ascents: Array<Ascent>;
-  layoutId: Scalars['String'];
-  layout: Layout;
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+  board: Board;
+  boardId: Scalars['String'];
   consensusGrade?: Maybe<Scalars['Int']>;
   consensusRating?: Maybe<Scalars['Int']>;
+  coordinates: Array<Coordinates>;
+  createdAt: Scalars['String'];
+  creator: User;
+  creatorId: Scalars['String'];
+  grade: Scalars['Int'];
+  id: Scalars['String'];
+  layout: Layout;
+  layoutId: Scalars['String'];
+  rules: Scalars['String'];
   sendStatus?: Maybe<Scalars['Boolean']>;
+  title: Scalars['String'];
+  updatedAt: Scalars['String'];
+};
+
+export type ProblemItem = {
+  __typename?: 'ProblemItem';
+  angle: Scalars['Int'];
+  ascentIds: Array<Scalars['String']>;
+  boardId: Scalars['String'];
+  consensusGrade?: Maybe<Scalars['Int']>;
+  consensusRating?: Maybe<Scalars['Int']>;
+  createdAt: Scalars['String'];
+  creator: User;
+  creatorId: Scalars['String'];
+  grade: Scalars['Int'];
+  id: Scalars['String'];
+  sendStatus?: Maybe<Scalars['Boolean']>;
+  title: Scalars['String'];
 };
 
 export type ProblemResponse = {
@@ -278,24 +295,19 @@ export type Query = {
   __typename?: 'Query';
   getAscents?: Maybe<Array<Ascent>>;
   getBoard: Board;
-  getBoards: Array<Board>;
-  getWhitelist: Array<WhitelistedUser>;
   getBoardLayouts: Array<Layout>;
-  getProblems: PaginatedProblems;
+  getBoards: Array<Board>;
   getProblem?: Maybe<Problem>;
+  getProblems: PaginatedProblems;
   getSentProblems?: Maybe<Array<Problem>>;
-  me?: Maybe<User>;
   getUser?: Maybe<User>;
   getUsers?: Maybe<Array<User>>;
+  getWhitelist: Array<WhitelistedUser>;
+  me?: Maybe<User>;
 };
 
 
 export type QueryGetBoardArgs = {
-  boardId: Scalars['String'];
-};
-
-
-export type QueryGetWhitelistArgs = {
   boardId: Scalars['String'];
 };
 
@@ -305,15 +317,15 @@ export type QueryGetBoardLayoutsArgs = {
 };
 
 
-export type QueryGetProblemsArgs = {
-  cursor?: Maybe<Scalars['String']>;
-  limit: Scalars['Int'];
-  boardId: Scalars['String'];
+export type QueryGetProblemArgs = {
+  id: Scalars['String'];
 };
 
 
-export type QueryGetProblemArgs = {
-  id: Scalars['String'];
+export type QueryGetProblemsArgs = {
+  boardId: Scalars['String'];
+  cursor?: InputMaybe<Scalars['String']>;
+  limit: Scalars['Int'];
 };
 
 
@@ -327,23 +339,27 @@ export type QueryGetUserArgs = {
 };
 
 
+export type QueryGetWhitelistArgs = {
+  boardId: Scalars['String'];
+};
+
 export type User = {
   __typename?: 'User';
+  ascents?: Maybe<Array<Ascent>>;
+  avatar?: Maybe<Scalars['String']>;
+  boardWhitelist?: Maybe<Array<Scalars['String']>>;
+  createdAt: Scalars['String'];
+  email: Scalars['String'];
+  googleId: Scalars['String'];
   id: Scalars['String'];
   name: Scalars['String'];
-  email: Scalars['String'];
-  avatar?: Maybe<Scalars['String']>;
-  googleId: Scalars['String'];
-  boardWhitelist?: Maybe<Array<Scalars['String']>>;
   problems?: Maybe<Array<Problem>>;
-  ascents?: Maybe<Array<Ascent>>;
-  createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
 };
 
 export type WhitelistInput = {
-  email: Scalars['String'];
   boardId: Scalars['String'];
+  email: Scalars['String'];
 };
 
 export type WhitelistResponse = {
@@ -354,19 +370,17 @@ export type WhitelistResponse = {
 
 export type WhitelistedUser = {
   __typename?: 'WhitelistedUser';
-  name: Scalars['String'];
   email: Scalars['String'];
+  name: Scalars['String'];
 };
 
 export type RegularErrorFragment = { __typename?: 'FieldError', field: string, message: string };
 
 export type AscentCoreFragment = { __typename?: 'Ascent', grade: number, rating: number, attempts: number };
 
-export type BoardCoreFragment = { __typename?: 'Board', id: string, creatorId: string, title: string, description: string, adjustable: boolean, angles: Array<number>, city: string, country: string, currentLayout?: Maybe<{ __typename?: 'Layout', id: string, title: string, url: string, createdAt: string }> };
+export type BoardCoreFragment = { __typename?: 'Board', id: string, creatorId: string, title: string, description: string, adjustable: boolean, angles: Array<number>, city: string, country: string, currentLayout?: { __typename?: 'Layout', id: string, title: string, url: string, createdAt: string } | null | undefined };
 
 export type LayoutCoreFragment = { __typename?: 'Layout', id: string, title: string, description: string, url: string, creatorId: string, boardId: string, publicId: string, createdAt: string };
-
-export type ProblemSnippetFragment = { __typename?: 'Problem', id: string, title: string, grade: number, angle: number, consensusGrade?: Maybe<number>, consensusRating?: Maybe<number>, creatorId: string, sendStatus?: Maybe<boolean>, createdAt: string, updatedAt: string, boardId: string, creator: { __typename?: 'User', id: string, name: string }, ascents: Array<{ __typename?: 'Ascent', grade: number, rating: number, userId: string }> };
 
 export type AddAscentMutationVariables = Exact<{
   options: AddAscentInput;
@@ -380,7 +394,7 @@ export type CreateBoardMutationVariables = Exact<{
 }>;
 
 
-export type CreateBoardMutation = { __typename?: 'Mutation', createBoard: { __typename?: 'BoardResponse', board?: Maybe<{ __typename?: 'Board', id: string }>, errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>> } };
+export type CreateBoardMutation = { __typename?: 'Mutation', createBoard: { __typename?: 'BoardResponse', board?: { __typename?: 'Board', id: string } | null | undefined, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null | undefined } };
 
 export type CreateLayoutMutationVariables = Exact<{
   options: LayoutInput;
@@ -394,7 +408,7 @@ export type CreateProblemMutationVariables = Exact<{
 }>;
 
 
-export type CreateProblemMutation = { __typename?: 'Mutation', createProblem: { __typename?: 'ProblemResponse', problem?: Maybe<{ __typename?: 'Problem', id: string }>, errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>> } };
+export type CreateProblemMutation = { __typename?: 'Mutation', createProblem: { __typename?: 'ProblemResponse', problem?: { __typename?: 'Problem', id: string } | null | undefined, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null | undefined } };
 
 export type DeleteAscentMutationVariables = Exact<{
   problemId: Scalars['String'];
@@ -436,14 +450,14 @@ export type EditBoardMutationVariables = Exact<{
 }>;
 
 
-export type EditBoardMutation = { __typename?: 'Mutation', editBoard: { __typename?: 'BoardResponse', board?: Maybe<{ __typename?: 'Board', id: string }>, errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>> } };
+export type EditBoardMutation = { __typename?: 'Mutation', editBoard: { __typename?: 'BoardResponse', board?: { __typename?: 'Board', id: string } | null | undefined, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null | undefined } };
 
 export type EditProblemMutationVariables = Exact<{
   options: EditProblemInput;
 }>;
 
 
-export type EditProblemMutation = { __typename?: 'Mutation', editProblem: { __typename?: 'ProblemResponse', problem?: Maybe<{ __typename?: 'Problem', id: string }>, errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>> } };
+export type EditProblemMutation = { __typename?: 'Mutation', editProblem: { __typename?: 'ProblemResponse', problem?: { __typename?: 'Problem', id: string } | null | undefined, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null | undefined } };
 
 export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -455,26 +469,26 @@ export type RemoveFromWhitelistMutationVariables = Exact<{
 }>;
 
 
-export type RemoveFromWhitelistMutation = { __typename?: 'Mutation', removeFromWhitelist: { __typename?: 'WhitelistResponse', userId?: Maybe<string>, errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>> } };
+export type RemoveFromWhitelistMutation = { __typename?: 'Mutation', removeFromWhitelist: { __typename?: 'WhitelistResponse', userId?: string | null | undefined, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null | undefined } };
 
 export type WhitelistUserMutationVariables = Exact<{
   options: WhitelistInput;
 }>;
 
 
-export type WhitelistUserMutation = { __typename?: 'Mutation', whitelistUser: { __typename?: 'WhitelistResponse', userId?: Maybe<string>, errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>> } };
+export type WhitelistUserMutation = { __typename?: 'Mutation', whitelistUser: { __typename?: 'WhitelistResponse', userId?: string | null | undefined, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null | undefined } };
 
 export type GetBoardQueryVariables = Exact<{
   boardId: Scalars['String'];
 }>;
 
 
-export type GetBoardQuery = { __typename?: 'Query', getBoard: { __typename?: 'Board', id: string, creatorId: string, title: string, description: string, adjustable: boolean, angles: Array<number>, city: string, country: string, currentLayout?: Maybe<{ __typename?: 'Layout', id: string, title: string, url: string, createdAt: string }> } };
+export type GetBoardQuery = { __typename?: 'Query', getBoard: { __typename?: 'Board', id: string, creatorId: string, title: string, description: string, adjustable: boolean, angles: Array<number>, city: string, country: string, currentLayout?: { __typename?: 'Layout', id: string, title: string, url: string, createdAt: string } | null | undefined } };
 
 export type GetBoardsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetBoardsQuery = { __typename?: 'Query', getBoards: Array<{ __typename?: 'Board', id: string, creatorId: string, title: string, description: string, adjustable: boolean, angles: Array<number>, city: string, country: string, currentLayout?: Maybe<{ __typename?: 'Layout', id: string, title: string, url: string, createdAt: string }> }> };
+export type GetBoardsQuery = { __typename?: 'Query', getBoards: Array<{ __typename?: 'Board', id: string, creatorId: string, title: string, description: string, adjustable: boolean, angles: Array<number>, city: string, country: string, currentLayout?: { __typename?: 'Layout', id: string, title: string, url: string, createdAt: string } | null | undefined }> };
 
 export type GetBoardLayoutsQueryVariables = Exact<{
   boardId: Scalars['String'];
@@ -488,30 +502,30 @@ export type GetProblemQueryVariables = Exact<{
 }>;
 
 
-export type GetProblemQuery = { __typename?: 'Query', getProblem?: Maybe<{ __typename?: 'Problem', id: string, title: string, grade: number, consensusGrade?: Maybe<number>, consensusRating?: Maybe<number>, rules: string, creatorId: string, sendStatus?: Maybe<boolean>, boardId: string, angle: number, createdAt: string, updatedAt: string, creator: { __typename?: 'User', id: string, name: string }, layout: { __typename?: 'Layout', url: string, title: string }, ascents: Array<{ __typename?: 'Ascent', userId: string, attempts: number, grade: number, rating: number, comment: string, createdAt: string, boardId: string, user: { __typename?: 'User', name: string, avatar?: Maybe<string> } }>, coordinates: Array<{ __typename?: 'Coordinates', x: number, y: number, color: string }> }> };
+export type GetProblemQuery = { __typename?: 'Query', getProblem?: { __typename?: 'Problem', id: string, title: string, grade: number, consensusGrade?: number | null | undefined, consensusRating?: number | null | undefined, rules: string, creatorId: string, sendStatus?: boolean | null | undefined, boardId: string, angle: number, createdAt: string, updatedAt: string, creator: { __typename?: 'User', id: string, name: string }, layout: { __typename?: 'Layout', url: string, title: string }, ascents: Array<{ __typename?: 'Ascent', userId: string, attempts: number, grade: number, rating: number, comment: string, createdAt: string, boardId: string, user: { __typename?: 'User', name: string, avatar?: string | null | undefined } }>, coordinates: Array<{ __typename?: 'Coordinates', x: number, y: number, color: string }> } | null | undefined };
 
 export type GetProblemsQueryVariables = Exact<{
   limit: Scalars['Int'];
-  cursor?: Maybe<Scalars['String']>;
+  cursor?: InputMaybe<Scalars['String']>;
   boardId: Scalars['String'];
 }>;
 
 
-export type GetProblemsQuery = { __typename?: 'Query', getProblems: { __typename?: 'PaginatedProblems', hasMore: boolean, problems: Array<{ __typename?: 'Problem', id: string, title: string, grade: number, angle: number, consensusGrade?: Maybe<number>, consensusRating?: Maybe<number>, creatorId: string, sendStatus?: Maybe<boolean>, createdAt: string, updatedAt: string, boardId: string, creator: { __typename?: 'User', id: string, name: string }, ascents: Array<{ __typename?: 'Ascent', grade: number, rating: number, userId: string }> }> } };
+export type GetProblemsQuery = { __typename?: 'Query', getProblems: { __typename?: 'PaginatedProblems', hasMore: boolean, problems: Array<{ __typename?: 'ProblemItem', id: string, title: string, grade: number, angle: number, consensusGrade?: number | null | undefined, consensusRating?: number | null | undefined, creatorId: string, createdAt: string, boardId: string, ascentIds: Array<string>, creator: { __typename?: 'User', id: string, name: string } }> } };
 
 export type GetSentProblemsQueryVariables = Exact<{
   userId: Scalars['String'];
 }>;
 
 
-export type GetSentProblemsQuery = { __typename?: 'Query', getSentProblems?: Maybe<Array<{ __typename?: 'Problem', id: string, consensusGrade?: Maybe<number>, consensusRating?: Maybe<number>, ascents: Array<{ __typename?: 'Ascent', grade: number, rating: number, attempts: number }> }>> };
+export type GetSentProblemsQuery = { __typename?: 'Query', getSentProblems?: Array<{ __typename?: 'Problem', id: string, consensusGrade?: number | null | undefined, consensusRating?: number | null | undefined, ascents: Array<{ __typename?: 'Ascent', grade: number, rating: number, attempts: number }> }> | null | undefined };
 
 export type GetUserQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type GetUserQuery = { __typename?: 'Query', getUser?: Maybe<{ __typename?: 'User', name: string, avatar?: Maybe<string>, createdAt: string, problems?: Maybe<Array<{ __typename?: 'Problem', boardId: string, consensusGrade?: Maybe<number>, consensusRating?: Maybe<number>, ascents: Array<{ __typename?: 'Ascent', grade: number, rating: number }> }>>, ascents?: Maybe<Array<{ __typename?: 'Ascent', attempts: number, rating: number, grade: number }>> }> };
+export type GetUserQuery = { __typename?: 'Query', getUser?: { __typename?: 'User', name: string, avatar?: string | null | undefined, createdAt: string, problems?: Array<{ __typename?: 'Problem', boardId: string, consensusGrade?: number | null | undefined, consensusRating?: number | null | undefined, ascents: Array<{ __typename?: 'Ascent', grade: number, rating: number }> }> | null | undefined, ascents?: Array<{ __typename?: 'Ascent', attempts: number, rating: number, grade: number }> | null | undefined } | null | undefined };
 
 export type GetWhitelistQueryVariables = Exact<{
   boardId: Scalars['String'];
@@ -523,7 +537,7 @@ export type GetWhitelistQuery = { __typename?: 'Query', getWhitelist: Array<{ __
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me?: Maybe<{ __typename?: 'User', id: string, name: string, email: string, avatar?: Maybe<string>, boardWhitelist?: Maybe<Array<string>>, createdAt: string, updatedAt: string }> };
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: string, name: string, email: string, avatar?: string | null | undefined, boardWhitelist?: Array<string> | null | undefined, createdAt: string, updatedAt: string } | null | undefined };
 
 export const RegularErrorFragmentDoc = gql`
     fragment RegularError on FieldError {
@@ -566,30 +580,6 @@ export const LayoutCoreFragmentDoc = gql`
   boardId
   publicId
   createdAt
-}
-    `;
-export const ProblemSnippetFragmentDoc = gql`
-    fragment ProblemSnippet on Problem {
-  id
-  title
-  grade
-  angle
-  consensusGrade
-  consensusRating
-  creatorId
-  sendStatus
-  createdAt
-  updatedAt
-  boardId
-  creator {
-    id
-    name
-  }
-  ascents {
-    grade
-    rating
-    userId
-  }
 }
     `;
 export const AddAscentDocument = gql`
@@ -1250,11 +1240,24 @@ export const GetProblemsDocument = gql`
   getProblems(limit: $limit, cursor: $cursor, boardId: $boardId) {
     hasMore
     problems {
-      ...ProblemSnippet
+      id
+      title
+      grade
+      angle
+      consensusGrade
+      consensusRating
+      creatorId
+      createdAt
+      boardId
+      creator {
+        id
+        name
+      }
+      ascentIds
     }
   }
 }
-    ${ProblemSnippetFragmentDoc}`;
+    `;
 
 /**
  * __useGetProblemsQuery__

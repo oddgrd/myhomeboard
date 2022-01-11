@@ -14,6 +14,7 @@ export const DeleteAscentButton = ({ id }: Props) => {
         variables: { problemId: id },
         update: (cache) => {
           cache.evict({ id: 'Problem:' + id });
+          cache.evict({ fieldName: 'getProblems' });
         },
       });
       toast.success('Ascent deleted ☠️');

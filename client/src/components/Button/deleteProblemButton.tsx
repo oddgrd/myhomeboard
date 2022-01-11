@@ -22,6 +22,7 @@ export const DeleteProblemButton = ({ id, boardId }: Props) => {
         variables: { id },
         update: (cache) => {
           cache.evict({ id: 'Problem:' + id });
+          cache.evict({ id: 'ProblemItem:' + id });
         },
       });
       if (errors) {
