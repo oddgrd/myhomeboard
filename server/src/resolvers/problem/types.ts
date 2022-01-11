@@ -1,5 +1,6 @@
 import { Problem } from '../../entities/Problem';
 import { InputType, Field, Int, ObjectType } from 'type-graphql';
+import { User } from '../../entities/User';
 
 @ObjectType()
 export class Coordinates {
@@ -87,9 +88,47 @@ export class EditProblemInput {
 }
 
 @ObjectType()
+export class ProblemItem {
+  @Field()
+  id!: string;
+
+  @Field()
+  creatorId!: string;
+
+  @Field()
+  title!: string;
+
+  @Field(() => Int)
+  angle!: number;
+
+  @Field(() => Int)
+  grade!: number;
+
+  @Field(() => User)
+  creator: User;
+
+  @Field()
+  boardId!: string;
+
+  @Field(() => [String])
+  ascentIds: String[];
+
+  @Field(() => Int, {nullable: true})
+  consensusGrade: number;
+
+  @Field(() => Int, {nullable: true})
+  consensusRating: number;
+
+  @Field(() => Boolean, {defaultValue: false})
+  sendStatus: boolean;
+
+  @Field(() => String)
+  createdAt: Date;
+}
+@ObjectType()
 export class PaginatedProblems {
-  @Field(() => [Problem])
-  problems: Problem[];
+  @Field(() => [ProblemItem])
+  problems: ProblemItem[];
 
   @Field()
   hasMore: boolean;

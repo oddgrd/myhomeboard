@@ -2,7 +2,20 @@ query GetProblems($limit: Int!, $cursor: String, $boardId: String!) {
   getProblems(limit: $limit, cursor: $cursor, boardId: $boardId) {
     hasMore
     problems {
-      ...ProblemSnippet
+      id
+      title
+      grade
+      angle
+      consensusGrade
+      consensusRating
+      creatorId
+      createdAt
+      boardId
+      creator {
+        id
+        name
+      }
+      ascentIds
     }
   }
 }

@@ -21,51 +21,48 @@ import { Context } from '../../types/context';
 import { getConnection } from 'typeorm';
 import { User } from '../../entities/User';
 import { Layout } from '../../entities/Layout';
+import { Ascent } from '../../entities/Ascent';
 
 @Resolver(Problem)
 export class ProblemResolver {
-  // Field resolver for creator field
+  // Field resolver for creator field on single problem query
   @FieldResolver(() => User)
   creator(@Root() problem: Problem, @Ctx() { userLoader }: Context) {
     return userLoader.load(problem.creatorId);
   }
 
-  // Field resolver for layout field
+  // Field resolver for layout field on single problem query
   @FieldResolver(() => Layout)
   layout(@Root() problem: Problem, @Ctx() { layoutLoader }: Context) {
     return layoutLoader.load(problem.layoutId);
   }
 
-  // Field resolver for consensusGrade
+  // Field resolver for consensusGrade on single problem query
   @FieldResolver(() => Int, { nullable: true })
-  consensusGrade(@Root() problem: Problem) {
+  async consensusGrade(@Root() problem: Problem) {
     if (!problem.ascents || problem.ascents.length === 0) return null;
     const sumGrades = problem.ascents
-      .map((ascent) => ascent.grade)
-      .reduce((acc: number, curr: number) => acc + curr);
+    .reduce((acc: number, curr: Ascent) => acc + curr.grade, 0);
     return Math.round(sumGrades / problem.ascents.length);
   }
 
-  // Field resolver for consensusRating
+  // Field resolver for consensusRating on single problem query
   @FieldResolver(() => Int, { nullable: true })
   consensusRating(@Root() problem: Problem) {
     if (!problem.ascents || problem.ascents.length === 0) return null;
     const sumRatings = problem.ascents
-      .map((ascent) => ascent.rating)
-      .reduce((acc: number, curr: number) => acc + curr);
+      .reduce((acc: number, curr: Ascent) => acc + curr.rating, 0);
     return Math.round(sumRatings / problem.ascents.length);
   }
 
-  // Field resolver for sendStatus
+  // Field resolver for sendStatus on single problem query
   @FieldResolver(() => Boolean, { nullable: true })
   sendStatus(@Root() problem: Problem, @Ctx() { req }: Context) {
     if (!problem.ascents || problem.ascents.length === 0) return false;
     const userId = req.session.passport?.user;
-    const hasSent = problem.ascents.filter(
+    return problem.ascents.some(
       (ascent) => ascent.userId === userId
     );
-    if (hasSent.length === 0) return false;
-    return true;
   }
 
   // Create new problem
@@ -166,7 +163,7 @@ export class ProblemResolver {
     return true;
   }
 
-  // Get all problems with cursor pagination
+  // Get all problems with cursor pagination and avg grade and rating from ascents
   @Query(() => PaginatedProblems)
   async getProblems(
     @Arg('boardId') boardId: string,
@@ -177,19 +174,36 @@ export class ProblemResolver {
     const realLimit = Math.min(50, limit); // max limit 50
     const realLimitPlusOne = realLimit + 1;
 
-    const qb = getConnection()
-      .createQueryBuilder(Problem, 'problem')
-      .leftJoinAndSelect('problem.ascents', 'ascent')
-      .where('problem.boardId = :boardId', { boardId })
-      .orderBy('problem.createdAt', 'DESC');
+    const replacements: any[] = [boardId, realLimitPlusOne];
 
     if (cursor) {
-      qb.where('problem."createdAt" < :cursor', {
-        cursor: new Date(+cursor),
-      });
+      replacements.push(new Date(parseInt(cursor)));
     }
-    qb.take(realLimitPlusOne);
-    const problems = await qb.getMany();
+    const problems = await getConnection().query(`
+      SELECT 
+        p.id, p.title, p.grade, p.angle, p."creatorId", p."createdAt", p."boardId",
+        json_build_object(
+          'id', u.id,
+          'name', u.name
+        ) creator,
+        COALESCE(ascent."consensusGrade", null) AS "consensusGrade",
+        COALESCE(ascent."consensusRating", null) AS "consensusRating",
+        COALESCE(ascent."ascentIds", '[]') as "ascentIds"
+      FROM problem p
+      LEFT JOIN LATERAL (
+        SELECT AVG(ascent.grade)::numeric(10) AS "consensusGrade",
+               AVG(ascent.rating)::numeric(10) AS "consensusRating",
+               json_agg(ascent."userId") AS "ascentIds"
+        FROM ascent
+        WHERE ascent."problemId" = p.id
+      ) ascent ON true
+      INNER JOIN "user" u ON u.id = p."creatorId"
+      WHERE p."boardId" = $1 ${cursor ? `AND p."createdAt" < $3` : ""}
+      ORDER BY p."createdAt" DESC
+      LIMIT $2;
+
+    `, replacements);
+
     return {
       problems: problems.slice(0, realLimit),
       hasMore: problems.length === realLimitPlusOne,
