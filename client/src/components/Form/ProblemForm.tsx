@@ -76,6 +76,7 @@ export const ProblemForm = ({ coords, boardId, layoutId, angles }: Props) => {
           setErrors(toErrorMap(response.data.createProblem.errors));
         } else if (response.data?.createProblem.problem) {
           toast.success(`Problem created  🧗`);
+          window.localStorage.setItem('order', 'DESC');
           router.push(`/boards/${boardId}`);
         }
       }}

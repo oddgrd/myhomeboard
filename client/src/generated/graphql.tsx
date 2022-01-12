@@ -326,6 +326,7 @@ export type QueryGetProblemsArgs = {
   boardId: Scalars['String'];
   cursor?: InputMaybe<Scalars['String']>;
   limit: Scalars['Int'];
+  order: Scalars['Boolean'];
 };
 
 
@@ -508,6 +509,7 @@ export type GetProblemsQueryVariables = Exact<{
   limit: Scalars['Int'];
   cursor?: InputMaybe<Scalars['String']>;
   boardId: Scalars['String'];
+  order: Scalars['Boolean'];
 }>;
 
 
@@ -1236,8 +1238,8 @@ export type GetProblemQueryHookResult = ReturnType<typeof useGetProblemQuery>;
 export type GetProblemLazyQueryHookResult = ReturnType<typeof useGetProblemLazyQuery>;
 export type GetProblemQueryResult = Apollo.QueryResult<GetProblemQuery, GetProblemQueryVariables>;
 export const GetProblemsDocument = gql`
-    query GetProblems($limit: Int!, $cursor: String, $boardId: String!) {
-  getProblems(limit: $limit, cursor: $cursor, boardId: $boardId) {
+    query GetProblems($limit: Int!, $cursor: String, $boardId: String!, $order: Boolean!) {
+  getProblems(limit: $limit, cursor: $cursor, boardId: $boardId, order: $order) {
     hasMore
     problems {
       id
@@ -1274,6 +1276,7 @@ export const GetProblemsDocument = gql`
  *      limit: // value for 'limit'
  *      cursor: // value for 'cursor'
  *      boardId: // value for 'boardId'
+ *      order: // value for 'order'
  *   },
  * });
  */

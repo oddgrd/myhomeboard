@@ -1,7 +1,6 @@
 .back {
   color: var(--theme-color);
 }
-
 .createBoard {
   padding: 15px;
   margin-top: 0.5rem;
@@ -10,6 +9,16 @@
 }
 .createProblem {
   padding: 0px 5px;
+}
+.toolbar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-right: 15px;
+  color: var(--theme-color);
+  p {
+    font-size: 20px;
+  }
 }
 @media (max-width: 700px) {
   .createBoard {

@@ -10,18 +10,41 @@ import {
 } from '../../../generated/graphql';
 import styles from '../../../styles/Problems.module.scss';
 import withApollo from '../../../utils/withApollo';
-import { FaPlusSquare, FaSyncAlt } from 'react-icons/fa';
+import {
+  FaHourglassEnd,
+  FaHourglassStart,
+  FaPlusSquare,
+  FaSyncAlt,
+} from 'react-icons/fa';
+import { useEffect, useRef, useState } from 'react';
 
 const Problems = () => {
   const router = useRouter();
   const boardId = typeof router.query.id === 'string' ? router.query.id : '';
+  const [order, setOrder] = useState('DESC');
+  const selectedOrder = useRef('DESC');
 
-  const { data, loading, error, fetchMore, variables, refetch } =
+  useEffect(() => {
+    selectedOrder.current = window.localStorage.getItem('order') || 'DESC';
+    setOrder(selectedOrder.current);
+  }, []);
+  useEffect(() => {
+    window.localStorage.setItem('order', selectedOrder.current);
+  }, [order]);
+
+  const toggleOrder = () => {
+    selectedOrder.current = selectedOrder.current === 'DESC' ? 'ASC' : 'DESC';
+    setOrder(selectedOrder.current);
+    client.cache.evict({ fieldName: 'getProblems' });
+  };
+
+  const { data, loading, error, fetchMore, variables, refetch, client } =
     useGetProblemsQuery({
       variables: {
         limit: 15,
         cursor: null,
         boardId,
+        order: selectedOrder.current === 'ASC',
       },
       notifyOnNetworkStatusChange: true,
     });
@@ -39,13 +62,17 @@ const Problems = () => {
   if (error || boardError) {
     return (
       <Layout title='Problems'>
-        <p className='centerText'>Something went wrong, try again </p>
-        <button
-          className='btn btn-link'
-          onClick={() => {
-            router.reload();
-          }}
-        />
+        <p className='centerText'>
+          Something went wrong,{' '}
+          <button
+            className='btn btn-link'
+            onClick={() => {
+              router.reload();
+            }}
+          >
+            try again
+          </button>{' '}
+        </p>
       </Layout>
     );
   }
@@ -107,6 +134,22 @@ const Problems = () => {
             </Link>
           </div>
         )}
+        <div className={styles.toolbar}>
+          <p>Sort |</p>
+          <button
+            className={'btn btn-icon btn-rotate btn-right'}
+            onClick={() => {
+              toggleOrder();
+            }}
+          >
+            {selectedOrder.current === 'DESC' ? (
+              <FaHourglassStart size={24} />
+            ) : (
+              <FaHourglassEnd size={24} />
+            )}
+          </button>
+        </div>
+
         <div>
           {loading && !data ? (
             <Spinner />
@@ -138,6 +181,7 @@ const Problems = () => {
                     data.getProblems.problems[
                       data.getProblems.problems.length - 1
                     ].createdAt,
+                  order: selectedOrder.current === 'ASC',
                 },
               });
             }}

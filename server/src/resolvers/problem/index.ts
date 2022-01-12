@@ -168,6 +168,7 @@ export class ProblemResolver {
   async getProblems(
     @Arg('boardId') boardId: string,
     @Arg('limit', () => Int!) limit: number,
+    @Arg('order', () => Boolean!) order: boolean,
     @Arg('cursor', () => String, { nullable: true }) cursor: string | null
   ): Promise<PaginatedProblems> {
     // If there are more posts left than limit, set hasMore boolean to true
@@ -198,14 +199,15 @@ export class ProblemResolver {
         WHERE ascent."problemId" = p.id
       ) ascent ON true
       INNER JOIN "user" u ON u.id = p."creatorId"
-      WHERE p."boardId" = $1 ${cursor ? `AND p."createdAt" < $3` : ""}
-      ORDER BY p."createdAt" DESC
+      WHERE p."boardId" = $1 ${cursor && order ? `AND p."createdAt" > $3` : cursor && !order ? `AND p."createdAt" < $3` : ""}
+      ORDER BY p."createdAt" ${order ? `ASC` : `DESC`}
       LIMIT $2;
 
     `, replacements);
 
     return {
-      problems: problems.slice(0, realLimit),
+      // Cursor pagination with ASC order gives one duplicate
+      problems: problems.slice(cursor && order ? 1 : 0, realLimit),
       hasMore: problems.length === realLimitPlusOne,
     };
   }
