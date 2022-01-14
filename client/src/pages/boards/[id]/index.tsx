@@ -11,43 +11,40 @@ import {
 import styles from '../../../styles/Problems.module.scss';
 import withApollo from '../../../utils/withApollo';
 import {
-  FaHourglassEnd,
-  FaHourglassStart,
+  FaClock,
+  FaDiceOne,
+  FaDiceSix,
+  FaDiceThree,
   FaPlusSquare,
+  FaRegClock,
   FaSyncAlt,
 } from 'react-icons/fa';
-import { useEffect, useRef, useState } from 'react';
+import { useSorting } from '../../../hooks/useSorting';
 
+const limit = 15;
 const Problems = () => {
   const router = useRouter();
   const boardId = typeof router.query.id === 'string' ? router.query.id : '';
-  const [order, setOrder] = useState('DESC');
-  const selectedOrder = useRef('DESC');
 
-  useEffect(() => {
-    selectedOrder.current = window.localStorage.getItem('order') || 'DESC';
-    setOrder(selectedOrder.current);
-  }, []);
-  useEffect(() => {
-    window.localStorage.setItem('order', selectedOrder.current);
-  }, [order]);
+  const [
+    { selectedOrder, selectedSort, offsetRef },
+    { setOrder, setSort, setOffset, toggleOrder, resetSort },
+  ] = useSorting();
 
-  const toggleOrder = () => {
-    selectedOrder.current = selectedOrder.current === 'DESC' ? 'ASC' : 'DESC';
-    setOrder(selectedOrder.current);
-    client.cache.evict({ fieldName: 'getProblems' });
-  };
-
-  const { data, loading, error, fetchMore, variables, refetch, client } =
-    useGetProblemsQuery({
-      variables: {
-        limit: 15,
+  const { data, loading, error, fetchMore, client } = useGetProblemsQuery({
+    variables: {
+      options: {
+        limit,
         cursor: null,
+        offset: 0,
         boardId,
         order: selectedOrder.current === 'ASC',
+        sort: selectedSort.current,
       },
-      notifyOnNetworkStatusChange: true,
-    });
+    },
+    notifyOnNetworkStatusChange: true,
+  });
+
   const {
     data: boardData,
     loading: boardLoading,
@@ -57,6 +54,7 @@ const Problems = () => {
       boardId,
     },
   });
+
   const { data: meData } = useMeQuery();
 
   if (error || boardError) {
@@ -106,10 +104,13 @@ const Problems = () => {
       navChildren={
         <>
           <button
-            onClick={() => refetch()}
+            onClick={() => {
+              resetSort();
+              client.cache.evict({ fieldName: 'getProblems' });
+            }}
             className='btn btn-link btn-icon btn-rotate'
-            aria-label='Create problem'
-            title='Create Problem'
+            aria-label='Refresh Problems'
+            title='Refresh Problems'
           >
             <FaSyncAlt size={27} />
           </button>
@@ -135,17 +136,52 @@ const Problems = () => {
           </div>
         )}
         <div className={styles.toolbar}>
-          <p>Sort |</p>
           <button
-            className={'btn btn-icon btn-rotate btn-right'}
+            className={'btn btn-icon btn-right'}
+            aria-label='Toggle Date Sort'
+            title='Toggle Date Sort'
             onClick={() => {
               toggleOrder();
+
+              selectedSort.current = 'DATE';
+              setSort(selectedSort.current);
+              offsetRef.current = 0;
+              setOffset(offsetRef.current);
+              client.cache.evict({ fieldName: 'getProblems' });
             }}
           >
-            {selectedOrder.current === 'DESC' ? (
-              <FaHourglassStart size={24} />
+            {selectedOrder.current === 'DESC' ||
+            selectedSort.current === 'GRADE' ? (
+              <FaClock size={26} />
             ) : (
-              <FaHourglassEnd size={24} />
+              <FaRegClock size={26} />
+            )}
+          </button>
+          <button
+            className={'btn btn-icon btn-right'}
+            aria-label='Toggle Grade Sort'
+            title='Toggle Grade Sort'
+            onClick={() => {
+              if (selectedSort.current === 'DATE') {
+                selectedOrder.current = 'DESC';
+                setOrder(selectedOrder.current);
+              } else {
+                toggleOrder();
+              }
+              selectedSort.current = 'GRADE';
+              setSort(selectedSort.current);
+              offsetRef.current = 0;
+              setOffset(offsetRef.current);
+              client.cache.evict({ fieldName: 'getProblems' });
+            }}
+          >
+            {selectedSort.current === 'DATE' ? (
+              <FaDiceThree size={26} />
+            ) : selectedSort.current === 'GRADE' &&
+              selectedOrder.current === 'DESC' ? (
+              <FaDiceSix size={26} />
+            ) : (
+              <FaDiceOne size={26} />
             )}
           </button>
         </div>
@@ -168,20 +204,27 @@ const Problems = () => {
         </div>
       </div>
       {
-        // Cursor pagination
+        // Cursor pagination when sorting by date,
+        // offset/limit when sorting by grade
         data && data.getProblems.hasMore ? (
           <button
             className={'btn btn-fetchMore'}
             onClick={() => {
+              offsetRef.current += limit;
+              setOffset(offsetRef.current);
               fetchMore({
                 variables: {
-                  boardId,
-                  limit: variables?.limit,
-                  cursor:
-                    data.getProblems.problems[
-                      data.getProblems.problems.length - 1
-                    ].createdAt,
-                  order: selectedOrder.current === 'ASC',
+                  options: {
+                    boardId,
+                    limit,
+                    sort: selectedSort.current,
+                    cursor:
+                      data.getProblems.problems[
+                        data.getProblems.problems.length - 1
+                      ].createdAt,
+                    order: selectedOrder.current === 'ASC',
+                    offset: offsetRef.current,
+                  },
                 },
               });
             }}

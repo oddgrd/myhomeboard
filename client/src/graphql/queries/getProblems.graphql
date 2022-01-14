@@ -1,5 +1,5 @@
-query GetProblems($limit: Int!, $cursor: String, $boardId: String!, $order: Boolean!) {
-  getProblems(limit: $limit, cursor: $cursor, boardId: $boardId, order: $order) {
+query GetProblems($options: GetProblemsOptions!) {
+  getProblems(options: $options) {
     hasMore
     problems {
       id

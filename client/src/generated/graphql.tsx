@@ -136,6 +136,15 @@ export type FieldError = {
   message: Scalars['String'];
 };
 
+export type GetProblemsOptions = {
+  boardId: Scalars['String'];
+  cursor?: InputMaybe<Scalars['String']>;
+  limit: Scalars['Float'];
+  offset: Scalars['Float'];
+  order: Scalars['Boolean'];
+  sort: Scalars['String'];
+};
+
 export type Layout = {
   __typename?: 'Layout';
   boardId: Scalars['String'];
@@ -323,10 +332,7 @@ export type QueryGetProblemArgs = {
 
 
 export type QueryGetProblemsArgs = {
-  boardId: Scalars['String'];
-  cursor?: InputMaybe<Scalars['String']>;
-  limit: Scalars['Int'];
-  order: Scalars['Boolean'];
+  options: GetProblemsOptions;
 };
 
 
@@ -506,10 +512,7 @@ export type GetProblemQueryVariables = Exact<{
 export type GetProblemQuery = { __typename?: 'Query', getProblem?: { __typename?: 'Problem', id: string, title: string, grade: number, consensusGrade?: number | null | undefined, consensusRating?: number | null | undefined, rules: string, creatorId: string, sendStatus?: boolean | null | undefined, boardId: string, angle: number, createdAt: string, updatedAt: string, creator: { __typename?: 'User', id: string, name: string }, layout: { __typename?: 'Layout', url: string, title: string }, ascents: Array<{ __typename?: 'Ascent', userId: string, attempts: number, grade: number, rating: number, comment: string, createdAt: string, boardId: string, user: { __typename?: 'User', name: string, avatar?: string | null | undefined } }>, coordinates: Array<{ __typename?: 'Coordinates', x: number, y: number, color: string }> } | null | undefined };
 
 export type GetProblemsQueryVariables = Exact<{
-  limit: Scalars['Int'];
-  cursor?: InputMaybe<Scalars['String']>;
-  boardId: Scalars['String'];
-  order: Scalars['Boolean'];
+  options: GetProblemsOptions;
 }>;
 
 
@@ -1238,8 +1241,8 @@ export type GetProblemQueryHookResult = ReturnType<typeof useGetProblemQuery>;
 export type GetProblemLazyQueryHookResult = ReturnType<typeof useGetProblemLazyQuery>;
 export type GetProblemQueryResult = Apollo.QueryResult<GetProblemQuery, GetProblemQueryVariables>;
 export const GetProblemsDocument = gql`
-    query GetProblems($limit: Int!, $cursor: String, $boardId: String!, $order: Boolean!) {
-  getProblems(limit: $limit, cursor: $cursor, boardId: $boardId, order: $order) {
+    query GetProblems($options: GetProblemsOptions!) {
+  getProblems(options: $options) {
     hasMore
     problems {
       id
@@ -1273,10 +1276,7 @@ export const GetProblemsDocument = gql`
  * @example
  * const { data, loading, error } = useGetProblemsQuery({
  *   variables: {
- *      limit: // value for 'limit'
- *      cursor: // value for 'cursor'
- *      boardId: // value for 'boardId'
- *      order: // value for 'order'
+ *      options: // value for 'options'
  *   },
  * });
  */
