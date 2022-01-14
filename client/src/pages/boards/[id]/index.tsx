@@ -10,25 +10,18 @@ import {
 } from '../../../generated/graphql';
 import styles from '../../../styles/Problems.module.scss';
 import withApollo from '../../../utils/withApollo';
-import {
-  FaClock,
-  FaDiceOne,
-  FaDiceSix,
-  FaDiceThree,
-  FaPlusSquare,
-  FaRegClock,
-  FaSyncAlt,
-} from 'react-icons/fa';
+import { FaPlusSquare, FaSyncAlt } from 'react-icons/fa';
 import { useSorting } from '../../../hooks/useSorting';
+import { SortButton } from '../../../components/Button/SortButton';
 
-const limit = 15;
+const limit = 18;
 const Problems = () => {
   const router = useRouter();
   const boardId = typeof router.query.id === 'string' ? router.query.id : '';
 
   const [
     { selectedOrder, selectedSort, offsetRef, gradeStateRef },
-    { setOffset, toggleDateSort, resetSort, toggleGradeSort },
+    { toggleDateSort, resetSort, toggleGradeSort },
   ] = useSorting();
 
   const { data, loading, error, fetchMore, client } = useGetProblemsQuery({
@@ -135,40 +128,19 @@ const Problems = () => {
             </Link>
           </div>
         )}
+
         <div className={styles.toolbar}>
-          <button
-            className={'btn btn-icon btn-right'}
-            aria-label='Toggle Date Sort'
-            title='Toggle Date Sort'
-            onClick={() => {
-              toggleDateSort();
-              client.cache.evict({ fieldName: 'getProblems' });
-            }}
-          >
-            {selectedOrder.current === 'DESC' ||
-            selectedSort.current === 'GRADE' ? (
-              <FaClock size={26} />
-            ) : (
-              <FaRegClock size={26} />
-            )}
-          </button>
-          <button
-            className={'btn btn-icon btn-right'}
-            aria-label='Toggle Grade Sort'
-            title='Toggle Grade Sort'
-            onClick={() => {
-              toggleGradeSort();
-              client.cache.evict({ fieldName: 'getProblems' });
-            }}
-          >
-            {gradeStateRef.current === 0 ? (
-              <FaDiceThree size={26} />
-            ) : gradeStateRef.current === 1 ? (
-              <FaDiceSix size={26} />
-            ) : (
-              <FaDiceOne size={26} />
-            )}
-          </button>
+          <SortButton
+            toggleSort={toggleDateSort}
+            state={selectedSort}
+            order={selectedOrder}
+            client={client}
+          />
+          <SortButton
+            toggleSort={toggleGradeSort}
+            state={gradeStateRef}
+            client={client}
+          />
         </div>
 
         <div>
@@ -196,7 +168,6 @@ const Problems = () => {
             className={'btn btn-fetchMore'}
             onClick={() => {
               offsetRef.current += limit;
-              setOffset(offsetRef.current);
               fetchMore({
                 variables: {
                   options: {
