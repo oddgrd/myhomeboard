@@ -7,7 +7,7 @@ export interface Coords {
 }
 
 export const useCanvas = () => {
-  const canvas = useRef<HTMLCanvasElement>();
+  const canvas = useRef<HTMLCanvasElement | null>(null);
   const coordsRef = useRef<Coords[]>([]);
   const [currentColor, setCurrentColor] = useState('#00FF00');
   const lineWidth = 2.2;
@@ -117,5 +117,5 @@ export const useCanvas = () => {
       undo,
       loadFromCoords,
     },
-  ];
+  ] as const;
 };

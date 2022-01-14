@@ -35,9 +35,8 @@ const Problem = () => {
   });
 
   useEffect(() => {
-    if (!initViewer) return;
     initViewer();
-    if (!loadFromCoords || !data?.getProblem) return;
+    if (!data?.getProblem) return;
     loadFromCoords(data.getProblem.coordinates);
   }, [data?.getProblem, initViewer, loadFromCoords]);
 

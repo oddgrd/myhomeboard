@@ -3,7 +3,7 @@ import Image from 'next/image';
 import styles from '../styles/Canvas.module.scss';
 
 interface Props {
-  canvasRef?: React.MutableRefObject<HTMLCanvasElement | undefined>;
+  canvasRef: React.MutableRefObject<HTMLCanvasElement | null>;
   layoutUrl: string;
 }
 
@@ -12,7 +12,7 @@ export const Canvas = ({ canvasRef, layoutUrl }: Props) => {
     <div className={styles.container}>
       <canvas
         className={styles.canvas}
-        ref={canvasRef as any}
+        ref={canvasRef}
         width={350}
         height={478}
       />

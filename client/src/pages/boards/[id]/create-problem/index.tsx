@@ -24,7 +24,7 @@ const CreateProblem = () => {
   });
 
   useEffect(() => {
-    if (!init || !data?.getBoard) return;
+    if (!data?.getBoard) return;
     init();
   }, [init, data?.getBoard]);
 
@@ -54,7 +54,7 @@ const CreateProblem = () => {
             <Toolbar {...toolbarProps} />
           </div>
           <ProblemForm
-            coords={coords?.current}
+            coords={coords.current}
             boardId={boardId}
             layoutId={data?.getBoard.currentLayout?.id}
             angles={data?.getBoard.angles}
