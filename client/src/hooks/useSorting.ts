@@ -7,10 +7,39 @@ export const useSorting = () => {
   const selectedSort = useRef('DATE');
   const [offset, setOffset] = useState(0);
   const offsetRef = useRef(0);
-  
-  const toggleOrder = () => {
+  const [gradeState, setGradeState] = useState(0);
+  const gradeStateRef = useRef(0);
+
+  const toggleDateSort = () => {
+    selectedSort.current = 'DATE';
+    setSort(selectedSort.current);
     selectedOrder.current = selectedOrder.current === 'DESC' ? 'ASC' : 'DESC';
     setOrder(selectedOrder.current);
+    offsetRef.current = 0;
+    setOffset(offsetRef.current);
+    gradeStateRef.current = 0;
+    setGradeState(gradeStateRef.current);
+  };
+
+  const toggleGradeSort = () => {
+    selectedSort.current = 'GRADE';
+    setSort(selectedSort.current);
+    offsetRef.current = 0;
+    setOffset(offsetRef.current);
+
+    if (gradeStateRef.current === 0) {
+      gradeStateRef.current += 1;
+      setGradeState(gradeStateRef.current);
+      selectedOrder.current = 'DESC';
+      setOrder(selectedOrder.current);
+    } else if (gradeStateRef.current === 1) {
+      gradeStateRef.current += 1;
+      setGradeState(gradeStateRef.current);
+      selectedOrder.current = 'ASC';
+      setOrder(selectedOrder.current);
+    } else {
+      resetSort();
+    }
   };
 
   const resetSort = () => {
@@ -20,8 +49,10 @@ export const useSorting = () => {
     setSort(selectedSort.current);
     offsetRef.current = 0;
     setOffset(offsetRef.current);
-  }
-  
+    gradeStateRef.current = 0;
+    setGradeState(gradeStateRef.current);
+  };
+
   useEffect(() => {
     selectedOrder.current = window.localStorage.getItem('order') || 'DESC';
     setOrder(selectedOrder.current);
@@ -29,6 +60,10 @@ export const useSorting = () => {
     setSort(selectedSort.current);
     offsetRef.current = parseInt(window.localStorage.getItem('offset') || '0');
     setOffset(offsetRef.current);
+    gradeStateRef.current = parseInt(
+      window.localStorage.getItem('gradeState') || '0'
+    );
+    setGradeState(gradeStateRef.current);
   }, []);
 
   useEffect(() => {
@@ -40,12 +75,22 @@ export const useSorting = () => {
   useEffect(() => {
     window.localStorage.setItem('order', selectedOrder.current);
   }, [order]);
+  useEffect(() => {
+    window.localStorage.setItem('gradeState', gradeStateRef.current.toString());
+  }, [gradeState]);
 
   return [
     {
-      order, selectedOrder, sort, selectedSort, offset, offsetRef
-    }, {
-      setOrder, setSort, setOffset, toggleOrder, resetSort
-    }
+      selectedOrder,
+      selectedSort,
+      offsetRef,
+      gradeStateRef,
+    },
+    {
+      setOffset,
+      toggleDateSort,
+      resetSort,
+      toggleGradeSort
+    },
   ] as const;
-}
+};

@@ -214,7 +214,7 @@ export class ProblemResolver {
     if (sort === "GRADE") {
       problems = await getConnection().query(`
       ${baseQuery}
-      ORDER BY COALESCE("consensusGrade", p.grade) ${order ? `ASC` : `DESC`}, p.id ${order ? `ASC` : `DESC`}
+      ORDER BY COALESCE("consensusGrade", p.grade) ${order ? `ASC` : `DESC`}, p."createdAt" ${order ? `ASC` : `DESC`}
       LIMIT $2
       OFFSET $3;
     `, [boardId, realLimitPlusOne, offset]);

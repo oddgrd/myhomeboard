@@ -27,8 +27,8 @@ const Problems = () => {
   const boardId = typeof router.query.id === 'string' ? router.query.id : '';
 
   const [
-    { selectedOrder, selectedSort, offsetRef },
-    { setOrder, setSort, setOffset, toggleOrder, resetSort },
+    { selectedOrder, selectedSort, offsetRef, gradeStateRef },
+    { setOffset, toggleDateSort, resetSort, toggleGradeSort },
   ] = useSorting();
 
   const { data, loading, error, fetchMore, client } = useGetProblemsQuery({
@@ -141,12 +141,7 @@ const Problems = () => {
             aria-label='Toggle Date Sort'
             title='Toggle Date Sort'
             onClick={() => {
-              toggleOrder();
-
-              selectedSort.current = 'DATE';
-              setSort(selectedSort.current);
-              offsetRef.current = 0;
-              setOffset(offsetRef.current);
+              toggleDateSort();
               client.cache.evict({ fieldName: 'getProblems' });
             }}
           >
@@ -162,23 +157,13 @@ const Problems = () => {
             aria-label='Toggle Grade Sort'
             title='Toggle Grade Sort'
             onClick={() => {
-              if (selectedSort.current === 'DATE') {
-                selectedOrder.current = 'DESC';
-                setOrder(selectedOrder.current);
-              } else {
-                toggleOrder();
-              }
-              selectedSort.current = 'GRADE';
-              setSort(selectedSort.current);
-              offsetRef.current = 0;
-              setOffset(offsetRef.current);
+              toggleGradeSort();
               client.cache.evict({ fieldName: 'getProblems' });
             }}
           >
-            {selectedSort.current === 'DATE' ? (
+            {gradeStateRef.current === 0 ? (
               <FaDiceThree size={26} />
-            ) : selectedSort.current === 'GRADE' &&
-              selectedOrder.current === 'DESC' ? (
+            ) : gradeStateRef.current === 1 ? (
               <FaDiceSix size={26} />
             ) : (
               <FaDiceOne size={26} />
