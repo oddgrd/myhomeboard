@@ -13,6 +13,7 @@ import { Inputfield } from './Inputfield';
 import { SelectField } from './SelectField';
 import { toast } from 'react-toastify';
 import { toErrorMap } from '../../utils/toErrorMap';
+import { useSorting } from '../../hooks/useSorting';
 
 interface Props {
   coords?: CoordinatesInput[];
@@ -33,7 +34,7 @@ interface Values {
 export const ProblemForm = ({ coords, boardId, layoutId, angles }: Props) => {
   const [createProblem] = useCreateProblemMutation();
   const router = useRouter();
-
+  const [{}, { resetSort }] = useSorting();
   if (!layoutId) return null;
   return (
     <Formik
@@ -76,7 +77,7 @@ export const ProblemForm = ({ coords, boardId, layoutId, angles }: Props) => {
           setErrors(toErrorMap(response.data.createProblem.errors));
         } else if (response.data?.createProblem.problem) {
           toast.success(`Problem created  🧗`);
-          window.localStorage.setItem('order', 'DESC');
+          resetSort();
           router.push(`/boards/${boardId}`);
         }
       }}
