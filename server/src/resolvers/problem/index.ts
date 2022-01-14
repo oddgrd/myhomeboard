@@ -15,6 +15,7 @@ import {
   PaginatedProblems,
   EditProblemInput,
   ProblemResponse,
+  GetProblemsOptions,
 } from './types';
 import { Problem } from '../../entities/Problem';
 import { Context } from '../../types/context';
@@ -163,51 +164,65 @@ export class ProblemResolver {
     return true;
   }
 
-  // Get all problems with cursor pagination and avg grade and rating from ascents
+  // Cursor pagination when sorting by date (default),
+  // offset/limit when sorting by grade
   @Query(() => PaginatedProblems)
   async getProblems(
-    @Arg('boardId') boardId: string,
-    @Arg('limit', () => Int!) limit: number,
-    @Arg('order', () => Boolean!) order: boolean,
-    @Arg('cursor', () => String, { nullable: true }) cursor: string | null
+    @Arg('options') options: GetProblemsOptions
   ): Promise<PaginatedProblems> {
-    // If there are more posts left than limit, set hasMore boolean to true
-    const realLimit = Math.min(50, limit); // max limit 50
+    const {limit, sort, boardId, cursor, order, offset} = options;
+
+    const realLimit = Math.min(50, limit);
     const realLimitPlusOne = realLimit + 1;
 
-    const replacements: any[] = [boardId, realLimitPlusOne];
-
-    if (cursor) {
-      replacements.push(new Date(parseInt(cursor)));
-    }
-    const problems = await getConnection().query(`
+    const baseQuery = `
       SELECT 
-        p.id, p.title, p.grade, p.angle, p."creatorId", p."createdAt", p."boardId",
-        json_build_object(
-          'id', u.id,
-          'name', u.name
-        ) creator,
-        COALESCE(ascent."consensusGrade", null) AS "consensusGrade",
-        COALESCE(ascent."consensusRating", null) AS "consensusRating",
-        COALESCE(ascent."ascentIds", '[]') as "ascentIds"
-      FROM problem p
-      LEFT JOIN LATERAL (
-        SELECT AVG(ascent.grade)::numeric(10) AS "consensusGrade",
-               AVG(ascent.rating)::numeric(10) AS "consensusRating",
-               json_agg(ascent."userId") AS "ascentIds"
-        FROM ascent
-        WHERE ascent."problemId" = p.id
-      ) ascent ON true
-      INNER JOIN "user" u ON u.id = p."creatorId"
-      WHERE p."boardId" = $1 ${cursor && order ? `AND p."createdAt" > $3` : cursor && !order ? `AND p."createdAt" < $3` : ""}
-      ORDER BY p."createdAt" ${order ? `ASC` : `DESC`}
-      LIMIT $2;
+          p.id, p.title, p.grade, p.angle, p."creatorId", p."createdAt", p."boardId",
+          json_build_object(
+            'id', u.id,
+            'name', u.name
+          ) creator,
+          COALESCE(ascent."consensusGrade", null) AS "consensusGrade",
+          COALESCE(ascent."consensusRating", null) AS "consensusRating",
+          COALESCE(ascent."ascentIds", '[]') as "ascentIds"
+        FROM problem p
+        LEFT JOIN LATERAL (
+          SELECT AVG(ascent.grade)::numeric(10) AS "consensusGrade",
+                AVG(ascent.rating)::numeric(10) AS "consensusRating",
+                json_agg(ascent."userId") AS "ascentIds"
+          FROM ascent
+          WHERE ascent."problemId" = p.id
+        ) ascent ON true
+        INNER JOIN "user" u ON u.id = p."creatorId"
+        WHERE p."boardId" = $1
+    `;
 
-    `, replacements);
+    let problems;
+    if (sort === "DATE") {
+      const replacements: any[] = [boardId, realLimitPlusOne];
+      if (cursor) {
+        replacements.push(new Date(parseInt(cursor)));
+      }
+      problems = await getConnection().query(`
+        ${baseQuery}
+        ${cursor && order ? `AND p."createdAt" > $3` : cursor && !order ? `AND p."createdAt" < $3` : ""}
+        ORDER BY p."createdAt" ${order ? `ASC` : `DESC`}
+        LIMIT $2;
+      `, replacements);
+    }
+
+    if (sort === "GRADE") {
+      problems = await getConnection().query(`
+      ${baseQuery}
+      ORDER BY COALESCE("consensusGrade", p.grade) ${order ? `ASC` : `DESC`}, p.id ${order ? `ASC` : `DESC`}
+      LIMIT $2
+      OFFSET $3;
+    `, [boardId, realLimitPlusOne, offset]);
+    }
 
     return {
       // Cursor pagination with ASC order gives one duplicate
-      problems: problems.slice(cursor && order ? 1 : 0, realLimit),
+      problems: problems.slice(cursor && sort === "DATE" && order ? 1 : 0, realLimit),
       hasMore: problems.length === realLimitPlusOne,
     };
   }

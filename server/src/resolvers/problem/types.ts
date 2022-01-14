@@ -125,6 +125,7 @@ export class ProblemItem {
   @Field(() => String)
   createdAt: Date;
 }
+
 @ObjectType()
 export class PaginatedProblems {
   @Field(() => [ProblemItem])
@@ -132,4 +133,25 @@ export class PaginatedProblems {
 
   @Field()
   hasMore: boolean;
+}
+
+@InputType()
+export class GetProblemsOptions {
+  @Field()
+  boardId: string;
+
+  @Field()
+  limit: number;
+
+  @Field()
+  order: boolean;
+
+  @Field()
+  sort: string;
+
+  @Field()
+  offset: number;
+
+  @Field(() => String, { nullable: true })
+  cursor: string;
 }
