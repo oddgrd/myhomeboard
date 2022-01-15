@@ -4,11 +4,17 @@ import Link from 'next/link';
 import { FaGithub } from 'react-icons/fa';
 import { useCurves } from '../hooks/useCurves';
 import styles from '../styles/Landing.module.scss';
-import { LandingHeader } from '../components/LandingHeader';
+import Image from 'next/image';
+import logo from '../assets/images/Logo.svg';
 
 const Landing = () => {
-  const { layeredTopWave, layeredBottomWave, layeredTopWave2, blobVariants } =
-    useCurves();
+  const {
+    layeredTopWave,
+    layeredBottomWave,
+    layeredTopWave2,
+    blobVariants,
+    startBlobVariants,
+  } = useCurves();
   return (
     <div>
       <Head>
@@ -25,9 +31,37 @@ const Landing = () => {
         />
         <link rel='icon' href='/favicon.png' />
       </Head>
-      <LandingHeader />
 
       <div className={styles.body}>
+        <div className={styles.start}>
+          <div className={styles.startAnimation}>
+            <motion.svg
+              id={styles.blobSvg}
+              initial='start'
+              animate='end'
+              fill='none'
+              xmlns='http://www.w3.org/2000/svg'
+            >
+              <motion.path
+                variants={startBlobVariants}
+                width={350}
+                transition={{
+                  duration: 8,
+                  repeatType: 'reverse',
+                  repeat: Infinity,
+                }}
+                fill='#e9c46a'
+              />
+            </motion.svg>
+            <Image src={logo} width={230} height={230} priority={true} />
+          </div>
+
+          <Link href='/boards'>
+            <a className='btn btn-start'>
+              <strong>GET STARTED</strong>
+            </a>
+          </Link>
+        </div>
         <section className='yellow'>
           {layeredTopWave(
             '120',

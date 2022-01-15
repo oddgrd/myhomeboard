@@ -66,6 +66,14 @@
   &.btn-submit {
     width: 100%;
   }
+  &.btn-start {
+    background: var(--theme-background);
+    color: var(--theme-color);
+    &:hover {
+      background: var(--theme-color);
+      color: var(--theme-background);
+    }
+  }
   &.btn-fetchMore {
     width: 25%;
     margin-top: 0.8rem;
@@ -107,6 +115,12 @@
     }
     &:hover {
       color: var(--theme-color);
+    }
+  }
+  .btn-start {
+    &:hover {
+      color: var(--theme-color);
+      background: var(--theme-background);
     }
   }
 }
