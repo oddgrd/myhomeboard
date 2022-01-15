@@ -46,7 +46,7 @@ const Landing = () => {
                 variants={startBlobVariants}
                 width={350}
                 transition={{
-                  duration: 8,
+                  duration: 7,
                   repeatType: 'reverse',
                   repeat: Infinity,
                 }}
