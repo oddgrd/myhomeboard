@@ -170,7 +170,7 @@ export class ProblemResolver {
   async getProblems(
     @Arg('options') options: GetProblemsOptions
   ): Promise<PaginatedProblems> {
-    const {limit, sort, boardId, cursor, order, offset} = options;
+    const {limit, sort, boardId, cursor, order, offset, searchPattern} = options;
 
     const realLimit = Math.min(50, limit);
     const realLimitPlusOne = realLimit + 1;
@@ -184,7 +184,7 @@ export class ProblemResolver {
           ) creator,
           COALESCE(ascent."consensusGrade", null) AS "consensusGrade",
           COALESCE(ascent."consensusRating", null) AS "consensusRating",
-          COALESCE(ascent."ascentIds", '[]') as "ascentIds"
+          COALESCE(ascent."ascentIds", '[]') AS "ascentIds"
         FROM problem p
         LEFT JOIN LATERAL (
           SELECT AVG(ascent.grade)::numeric(10) AS "consensusGrade",
@@ -220,6 +220,15 @@ export class ProblemResolver {
     `, [boardId, realLimitPlusOne, offset]);
     }
 
+    if (searchPattern) {
+      problems = await getConnection().query(`
+      ${baseQuery}
+      AND p.title ILIKE '%' || $2 || '%'
+      ORDER BY p.title
+      LIMIT $3
+      OFFSET $4;
+    `, [boardId, searchPattern, realLimitPlusOne, offset]);
+    }
     return {
       // Cursor pagination with ASC order gives one duplicate
       problems: problems.slice(cursor && sort === "DATE" && order ? 1 : 0, realLimit),
