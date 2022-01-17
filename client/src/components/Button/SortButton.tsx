@@ -18,17 +18,17 @@ interface Props {
 export const SortButton = ({ toggleSort, state, order, client }: Props) => {
   const grade =
     state.current === 0 ? (
-      <FaDiceThree size={27} />
+      <FaDiceThree size={28} />
     ) : state.current === 1 ? (
-      <FaDiceSix size={27} />
+      <FaDiceSix size={28} />
     ) : (
-      <FaDiceOne size={27} />
+      <FaDiceOne size={28} />
     );
   const date =
     order?.current === 'DESC' || state.current === 'GRADE' ? (
-      <FaClock size={26} />
+      <FaClock size={27} />
     ) : (
-      <FaRegClock size={26} />
+      <FaRegClock size={27} />
     );
 
   return (

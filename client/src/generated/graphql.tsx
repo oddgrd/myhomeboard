@@ -142,6 +142,7 @@ export type GetProblemsOptions = {
   limit: Scalars['Float'];
   offset: Scalars['Float'];
   order: Scalars['Boolean'];
+  searchPattern?: InputMaybe<Scalars['String']>;
   sort: Scalars['String'];
 };
 

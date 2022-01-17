@@ -13,31 +13,59 @@ import withApollo from '../../../utils/withApollo';
 import { FaPlusSquare, FaSyncAlt } from 'react-icons/fa';
 import { useSorting } from '../../../hooks/useSorting';
 import { SortButton } from '../../../components/Button/SortButton';
+import { useEffect, useState } from 'react';
+import { Searchbar } from '../../../components/Searchbar';
 
 const limit = 18;
 const Problems = () => {
   const router = useRouter();
   const boardId = typeof router.query.id === 'string' ? router.query.id : '';
-
+  const [searchPattern, setSearchPattern] = useState('');
   const [
     { selectedOrder, selectedSort, offsetRef, gradeStateRef },
     { toggleDateSort, resetSort, toggleGradeSort },
   ] = useSorting();
 
-  const { data, loading, error, fetchMore, client } = useGetProblemsQuery({
-    variables: {
-      options: {
-        limit,
-        cursor: null,
-        offset: 0,
-        boardId,
-        order: selectedOrder.current === 'ASC',
-        sort: selectedSort.current,
+  const { data, loading, error, fetchMore, client, refetch } =
+    useGetProblemsQuery({
+      variables: {
+        options: {
+          limit,
+          cursor: null,
+          offset: 0,
+          boardId,
+          order: selectedOrder.current === 'ASC',
+          sort: selectedSort.current,
+        },
       },
-    },
-    notifyOnNetworkStatusChange: true,
-  });
-
+      notifyOnNetworkStatusChange: true,
+    });
+  useEffect(() => {
+    if (searchPattern.length === 0) {
+      refetch({
+        options: {
+          limit,
+          cursor: null,
+          offset: 0,
+          boardId,
+          order: selectedOrder.current === 'ASC',
+          sort: selectedSort.current,
+        },
+      });
+    } else {
+      refetch({
+        options: {
+          limit,
+          cursor: null,
+          offset: 0,
+          boardId,
+          order: false,
+          sort: 'DATE',
+          searchPattern: searchPattern,
+        },
+      });
+    }
+  }, [searchPattern]);
   const {
     data: boardData,
     loading: boardLoading,
@@ -121,27 +149,38 @@ const Problems = () => {
       }
     >
       <div className={styles.problems}>
-        {meData?.me && data?.getProblems.problems.length === 0 && (
+        <div className={styles.toolbar}>
+          <Searchbar setSearchPattern={setSearchPattern} />
+          <div className={styles.sortButtons}>
+            <SortButton
+              toggleSort={toggleDateSort}
+              state={selectedSort}
+              order={selectedOrder}
+              client={client}
+            />
+            <SortButton
+              toggleSort={toggleGradeSort}
+              state={gradeStateRef}
+              client={client}
+            />
+          </div>
+        </div>
+        {meData?.me &&
+        data?.getProblems.problems.length === 0 &&
+        searchPattern.length === 0 ? (
           <div className={styles.createProblem}>
             <Link href={`/boards/${boardId}/create-problem`}>
               <a className='btn'>Create First Problem</a>
             </Link>
           </div>
-        )}
-
-        <div className={styles.toolbar}>
-          <SortButton
-            toggleSort={toggleDateSort}
-            state={selectedSort}
-            order={selectedOrder}
-            client={client}
-          />
-          <SortButton
-            toggleSort={toggleGradeSort}
-            state={gradeStateRef}
-            client={client}
-          />
-        </div>
+        ) : data?.getProblems.problems.length === 0 &&
+          searchPattern.length !== 0 ? (
+          <div className={styles.createProblem}>
+            <p className={styles.searchFailed}>
+              No problems found containing "{searchPattern}"
+            </p>
+          </div>
+        ) : null}
 
         <div>
           {loading && !data ? (
