@@ -160,11 +160,13 @@ const Problems = () => {
               state={selectedSort}
               order={selectedOrder}
               client={client}
+              disable={searchRef.current.length > 0}
             />
             <SortButton
               toggleSort={toggleGradeSort}
               state={gradeStateRef}
               client={client}
+              disable={searchRef.current.length > 0}
             />
           </div>
         </div>

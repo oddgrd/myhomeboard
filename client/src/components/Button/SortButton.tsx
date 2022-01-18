@@ -13,9 +13,16 @@ interface Props {
   state: MutableRefObject<number> | MutableRefObject<string>;
   order?: MutableRefObject<string>;
   client: ApolloClient<any>;
+  disable: boolean;
 }
 
-export const SortButton = ({ toggleSort, state, order, client }: Props) => {
+export const SortButton = ({
+  toggleSort,
+  state,
+  order,
+  client,
+  disable,
+}: Props) => {
   const grade =
     state.current === 0 ? (
       <FaDiceThree size={28} />
@@ -40,6 +47,7 @@ export const SortButton = ({ toggleSort, state, order, client }: Props) => {
         toggleSort();
         client.cache.evict({ fieldName: 'getProblems' });
       }}
+      disabled={disable}
     >
       {order ? date : grade}
     </button>
