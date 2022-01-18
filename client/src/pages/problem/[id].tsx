@@ -32,6 +32,7 @@ const Problem = () => {
     variables: {
       id: problemId,
     },
+    fetchPolicy: 'cache-and-network',
   });
 
   useEffect(() => {
