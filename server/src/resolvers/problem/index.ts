@@ -198,7 +198,7 @@ export class ProblemResolver {
     `;
 
     let problems;
-    if (sort === "DATE") {
+    if (sort === "DATE" && !searchPattern) {
       const replacements: any[] = [boardId, realLimitPlusOne];
       if (cursor) {
         replacements.push(new Date(parseInt(cursor)));
@@ -211,7 +211,7 @@ export class ProblemResolver {
       `, replacements);
     }
 
-    if (sort === "GRADE") {
+    if (sort === "GRADE" && !searchPattern) {
       problems = await getConnection().query(`
       ${baseQuery}
       ORDER BY COALESCE("consensusGrade", p.grade) ${order ? `ASC` : `DESC`}, p."createdAt" ${order ? `ASC` : `DESC`}
