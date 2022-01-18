@@ -13,59 +13,59 @@ import withApollo from '../../../utils/withApollo';
 import { FaPlusSquare, FaSyncAlt } from 'react-icons/fa';
 import { useSorting } from '../../../hooks/useSorting';
 import { SortButton } from '../../../components/Button/SortButton';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { Searchbar } from '../../../components/Searchbar';
+import { useSearch } from '../../../hooks/useSearch';
 
 const limit = 18;
 const Problems = () => {
   const router = useRouter();
   const boardId = typeof router.query.id === 'string' ? router.query.id : '';
-  const [searchPattern, setSearchPattern] = useState('');
+
+  const didMountRef = useRef(false);
+  const [searchPattern, setSearchPattern, searchRef] = useSearch();
   const [
     { selectedOrder, selectedSort, offsetRef, gradeStateRef },
     { toggleDateSort, resetSort, toggleGradeSort },
   ] = useSorting();
 
+  const initialOptions = {
+    limit,
+    cursor: null,
+    offset: 0,
+    boardId,
+    order: selectedOrder.current === 'ASC',
+    sort: selectedSort.current,
+  };
+
   const { data, loading, error, fetchMore, client, refetch } =
     useGetProblemsQuery({
       variables: {
-        options: {
-          limit,
-          cursor: null,
-          offset: 0,
-          boardId,
-          order: selectedOrder.current === 'ASC',
-          sort: selectedSort.current,
-        },
+        options: initialOptions,
       },
       notifyOnNetworkStatusChange: true,
     });
+
   useEffect(() => {
-    if (searchPattern.length === 0) {
-      refetch({
-        options: {
-          limit,
-          cursor: null,
-          offset: 0,
-          boardId,
-          order: selectedOrder.current === 'ASC',
-          sort: selectedSort.current,
-        },
-      });
+    if (didMountRef.current) {
+      resetSort();
+      if (searchPattern.length === 0) {
+        refetch({
+          options: initialOptions,
+        });
+      } else {
+        refetch({
+          options: {
+            ...initialOptions,
+            searchPattern,
+          },
+        });
+      }
     } else {
-      refetch({
-        options: {
-          limit,
-          cursor: null,
-          offset: 0,
-          boardId,
-          order: false,
-          sort: 'DATE',
-          searchPattern: searchPattern,
-        },
-      });
+      didMountRef.current = true;
     }
   }, [searchPattern]);
+
   const {
     data: boardData,
     loading: boardLoading,
@@ -150,7 +150,10 @@ const Problems = () => {
     >
       <div className={styles.problems}>
         <div className={styles.toolbar}>
-          <Searchbar setSearchPattern={setSearchPattern} />
+          <Searchbar
+            setSearchPattern={setSearchPattern}
+            searchRef={searchRef}
+          />
           <div className={styles.sortButtons}>
             <SortButton
               toggleSort={toggleDateSort}
