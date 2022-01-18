@@ -16,6 +16,7 @@ interface Props {
 export const Searchbar = ({ setSearchPattern, searchRef }: Props) => {
   const [input, setInput] = useState('');
   const [showBar, setShowBar] = useState(false);
+  const barRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (searchRef.current.length > 0) {
@@ -24,8 +25,8 @@ export const Searchbar = ({ setSearchPattern, searchRef }: Props) => {
     }
   }, [searchRef.current]);
   useEffect(() => {
-    if (showBar) {
-      document.getElementById('searchbar')!.focus();
+    if (showBar && barRef.current) {
+      barRef.current.focus();
     }
   }, [showBar]);
   useEffect(() => {
@@ -39,7 +40,7 @@ export const Searchbar = ({ setSearchPattern, searchRef }: Props) => {
   return (
     <div className={styles.searchbar}>
       <input
-        id='searchbar'
+        ref={barRef}
         type='text'
         name='input'
         placeholder='Search by title'
