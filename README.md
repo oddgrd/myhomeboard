@@ -20,20 +20,22 @@
 - TypeORM
 - TypeGraphQL
 - Jest
+- Google OAuth
 
 ### Databases
 
-- Postgresql (scheduled back-ups to encrypted S3 bucket)
+- Postgresql
 - Redis (session storage)
 
 ### Cloud Storage
 
 - Cloudinary (Image storage and transformation)
-- AWS S3
+- AWS S3 (Scheduled backups of Postgres DB)
 
-### Authentication
+### Analytics
 
-- Google OAuth
+- Client: Vercel Analytics
+- API: Apollo Studio
 
 ### Deployment
 
