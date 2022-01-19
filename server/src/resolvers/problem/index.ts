@@ -164,13 +164,11 @@ export class ProblemResolver {
     return true;
   }
 
-  // Cursor pagination when sorting by date (default),
-  // offset/limit when sorting by grade
   @Query(() => PaginatedProblems)
   async getProblems(
     @Arg('options') options: GetProblemsOptions
   ): Promise<PaginatedProblems> {
-    const {limit, sort, boardId, cursor, order, offset, searchPattern} = options;
+    const {limit, sort, boardId, order, offset, searchPattern} = options;
 
     const realLimit = Math.min(50, limit);
     const realLimitPlusOne = realLimit + 1;
@@ -196,18 +194,14 @@ export class ProblemResolver {
         INNER JOIN "user" u ON u.id = p."creatorId"
         WHERE p."boardId" = $1
     `;
-
+    const replacements = [boardId, realLimitPlusOne, offset];
     let problems;
     if (sort === "DATE" && !searchPattern) {
-      const replacements: any[] = [boardId, realLimitPlusOne];
-      if (cursor) {
-        replacements.push(new Date(parseInt(cursor)));
-      }
       problems = await getConnection().query(`
         ${baseQuery}
-        ${cursor && order ? `AND p."createdAt" > $3` : cursor && !order ? `AND p."createdAt" < $3` : ""}
         ORDER BY p."createdAt" ${order ? `ASC` : `DESC`}
-        LIMIT $2;
+        LIMIT $2
+        OFFSET $3;
       `, replacements);
     }
 
@@ -217,21 +211,20 @@ export class ProblemResolver {
       ORDER BY COALESCE("consensusGrade", p.grade) ${order ? `ASC` : `DESC`}, p."createdAt" ${order ? `ASC` : `DESC`}
       LIMIT $2
       OFFSET $3;
-    `, [boardId, realLimitPlusOne, offset]);
+    `, replacements);
     }
 
     if (searchPattern) {
       problems = await getConnection().query(`
       ${baseQuery}
-      AND p.title ILIKE '%' || $2 || '%'
+      AND p.title ILIKE '%' || $4 || '%'
       ORDER BY p.title
-      LIMIT $3
-      OFFSET $4;
-    `, [boardId, searchPattern, realLimitPlusOne, offset]);
+      LIMIT $2
+      OFFSET $3;
+    `, [...replacements, searchPattern]);
     }
     return {
-      // Cursor pagination with ASC order gives one duplicate
-      problems: problems.slice(cursor && sort === "DATE" && order ? 1 : 0, realLimit),
+      problems: problems.slice(0, realLimit),
       hasMore: problems.length === realLimitPlusOne,
     };
   }

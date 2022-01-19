@@ -153,8 +153,5 @@ export class GetProblemsOptions {
   offset: number;
 
   @Field(() => String, { nullable: true })
-  cursor: string;
-
-  @Field(() => String, { nullable: true })
   searchPattern: string;
 }
