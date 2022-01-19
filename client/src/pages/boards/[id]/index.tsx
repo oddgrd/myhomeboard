@@ -18,7 +18,7 @@ import { Searchbar } from '../../../components/Searchbar';
 import { useSearch } from '../../../hooks/useSearch';
 import { useInfiniteScroll } from '../../../hooks/useInfiniteScroll';
 
-const limit = 16;
+const limit = 18;
 const Problems = () => {
   const router = useRouter();
   const boardId = typeof router.query.id === 'string' ? router.query.id : '';
@@ -46,7 +46,12 @@ const Problems = () => {
     });
 
   const getMore = () => {
-    offsetRef.current += limit;
+    if (didMountRef.current) {
+      offsetRef.current += limit;
+    } else {
+      offsetRef.current = limit;
+      didMountRef.current = true;
+    }
     fetchMore({
       variables: {
         options: {
