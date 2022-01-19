@@ -16,8 +16,9 @@ import { SortButton } from '../../../components/Button/SortButton';
 import { useEffect, useRef } from 'react';
 import { Searchbar } from '../../../components/Searchbar';
 import { useSearch } from '../../../hooks/useSearch';
+import { useInfiniteScroll } from '../../../hooks/useInfiniteScroll';
 
-const limit = 18;
+const limit = 16;
 const Problems = () => {
   const router = useRouter();
   const boardId = typeof router.query.id === 'string' ? router.query.id : '';
@@ -31,13 +32,11 @@ const Problems = () => {
 
   const initialOptions = {
     limit,
-    cursor: null,
     offset: 0,
     boardId,
     order: selectedOrder.current === 'ASC',
     sort: selectedSort.current,
   };
-
   const { data, loading, error, fetchMore, client, refetch } =
     useGetProblemsQuery({
       variables: {
@@ -45,6 +44,23 @@ const Problems = () => {
       },
       notifyOnNetworkStatusChange: true,
     });
+
+  const getMore = () => {
+    offsetRef.current += limit;
+    fetchMore({
+      variables: {
+        options: {
+          ...initialOptions,
+          offset: offsetRef.current,
+        },
+      },
+    });
+  };
+
+  const [lastElementRef] = useInfiniteScroll(
+    data?.getProblems.hasMore ? getMore : () => {},
+    loading
+  );
 
   useEffect(() => {
     if (didMountRef.current) {
@@ -205,32 +221,9 @@ const Problems = () => {
         </div>
       </div>
       {
-        // Cursor pagination when sorting by date,
-        // offset/limit when sorting by grade
+        // infinite scroll div
         data && data.getProblems.hasMore ? (
-          <button
-            className={'btn btn-fetchMore'}
-            onClick={() => {
-              offsetRef.current += limit;
-              fetchMore({
-                variables: {
-                  options: {
-                    boardId,
-                    limit,
-                    sort: selectedSort.current,
-                    cursor:
-                      data.getProblems.problems[
-                        data.getProblems.problems.length - 1
-                      ].createdAt,
-                    order: selectedOrder.current === 'ASC',
-                    offset: offsetRef.current,
-                  },
-                },
-              });
-            }}
-          >
-            Load More
-          </button>
+          <div ref={lastElementRef}></div>
         ) : null
       }
     </Layout>

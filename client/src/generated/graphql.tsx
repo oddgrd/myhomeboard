@@ -138,7 +138,6 @@ export type FieldError = {
 
 export type GetProblemsOptions = {
   boardId: Scalars['String'];
-  cursor?: InputMaybe<Scalars['String']>;
   limit: Scalars['Float'];
   offset: Scalars['Float'];
   order: Scalars['Boolean'];
