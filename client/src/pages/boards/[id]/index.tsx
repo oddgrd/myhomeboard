@@ -13,12 +13,12 @@ import withApollo from '../../../utils/withApollo';
 import { FaPlusSquare, FaSyncAlt } from 'react-icons/fa';
 import { useSorting } from '../../../hooks/useSorting';
 import { SortButton } from '../../../components/Button/SortButton';
-import { useEffect, useLayoutEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { Searchbar } from '../../../components/Searchbar';
 import { useSearch } from '../../../hooks/useSearch';
 import { useInfiniteScroll } from '../../../hooks/useInfiniteScroll';
 
-const limit = 18;
+const limit = 4;
 const Problems = () => {
   const router = useRouter();
   const boardId = typeof router.query.id === 'string' ? router.query.id : '';
@@ -27,7 +27,7 @@ const Problems = () => {
   const [searchPattern, setSearchPattern, searchRef] = useSearch();
   const [
     { selectedOrder, selectedSort, offsetRef, gradeStateRef },
-    { toggleDateSort, resetSort, toggleGradeSort, setOffset },
+    { toggleDateSort, resetSort, toggleGradeSort },
   ] = useSorting();
 
   const initialOptions = {
@@ -44,16 +44,9 @@ const Problems = () => {
       },
       notifyOnNetworkStatusChange: true,
     });
-  useLayoutEffect(() => {
-    if (!data?.getProblems.problems) return;
-    if (data.getProblems.problems.length <= limit) {
-      offsetRef.current = 0;
-      setOffset(offsetRef.current);
-    }
-  }, []);
+
   const getMore = () => {
     offsetRef.current += limit;
-    setOffset(offsetRef.current);
     fetchMore({
       variables: {
         options: {

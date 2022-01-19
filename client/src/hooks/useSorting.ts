@@ -4,7 +4,6 @@ export const useSorting = () => {
   const [order, setOrder] = useState('DESC');
   const selectedOrder = useRef('DESC');
   const selectedSort = useRef('DATE');
-  const [offset, setOffset] = useState(0);
   const offsetRef = useRef(0);
   const [gradeState, setGradeState] = useState(0);
   const gradeStateRef = useRef(0);
@@ -46,7 +45,6 @@ export const useSorting = () => {
     setOrder(selectedOrder.current);
     selectedSort.current = 'DATE';
     offsetRef.current = 0;
-    setOffset(offsetRef.current);
     gradeStateRef.current = 0;
     setGradeState(gradeStateRef.current);
   };
@@ -60,7 +58,6 @@ export const useSorting = () => {
     setGradeState(gradeStateRef.current);
     selectedSort.current = window.localStorage.getItem('sort') || 'DATE';
     offsetRef.current = parseInt(window.localStorage.getItem('offset') || '0');
-    setOffset(offsetRef.current);
   }, []);
 
   useEffect(() => {
@@ -87,7 +84,6 @@ export const useSorting = () => {
       toggleDateSort,
       resetSort,
       toggleGradeSort,
-      setOffset
     },
   ] as const;
 };

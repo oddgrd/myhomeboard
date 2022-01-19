@@ -5,10 +5,14 @@ import { Spinner } from '../components/Spinner';
 import { useGetBoardsQuery, useMeQuery } from '../generated/graphql';
 import styles from '../styles/Problems.module.scss';
 import withApollo from '../utils/withApollo';
+import { useEffect } from 'react';
 
 const Boards = () => {
   const { data, loading, error } = useGetBoardsQuery();
   const { data: meData } = useMeQuery({ fetchPolicy: 'cache-and-network' });
+  useEffect(() => {
+    window.localStorage.setItem('offset', '0');
+  });
 
   if (!loading && !data) {
     return (
