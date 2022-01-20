@@ -72,6 +72,15 @@ export class Problem extends BaseEntity {
   @ManyToOne(() => Layout, (layout) => layout.problems)
   layout: Layout;
 
+  @Field(() => [String], {defaultValue: []})
+  ascentIds: String[];
+
+  @Field(() => Int, {nullable: true})
+  avgGrade: number;
+
+  @Field(() => Int, {nullable: true})
+  avgRating: number;
+
   @Field(() => String)
   @CreateDateColumn()
   createdAt: Date;

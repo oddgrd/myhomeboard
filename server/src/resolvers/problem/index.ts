@@ -2,8 +2,8 @@ import { isAuth } from '../../middleware/isAuth';
 import {
   Arg,
   Ctx,
-  FieldResolver,
   Int,
+  FieldResolver,
   Mutation,
   Query,
   Resolver,
@@ -175,18 +175,18 @@ export class ProblemResolver {
 
     const baseQuery = `
       SELECT 
-          p.id, p.title, p.grade, p.angle, p."creatorId", p."createdAt", p."boardId",
+          p.*,
           json_build_object(
             'id', u.id,
             'name', u.name
           ) creator,
-          COALESCE(ascent."consensusGrade", null) AS "consensusGrade",
-          COALESCE(ascent."consensusRating", null) AS "consensusRating",
+          COALESCE(ascent."avgGrade", null) AS "avgGrade",
+          COALESCE(ascent."avgRating", null) AS "avgRating",
           COALESCE(ascent."ascentIds", '[]') AS "ascentIds"
         FROM problem p
         LEFT JOIN LATERAL (
-          SELECT AVG(ascent.grade)::numeric(10) AS "consensusGrade",
-                AVG(ascent.rating)::numeric(10) AS "consensusRating",
+          SELECT AVG(ascent.grade)::numeric(10) AS "avgGrade",
+                AVG(ascent.rating)::numeric(10) AS "avgRating",
                 json_agg(ascent."userId") AS "ascentIds"
           FROM ascent
           WHERE ascent."problemId" = p.id
@@ -208,7 +208,7 @@ export class ProblemResolver {
     if (sort === "GRADE" && !searchPattern) {
       problems = await getConnection().query(`
       ${baseQuery}
-      ORDER BY COALESCE("consensusGrade", p.grade) ${order ? `ASC` : `DESC`}, p."createdAt" ${order ? `ASC` : `DESC`}
+      ORDER BY COALESCE("avgGrade", p.grade) ${order ? `ASC` : `DESC`}, p."createdAt" ${order ? `ASC` : `DESC`}
       LIMIT $2
       OFFSET $3;
     `, replacements);
@@ -239,7 +239,6 @@ export class ProblemResolver {
       .leftJoinAndSelect('ascent.user', 'user')
       .where('problem.id = :id', { id })
       .getOne();
-
     if (!problem) {
       return null;
     }
