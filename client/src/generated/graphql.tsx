@@ -253,13 +253,16 @@ export type MutationWhitelistUserArgs = {
 export type PaginatedProblems = {
   __typename?: 'PaginatedProblems';
   hasMore: Scalars['Boolean'];
-  problems: Array<ProblemItem>;
+  problems: Array<Problem>;
 };
 
 export type Problem = {
   __typename?: 'Problem';
   angle: Scalars['Int'];
+  ascentIds?: Maybe<Array<Scalars['String']>>;
   ascents: Array<Ascent>;
+  avgGrade?: Maybe<Scalars['Int']>;
+  avgRating?: Maybe<Scalars['Int']>;
   board: Board;
   boardId: Scalars['String'];
   consensusGrade?: Maybe<Scalars['Int']>;
@@ -276,22 +279,6 @@ export type Problem = {
   sendStatus?: Maybe<Scalars['Boolean']>;
   title: Scalars['String'];
   updatedAt: Scalars['String'];
-};
-
-export type ProblemItem = {
-  __typename?: 'ProblemItem';
-  angle: Scalars['Int'];
-  ascentIds: Array<Scalars['String']>;
-  boardId: Scalars['String'];
-  consensusGrade?: Maybe<Scalars['Int']>;
-  consensusRating?: Maybe<Scalars['Int']>;
-  createdAt: Scalars['String'];
-  creator: User;
-  creatorId: Scalars['String'];
-  grade: Scalars['Int'];
-  id: Scalars['String'];
-  sendStatus?: Maybe<Scalars['Boolean']>;
-  title: Scalars['String'];
 };
 
 export type ProblemResponse = {
@@ -516,7 +503,7 @@ export type GetProblemsQueryVariables = Exact<{
 }>;
 
 
-export type GetProblemsQuery = { __typename?: 'Query', getProblems: { __typename?: 'PaginatedProblems', hasMore: boolean, problems: Array<{ __typename?: 'ProblemItem', id: string, title: string, grade: number, angle: number, consensusGrade?: number | null | undefined, consensusRating?: number | null | undefined, creatorId: string, createdAt: string, boardId: string, ascentIds: Array<string>, creator: { __typename?: 'User', id: string, name: string } }> } };
+export type GetProblemsQuery = { __typename?: 'Query', getProblems: { __typename?: 'PaginatedProblems', hasMore: boolean, problems: Array<{ __typename?: 'Problem', id: string, title: string, grade: number, angle: number, avgGrade?: number | null | undefined, avgRating?: number | null | undefined, creatorId: string, createdAt: string, boardId: string, ascentIds?: Array<string> | null | undefined, creator: { __typename?: 'User', id: string, name: string } }> } };
 
 export type GetSentProblemsQueryVariables = Exact<{
   userId: Scalars['String'];
@@ -1249,8 +1236,8 @@ export const GetProblemsDocument = gql`
       title
       grade
       angle
-      consensusGrade
-      consensusRating
+      avgGrade
+      avgRating
       creatorId
       createdAt
       boardId

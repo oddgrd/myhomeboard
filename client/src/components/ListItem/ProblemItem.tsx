@@ -10,8 +10,8 @@ interface Props {
     id: string;
     title: string;
     grade: number;
-    consensusGrade?: number | null;
-    consensusRating?: number | null;
+    avgGrade?: number | null;
+    avgRating?: number | null;
     angle: number;
     creatorId: string;
     createdAt: string;
@@ -27,8 +27,8 @@ interface Props {
 }
 
 export const ProblemItem = ({ problem, userId }: Props) => {
-  const { title, grade, consensusRating, consensusGrade, id, creator } =
-    problem;
+  const { title, grade, avgRating, avgGrade, id, creator } = problem;
+
   return (
     <>
       <Link href={`/problem/${id}`}>
@@ -45,13 +45,13 @@ export const ProblemItem = ({ problem, userId }: Props) => {
             </div>
             <div className={styles.right}>
               <p>
-                {typeof consensusGrade === 'number'
-                  ? grades[consensusGrade].label
+                {typeof avgGrade === 'number'
+                  ? grades[avgGrade].label
                   : grades[grade].label}
               </p>
               <p>
-                {typeof consensusRating === 'number' ? (
-                  <StarRating rating={consensusRating} />
+                {typeof avgRating === 'number' ? (
+                  <StarRating rating={avgRating} />
                 ) : (
                   'Project'
                 )}

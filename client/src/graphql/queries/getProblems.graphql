@@ -6,8 +6,8 @@ query GetProblems($options: GetProblemsOptions!) {
       title
       grade
       angle
-      consensusGrade
-      consensusRating
+      avgGrade
+      avgRating
       creatorId
       createdAt
       boardId

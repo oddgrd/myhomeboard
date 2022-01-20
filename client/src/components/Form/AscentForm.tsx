@@ -51,7 +51,6 @@ export const AscentForm = ({ id, onClose, editProps, boardId }: Props) => {
             variables: { options: values },
             update: (cache) => {
               cache.evict({ id: 'Problem:' + id });
-              cache.evict({ fieldName: 'getProblems' });
             },
           });
           if (errors) setError(errors[0].message);
@@ -61,7 +60,6 @@ export const AscentForm = ({ id, onClose, editProps, boardId }: Props) => {
             variables: { options: { ...values, boardId } },
             update: (cache) => {
               cache.evict({ id: 'Problem:' + id });
-              cache.evict({ fieldName: 'getProblems' });
             },
           });
           if (errors) setError(errors[0].message);
