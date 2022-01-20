@@ -5,7 +5,6 @@ import { FaGithub } from 'react-icons/fa';
 import { useCurves } from '../hooks/useCurves';
 import styles from '../styles/Landing.module.scss';
 import Image from 'next/image';
-import logo from '../assets/images/Logo.svg';
 
 const Landing = () => {
   const {
@@ -53,7 +52,7 @@ const Landing = () => {
                 fill='#e9c46a'
               />
             </motion.svg>
-            <Image src={logo} width={230} height={230} priority={true} />
+            <Image src={'/Logo.svg'} width={230} height={230} priority={true} />
           </div>
 
           <Link href='/boards'>
