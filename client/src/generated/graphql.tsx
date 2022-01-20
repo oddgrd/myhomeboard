@@ -376,6 +376,8 @@ export type BoardCoreFragment = { __typename?: 'Board', id: string, creatorId: s
 
 export type LayoutCoreFragment = { __typename?: 'Layout', id: string, title: string, description: string, url: string, creatorId: string, boardId: string, publicId: string, createdAt: string };
 
+export type ProblemItemFragment = { __typename?: 'Problem', id: string, title: string, grade: number, avgGrade?: number | null | undefined, avgRating?: number | null | undefined, angle: number, creatorId: string, createdAt: string, boardId: string, ascentIds?: Array<string> | null | undefined, creator: { __typename?: 'User', id: string, name: string } };
+
 export type AddAscentMutationVariables = Exact<{
   options: AddAscentInput;
 }>;
@@ -503,7 +505,7 @@ export type GetProblemsQueryVariables = Exact<{
 }>;
 
 
-export type GetProblemsQuery = { __typename?: 'Query', getProblems: { __typename?: 'PaginatedProblems', hasMore: boolean, problems: Array<{ __typename?: 'Problem', id: string, title: string, grade: number, angle: number, avgGrade?: number | null | undefined, avgRating?: number | null | undefined, creatorId: string, createdAt: string, boardId: string, ascentIds?: Array<string> | null | undefined, creator: { __typename?: 'User', id: string, name: string } }> } };
+export type GetProblemsQuery = { __typename?: 'Query', getProblems: { __typename?: 'PaginatedProblems', hasMore: boolean, problems: Array<{ __typename?: 'Problem', id: string, title: string, grade: number, avgGrade?: number | null | undefined, avgRating?: number | null | undefined, angle: number, creatorId: string, createdAt: string, boardId: string, ascentIds?: Array<string> | null | undefined, creator: { __typename?: 'User', id: string, name: string } }> } };
 
 export type GetSentProblemsQueryVariables = Exact<{
   userId: Scalars['String'];
@@ -572,6 +574,24 @@ export const LayoutCoreFragmentDoc = gql`
   boardId
   publicId
   createdAt
+}
+    `;
+export const ProblemItemFragmentDoc = gql`
+    fragment ProblemItem on Problem {
+  id
+  title
+  grade
+  avgGrade
+  avgRating
+  angle
+  creatorId
+  createdAt
+  boardId
+  creator {
+    id
+    name
+  }
+  ascentIds
 }
     `;
 export const AddAscentDocument = gql`
@@ -1232,24 +1252,11 @@ export const GetProblemsDocument = gql`
   getProblems(options: $options) {
     hasMore
     problems {
-      id
-      title
-      grade
-      angle
-      avgGrade
-      avgRating
-      creatorId
-      createdAt
-      boardId
-      creator {
-        id
-        name
-      }
-      ascentIds
+      ...ProblemItem
     }
   }
 }
-    `;
+    ${ProblemItemFragmentDoc}`;
 
 /**
  * __useGetProblemsQuery__

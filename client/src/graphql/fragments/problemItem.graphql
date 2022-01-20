@@ -1,0 +1,16 @@
+fragment ProblemItem on Problem {
+  id  
+  title  
+  grade  
+  avgGrade
+  avgRating
+  angle
+  creatorId
+  createdAt
+  boardId
+  creator {
+    id
+    name
+  }
+  ascentIds
+}

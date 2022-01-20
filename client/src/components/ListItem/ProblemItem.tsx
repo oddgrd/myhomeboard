@@ -3,31 +3,15 @@ import { FaCheck } from 'react-icons/fa';
 import styles from '../../styles/ProblemItem.module.scss';
 import { grades } from '../../assets/selectOptions';
 import { StarRating } from './../StarRating';
+import { ProblemItemFragment } from '../../generated/graphql';
 
 interface Props {
-  problem: {
-    __typename?: 'ProblemItem' | undefined;
-    id: string;
-    title: string;
-    grade: number;
-    avgGrade?: number | null;
-    avgRating?: number | null;
-    angle: number;
-    creatorId: string;
-    createdAt: string;
-    boardId: string;
-    creator: {
-      __typename?: 'User';
-      id: string;
-      name: string;
-    };
-    ascentIds: string[];
-  };
+  problem: ProblemItemFragment;
   userId?: string;
 }
 
 export const ProblemItem = ({ problem, userId }: Props) => {
-  const { title, grade, avgRating, avgGrade, id, creator } = problem;
+  const { title, grade, avgRating, avgGrade, id, creator, ascentIds } = problem;
 
   return (
     <>
@@ -37,7 +21,7 @@ export const ProblemItem = ({ problem, userId }: Props) => {
             <div className={styles.main}>
               <p className={styles.title}>
                 {title}{' '}
-                {problem.ascentIds.indexOf(userId || '') !== -1 && (
+                {ascentIds && ascentIds.indexOf(userId || '') !== -1 && (
                   <FaCheck color='#00ddff' />
                 )}
               </p>

@@ -2,20 +2,7 @@ query GetProblems($options: GetProblemsOptions!) {
   getProblems(options: $options) {
     hasMore
     problems {
-      id
-      title
-      grade
-      angle
-      avgGrade
-      avgRating
-      creatorId
-      createdAt
-      boardId
-      creator {
-        id
-        name
-      }
-      ascentIds
+      ...ProblemItem
     }
   }
 }
