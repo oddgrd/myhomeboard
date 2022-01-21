@@ -12,14 +12,13 @@ import withApollo from '../../utils/withApollo';
 import styles from '../../styles/Profile.module.scss';
 import { useIsAuth } from '../../hooks/useIsAuth';
 import { AscentChart } from '../../components/AscentChart';
-import { useEffect, useState } from 'react';
+import { useMemo } from 'react';
 
 const Profile = () => {
   useIsAuth();
   const router = useRouter();
   const profileId = typeof router.query.id === 'string' ? router.query.id : '';
 
-  const [ascentGrades, setAscentGrades] = useState(Array(20).fill(0));
   const { data, loading } = useGetUserQuery({
     variables: { id: profileId },
   });
@@ -29,14 +28,13 @@ const Profile = () => {
     fetchPolicy: 'cache-and-network',
   });
 
-  useEffect(() => {
-    if (!sendData?.getSentProblems) return;
-    let temp = ascentGrades;
-    sendData.getSentProblems
-      .map((a) => a.consensusGrade)
-      .forEach((a) => typeof a === 'number' && (temp[a] += 1));
-    setAscentGrades(temp);
-  }, [sendData]);
+  const ascentGrades = useMemo(() => {
+    let grades: number[] = Array(20).fill(0);
+    sendData?.getSentProblems
+      ?.map((p) => p.consensusGrade)
+      .forEach((g) => typeof g === 'number' && (grades[g] += 1));
+    return grades;
+  }, [sendData?.getSentProblems]);
 
   if ((!data && loading) || sendLoading) {
     return (
