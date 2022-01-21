@@ -18,9 +18,8 @@
   }
 }
 .body {
-  display: grid;
+  display: flex;
   margin-top: 2rem;
-  grid-template-columns: 150px 150px;
   gap: 5px;
   div {
     min-height: 125.6px;
@@ -29,7 +28,6 @@
     justify-content: center;
     padding: 10px;
     border-radius: 5%;
-    border: 1px solid var(--theme-color);
     background-color: var(--theme-foreground);
     text-align: center;
 
@@ -40,5 +38,12 @@
       font-size: 20px;
       margin-top: 10px;
     }
+  }
+}
+.chart {
+  margin-top: 1rem;
+  h3 {
+    text-align: center;
+    color: var(--theme-color);
   }
 }

@@ -10,21 +10,34 @@ import {
 } from '../../generated/graphql';
 import withApollo from '../../utils/withApollo';
 import styles from '../../styles/Profile.module.scss';
-import { attempts, grades } from '../../assets/selectOptions';
 import { useIsAuth } from '../../hooks/useIsAuth';
+import { AscentChart } from '../../components/AscentChart';
+import { useEffect, useState } from 'react';
 
 const Profile = () => {
   useIsAuth();
   const router = useRouter();
   const profileId = typeof router.query.id === 'string' ? router.query.id : '';
 
+  const [ascentGrades, setAscentGrades] = useState(Array(20).fill(0));
   const { data, loading } = useGetUserQuery({
     variables: { id: profileId },
   });
+
   const { data: sendData, loading: sendLoading } = useGetSentProblemsQuery({
     variables: { userId: profileId },
     fetchPolicy: 'cache-and-network',
   });
+
+  useEffect(() => {
+    if (!sendData?.getSentProblems) return;
+    let temp = ascentGrades;
+    sendData.getSentProblems
+      .map((a) => a.consensusGrade)
+      .forEach((a) => typeof a === 'number' && (temp[a] += 1));
+    setAscentGrades(temp);
+  }, [sendData]);
+
   if ((!data && loading) || sendLoading) {
     return (
       <Layout title='Profile'>
@@ -47,23 +60,15 @@ const Profile = () => {
       </Layout>
     );
   }
-  const { name, avatar, problems, ascents } = data.getUser;
+
+  const { name, avatar, problems } = data.getUser;
 
   const getAverage = (values: number[]) => {
     if (values.length === 0) return 0;
     const sum = values.reduce((acc, val) => {
       return acc + val;
     });
-
-    return sum / values.length;
-  };
-  const getAverageRounded = (values: number[]) => {
-    if (values.length === 0) return 0;
-    const sum = values.reduce((acc, val) => {
-      return acc + val;
-    });
-
-    return Math.round(sum / values.length);
+    return (sum / values.length).toFixed(2);
   };
 
   return (
@@ -78,56 +83,9 @@ const Profile = () => {
               priority={true}
             />
           </div>
-
           <h1>{name}</h1>
         </section>
         <section className={styles.body}>
-          {sendData?.getSentProblems && (
-            <>
-              <ProfileItem
-                label='Highest Grade'
-                data={
-                  sendData.getSentProblems.length === 0
-                    ? 'N/A'
-                    : grades[
-                        Math.max(
-                          ...sendData.getSentProblems
-                            .map((problem) => problem.consensusGrade as number)
-                            .reduce(
-                              (acc: number[], curr: number) => acc.concat(curr),
-                              []
-                            )
-                        )
-                      ].label
-                }
-              />
-              <ProfileItem
-                label='Avg Grade'
-                data={
-                  sendData.getSentProblems.length === 0
-                    ? 'N/A'
-                    : grades[
-                        getAverageRounded(
-                          sendData.getSentProblems.map(
-                            (problem) => problem.consensusGrade as number
-                          )
-                        )
-                      ].label
-                }
-              />
-            </>
-          )}
-
-          <ProfileItem label='Ascents' data={ascents?.length || 0} />
-          <ProfileItem
-            label='Avg Attempts'
-            data={
-              ascents && ascents.length > 0
-                ? attempts[getAverageRounded(ascents.map((a) => a.attempts))]
-                    .label
-                : 'N/A'
-            }
-          />
           <ProfileItem label='Problems Created' data={problems?.length || 0} />
           <ProfileItem
             label='Avg Problem Rating'
@@ -137,10 +95,14 @@ const Profile = () => {
                     problems
                       .filter((p) => typeof p.consensusRating === 'number')
                       .map((p) => (p.consensusRating as number) + 1)
-                  ).toFixed(2) + ' / 3'
+                  ) + ' / 3'
                 : 'N/A'
             }
           />
+        </section>
+        <section className={styles.chart}>
+          <h3>Ascents</h3>
+          <AscentChart {...ascentGrades} />
         </section>
       </div>
     </Layout>
