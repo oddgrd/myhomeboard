@@ -232,17 +232,39 @@ export class ProblemResolver {
   // Get problem by ID
   @Query(() => Problem, { nullable: true })
   async getProblem(@Arg('id') id: string): Promise<Problem | null> {
-    const problem = await getConnection()
-      .createQueryBuilder(Problem, 'problem')
-      .leftJoinAndSelect('problem.ascents', 'ascent')
-      .orderBy('ascent.createdAt', 'ASC')
-      .leftJoinAndSelect('ascent.user', 'user')
-      .where('problem.id = :id', { id })
-      .getOne();
+    const problem = await getConnection().query(`
+      SELECT 
+        p.*,
+        to_jsonb(u) creator,
+        to_jsonb(l) layout,
+        COALESCE((
+          SELECT jsonb_agg(ascents)
+          FROM (
+            SELECT a.*, to_jsonb(ascentuser) "user"
+            FROM ascent a
+            INNER JOIN "user" ascentuser on ascentuser.id = "userId" 
+            WHERE "problemId" = $1
+          ) AS ascents
+        ), '[]') AS ascents,
+        COALESCE(ascent."avgGrade", null) AS "avgGrade",
+        COALESCE(ascent."avgRating", null) AS "avgRating",
+        COALESCE(ascent."ascentIds", '[]') AS "ascentIds"
+      FROM problem p
+      LEFT JOIN LATERAL (
+        SELECT AVG(ascent.grade)::numeric(10) AS "avgGrade",
+               AVG(ascent.rating)::numeric(10) AS "avgRating",
+               jsonb_agg(ascent."userId") AS "ascentIds"
+        FROM ascent
+        WHERE ascent."problemId" = p.id
+      ) ascent ON true
+      INNER JOIN "user" u ON u.id = p."creatorId"
+      INNER JOIN layout l ON l.id = p."layoutId" 
+      WHERE p.id = $1;
+    `, [id]);
     if (!problem) {
       return null;
     }
-    return problem;
+    return problem[0];
   }
 
   // Get problems ascended by user by users ascentids

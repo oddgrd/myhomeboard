@@ -128,7 +128,7 @@ const main = async () => {
       store: new RedisStore({ client: redis, disableTouch: true }),
       cookie: {
         secure: __prod__,
-        sameSite: 'none',
+        sameSite: __prod__ ? 'none' : 'lax',
         httpOnly: true,
         maxAge: 1000 * 60 * 60 * 24 * 365 * 10,
         domain: __prod__ ? '.myhomeboard.no' : undefined,
