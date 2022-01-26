@@ -138,7 +138,7 @@ export const AscentItem = ({ ascent, problemId, currentUserId }: Props) => {
                 </p>
               )}
               <i>
-                {new Date(+createdAt).toLocaleString('en-GB', {
+                {new Date(createdAt).toLocaleString('en-GB', {
                   weekday: 'short',
                   year: 'numeric',
                   month: 'short',

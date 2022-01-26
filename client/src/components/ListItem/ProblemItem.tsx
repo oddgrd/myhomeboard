@@ -28,11 +28,7 @@ export const ProblemItem = ({ problem, userId }: Props) => {
               <p>by {creator.name}</p>
             </div>
             <div className={styles.right}>
-              <p>
-                {typeof avgGrade === 'number'
-                  ? grades[avgGrade].label
-                  : grades[grade].label}
-              </p>
+              <p>{grades[avgGrade ?? grade].label}</p>
               <p>
                 {typeof avgRating === 'number' ? (
                   <StarRating rating={avgRating} />

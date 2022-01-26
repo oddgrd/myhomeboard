@@ -67,22 +67,22 @@ const Problem = () => {
     title,
     rules,
     grade,
-    consensusRating,
-    consensusGrade,
+    avgRating,
+    avgGrade,
     ascents,
     creator,
-    sendStatus,
     createdAt,
     layout,
     boardId,
     angle,
+    ascentIds,
   } = data.getProblem;
 
   const infoProps = {
     rules,
     grade,
-    consensusGrade,
-    consensusRating,
+    avgGrade,
+    avgRating,
     name: creator.name,
     angle,
     createdAt,
@@ -95,13 +95,17 @@ const Problem = () => {
     angle,
     boardId,
   };
+  const whitelistedAndNotSent =
+    ascentIds &&
+    ascentIds.indexOf(meData?.me?.id || '') === -1 &&
+    meData?.me?.boardWhitelist?.includes(boardId);
 
   return (
     <Layout
       title={title}
       navChildren={
         <div className={styles.buttons}>
-          {!sendStatus && meData?.me?.boardWhitelist?.includes(boardId) && (
+          {whitelistedAndNotSent && (
             <button
               title='Register Ascent'
               aria-label='Register ascent'
@@ -120,7 +124,7 @@ const Problem = () => {
           >
             <FaInfo size={28} />
           </button>
-          {creator.id === meData?.me?.id && (
+          {creator && creator.id === meData?.me?.id && (
             <>
               <button
                 title='Edit Problem'
@@ -140,11 +144,7 @@ const Problem = () => {
       <div className={styles.problem}>
         <div className={styles.mobileTitle}>
           <h2>{title}</h2>
-          <h2 className={styles.grade}>
-            {typeof consensusGrade === 'number'
-              ? grades[consensusGrade].label
-              : grades[grade].label}
-          </h2>
+          <h2 className={styles.grade}>{grades[avgGrade ?? grade].label}</h2>
         </div>
 
         <div className={styles.viewer}>

@@ -177,6 +177,7 @@ export type Mutation = {
   deleteBoard: Scalars['Boolean'];
   deleteLayout: Scalars['Boolean'];
   deleteProblem: Scalars['Boolean'];
+  deleteUser: Scalars['Boolean'];
   editAscent: Scalars['Boolean'];
   editBoard: BoardResponse;
   editProblem: ProblemResponse;
@@ -498,7 +499,7 @@ export type GetProblemQueryVariables = Exact<{
 }>;
 
 
-export type GetProblemQuery = { __typename?: 'Query', getProblem?: { __typename?: 'Problem', id: string, title: string, grade: number, consensusGrade?: number | null | undefined, consensusRating?: number | null | undefined, rules: string, creatorId: string, sendStatus?: boolean | null | undefined, boardId: string, angle: number, createdAt: string, updatedAt: string, creator: { __typename?: 'User', id: string, name: string }, layout: { __typename?: 'Layout', url: string, title: string }, ascents: Array<{ __typename?: 'Ascent', userId: string, attempts: number, grade: number, rating: number, comment: string, createdAt: string, boardId: string, user: { __typename?: 'User', name: string, avatar?: string | null | undefined } }>, coordinates: Array<{ __typename?: 'Coordinates', x: number, y: number, color: string }> } | null | undefined };
+export type GetProblemQuery = { __typename?: 'Query', getProblem?: { __typename?: 'Problem', id: string, title: string, grade: number, rules: string, creatorId: string, boardId: string, angle: number, avgGrade?: number | null | undefined, avgRating?: number | null | undefined, ascentIds?: Array<string> | null | undefined, createdAt: string, updatedAt: string, creator: { __typename?: 'User', id: string, name: string }, layout: { __typename?: 'Layout', url: string, title: string }, ascents: Array<{ __typename?: 'Ascent', userId: string, attempts: number, grade: number, rating: number, comment: string, createdAt: string, boardId: string, user: { __typename?: 'User', name: string, avatar?: string | null | undefined } }>, coordinates: Array<{ __typename?: 'Coordinates', x: number, y: number, color: string }> } | null | undefined };
 
 export type GetProblemsQueryVariables = Exact<{
   options: GetProblemsOptions;
@@ -1181,13 +1182,12 @@ export const GetProblemDocument = gql`
     id
     title
     grade
-    consensusGrade
-    consensusRating
     rules
     creatorId
-    sendStatus
     boardId
     angle
+    avgGrade
+    avgRating
     creator {
       id
       name
@@ -1196,6 +1196,7 @@ export const GetProblemDocument = gql`
       url
       title
     }
+    ascentIds
     ascents {
       userId
       attempts

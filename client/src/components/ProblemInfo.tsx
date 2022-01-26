@@ -7,8 +7,8 @@ interface Props {
   name: string;
   rules: string;
   grade: number;
-  consensusGrade: Maybe<number> | undefined;
-  consensusRating: Maybe<number> | undefined;
+  avgGrade: Maybe<number> | undefined;
+  avgRating: Maybe<number> | undefined;
   angle: number;
   createdAt: string;
 }
@@ -16,8 +16,8 @@ interface Props {
 export const ProblemInfo = ({
   name,
   rules,
-  consensusGrade,
-  consensusRating,
+  avgGrade,
+  avgRating,
   grade,
   angle,
   createdAt,
@@ -25,14 +25,10 @@ export const ProblemInfo = ({
   return (
     <div className={styles.problemInfo}>
       <div className={styles.ratingAndGrade}>
+        <p>{grades[avgGrade ?? grade].label}</p>
         <p>
-          {typeof consensusGrade === 'number'
-            ? grades[consensusGrade].label
-            : grades[grade].label}
-        </p>
-        <p>
-          {typeof consensusRating === 'number' ? (
-            <StarRating rating={consensusRating} />
+          {typeof avgRating === 'number' ? (
+            <StarRating rating={avgRating} />
           ) : (
             'Project'
           )}
