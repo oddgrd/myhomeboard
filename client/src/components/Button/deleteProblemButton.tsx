@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import { FaTimes } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import { useDeleteProblemMutation } from '../../generated/graphql';
+import { useSorting } from '../../hooks/useSorting';
 
 interface Props {
   id: string;
@@ -11,6 +12,7 @@ interface Props {
 export const DeleteProblemButton = ({ id, boardId }: Props) => {
   const [deleteProblem] = useDeleteProblemMutation();
   const router = useRouter();
+  const [{}, { resetSort }] = useSorting();
 
   const handleDelete = async () => {
     if (
@@ -22,7 +24,7 @@ export const DeleteProblemButton = ({ id, boardId }: Props) => {
         variables: { id },
         update: (cache) => {
           cache.evict({ id: 'Problem:' + id });
-          cache.evict({ id: 'ProblemItem:' + id });
+          cache.evict({ fieldName: 'getProblems' });
         },
       });
       if (errors) {
@@ -30,6 +32,7 @@ export const DeleteProblemButton = ({ id, boardId }: Props) => {
         return;
       }
       toast.success('Problem deleted ☠️');
+      resetSort();
       router.replace(`/boards/${boardId}`);
     } else {
       return;

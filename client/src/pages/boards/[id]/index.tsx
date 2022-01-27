@@ -18,7 +18,7 @@ import { Searchbar } from '../../../components/Searchbar';
 import { useSearch } from '../../../hooks/useSearch';
 import { useInfiniteScroll } from '../../../hooks/useInfiniteScroll';
 
-const limit = 18;
+const limit = 5;
 const Problems = () => {
   const router = useRouter();
   const boardId = typeof router.query.id === 'string' ? router.query.id : '';
