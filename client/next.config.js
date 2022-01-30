@@ -26,7 +26,7 @@ const securityHeaders = [
   },
   {
     key: 'Referrer-Policy',
-    value: 'origin-when-cross-origin',
+    value: 'no-referrer',
   },
   {
     key: 'Content-Security-Policy',
