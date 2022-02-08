@@ -46,7 +46,7 @@ const Problems = () => {
     });
 
   const { ref, inView } = useInView({
-    rootMargin: '50px 0px',
+    rootMargin: '200px 0px',
   });
   useEffect(() => {
     if (inView) getMore();
