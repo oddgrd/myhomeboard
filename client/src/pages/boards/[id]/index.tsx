@@ -16,7 +16,7 @@ import { SortButton } from '../../../components/Button/SortButton';
 import { useEffect, useRef } from 'react';
 import { Searchbar } from '../../../components/Searchbar';
 import { useSearch } from '../../../hooks/useSearch';
-import { useInfiniteScroll } from '../../../hooks/useInfiniteScroll';
+import { useInView } from 'react-intersection-observer';
 
 const limit = 18;
 const Problems = () => {
@@ -45,6 +45,13 @@ const Problems = () => {
       notifyOnNetworkStatusChange: true,
     });
 
+  const { ref, inView } = useInView({
+    rootMargin: '30px 0px',
+  });
+  useEffect(() => {
+    if (inView) getMore();
+  }, [inView]);
+
   const getMore = () => {
     offsetRef.current += limit;
     fetchMore({
@@ -56,11 +63,6 @@ const Problems = () => {
       },
     });
   };
-
-  const [lastElementRef] = useInfiniteScroll(
-    data?.getProblems.hasMore ? getMore : () => {},
-    loading
-  );
 
   useEffect(() => {
     if (didMountRef.current) {
@@ -222,9 +224,7 @@ const Problems = () => {
       </div>
       {
         // infinite scroll div
-        data && data.getProblems.hasMore ? (
-          <div ref={lastElementRef}></div>
-        ) : null
+        data && data.getProblems.hasMore ? <div ref={ref}></div> : null
       }
     </Layout>
   );
