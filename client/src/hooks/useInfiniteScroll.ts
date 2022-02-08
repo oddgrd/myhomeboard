@@ -1,6 +1,11 @@
 import { useRef, useCallback } from "react";
 
 export const useInfiniteScroll = (callback: () => void, isFetching: boolean) => {
+  const options = {
+    root: null,
+    rootMargin: "0px",
+    threshold: 0.9
+  };
   const observer = useRef<IntersectionObserver>();
 
   const lastElementRef = useCallback(
@@ -13,7 +18,7 @@ export const useInfiniteScroll = (callback: () => void, isFetching: boolean) => 
         if (entries[0].isIntersecting) {
           callback();
         }
-      });
+      }, options);
 
       if (node) observer.current.observe(node);
     },
