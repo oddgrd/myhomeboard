@@ -29,6 +29,14 @@ const securityHeaders = [
     value: 'no-referrer',
   },
   {
+    key: 'Cross-Origin-Opener-Policy',
+    value: 'same-origin',
+  },
+  {
+    key: 'Cross-Origin-Embedder-Policy',
+    value: 'require-corp',
+  },
+  {
     key: 'Content-Security-Policy',
     value: `default-src 'self'; connect-src 'self' https://api.myhomeboard.no vitals.vercel-insights.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' lh3.googleusercontent.com res.cloudinary.com data: https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; object-src 'none'`,
   },
