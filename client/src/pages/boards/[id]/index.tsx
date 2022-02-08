@@ -46,7 +46,7 @@ const Problems = () => {
     });
 
   const { ref, inView } = useInView({
-    rootMargin: '30px 0px',
+    rootMargin: '50px 0px',
   });
   useEffect(() => {
     if (inView) getMore();
@@ -224,7 +224,15 @@ const Problems = () => {
       </div>
       {
         // infinite scroll div
-        data && data.getProblems.hasMore ? <div ref={ref}></div> : null
+        data && data.getProblems.hasMore ? (
+          <button
+            ref={ref}
+            onClick={() => getMore()}
+            className='btn btn-fetchMore'
+          >
+            Load More
+          </button>
+        ) : null
       }
     </Layout>
   );
