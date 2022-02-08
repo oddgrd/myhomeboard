@@ -230,4 +230,4 @@ const Problems = () => {
   );
 };
 
-export default withApollo({ ssr: true })(Problems);
+export default withApollo({ ssr: false })(Problems);

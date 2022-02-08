@@ -4,7 +4,7 @@ export const useInfiniteScroll = (callback: () => void, isFetching: boolean) => 
   const options = {
     root: null,
     rootMargin: "0px",
-    threshold: 0.9
+    threshold: 0.1
   };
   const observer = useRef<IntersectionObserver>();
 
