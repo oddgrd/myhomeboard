@@ -1,9 +1,13 @@
+import { AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { FaInfo } from 'react-icons/fa';
 import { Canvas } from '../../../../components/Canvas';
+import { CreateProblemInfo } from '../../../../components/CreateProblemInfo';
 import { ProblemForm } from '../../../../components/Form/ProblemForm';
 import { Layout } from '../../../../components/Layout';
+import { Modal } from '../../../../components/Modal/Modal';
 import { Toolbar } from '../../../../components/Toolbar';
 import { useGetBoardQuery } from '../../../../generated/graphql';
 import { useCanvas } from '../../../../hooks/useCanvas';
@@ -14,7 +18,7 @@ import withApollo from '../../../../utils/withApollo';
 const CreateProblem = () => {
   const router = useRouter();
   const boardId = typeof router.query.id === 'string' ? router.query.id : '';
-
+  const [showInfoModal, setShowInfoModal] = useState(false);
   const [{ canvas, coords }, { init, handleColor, undo }] = useCanvas();
   const toolbarProps = { handleColor, undo };
 
@@ -43,7 +47,21 @@ const CreateProblem = () => {
   }
 
   return (
-    <Layout title='Create Problem'>
+    <Layout
+      title='Create Problem'
+      navChildren={
+        <button
+          onClick={() => {
+            setShowInfoModal(true);
+          }}
+          className='btn btn-link btn-icon'
+          aria-label='Info'
+          title='Info'
+        >
+          <FaInfo size={27} />
+        </button>
+      }
+    >
       <div className={styles.createProblem}>
         <div className={styles.editor}>
           <div className={styles.board}>
@@ -61,6 +79,17 @@ const CreateProblem = () => {
           />
         </div>
       </div>
+      <AnimatePresence
+        initial={false}
+        exitBeforeEnter={true}
+        onExitComplete={() => null}
+      >
+        {showInfoModal && (
+          <Modal handleClose={() => setShowInfoModal(false)}>
+            <CreateProblemInfo />
+          </Modal>
+        )}
+      </AnimatePresence>
     </Layout>
   );
 };
