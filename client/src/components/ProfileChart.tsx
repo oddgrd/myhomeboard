@@ -24,7 +24,9 @@ export const options = {
   responsive: true,
   plugins: {
     legend: {
-      display: false,
+      position: 'top' as const,
+
+      labels: { color: '#dedeeb', font: { size: 15 } },
     },
   },
   scales: {
@@ -49,16 +51,26 @@ export const options = {
 
 const labels = grades.map((g) => g.label);
 
-export const AscentChart = (ascentGrades: number[]) => {
+interface Props {
+  ascentGrades: number[];
+  problemGrades: number[];
+}
+export const ProfileChart = ({ ascentGrades, problemGrades }: Props) => {
   const data = {
     labels,
     datasets: [
       {
         label: 'Ascents',
+        fontColor: '#dedeeb',
         data: labels.map((_, i) => ascentGrades[i]),
         backgroundColor: '#e9c46a',
       },
+      {
+        label: 'Creations',
+        data: labels.map((_, i) => problemGrades[i]),
+        backgroundColor: '#e76f51',
+      },
     ],
   };
-  return <Bar options={options} data={data} height={180} width={340} />;
+  return <Bar options={options} data={data} height='190px' />;
 };

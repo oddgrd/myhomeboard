@@ -17,33 +17,10 @@
     border-radius: 50%;
   }
 }
-.body {
-  display: flex;
-  margin-top: 2rem;
-  gap: 5px;
-  div {
-    min-height: 125.6px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 10px;
-    border-radius: 5%;
-    background-color: var(--theme-foreground);
-    text-align: center;
 
-    strong {
-      color: var(--theme-color);
-    }
-    p {
-      font-size: 20px;
-      margin-top: 10px;
-    }
-  }
-}
 .chart {
   margin-top: 1rem;
-  h3 {
-    text-align: center;
-    color: var(--theme-color);
+  canvas {
+    width: clamp(340px, 92vw, 600px);
   }
 }

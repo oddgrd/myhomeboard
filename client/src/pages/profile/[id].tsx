@@ -11,7 +11,7 @@ import {
 import withApollo from '../../utils/withApollo';
 import styles from '../../styles/Profile.module.scss';
 import { useIsAuth } from '../../hooks/useIsAuth';
-import { AscentChart } from '../../components/AscentChart';
+import { ProfileChart } from '../../components/ProfileChart';
 import { useMemo } from 'react';
 
 const Profile = () => {
@@ -35,6 +35,13 @@ const Profile = () => {
       .forEach((g) => typeof g === 'number' && (grades[g] += 1));
     return grades;
   }, [sendData?.getSentProblems]);
+  const problemGrades = useMemo(() => {
+    let grades: number[] = Array(20).fill(0);
+    data?.getUser?.problems
+      ?.map((p) => p.consensusGrade)
+      .forEach((g) => typeof g === 'number' && (grades[g] += 1));
+    return grades;
+  }, [data?.getUser?.problems]);
 
   if ((!data && loading) || sendLoading) {
     return (
@@ -83,24 +90,12 @@ const Profile = () => {
           </div>
           <h1>{name}</h1>
         </section>
-        <section className={styles.body}>
-          <ProfileItem label='Problems Created' data={problems?.length || 0} />
-          <ProfileItem
-            label='Avg Problem Rating'
-            data={
-              problems && problems.length > 0
-                ? getAverage(
-                    problems
-                      .filter((p) => typeof p.consensusRating === 'number')
-                      .map((p) => (p.consensusRating as number) + 1)
-                  ) + ' / 3'
-                : 'N/A'
-            }
-          />
-        </section>
+
         <section className={styles.chart}>
-          <h3>Ascents</h3>
-          <AscentChart {...ascentGrades} />
+          <ProfileChart
+            ascentGrades={ascentGrades}
+            problemGrades={problemGrades}
+          />
         </section>
       </div>
     </Layout>
