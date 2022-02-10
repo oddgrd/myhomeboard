@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion';
 import Head from 'next/head';
 import Link from 'next/link';
 import { FaGithub } from 'react-icons/fa';
@@ -6,13 +5,8 @@ import { useCurves } from '../hooks/useCurves';
 import styles from '../styles/Landing.module.scss';
 
 const Landing = () => {
-  const {
-    layeredTopWave,
-    layeredBottomWave,
-    layeredTopWave2,
-    blobVariants,
-    startBlobVariants,
-  } = useCurves();
+  const { layeredTopWave, layeredBottomWave, layeredTopWave2, blob } =
+    useCurves();
   return (
     <div>
       <Head>
@@ -33,25 +27,6 @@ const Landing = () => {
       <div className={styles.body}>
         <div className={styles.start}>
           <div className={styles.startAnimation}>
-            <motion.svg
-              id={styles.blobSvg}
-              initial='start'
-              animate='end'
-              fill='none'
-              xmlns='http://www.w3.org/2000/svg'
-            >
-              <motion.path
-                variants={startBlobVariants}
-                width={350}
-                transition={{
-                  duration: 7,
-                  repeatType: 'reverse',
-                  repeat: Infinity,
-                }}
-                fill='#e9c46a'
-              />
-            </motion.svg>
-
             <svg
               className={styles.logo}
               height='230px'
@@ -212,24 +187,7 @@ const Landing = () => {
         </section>
 
         <footer>
-          <motion.svg
-            id={styles.blobSvg}
-            initial='start'
-            animate='end'
-            fill='none'
-            xmlns='http://www.w3.org/2000/svg'
-          >
-            <motion.path
-              variants={blobVariants}
-              transition={{
-                duration: 6,
-                repeatType: 'reverse',
-                repeat: Infinity,
-              }}
-              fill='#038373'
-            />
-          </motion.svg>
-
+          {blob}
           <div className={styles.footerContent}>
             <a
               href='https://github.com/oddgrd'
