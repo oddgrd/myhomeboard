@@ -5,7 +5,7 @@ export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-const defaultOptions =  {}
+const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -520,7 +520,7 @@ export type GetUserQueryVariables = Exact<{
 }>;
 
 
-export type GetUserQuery = { __typename?: 'Query', getUser?: { __typename?: 'User', name: string, avatar?: string | null | undefined, createdAt: string, problems?: Array<{ __typename?: 'Problem', boardId: string, consensusGrade?: number | null | undefined, consensusRating?: number | null | undefined, ascents: Array<{ __typename?: 'Ascent', grade: number, rating: number }> }> | null | undefined, ascents?: Array<{ __typename?: 'Ascent', attempts: number, rating: number, grade: number }> | null | undefined } | null | undefined };
+export type GetUserQuery = { __typename?: 'Query', getUser?: { __typename?: 'User', name: string, avatar?: string | null | undefined, createdAt: string, problems?: Array<{ __typename?: 'Problem', boardId: string, consensusGrade?: number | null | undefined, consensusRating?: number | null | undefined, grade: number, ascents: Array<{ __typename?: 'Ascent', grade: number, rating: number }> }> | null | undefined, ascents?: Array<{ __typename?: 'Ascent', attempts: number, rating: number, grade: number }> | null | undefined } | null | undefined };
 
 export type GetWhitelistQueryVariables = Exact<{
   boardId: Scalars['String'];
@@ -1336,6 +1336,7 @@ export const GetUserDocument = gql`
       boardId
       consensusGrade
       consensusRating
+      grade
       ascents {
         grade
         rating

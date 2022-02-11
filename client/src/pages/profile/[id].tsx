@@ -2,8 +2,6 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { Layout } from '../../components/Layout';
 import { Spinner } from '../../components/Spinner';
-import { ProfileItem } from '../../components/ListItem/ProfileItem';
-
 import {
   useGetSentProblemsQuery,
   useGetUserQuery,
@@ -35,10 +33,11 @@ const Profile = () => {
       .forEach((g) => typeof g === 'number' && (grades[g] += 1));
     return grades;
   }, [sendData?.getSentProblems]);
+
   const problemGrades = useMemo(() => {
     let grades: number[] = Array(20).fill(0);
     data?.getUser?.problems
-      ?.map((p) => p.consensusGrade)
+      ?.map((p) => p.consensusGrade ?? p.grade)
       .forEach((g) => typeof g === 'number' && (grades[g] += 1));
     return grades;
   }, [data?.getUser?.problems]);
@@ -66,15 +65,7 @@ const Profile = () => {
     );
   }
 
-  const { name, avatar, problems } = data.getUser;
-
-  const getAverage = (values: number[]) => {
-    if (values.length === 0) return 0;
-    const sum = values.reduce((acc, val) => {
-      return acc + val;
-    });
-    return (sum / values.length).toFixed(2);
-  };
+  const { name, avatar } = data.getUser;
 
   return (
     <Layout title='Profile'>

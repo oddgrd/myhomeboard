@@ -7,6 +7,7 @@ query GetUser($id: String!) {
       boardId
       consensusGrade
       consensusRating
+      grade
       ascents {
         grade
         rating
