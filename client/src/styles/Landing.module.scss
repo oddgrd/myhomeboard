@@ -69,8 +69,6 @@
   height: 300px;
   background-color: #038373;
   border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
-  transform-style: preserve-3d;
-  will-change: border-radius;
   animation: morph 10s linear infinite;
   a {
     color: var(--theme-color);
