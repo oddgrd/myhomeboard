@@ -42,7 +42,7 @@ const Profile = () => {
     return grades;
   }, [data?.getUser?.problems]);
 
-  if ((!data && loading) || sendLoading) {
+  if (!data && loading) {
     return (
       <Layout title='Profile'>
         <Spinner />

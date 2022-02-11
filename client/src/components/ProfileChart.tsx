@@ -32,7 +32,8 @@ export const options = {
   scales: {
     y: {
       ticks: {
-        color: '#6969b4',
+        color: '#8b8be0',
+        precision: 0,
       },
       grid: {
         color: '#161923',
@@ -40,7 +41,7 @@ export const options = {
     },
     x: {
       ticks: {
-        color: '#6969b4',
+        color: '#8b8be0',
       },
       grid: {
         color: '#161923',
@@ -61,7 +62,6 @@ export const ProfileChart = ({ ascentGrades, problemGrades }: Props) => {
     datasets: [
       {
         label: 'Ascents',
-        fontColor: '#dedeeb',
         data: labels.map((_, i) => ascentGrades[i]),
         backgroundColor: '#e9c46a',
       },
