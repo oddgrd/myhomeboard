@@ -16,15 +16,7 @@
   align-items: center;
   margin-right: 10px;
   margin-left: 5px;
-  gap: 3px;
   color: var(--theme-color);
-
-  .sortButtons {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 5px;
-  }
 }
 .searchFailed {
   margin-left: 5px;

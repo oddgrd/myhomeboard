@@ -138,3 +138,10 @@ export const attempts = [
     value: 9,
   },
 ];
+
+export const sortOptions = [
+  { value: 'newest', label: 'Newest' },
+  { value: 'oldest', label: 'Oldest' },
+  { value: 'easiest', label: 'Easiest' },
+  { value: 'hardest', label: 'Hardest' },
+];

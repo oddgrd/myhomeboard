@@ -12,7 +12,7 @@ interface Props {
 export const DeleteProblemButton = ({ id, boardId }: Props) => {
   const [deleteProblem] = useDeleteProblemMutation();
   const router = useRouter();
-  const [{}, { resetSort }] = useSorting();
+  const [{}, { selectSort }] = useSorting();
 
   const handleDelete = async () => {
     if (
@@ -32,7 +32,7 @@ export const DeleteProblemButton = ({ id, boardId }: Props) => {
         return;
       }
       toast.success('Problem deleted ☠️');
-      resetSort();
+      selectSort('newest');
       router.replace(`/boards/${boardId}`);
     } else {
       return;

@@ -140,7 +140,6 @@ export type GetProblemsOptions = {
   boardId: Scalars['String'];
   limit: Scalars['Float'];
   offset: Scalars['Float'];
-  order: Scalars['Boolean'];
   searchPattern?: InputMaybe<Scalars['String']>;
   sort: Scalars['String'];
 };

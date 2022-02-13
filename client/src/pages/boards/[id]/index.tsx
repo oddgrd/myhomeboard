@@ -12,11 +12,12 @@ import styles from '../../../styles/Problems.module.scss';
 import withApollo from '../../../utils/withApollo';
 import { FaPlusSquare, FaSyncAlt } from 'react-icons/fa';
 import { useSorting } from '../../../hooks/useSorting';
-import { SortButton } from '../../../components/Button/SortButton';
 import { useEffect, useRef } from 'react';
 import { Searchbar } from '../../../components/Searchbar';
 import { useSearch } from '../../../hooks/useSearch';
 import { useInView } from 'react-intersection-observer';
+import { SortMenu } from '../../../components/SortMenu';
+import { sortOptions } from '../../../assets/selectOptions';
 
 const limit = 18;
 const Problems = () => {
@@ -25,16 +26,12 @@ const Problems = () => {
 
   const didMountRef = useRef(false);
   const [searchPattern, setSearchPattern, searchRef] = useSearch();
-  const [
-    { selectedOrder, selectedSort, offsetRef, gradeStateRef },
-    { toggleDateSort, resetSort, toggleGradeSort },
-  ] = useSorting();
+  const [{ selectedSort, offsetRef }, { selectSort }] = useSorting();
 
   const initialOptions = {
     limit,
     offset: 0,
     boardId,
-    order: selectedOrder.current === 'ASC',
     sort: selectedSort.current,
   };
   const { data, loading, error, fetchMore, client, refetch } =
@@ -46,7 +43,7 @@ const Problems = () => {
     });
 
   const { ref, inView } = useInView({
-    rootMargin: '200px 0px',
+    rootMargin: '300px 0px',
   });
   useEffect(() => {
     if (inView) getMore();
@@ -66,7 +63,7 @@ const Problems = () => {
 
   useEffect(() => {
     if (didMountRef.current) {
-      resetSort();
+      selectSort('newest');
       if (searchPattern.length === 0) {
         refetch({
           options: initialOptions,
@@ -144,7 +141,7 @@ const Problems = () => {
         <>
           <button
             onClick={() => {
-              resetSort();
+              selectSort('newest');
               client.cache.evict({ fieldName: 'getProblems' });
             }}
             className='btn btn-link btn-icon btn-rotate'
@@ -172,21 +169,15 @@ const Problems = () => {
             setSearchPattern={setSearchPattern}
             searchRef={searchRef}
           />
-          <div className={styles.sortButtons}>
-            <SortButton
-              toggleSort={toggleDateSort}
-              state={selectedSort}
-              order={selectedOrder}
-              client={client}
-              disable={searchRef.current.length > 0}
-            />
-            <SortButton
-              toggleSort={toggleGradeSort}
-              state={gradeStateRef}
-              client={client}
-              disable={searchRef.current.length > 0}
-            />
-          </div>
+
+          <SortMenu
+            placeholder='Sort'
+            sortState={selectedSort.current}
+            selectSort={selectSort}
+            width={120}
+            options={sortOptions}
+            client={client}
+          />
         </div>
         {meData?.me &&
         data?.getProblems.problems.length === 0 &&

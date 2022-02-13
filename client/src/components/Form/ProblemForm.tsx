@@ -34,7 +34,7 @@ interface Values {
 export const ProblemForm = ({ coords, boardId, layoutId, angles }: Props) => {
   const [createProblem] = useCreateProblemMutation();
   const router = useRouter();
-  const [{}, { resetSort }] = useSorting();
+  const [{}, { selectSort }] = useSorting();
   if (!layoutId) return null;
   return (
     <Formik
@@ -77,7 +77,7 @@ export const ProblemForm = ({ coords, boardId, layoutId, angles }: Props) => {
           setErrors(toErrorMap(response.data.createProblem.errors));
         } else if (response.data?.createProblem.problem) {
           toast.success(`Problem created  🧗`);
-          resetSort();
+          selectSort('newest');
           router.push(`/boards/${boardId}`);
         }
       }}
