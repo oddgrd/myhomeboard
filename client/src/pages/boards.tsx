@@ -59,4 +59,4 @@ const Boards = () => {
   );
 };
 
-export default withApollo({ ssr: true })(Boards);
+export default withApollo({ ssr: false })(Boards);
