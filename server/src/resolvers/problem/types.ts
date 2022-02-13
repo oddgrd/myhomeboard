@@ -103,9 +103,6 @@ export class GetProblemsOptions {
   limit: number;
 
   @Field()
-  order: boolean;
-
-  @Field()
   sort: string;
 
   @Field()

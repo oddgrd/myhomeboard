@@ -168,7 +168,7 @@ export class ProblemResolver {
   async getProblems(
     @Arg('options') options: GetProblemsOptions
   ): Promise<PaginatedProblems> {
-    const {limit, sort, boardId, order, offset, searchPattern} = options;
+    const {limit, sort, boardId, offset, searchPattern} = options;
 
     const realLimit = Math.min(50, limit);
     const realLimitPlusOne = realLimit + 1;
@@ -195,26 +195,16 @@ export class ProblemResolver {
         WHERE p."boardId" = $1
     `;
     const replacements = [boardId, realLimitPlusOne, offset];
+    
     let problems;
-    if (sort === "DATE" && !searchPattern) {
-      problems = await getConnection().query(`
-        ${baseQuery}
-        ORDER BY p."createdAt" ${order ? `ASC` : `DESC`}
-        LIMIT $2
-        OFFSET $3;
-      `, replacements);
-    }
-
-    if (sort === "GRADE" && !searchPattern) {
+    if (!searchPattern) {
       problems = await getConnection().query(`
       ${baseQuery}
-      ORDER BY COALESCE("avgGrade", p.grade) ${order ? `ASC` : `DESC`}, p."createdAt" ${order ? `ASC` : `DESC`}
+      ${setOrder(sort)}
       LIMIT $2
       OFFSET $3;
     `, replacements);
-    }
-
-    if (searchPattern) {
+    } else {
       problems = await getConnection().query(`
       ${baseQuery}
       AND p.title ILIKE '%' || $4 || '%'
@@ -223,6 +213,7 @@ export class ProblemResolver {
       OFFSET $3;
     `, [...replacements, searchPattern]);
     }
+
     return {
       problems: problems.slice(0, realLimit),
       hasMore: problems.length === realLimitPlusOne,
@@ -283,5 +274,21 @@ export class ProblemResolver {
     });
 
     return sentProblems;
+  }
+}
+
+// Utils
+const setOrder = (sort: string) => {
+  switch (sort) {
+    case "newest":
+      return 'ORDER BY p."createdAt" DESC';
+    case "oldest":
+      return 'ORDER BY p."createdAt" ASC';
+    case "easiest":
+      return 'ORDER BY COALESCE("avgGrade", p.grade) ASC, p."createdAt" ASC';
+    case "hardest":
+      return 'ORDER BY COALESCE("avgGrade", p.grade) DESC, p."createdAt" DESC';
+    default:
+      return 'ORDER BY p."createdAt" DESC';
   }
 }
