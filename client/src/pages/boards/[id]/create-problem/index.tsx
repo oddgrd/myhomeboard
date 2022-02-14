@@ -94,4 +94,4 @@ const CreateProblem = () => {
   );
 };
 
-export default withApollo({ ssr: true })(CreateProblem);
+export default withApollo({ ssr: false })(CreateProblem);

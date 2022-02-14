@@ -171,6 +171,7 @@ const Problems = () => {
           />
 
           <SortMenu
+            disabled={searchRef.current.length > 0}
             placeholder='Sort'
             sortState={selectedSort.current}
             selectSort={selectSort}

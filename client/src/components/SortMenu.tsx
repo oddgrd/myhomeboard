@@ -9,15 +9,6 @@ type Option = {
   value: string;
 };
 
-interface Props {
-  options: Option[];
-  width: number;
-  placeholder: string;
-  sortState: string;
-  selectSort: (sort: string) => void;
-  client: ApolloClient<any>;
-}
-
 const selectStyle: StylesConfig<Option, IsMulti> = {
   option: (provided, state) => ({
     ...provided,
@@ -50,12 +41,23 @@ const selectStyle: StylesConfig<Option, IsMulti> = {
   },
 };
 
+interface Props {
+  options: Option[];
+  width: number;
+  placeholder: string;
+  sortState: string;
+  selectSort: (sort: string) => void;
+  client: ApolloClient<any>;
+  disabled: boolean;
+}
+
 export const SortMenu = ({
   placeholder,
   options,
   selectSort,
   client,
   sortState,
+  disabled,
   ...props
 }: Props) => {
   const [sortType, setSortType] = useState(options[0]);
@@ -116,6 +118,7 @@ export const SortMenu = ({
       placeholder={placeholder}
       instanceId={placeholder}
       isSearchable={false}
+      isDisabled={disabled}
     />
   );
 };
