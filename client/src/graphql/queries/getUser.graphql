@@ -5,18 +5,9 @@ query GetUser($id: String!) {
     createdAt
     problems {
       boardId
-      consensusGrade
-      consensusRating
       grade
-      ascents {
-        grade
-        rating
-      }
-    }
-    ascents {
-      attempts
-      rating
-      grade
+      avgGrade
+      avgRating
     }
   }
 }

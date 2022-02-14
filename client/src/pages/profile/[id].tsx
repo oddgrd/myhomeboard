@@ -29,7 +29,7 @@ const Profile = () => {
   const ascentGrades = useMemo(() => {
     let grades: number[] = Array(20).fill(0);
     sendData?.getSentProblems
-      ?.map((p) => p.consensusGrade)
+      ?.map((p) => p.avgGrade)
       .forEach((g) => typeof g === 'number' && (grades[g] += 1));
     return grades;
   }, [sendData?.getSentProblems]);
@@ -37,7 +37,7 @@ const Profile = () => {
   const problemGrades = useMemo(() => {
     let grades: number[] = Array(20).fill(0);
     data?.getUser?.problems
-      ?.map((p) => p.consensusGrade ?? p.grade)
+      ?.map((p) => p.avgGrade ?? p.grade)
       .forEach((g) => typeof g === 'number' && (grades[g] += 1));
     return grades;
   }, [data?.getUser?.problems]);

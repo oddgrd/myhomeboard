@@ -265,8 +265,6 @@ export type Problem = {
   avgRating?: Maybe<Scalars['Int']>;
   board: Board;
   boardId: Scalars['String'];
-  consensusGrade?: Maybe<Scalars['Int']>;
-  consensusRating?: Maybe<Scalars['Int']>;
   coordinates: Array<Coordinates>;
   createdAt: Scalars['String'];
   creator: User;
@@ -276,7 +274,6 @@ export type Problem = {
   layout: Layout;
   layoutId: Scalars['String'];
   rules: Scalars['String'];
-  sendStatus?: Maybe<Scalars['Boolean']>;
   title: Scalars['String'];
   updatedAt: Scalars['String'];
 };
@@ -512,14 +509,14 @@ export type GetSentProblemsQueryVariables = Exact<{
 }>;
 
 
-export type GetSentProblemsQuery = { __typename?: 'Query', getSentProblems?: Array<{ __typename?: 'Problem', id: string, consensusGrade?: number | null | undefined, consensusRating?: number | null | undefined, ascents: Array<{ __typename?: 'Ascent', grade: number, rating: number, attempts: number }> }> | null | undefined };
+export type GetSentProblemsQuery = { __typename?: 'Query', getSentProblems?: Array<{ __typename?: 'Problem', id: string, avgGrade?: number | null | undefined, avgRating?: number | null | undefined }> | null | undefined };
 
 export type GetUserQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type GetUserQuery = { __typename?: 'Query', getUser?: { __typename?: 'User', name: string, avatar?: string | null | undefined, createdAt: string, problems?: Array<{ __typename?: 'Problem', boardId: string, consensusGrade?: number | null | undefined, consensusRating?: number | null | undefined, grade: number, ascents: Array<{ __typename?: 'Ascent', grade: number, rating: number }> }> | null | undefined, ascents?: Array<{ __typename?: 'Ascent', attempts: number, rating: number, grade: number }> | null | undefined } | null | undefined };
+export type GetUserQuery = { __typename?: 'Query', getUser?: { __typename?: 'User', name: string, avatar?: string | null | undefined, createdAt: string, problems?: Array<{ __typename?: 'Problem', boardId: string, grade: number, avgGrade?: number | null | undefined, avgRating?: number | null | undefined }> | null | undefined } | null | undefined };
 
 export type GetWhitelistQueryVariables = Exact<{
   boardId: Scalars['String'];
@@ -1289,14 +1286,11 @@ export const GetSentProblemsDocument = gql`
     query GetSentProblems($userId: String!) {
   getSentProblems(userId: $userId) {
     id
-    ascents {
-      ...AscentCore
-    }
-    consensusGrade
-    consensusRating
+    avgGrade
+    avgRating
   }
 }
-    ${AscentCoreFragmentDoc}`;
+    `;
 
 /**
  * __useGetSentProblemsQuery__
@@ -1333,18 +1327,9 @@ export const GetUserDocument = gql`
     createdAt
     problems {
       boardId
-      consensusGrade
-      consensusRating
       grade
-      ascents {
-        grade
-        rating
-      }
-    }
-    ascents {
-      attempts
-      rating
-      grade
+      avgGrade
+      avgRating
     }
   }
 }

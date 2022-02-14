@@ -29,16 +29,30 @@ export class UserResolver {
   // Get user by ID
   @Query(() => User, { nullable: true })
   async getUser(@Arg('id') id: string): Promise<User | null> {
-    const user = await getConnection()
-      .createQueryBuilder(User, 'user')
-      .leftJoinAndSelect('user.problems', 'problem')
-      .leftJoinAndSelect('problem.ascents', 'ascent')
-      .leftJoinAndSelect('user.ascents', 'a')
-      .where('user.id = :id', { id })
-      .getOne();
+    const user = await getConnection().query(`
+      SELECT u.*,
+      COALESCE((
+        SELECT jsonb_agg(problems)
+        FROM (
+          SELECT p.*,
+                 COALESCE(ascent."avgGrade", null) AS "avgGrade",
+                 COALESCE(ascent."avgRating", null) AS "avgRating"
+          FROM problem p
+          LEFT JOIN LATERAL (
+            SELECT AVG(ascent.grade)::numeric(10) AS "avgGrade",
+                   AVG(ascent.rating)::numeric(10) AS "avgRating"
+            FROM ascent
+            WHERE ascent."problemId" = p.id
+          ) ascent ON true
+          WHERE p."creatorId" = $1
+        ) AS problems
+      ), '[]') AS problems
+      FROM "user" u
+      WHERE u.id = $1;
+    `, [id]);
 
-    if (!user) return null;
-    return user;
+    if (!user[0]) return null;
+    return user[0];
   }
 
   // Get all users
@@ -68,7 +82,6 @@ export class UserResolver {
   }
 
   // Add board to users whitelist
-  // PRIVATE
   @Mutation(() => WhitelistResponse)
   @UseMiddleware(isAuth)
   async whitelistUser(@Arg('options') options: WhitelistInput) {
@@ -107,7 +120,6 @@ export class UserResolver {
   }
 
   // Remove board from users whitelist
-  // PRIVATE
   @Mutation(() => WhitelistResponse)
   @UseMiddleware(isAuth)
   async removeFromWhitelist(@Arg('options') options: WhitelistInput) {

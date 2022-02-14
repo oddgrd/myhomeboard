@@ -2,7 +2,6 @@ import { isAuth } from '../../middleware/isAuth';
 import {
   Arg,
   Ctx,
-  Int,
   FieldResolver,
   Mutation,
   Query,
@@ -22,7 +21,6 @@ import { Context } from '../../types/context';
 import { getConnection } from 'typeorm';
 import { User } from '../../entities/User';
 import { Layout } from '../../entities/Layout';
-import { Ascent } from '../../entities/Ascent';
 
 @Resolver(Problem)
 export class ProblemResolver {
@@ -36,34 +34,6 @@ export class ProblemResolver {
   @FieldResolver(() => Layout)
   layout(@Root() problem: Problem, @Ctx() { layoutLoader }: Context) {
     return layoutLoader.load(problem.layoutId);
-  }
-
-  // Field resolver for consensusGrade on single problem query
-  @FieldResolver(() => Int, { nullable: true })
-  async consensusGrade(@Root() problem: Problem) {
-    if (!problem.ascents || problem.ascents.length === 0) return null;
-    const sumGrades = problem.ascents
-    .reduce((acc: number, curr: Ascent) => acc + curr.grade, 0);
-    return Math.round(sumGrades / problem.ascents.length);
-  }
-
-  // Field resolver for consensusRating on single problem query
-  @FieldResolver(() => Int, { nullable: true })
-  consensusRating(@Root() problem: Problem) {
-    if (!problem.ascents || problem.ascents.length === 0) return null;
-    const sumRatings = problem.ascents
-      .reduce((acc: number, curr: Ascent) => acc + curr.rating, 0);
-    return Math.round(sumRatings / problem.ascents.length);
-  }
-
-  // Field resolver for sendStatus on single problem query
-  @FieldResolver(() => Boolean, { nullable: true })
-  sendStatus(@Root() problem: Problem, @Ctx() { req }: Context) {
-    if (!problem.ascents || problem.ascents.length === 0) return false;
-    const userId = req.session.passport?.user;
-    return problem.ascents.some(
-      (ascent) => ascent.userId === userId
-    );
   }
 
   // Create new problem
@@ -260,7 +230,6 @@ export class ProblemResolver {
 
   // Get problems ascended by user by users ascentids
   @Query(() => [Problem], { nullable: true })
-  @UseMiddleware(isAuth)
   async getSentProblems(@Arg('userId') userId: string) {
     const user = await User.findOne({
       where: { id: userId },
@@ -269,11 +238,24 @@ export class ProblemResolver {
     if (!user || !user.ascents) return null;
 
     const problemIds = user.ascents.map((a) => a.problemId);
-    const sentProblems = await Problem.findByIds(problemIds, {
-      relations: ['ascents'],
-    });
 
-    return sentProblems;
+    const problems = await getConnection().query(`
+      SELECT 
+          p.*,
+          COALESCE(ascent."avgGrade", null) AS "avgGrade",
+          COALESCE(ascent."avgRating", null) AS "avgRating"
+        FROM problem p
+        LEFT JOIN LATERAL (
+          SELECT AVG(ascent.grade)::numeric(10) AS "avgGrade",
+                 AVG(ascent.rating)::numeric(10) AS "avgRating"
+          FROM ascent
+          WHERE ascent."problemId" = p.id
+        ) ascent ON true
+        WHERE p.id = ANY($1)
+        ORDER BY p."createdAt";
+    `, [problemIds]);
+
+    return problems;
   }
 }
 
