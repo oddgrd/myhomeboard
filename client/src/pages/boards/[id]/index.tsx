@@ -21,12 +21,12 @@ import { sortOptions } from '../../../assets/selectOptions';
 
 const limit = 18;
 const Problems = () => {
-  const router = useRouter();
-  const boardId = typeof router.query.id === 'string' ? router.query.id : '';
-
   const didMountRef = useRef(false);
   const [searchPattern, setSearchPattern, searchRef] = useSearch();
   const [{ selectedSort, offsetRef }, { selectSort }] = useSorting();
+
+  const router = useRouter();
+  const boardId = typeof router.query.id === 'string' ? router.query.id : '';
 
   const initialOptions = {
     limit,
@@ -34,17 +34,33 @@ const Problems = () => {
     boardId,
     sort: selectedSort.current,
   };
+
   const { data, loading, error, fetchMore, client, refetch } =
     useGetProblemsQuery({
       variables: {
         options: initialOptions,
       },
       notifyOnNetworkStatusChange: true,
+      skip: !router.isReady,
     });
+
+  const { data: meData } = useMeQuery();
+
+  const {
+    data: boardData,
+    loading: boardLoading,
+    error: boardError,
+  } = useGetBoardQuery({
+    variables: {
+      boardId,
+    },
+    skip: !router.isReady,
+  });
 
   const { ref, inView } = useInView({
     rootMargin: '300px 0px',
   });
+
   useEffect(() => {
     if (inView) getMore();
   }, [inView]);
@@ -80,18 +96,6 @@ const Problems = () => {
       didMountRef.current = true;
     }
   }, [searchPattern]);
-
-  const {
-    data: boardData,
-    loading: boardLoading,
-    error: boardError,
-  } = useGetBoardQuery({
-    variables: {
-      boardId,
-    },
-  });
-
-  const { data: meData } = useMeQuery();
 
   if (error || boardError) {
     return (
@@ -129,6 +133,14 @@ const Problems = () => {
             <a className={styles.back}>create one!</a>
           </Link>
         </p>
+      </Layout>
+    );
+  }
+
+  if (boardLoading && !boardData) {
+    return (
+      <Layout title='Problems'>
+        <Spinner />
       </Layout>
     );
   }

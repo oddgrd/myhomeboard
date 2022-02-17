@@ -2,11 +2,9 @@ import { isAuth } from '../../middleware/isAuth';
 import {
   Arg,
   Ctx,
-  FieldResolver,
   Mutation,
   Query,
   Resolver,
-  Root,
   UseMiddleware,
 } from 'type-graphql';
 import {
@@ -20,22 +18,9 @@ import { Problem } from '../../entities/Problem';
 import { Context } from '../../types/context';
 import { getConnection } from 'typeorm';
 import { User } from '../../entities/User';
-import { Layout } from '../../entities/Layout';
 
 @Resolver(Problem)
 export class ProblemResolver {
-  // Field resolver for creator field on single problem query
-  @FieldResolver(() => User)
-  creator(@Root() problem: Problem, @Ctx() { userLoader }: Context) {
-    return userLoader.load(problem.creatorId);
-  }
-
-  // Field resolver for layout field on single problem query
-  @FieldResolver(() => Layout)
-  layout(@Root() problem: Problem, @Ctx() { layoutLoader }: Context) {
-    return layoutLoader.load(problem.layoutId);
-  }
-
   // Create new problem
   @Mutation(() => ProblemResponse)
   @UseMiddleware(isAuth)
