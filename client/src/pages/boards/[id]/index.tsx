@@ -98,25 +98,23 @@ const Problems = () => {
     }
   }, [searchPattern]);
 
-  if (error || boardError) {
+  if (error || boardError || (!loading && !data)) {
     return (
       <Layout title='Problems'>
-        <p className='centerText'>
-          Something went wrong,{' '}
-          <button
-            className='btn btn-link'
-            onClick={() => {
-              router.reload();
-            }}
-          >
-            try again
-          </button>{' '}
-        </p>
+        <p className='centerText'>Something went wrong, </p>
+        <button
+          className='btn btn-link centerText'
+          onClick={() => {
+            router.reload();
+          }}
+        >
+          try again
+        </button>{' '}
       </Layout>
     );
   }
 
-  if (boardLoading && !boardData) {
+  if ((loading && !data) || (boardLoading && !boardData)) {
     return (
       <Layout title='Problems'>
         <Spinner />
@@ -124,14 +122,12 @@ const Problems = () => {
     );
   }
 
-  if (!boardLoading && !boardData?.getBoard.currentLayout) {
+  if (boardData && !boardData?.getBoard.currentLayout) {
     return (
       <Layout title='Problems'>
         <p className='centerText'>
-          No layouts found,{' '}
-          <Link href={`/boards/${boardId}/create-layout`}>
-            <a className={styles.back}>create one!</a>
-          </Link>
+          No layouts found, the board creator can upload a layout in the board
+          settings page.
         </p>
       </Layout>
     );
@@ -200,7 +196,6 @@ const Problems = () => {
             </p>
           </div>
         ) : null}
-
         <div>
           {loading && !data ? (
             <Spinner />
