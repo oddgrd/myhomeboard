@@ -55,6 +55,7 @@ const Problems = () => {
       boardId,
     },
     skip: !router.isReady,
+    notifyOnNetworkStatusChange: true,
   });
 
   const { ref, inView } = useInView({
@@ -114,16 +115,15 @@ const Problems = () => {
       </Layout>
     );
   }
-  if (!boardLoading && !boardData?.getBoard) {
+
+  if (boardLoading && !boardData) {
     return (
       <Layout title='Problems'>
-        <p className='centerText'>Board Not Found</p>
-        <Link href='/boards'>
-          <a className={styles.back}>{'<'}Go Back</a>
-        </Link>
+        <Spinner />
       </Layout>
     );
   }
+
   if (!boardLoading && !boardData?.getBoard.currentLayout) {
     return (
       <Layout title='Problems'>
@@ -133,14 +133,6 @@ const Problems = () => {
             <a className={styles.back}>create one!</a>
           </Link>
         </p>
-      </Layout>
-    );
-  }
-
-  if (boardLoading && !boardData) {
-    return (
-      <Layout title='Problems'>
-        <Spinner />
       </Layout>
     );
   }

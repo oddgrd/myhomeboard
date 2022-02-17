@@ -31,8 +31,10 @@ export const Searchbar = ({ setSearchPattern, searchRef }: Props) => {
   }, [showBar]);
   useEffect(() => {
     const debounce = setTimeout(() => {
-      searchRef.current = input;
-      setSearchPattern(input);
+      if (input.length === 0 || input.length > 1) {
+        searchRef.current = input;
+        setSearchPattern(input);
+      }
     }, 1000);
     return () => clearTimeout(debounce);
   }, [input]);
