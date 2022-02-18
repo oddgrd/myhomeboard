@@ -11,7 +11,7 @@ const Offline = () => {
       window.removeEventListener('online', () => {
         router.reload();
       });
-  }, []);
+  }, [router]);
   return (
     <div>
       <h2>You are currently offline</h2>

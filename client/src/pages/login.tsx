@@ -21,7 +21,7 @@ const Login = () => {
 
   useEffect(() => {
     if (data?.me) router.replace('/boards');
-  }, [data?.me]);
+  }, [data?.me, router]);
 
   return (
     <Layout title='Login'>

@@ -35,6 +35,7 @@ export const ProblemForm = ({ coords, boardId, layoutId, angles }: Props) => {
   const [createProblem] = useCreateProblemMutation();
   const router = useRouter();
   const [{}, { selectSort }] = useSorting();
+  const generateTitle = useTitleGenerator();
   if (!layoutId) return null;
   return (
     <Formik
@@ -97,9 +98,9 @@ export const ProblemForm = ({ coords, boardId, layoutId, angles }: Props) => {
               <button
                 type='button'
                 className={styles.random}
-                onClick={(e) => {
+                onClick={() => {
                   blur();
-                  setFieldValue('title', useTitleGenerator(2));
+                  setFieldValue('title', generateTitle(2));
                 }}
               >
                 <FaRandom size={25} />

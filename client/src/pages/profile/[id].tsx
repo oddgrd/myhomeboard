@@ -52,9 +52,9 @@ const Profile = () => {
   if (!data?.getUser) {
     return (
       <Layout title='Profile'>
-        <p>Profile not found</p>
+        <p className='centerText'>Profile not found</p>
         <button
-          className='btn'
+          className='btn centerText'
           onClick={() => {
             router.back();
           }}
@@ -77,6 +77,7 @@ const Profile = () => {
               width={62}
               height={62}
               priority={true}
+              alt=''
             />
           </div>
           <h1>{name}</h1>

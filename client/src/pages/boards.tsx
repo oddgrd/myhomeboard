@@ -49,8 +49,8 @@ const Boards = () => {
         </div>
         {meData?.me && (
           <div className={styles.createBoard}>
-            <Link href='/create-board'>
-              <strong className='btn'>Add New Board</strong>
+            <Link href='/create-board' passHref>
+              <a className='btn'>Add New Board</a>
             </Link>
           </div>
         )}

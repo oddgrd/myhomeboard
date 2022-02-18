@@ -23,7 +23,7 @@ export const Searchbar = ({ setSearchPattern, searchRef }: Props) => {
       setShowBar(true);
       setInput(searchRef.current);
     }
-  }, [searchRef.current]);
+  }, [searchRef]);
   useEffect(() => {
     if (showBar && barRef.current) {
       barRef.current.focus();

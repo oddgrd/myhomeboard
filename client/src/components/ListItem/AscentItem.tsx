@@ -93,6 +93,7 @@ export const AscentItem = ({ ascent, problemId, currentUserId }: Props) => {
               height={52}
               src={user.avatar as string}
               priority={true}
+              alt=''
             />
           </a>
         </Link>

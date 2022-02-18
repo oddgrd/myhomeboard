@@ -20,7 +20,7 @@
     "framer-motion": "^4.1.17",
     "graphql": "^15.5.1",
     "identity-obj-proxy": "^3.0.0",
-    "next": "^12.0.5",
+    "next": "^12.1.0",
     "next-apollo": "^5.0.6",
     "next-pwa": "^5.4.4",
     "react": "17.0.2",

@@ -47,6 +47,7 @@ module.exports = withPWA({
   images: {
     domains: ['lh3.googleusercontent.com', 'res.cloudinary.com'],
   },
+  swcMinify: true,
   async headers() {
     return prod
       ? [

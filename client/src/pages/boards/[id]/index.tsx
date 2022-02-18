@@ -98,7 +98,7 @@ const Problems = () => {
     }
   }, [searchPattern]);
 
-  if (error || boardError || (!loading && !data)) {
+  if (error || boardError) {
     return (
       <Layout title='Problems'>
         <p className='centerText'>Something went wrong, </p>
@@ -114,7 +114,7 @@ const Problems = () => {
     );
   }
 
-  if ((loading && !data) || (boardLoading && !boardData)) {
+  if (boardLoading && !boardData) {
     return (
       <Layout title='Problems'>
         <Spinner />
@@ -192,15 +192,15 @@ const Problems = () => {
           searchPattern.length !== 0 ? (
           <div className={styles.createProblem}>
             <p className={styles.searchFailed}>
-              No problems found containing "{searchPattern}"
+              No problems found containing &#34;{searchPattern}&#34;
             </p>
           </div>
         ) : null}
         <div>
           {loading && !data ? (
             <Spinner />
-          ) : (
-            data!.getProblems.problems.map((problem, idx) =>
+          ) : data ? (
+            data.getProblems.problems.map((problem, idx) =>
               // Invalidating problem in cache makes it null
               !problem ? null : (
                 <ProblemItem
@@ -210,7 +210,7 @@ const Problems = () => {
                 />
               )
             )
-          )}
+          ) : null}
         </div>
       </div>
       {
