@@ -34,9 +34,11 @@ const Board = () => {
   const boardId = typeof router.query.id === 'string' ? router.query.id : '';
   const { data, loading, error } = useGetBoardQuery({
     variables: { boardId },
+    skip: !router.isReady,
   });
   const { data: layoutData } = useGetBoardLayoutsQuery({
     variables: { boardId },
+    skip: !router.isReady,
   });
 
   if (error) {

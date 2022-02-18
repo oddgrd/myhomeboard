@@ -46,16 +46,11 @@ const Problems = () => {
 
   const { data: meData } = useMeQuery();
 
-  const {
-    data: boardData,
-    loading: boardLoading,
-    error: boardError,
-  } = useGetBoardQuery({
+  const { data: boardData, error: boardError } = useGetBoardQuery({
     variables: {
       boardId,
     },
     skip: !router.isReady,
-    notifyOnNetworkStatusChange: true,
   });
 
   const { ref, inView } = useInView({
@@ -114,14 +109,6 @@ const Problems = () => {
     );
   }
 
-  if (boardLoading && !boardData) {
-    return (
-      <Layout title='Problems'>
-        <Spinner />
-      </Layout>
-    );
-  }
-
   if (boardData && !boardData?.getBoard.currentLayout) {
     return (
       <Layout title='Problems'>
@@ -150,16 +137,17 @@ const Problems = () => {
           >
             <FaSyncAlt size={27} />
           </button>
-
-          <Link href={`/boards/${boardId}/create-problem`}>
-            <a
-              className='btn btn-link btn-icon'
-              aria-label='Create problem'
-              title='Create Problem'
-            >
-              <FaPlusSquare size={28} />
-            </a>
-          </Link>
+          {router.isReady && (
+            <Link href={`/boards/${boardId}/create-problem`}>
+              <a
+                className='btn btn-link btn-icon'
+                aria-label='Create problem'
+                title='Create Problem'
+              >
+                <FaPlusSquare size={28} />
+              </a>
+            </Link>
+          )}
         </>
       }
     >
@@ -184,9 +172,13 @@ const Problems = () => {
         data?.getProblems.problems.length === 0 &&
         searchPattern.length === 0 ? (
           <div className={styles.createProblem}>
-            <Link href={`/boards/${boardId}/create-problem`}>
-              <a className='btn'>Create First Problem</a>
-            </Link>
+            {router.isReady ? (
+              <Link href={`/boards/${boardId}/create-problem`}>
+                <a className='btn'>Create First Problem</a>
+              </Link>
+            ) : (
+              <p>No problems found</p>
+            )}
           </div>
         ) : data?.getProblems.problems.length === 0 &&
           searchPattern.length !== 0 ? (

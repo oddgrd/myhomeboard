@@ -25,6 +25,7 @@ const CreateProblem = () => {
   useIsWhitelisted(boardId);
   const { data, loading } = useGetBoardQuery({
     variables: { boardId },
+    skip: !router.isReady,
   });
 
   useEffect(() => {

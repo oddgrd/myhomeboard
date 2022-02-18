@@ -33,6 +33,7 @@ const Problem = () => {
       id: problemId,
     },
     fetchPolicy: 'cache-and-network',
+    skip: !router.isReady,
   });
 
   useEffect(() => {

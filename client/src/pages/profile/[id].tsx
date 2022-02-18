@@ -19,11 +19,14 @@ const Profile = () => {
 
   const { data, loading } = useGetUserQuery({
     variables: { id: profileId },
+    fetchPolicy: 'cache-and-network',
+    skip: !router.isReady,
   });
 
   const { data: sendData, loading: sendLoading } = useGetSentProblemsQuery({
     variables: { userId: profileId },
     fetchPolicy: 'cache-and-network',
+    skip: !router.isReady,
   });
 
   const ascentGrades = useMemo(() => {
