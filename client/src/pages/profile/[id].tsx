@@ -55,9 +55,9 @@ const Profile = () => {
   if (!data?.getUser) {
     return (
       <Layout title='Profile'>
-        <p className='centerText'>Profile not found</p>
+        <p className='center-text'>Profile not found</p>
         <button
-          className='btn centerText'
+          className='btn center-text'
           onClick={() => {
             router.back();
           }}

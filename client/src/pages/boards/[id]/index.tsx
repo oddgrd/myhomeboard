@@ -96,9 +96,9 @@ const Problems = () => {
   if (error || boardError) {
     return (
       <Layout title='Problems'>
-        <p className='centerText'>Something went wrong, </p>
+        <p className='center-text'>Something went wrong, </p>
         <button
-          className='btn btn-link centerText'
+          className='btn btn-link center-text'
           onClick={() => {
             router.reload();
           }}
@@ -112,7 +112,7 @@ const Problems = () => {
   if (boardData && !boardData?.getBoard.currentLayout) {
     return (
       <Layout title='Problems'>
-        <p className='centerText'>
+        <p className='center-text'>
           No layouts found, the board creator can upload a layout in the board
           settings page.
         </p>

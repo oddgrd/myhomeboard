@@ -24,7 +24,7 @@ const Boards = () => {
   if (!meData?.me && data?.getBoards.length === 0) {
     return (
       <Layout title='Boards' navTitle={'Select Board'}>
-        <p className='centerText'>No boards found. Login to create one.</p>
+        <p className='center-text'>No boards found. Login to create one.</p>
       </Layout>
     );
   }
@@ -49,9 +49,12 @@ const Boards = () => {
         </div>
         {meData?.me && (
           <div className={styles.createBoard}>
-            <Link href='/create-board' passHref>
-              <a className='btn'>Add New Board</a>
-            </Link>
+            <button className='btn' disabled={true}>
+              Create Board
+            </button>
+            {/* <Link href='/create-board'>
+              <a className='btn btn-disabled'>Add New Board</a>
+            </Link> */}
           </div>
         )}
       </div>
