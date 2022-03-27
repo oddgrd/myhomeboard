@@ -1,65 +1,35 @@
 import faker from 'faker';
-import { User } from '../../entities/User';
 import { gqlWrapper } from '../../test-utils/gqlWrapper';
-import { Board } from '../../entities/Board';
-import { Problem } from '../../entities/Problem';
 import { Ascent } from '../../entities/Ascent';
-
-const addAscentMutation = `
-mutation AddAscent($options: AddAscentInput!) {
-  addAscent(options: $options)
-}
-`;
-const editAscentMutation = `
-mutation EditAscent($options: EditAscentInput!) {
-  editAscent(options: $options)
-}
-
-`;
-const deleteAscentMutation = `
-mutation DeleteAscent($problemId: String!) {
-  deleteAscent(problemId: $problemId)
-}
-`;
+import {  deleteAscentMutation, editAscentMutation } from '../../test-utils/gqlMutations';
+import { addAscent, getDummyData } from '../../test-utils/utils';
 
 describe('Ascent tests', () => {
-  let userId: string;
-  let problemId: string;
   it('adds ascent', async () => {
-    // Get user, board and problem ids from dummy data
-    const user = await User.findOne({ where: { name: 'odd' } });
-    userId = user!.id;
-    const board = await Board.findOne({ where: { title: 'test' } });
-    const problem = await Problem.findOne({ where: { title: 'testproblem' } });
-    problemId = problem!.id;
+    const {response, ascentInput } = await addAscent(); 
 
-    const ascentInput = {
-      problemId,
-      boardId: board!.id,
-      comment: faker.lorem.sentence(3),
-      grade: 10,
-      rating: 2,
-      attempts: 6,
-    };
-    const response = await gqlWrapper({
-      source: addAscentMutation,
-      variableValues: {
-        options: ascentInput,
-      },
-      userId: userId,
-    });
     expect(response).toMatchObject({
       data: {
         addAscent: true,
       },
     });
 
-    const ascent = await Ascent.findOne({ where: { problemId } });
+    const ascent = await Ascent.findOne({ where: { problemId: ascentInput.problemId } });
     expect(ascent).toBeDefined();
   });
+
   it('edits ascent', async () => {
+    const {user} = await getDummyData();
+
+    const {response: addAscentResponse, ascentInput } = await addAscent(); 
+    expect(addAscentResponse).toMatchObject({
+      data: {
+        addAscent: true,
+      },
+    });
+
     const editAscentInput = {
-      problemId,
+      problemId: ascentInput.problemId,
       comment: faker.lorem.sentence(3),
       grade: 5,
       rating: 0,
@@ -70,25 +40,36 @@ describe('Ascent tests', () => {
       variableValues: {
         options: editAscentInput,
       },
-      userId: userId,
+      userId: user?.id,
     });
+
     expect(response).toMatchObject({
       data: {
         editAscent: true,
       },
     });
 
-    const ascent = await Ascent.findOne({ where: { problemId } });
+    const ascent = await Ascent.findOne({ where: { problemId: ascentInput.problemId } });
     expect(ascent).toBeDefined();
     expect(ascent).toMatchObject(editAscentInput);
   });
+
   it('deletes ascent', async () => {
+    const {user} = await getDummyData();
+    
+    const {response: addAscentResponse, ascentInput } = await addAscent(); 
+    expect(addAscentResponse).toMatchObject({
+      data: {
+        addAscent: true,
+      },
+    });
+
     const response = await gqlWrapper({
       source: deleteAscentMutation,
       variableValues: {
-        problemId,
+        problemId: ascentInput.problemId,
       },
-      userId: userId,
+      userId: user?.id,
     });
     expect(response).toMatchObject({
       data: {
@@ -96,7 +77,7 @@ describe('Ascent tests', () => {
       },
     });
 
-    const ascent = await Ascent.findOne({ where: { problemId } });
+    const ascent = await Ascent.findOne({ where: { problemId: ascentInput.problemId } });
     expect(ascent).toBeUndefined();
   });
 });

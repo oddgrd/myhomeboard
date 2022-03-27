@@ -1,34 +1,10 @@
 import faker from 'faker';
 import { User } from '../../entities/User';
 import { gqlWrapper } from '../../test-utils/gqlWrapper';
-import { Board } from '../../entities/Board';
-
-const whitelistUserMutation = `
-  mutation WhitelistUser($options: WhitelistInput!) {
-    whitelistUser(options: $options) {
-      errors {
-        field
-        message
-      }
-      userId
-    }
-  }
-`;
-const removeFromWhitelistMutation = `
-  mutation RemoveFromWhitelist($options: WhitelistInput!) {
-    removeFromWhitelist(options: $options) {
-      errors {
-        field
-        message
-      }
-      userId
-    }
-  }
-`;
+import { removeFromWhitelistMutation, whitelistUserMutation } from '../../test-utils/gqlMutations';
+import { getDummyData } from '../../test-utils/utils';
 
 describe('User tests', () => {
-  let userId: string;
-  let email: string;
   it('should create user', async () => {
     const newUser = await User.create({
       name: faker.name.firstName(),
@@ -36,20 +12,17 @@ describe('User tests', () => {
       avatar: faker.internet.url(),
       googleId: faker.random.alphaNumeric(8),
     }).save();
-    [userId, email] = [newUser!.id, newUser!.email];
 
     const user = await User.findOne(newUser!.id);
     expect(user).toBeDefined();
     expect(user?.name).toMatch(newUser.name);
   });
 
-  let boardId: string;
   it('should whitelist user', async () => {
-    // get board from dummy data
-    const board = await Board.findOne({ where: { title: 'test' } });
-    boardId = board!.id;
+    const {user, boardId} = await getDummyData();
+
     const whitelistInput = {
-      email,
+      email: user?.email,
       boardId,
     };
 
@@ -58,22 +31,25 @@ describe('User tests', () => {
       variableValues: {
         options: whitelistInput,
       },
-      userId,
+      userId: user?.id,
     });
 
     expect(response).toMatchObject({
       data: {
         whitelistUser: {
           errors: null,
-          userId,
+          userId: user?.id,
         },
       },
     });
-    const whitelistedUser = await User.findOne(userId);
+
+    const whitelistedUser = await User.findOne(user?.id);
     expect(whitelistedUser!.boardWhitelist).toContain(boardId);
   });
 
-  it('should error on invalid user', async () => {
+  it('should error on whitelisting invalid user', async () => {
+    const {user, boardId} = await getDummyData();
+
     const whitelistInput = {
       email: faker.internet.email(),
       boardId,
@@ -84,7 +60,7 @@ describe('User tests', () => {
       variableValues: {
         options: whitelistInput,
       },
-      userId,
+      userId: user?.id,
     });
 
     expect(response).toMatchObject({
@@ -103,8 +79,10 @@ describe('User tests', () => {
   });
 
   it('should remove user from whitelist', async () => {
+    const {user, boardId} = await getDummyData();
+
     const whitelistInput = {
-      email,
+      email: user?.email,
       boardId,
     };
 
@@ -113,18 +91,18 @@ describe('User tests', () => {
       variableValues: {
         options: whitelistInput,
       },
-      userId,
+      userId: user?.id,
     });
 
     expect(response).toMatchObject({
       data: {
         removeFromWhitelist: {
           errors: null,
-          userId,
+          userId: user?.id,
         },
       },
     });
-    const whitelistedUser = await User.findOne(userId);
+    const whitelistedUser = await User.findOne(user?.id);
     expect(whitelistedUser!.boardWhitelist).not.toContain(boardId);
   });
 });

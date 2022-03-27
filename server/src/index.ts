@@ -7,7 +7,6 @@ import session from 'express-session';
 import { graphqlUploadExpress } from 'graphql-upload';
 import Redis from 'ioredis';
 import passport from 'passport';
-import { Strategy } from 'passport-google-oauth20';
 import path from 'path';
 import 'reflect-metadata';
 import { createConnection } from 'typeorm';
@@ -21,6 +20,9 @@ import authRoutes from './routes/api/auth';
 import { createLayoutLoader } from './utils/createLayoutLoader';
 import { createSchema } from './utils/createSchema';
 import { createUserLoader } from './utils/createUserLoader';
+
+// Passport configuration
+import "./config/passport";
 
 const main = async () => {
   const connection = await createConnection({
@@ -72,51 +74,6 @@ const main = async () => {
       userLoader: createUserLoader(),
       layoutLoader: createLayoutLoader(),
     }),
-  });
-
-  passport.use(
-    new Strategy(
-      {
-        clientID: process.env.GOOGLE_CLIENT_ID,
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: __prod__
-          ? `https://api.myhomeboard.no/api/auth/google/callback`
-          : 'http://localhost:4000/api/auth/google/callback',
-      },
-      async (_accessToken, _refreshToken, profile: any, done) => {
-        const user = await User.findOne({ where: { googleId: profile.id } });
-        if (user) {
-          await User.update(
-            { id: user.id },
-            {
-              name: profile.displayName,
-              avatar: profile._json.picture,
-            }
-          );
-          done(null, user);
-        } else {
-          try {
-            const newUser = await User.create({
-              name: profile.displayName,
-              email: profile._json.email,
-              avatar: profile._json.picture,
-              googleId: profile.id,
-            }).save();
-            done(null, newUser);
-          } catch (error) {
-            done(error);
-          }
-        }
-      }
-    )
-  );
-  passport.serializeUser(function (user: any, done) {
-    done(null, user.id);
-  });
-  passport.deserializeUser((id: string, done) => {
-    User.findOne(id).then((user) => {
-      done(null, user);
-    });
   });
 
   app.use(
