@@ -2,7 +2,7 @@ import { AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { FaInfo } from 'react-icons/fa';
+import { FaInfo, FaSyncAlt } from 'react-icons/fa';
 import { Canvas } from '../../../../components/Canvas';
 import { CreateProblemInfo } from '../../../../components/CreateProblemInfo';
 import { ProblemForm } from '../../../../components/Form/ProblemForm';
@@ -23,7 +23,7 @@ const CreateProblem = () => {
   const toolbarProps = { handleColor, undo };
 
   useIsWhitelisted(boardId);
-  const { data, loading } = useGetBoardQuery({
+  const { data, loading, client } = useGetBoardQuery({
     variables: { boardId },
     skip: !router.isReady,
   });
@@ -51,16 +51,28 @@ const CreateProblem = () => {
     <Layout
       title='Create Problem'
       navChildren={
-        <button
-          onClick={() => {
-            setShowInfoModal(true);
-          }}
-          className='btn btn-link btn-icon'
-          aria-label='Info'
-          title='Info'
-        >
-          <FaInfo size={27} />
-        </button>
+        <>
+          <button
+            onClick={() => {
+              client.cache.evict({ fieldName: 'getBoard' });
+            }}
+            className='btn btn-link btn-icon btn-rotate'
+            aria-label='Refresh Board'
+            title='Refresh Board'
+          >
+            <FaSyncAlt size={27} />
+          </button>
+          <button
+            onClick={() => {
+              setShowInfoModal(true);
+            }}
+            className='btn btn-link btn-icon'
+            aria-label='Info'
+            title='Info'
+          >
+            <FaInfo size={27} />
+          </button>
+        </>
       }
     >
       <div className={styles.createProblem}>
