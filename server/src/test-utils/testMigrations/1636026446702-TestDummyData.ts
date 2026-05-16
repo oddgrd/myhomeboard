@@ -55,7 +55,7 @@ export class TestDummyData1636026446702 implements MigrationInterface {
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
         DELETE FROM "user"
-        WHERE name = 'oddtest';
+        WHERE name = 'odd';
     `);
 
     await queryRunner.query(`
