@@ -49,6 +49,7 @@ jobs:
 
   deploy:
     needs: test
+    # Only deploy on push to master.
     if: github.ref == 'refs/heads/master' && github.event_name == 'push'
     runs-on: ubuntu-latest
 

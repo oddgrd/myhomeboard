@@ -5,7 +5,8 @@
   "author": "oddgrd <oddgrd@gmail.com> (https://github.com/oddgrd)",
   "license": "MIT",
   "engines": {
-    "node": "24.x"
+    "node": "24.x",
+    "pnpm": "9.x"
   },
   "scripts": {
     "build": "tsc",
@@ -15,12 +16,13 @@
     "dev:setup": "ts-node ./src/test-utils/devSetup.ts",
     "dev:reset": "ts-node ./src/test-utils/devSetup.ts --fresh",
     "test:setup": "ts-node ./src/test-utils/setup.ts",
-    "test": "yarn test:setup && jest --runInBand",
+    "test": "pnpm test:setup && jest --runInBand",
     "test:watch": "jest --coverage --watchAll",
     "gen-env": "npx gen-env-types .env -o src/env.d.ts -e ."
   },
   "devDependencies": {
     "@types/connect-redis": "^0.0.17",
+    "@types/cors": "^2.8.19",
     "@types/express": "^4.17.13",
     "@types/express-session": "^1.17.4",
     "@types/faker": "^5.5.8",
