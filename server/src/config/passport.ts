@@ -1,13 +1,14 @@
 import passport from 'passport';
 import { Strategy } from 'passport-google-oauth20';
 import { __prod__ } from '../constants';
+import { env } from '../env';
 import { User } from '../entities/User';
 
 passport.use(
     new Strategy(
       {
-        clientID: process.env.GOOGLE_CLIENT_ID,
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        clientID: env.GOOGLE_CLIENT_ID,
+        clientSecret: env.GOOGLE_CLIENT_SECRET,
         callbackURL: __prod__
           ? `https://api.myhomeboard.no/api/auth/google/callback`
           : 'http://localhost:4000/api/auth/google/callback',

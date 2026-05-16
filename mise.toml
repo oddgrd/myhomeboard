@@ -1,5 +1,5 @@
 [tools]
-node = "14"
+node = "24"
 yarn = "1.22"
 
 [tasks.server-dev]
@@ -11,4 +11,9 @@ dir = "client"
 run = "yarn dev"
 
 [tasks.server-test]
-run = "docker compose up -d && yarn --cwd server test && docker compose down"
+dir = "server"
+run = "docker compose up -d && yarn test && docker compose down"
+
+[tasks.client-test]
+dir = "client"
+run = "yarn test"
