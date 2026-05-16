@@ -29,18 +29,23 @@ jobs:
       - name: Clone repo
         uses: actions/checkout@v6
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
       - name: Setup node
         uses: actions/setup-node@v4
         with:
           node-version: '24'
-          cache: 'yarn'
-          cache-dependency-path: ./client/yarn.lock
+          cache: 'pnpm'
+          cache-dependency-path: ./client/pnpm-lock.yaml
 
       - name: Install dependencies
-        run: yarn
+        run: pnpm i --frozen-lockfile
 
       - name: Run tests
-        run: yarn test
+        run: pnpm test
 
   deploy:
     needs: test
