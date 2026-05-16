@@ -1,7 +1,6 @@
 import { ApolloServer } from 'apollo-server-express';
 import connectRedis from 'connect-redis';
 import cors from 'cors';
-import 'dotenv/config';
 import express from 'express';
 import session from 'express-session';
 import { graphqlUploadExpress } from 'graphql-upload';
@@ -11,6 +10,7 @@ import path from 'path';
 import 'reflect-metadata';
 import { createConnection } from 'typeorm';
 import { __prod__ } from './constants';
+import { env } from './env';
 import { Ascent } from './entities/Ascent';
 import { Board } from './entities/Board';
 import { Layout } from './entities/Layout';
@@ -28,7 +28,7 @@ const main = async () => {
   const connection = await createConnection({
     applicationName: 'myhomeboard',
     type: 'postgres',
-    url: process.env.DATABASE_URL,
+    url: env.DATABASE_URL,
     entities: [User, Problem, Layout, Ascent, Board],
     migrations: [path.join(__dirname, './migrations/*')],
     logging: true,
@@ -45,7 +45,7 @@ const main = async () => {
   app.use(
     cors({
       origin: __prod__
-        ? process.env.CORS_ORIGIN
+        ? env.CORS_ORIGIN
         : function (origin, callback) {
             if (!origin || devWhitelist.indexOf(origin) !== -1) {
               callback(null, true);
@@ -63,7 +63,7 @@ const main = async () => {
   );
 
   const RedisStore = connectRedis(session);
-  const redis = new Redis(process.env.REDIS_URL);
+  const redis = new Redis(env.REDIS_URL);
 
   const apolloServer = new ApolloServer({
     schema: await createSchema(),
@@ -79,7 +79,7 @@ const main = async () => {
   app.use(
     session({
       name: 'mhb',
-      secret: process.env.SESSION_SECRET,
+      secret: env.SESSION_SECRET,
       resave: false,
       saveUninitialized: false,
       store: new RedisStore({ client: redis, disableTouch: true }),
@@ -106,8 +106,8 @@ const main = async () => {
   // Block faulty favicon 404
   app.get('/favicon.ico', (_, res) => res.status(204));
 
-  app.listen(parseInt(process.env.PORT), () => {
-    console.log(`App listening on port ${process.env.PORT}`);
+  app.listen(env.PORT, () => {
+    console.log(`App listening on port ${env.PORT}`);
   });
 };
 

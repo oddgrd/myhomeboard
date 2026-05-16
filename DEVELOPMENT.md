@@ -33,9 +33,15 @@ You may want to clear the browser local storage, which holds the apollo-cache, b
 
 ### Running tests
 
-Currently, only the server has automated tests. These tests will run against docker redis and
-postgres containers, with test migrations defined in `server/test-utils`. Run the tests with:
+The server tests will run against docker redis and postgres containers, with test migrations
+defined in `server/test-utils`. Run the tests with:
 
 ```sh
 mise server-test
+```
+
+Run the client unit tests with:
+
+```sh
+mise client-test
 ```
