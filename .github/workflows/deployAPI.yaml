@@ -8,6 +8,10 @@ on:
     paths:
       - 'server/**'
       - '.github/workflows/deployAPI.yaml'
+  pull_request:
+    paths:
+      - 'server/**'
+      - '.github/workflows/deployAPI.yaml'
 
 jobs:
   test:
@@ -57,6 +61,7 @@ jobs:
 
   deploy:
     needs: test
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
     runs-on: ubuntu-latest
 
     steps:
