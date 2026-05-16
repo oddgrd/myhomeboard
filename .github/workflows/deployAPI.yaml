@@ -8,6 +8,10 @@ on:
     paths:
       - 'server/**'
       - '.github/workflows/deployAPI.yaml'
+  pull_request:
+    paths:
+      - 'server/**'
+      - '.github/workflows/deployAPI.yaml'
 
 jobs:
   test:
@@ -37,10 +41,10 @@ jobs:
           access_token: ${{ github.token }}
 
       - name: Clone repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v6
 
       - name: Setup node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: '14'
           cache: 'yarn'
@@ -57,11 +61,12 @@ jobs:
 
   deploy:
     needs: test
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
     runs-on: ubuntu-latest
 
     steps:
       - name: Clone repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
