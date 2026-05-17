@@ -1,0 +1,8 @@
+allowBuilds:
+  '@apollo/protobufjs': true
+  core-js: true
+  core-js-pure: true
+  nodemon: true
+  type-graphql: true
+packages:
+  - packages/*

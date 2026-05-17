@@ -2,11 +2,12 @@ FROM node:24-slim
 
 # enable pnpm via corepack (ships with Node 24)
 RUN corepack enable
+RUN corepack use pnpm@latest-11
 
 # Create app directory
 WORKDIR /usr/src/app
 
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
 # Install dependencies on first build/when dependencies
 # change
