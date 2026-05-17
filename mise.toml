@@ -1,6 +1,7 @@
 [tools]
 node = "24"
 yarn = "1.22"
+pnpm = "9"
 
 [tasks.server-dev]
 dir = "server"
@@ -8,7 +9,7 @@ run = "docker compose up -d && yarn dev:setup && yarn dev"
 
 [tasks.client-dev]
 dir = "client"
-run = "yarn dev"
+run = "pnpm dev"
 
 [tasks.server-test]
 dir = "server"
@@ -16,4 +17,4 @@ run = "docker compose up -d && yarn test && docker compose down"
 
 [tasks.client-test]
 dir = "client"
-run = "yarn test"
+run = "pnpm test"
